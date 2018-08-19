@@ -1,13 +1,21 @@
 package logica;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
+import datatype.TipoRetorno;
 
 public class Proponente extends Usuario{
     private String direccion;
     private String biografia;
     private String linkWeb;
+    
+    // PseudoAtributos
+    private ArrayList<Propuesta> propuestas;
 
-    public Proponente(String direccion, String biografia, String linkWeb, String nickname, String nombre, Date fechaNacimiento, String correoElectronico, String apellido) {
+    public Proponente(String direccion, String biografia, String linkWeb, 
+    		String nickname, String nombre, GregorianCalendar fechaNacimiento, 
+    		String correoElectronico, String apellido) {
         super(nickname, nombre, fechaNacimiento, correoElectronico, apellido);
         this.direccion = direccion;
         this.biografia = biografia;
@@ -37,6 +45,5 @@ public class Proponente extends Usuario{
     public void setLinkWeb(String linkWeb) {
         this.linkWeb = linkWeb;
     }
-    
     
 }

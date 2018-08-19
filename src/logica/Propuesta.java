@@ -1,20 +1,23 @@
 package logica;
+
 import datatype.TipoRetorno;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Propuesta {
     
    private String titulo;
    private String descripcion;
    private String imagen;
-   private Integer montoNecesario;
-   private Date fechaPublicacion;
-   private Date fechaEspecatulo;
-   private Integer precioEntrada;
+   private float montoNecesario;
+   private GregorianCalendar fechaPublicacion;
+   private GregorianCalendar fechaEspecatulo;
+   private float precioEntrada;
    private String lugar;
    private TipoRetorno tipo;
 
-    public Propuesta(String titulo, String descripcion, String imagen, Integer montoNecesario, Date fechaPublicacion, Date fechaEspecatulo, Integer precioEntrada, String lugar, TipoRetorno tipo) {
+    public Propuesta(String titulo, String descripcion, String imagen, 
+    		float montoNecesario, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
+    		float precioEntrada, String lugar, TipoRetorno tipo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.imagen = imagen;
@@ -30,11 +33,11 @@ public class Propuesta {
         return descripcion;
     }
 
-    public Date getFechaEspecatulo() {
+    public GregorianCalendar getFechaEspecatulo() {
         return fechaEspecatulo;
     }
 
-    public Date getFechaPublicacion() {
+    public GregorianCalendar getFechaPublicacion() {
         return fechaPublicacion;
     }
 
@@ -46,11 +49,11 @@ public class Propuesta {
         return lugar;
     }
 
-    public Integer getMontoNecesario() {
+    public float getMontoNecesario() {
         return montoNecesario;
     }
 
-    public Integer getPrecioEntrada() {
+    public float getPrecioEntrada() {
         return precioEntrada;
     }
 
@@ -66,11 +69,11 @@ public class Propuesta {
         this.descripcion = descripcion;
     }
 
-    public void setFechaEspecatulo(Date fechaEspecatulo) {
+    public void setFechaEspecatulo(GregorianCalendar fechaEspecatulo) {
         this.fechaEspecatulo = fechaEspecatulo;
     }
 
-    public void setFechaPublicacion(Date fechaPublicacion) {
+    public void setFechaPublicacion(GregorianCalendar fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
 
@@ -82,11 +85,11 @@ public class Propuesta {
         this.lugar = lugar;
     }
 
-    public void setMontoNecesario(Integer montoNecesario) {
+    public void setMontoNecesario(float montoNecesario) {
         this.montoNecesario = montoNecesario;
     }
 
-    public void setPrecioEntrada(Integer precioEntrada) {
+    public void setPrecioEntrada(float precioEntrada) {
         this.precioEntrada = precioEntrada;
     }
 

@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import datatype.DtPerfilProponente;
 import datatype.DtProponente;
@@ -8,11 +9,11 @@ import datatype.DtProponente;
 public abstract class Usuario {
     private String nickname;
     private String nombre;
-    private Date fechaNacimiento;
+    private GregorianCalendar fechaNacimiento;
     private String correoElectronico;
     private String apellido;
 
-    public Usuario(String nickname, String nombre, Date fechaNacimiento, String correoElectronico, String apellido) {
+    public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico, String apellido) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
@@ -28,7 +29,7 @@ public abstract class Usuario {
         this.correoElectronico = correoElectronico;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -48,7 +49,7 @@ public abstract class Usuario {
         return correoElectronico;
     }
 
-    public Date getFechaNacimiento() {
+    public GregorianCalendar getFechaNacimiento() {
         return fechaNacimiento;
     }
 

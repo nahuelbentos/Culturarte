@@ -1,16 +1,17 @@
 package logica;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import datatype.TipoRetorno;
 
 public class Colaboracion {
 
 	private Integer monto;
-	private Date fechaAporte;
+	private GregorianCalendar fechaAporte;
 	private TipoRetorno tipo;
 	
-	public Colaboracion(Integer monto, Date fechaAporte, TipoRetorno tipo) {
+	public Colaboracion(Integer monto, GregorianCalendar fechaAporte, TipoRetorno tipo) {
 		super();
 		this.monto = monto;
 		this.fechaAporte = fechaAporte;
@@ -25,11 +26,11 @@ public class Colaboracion {
 		this.monto = monto;
 	}
 
-	public Date getFechaAporte() {
+	public GregorianCalendar getFechaAporte() {
 		return fechaAporte;
 	}
 
-	public void setFechaAporte(Date fechaAporte) {
+	public void setFechaAporte(GregorianCalendar fechaAporte) {
 		this.fechaAporte = fechaAporte;
 	}
 
