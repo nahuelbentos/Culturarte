@@ -3,15 +3,13 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import datatype.TipoRetorno;
-
 public class Proponente extends Usuario{
     private String direccion;
     private String biografia;
     private String linkWeb;
     
     // PseudoAtributos
-    private ArrayList<Propuesta> propuestas;
+    private ArrayList<Propuesta> propuestas = new ArrayList<Propuesta>();;
 
     public Proponente(String direccion, String biografia, String linkWeb, 
     		String nickname, String nombre, GregorianCalendar fechaNacimiento, 
@@ -44,6 +42,10 @@ public class Proponente extends Usuario{
 
     public void setLinkWeb(String linkWeb) {
         this.linkWeb = linkWeb;
+    }
+    
+    public void addPropuesta(Propuesta p) {
+    	this.propuestas.add(p);
     }
     
 }

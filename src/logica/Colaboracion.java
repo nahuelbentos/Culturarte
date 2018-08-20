@@ -1,5 +1,6 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -7,22 +8,26 @@ import datatype.TipoRetorno;
 
 public class Colaboracion {
 
-	private Integer monto;
+	private float monto;
 	private GregorianCalendar fechaAporte;
 	private TipoRetorno tipo;
 	
-	public Colaboracion(Integer monto, GregorianCalendar fechaAporte, TipoRetorno tipo) {
+	// PseudoAtributos
+	private Propuesta propuestaColaborada;
+	private Colaborador colaborador;
+	
+	public Colaboracion(float monto, GregorianCalendar fechaAporte, TipoRetorno tipo) {
 		super();
 		this.monto = monto;
 		this.fechaAporte = fechaAporte;
 		this.tipo = tipo;
 	}
 
-	public Integer getMonto() {
+	public float getMonto() {
 		return monto;
 	}
 
-	public void setMonto(Integer monto) {
+	public void setMonto(float monto) {
 		this.monto = monto;
 	}
 

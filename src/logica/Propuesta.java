@@ -1,6 +1,8 @@
 package logica;
 
 import datatype.TipoRetorno;
+
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class Propuesta {
@@ -15,19 +17,26 @@ public class Propuesta {
    private String lugar;
    private TipoRetorno tipo;
 
-    public Propuesta(String titulo, String descripcion, String imagen, 
-    		float montoNecesario, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
-    		float precioEntrada, String lugar, TipoRetorno tipo) {
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.imagen = imagen;
-        this.montoNecesario = montoNecesario;
-        this.fechaPublicacion = fechaPublicacion;
-        this.fechaEspecatulo = fechaEspecatulo;
-        this.precioEntrada = precioEntrada;
-        this.lugar = lugar;
-        this.tipo = tipo;
-    }
+   // PseudoAtributos
+   private Proponente proponenteACargo;
+   private ArrayList<Colaboracion> colaboraciones;
+   private Estado estadoActual;
+   private ArrayList<Estado> estadoHistorial;
+   private Categoria categoria;
+   
+   public Propuesta(String titulo, String descripcion, String imagen, 
+			float montoNecesario, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
+			float precioEntrada, String lugar, TipoRetorno tipo) {
+	    this.titulo = titulo;
+	    this.descripcion = descripcion;
+	    this.imagen = imagen;
+	    this.montoNecesario = montoNecesario;
+	    this.fechaPublicacion = fechaPublicacion;
+	    this.fechaEspecatulo = fechaEspecatulo;
+	    this.precioEntrada = precioEntrada;
+	    this.lugar = lugar;
+	    this.tipo = tipo;
+	}
 
     public String getDescripcion() {
         return descripcion;
@@ -101,5 +110,7 @@ public class Propuesta {
         this.titulo = titulo;
     }
    
-   
+    public void addColaboracion(Colaboracion c) {
+    	this.colaboraciones.add(c);
+    }
 }   

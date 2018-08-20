@@ -1,6 +1,6 @@
 package logica;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import datatype.DtPerfilProponente;
@@ -12,6 +12,11 @@ public abstract class Usuario {
     private GregorianCalendar fechaNacimiento;
     private String correoElectronico;
     private String apellido;
+    
+    // PseudoAtributos
+    private ArrayList<Propuesta> proFavoritas;
+    private ArrayList<Usuario> seguidores;
+    private ArrayList<Usuario> seguidos;
 
     public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico, String apellido) {
         this.nickname = nickname;

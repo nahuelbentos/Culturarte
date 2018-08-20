@@ -34,10 +34,10 @@ public class inicio extends JFrame {
 	private JTextField txtEmail;
 	private JTextField txtLoginNombre;
 	private JPasswordField txtLoginPassword;
-
+/*
 	/**
 	 * Launch the application.
-	 */
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -50,7 +50,7 @@ public class inicio extends JFrame {
 			}
 		});
 	}
-
+*/
 	/**
 	 * Create the frame.
 	 */
