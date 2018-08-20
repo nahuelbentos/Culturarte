@@ -1,12 +1,11 @@
 package presentacion;
 
-import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
@@ -14,26 +13,31 @@ import javax.swing.JInternalFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
 import java.awt.Font;
-import java.awt.CardLayout;
+import javax.swing.ButtonGroup;
 
 public class inicio extends JFrame {
 
 	private JPanel contentPane;
+	private JPanel panelPrincipal;
+	private JTree treeListaDeCategorias;
+	private JInternalFrame intFrameAltaCategoria;
+	private JInternalFrame intFrameAltaPerfil;
 	private JTextField txtNickname;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JTextField txtEmail;
 	private JTextField txtLoginNombre;
 	private JPasswordField txtLoginPassword;
+	private JFileChooser fileChooser = new JFileChooser();
+	private ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -57,121 +61,53 @@ public class inicio extends JFrame {
 	public inicio() {
 		setTitle("Culturarte");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 369, 436);
-		
+		setBounds(100, 100, 469, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
-		JFileChooser fileChooser = new JFileChooser();
 		contentPane.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(5, 5, 343, 366);
-		contentPane.add(panel_1);
-		panel_1.setLayout(null);
-		
-		JInternalFrame intFrameAltaPerfil = new JInternalFrame("Registrar un Usuario");
-		intFrameAltaPerfil.setBounds(0, 0, 343, 366);
-		panel_1.add(intFrameAltaPerfil);
-		intFrameAltaPerfil.getContentPane().setLayout(null);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 307, 314);
-		intFrameAltaPerfil.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JLabel lblNickname = new JLabel("Nickname:");
-		lblNickname.setBounds(30, 46, 49, 14);
-		panel.add(lblNickname);
-		
-		JLabel lblIngreseLosSiguientes = new JLabel("Ingrese los siguientes datos");
-		lblIngreseLosSiguientes.setBounds(89, 11, 134, 14);
-		panel.add(lblIngreseLosSiguientes);
-		
-		txtNickname = new JTextField();
-		txtNickname.setBounds(89, 43, 174, 20);
-		panel.add(txtNickname);
-		txtNickname.setColumns(10);
-		
-		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(30, 74, 49, 14);
-		panel.add(lblNombre);
-		
-		txtNombre = new JTextField();
-		txtNombre.setColumns(10);
-		txtNombre.setBounds(89, 71, 174, 20);
-		panel.add(txtNombre);
-		
-		JLabel lblApellido = new JLabel("Apellido:");
-		lblApellido.setBounds(30, 102, 49, 14);
-		panel.add(lblApellido);
-		
-		txtApellido = new JTextField();
-		txtApellido.setColumns(10);
-		txtApellido.setBounds(89, 99, 174, 20);
-		panel.add(txtApellido);
-		
-		JLabel lblEmail = new JLabel("E-mail:");
-		lblEmail.setBounds(30, 130, 49, 14);
-		panel.add(lblEmail);
-		
-		txtEmail = new JTextField();
-		txtEmail.setColumns(10);
-		txtEmail.setBounds(89, 127, 174, 20);
-		panel.add(txtEmail);
-		
-		JRadioButton rdbtnProponente = new JRadioButton("Proponente");
-		rdbtnProponente.setBounds(50, 172, 91, 23);
-		panel.add(rdbtnProponente);
-		
-		JRadioButton rdbtnColaborador = new JRadioButton("Colaborador");
-		rdbtnColaborador.setBounds(148, 172, 109, 23);
-		panel.add(rdbtnColaborador);
-		JButton btnSeleecionarImagen = new JButton("Seleecionar Imagen");
-		btnSeleecionarImagen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				fileChooser.showOpenDialog(panel);
-			}
-		});
-		btnSeleecionarImagen.setBounds(30, 214, 233, 23);
-		panel.add(btnSeleecionarImagen);
-		
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(28, 263, 99, 23);
-		panel.add(btnAceptar);
-		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(164, 263, 99, 23);
-		panel.add(btnCancelar);
+		crearFramePrincipal();
+		crearMenu();
+		crearInternalFrameAltaPerfil();
+		crearInternalFrameAltaCategoria();
+		ocultarInternalFrames();
+	}
+	
+	public void crearFramePrincipal() {
+		panelPrincipal = new JPanel();
+		panelPrincipal.setBounds(5, 23, 438, 421);
+		contentPane.add(panelPrincipal);
+		panelPrincipal.setLayout(null);
 		
 		JLabel lblNombreDeUsuario = new JLabel("Nombre de usuario:");
-		lblNombreDeUsuario.setBounds(39, 121, 94, 14);
-		panel_1.add(lblNombreDeUsuario);
+		lblNombreDeUsuario.setBounds(71, 120, 126, 14);
+		panelPrincipal.add(lblNombreDeUsuario);
 		
 		JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
-		lblContrasea.setBounds(39, 153, 94, 14);
-		panel_1.add(lblContrasea);
+		lblContrasea.setBounds(71, 152, 126, 14);
+		panelPrincipal.add(lblContrasea);
 		
 		txtLoginNombre = new JTextField();
-		txtLoginNombre.setBounds(144, 118, 139, 20);
-		panel_1.add(txtLoginNombre);
+		txtLoginNombre.setBounds(208, 117, 139, 20);
+		panelPrincipal.add(txtLoginNombre);
 		txtLoginNombre.setColumns(10);
 		
 		txtLoginPassword = new JPasswordField();
-		txtLoginPassword.setBounds(143, 150, 140, 20);
-		panel_1.add(txtLoginPassword);
+		txtLoginPassword.setBounds(207, 149, 140, 20);
+		panelPrincipal.add(txtLoginPassword);
 		
 		JButton btnIngresar = new JButton("Ingresar");
-		btnIngresar.setBounds(114, 215, 89, 23);
-		panel_1.add(btnIngresar);
+		btnIngresar.setBounds(178, 214, 89, 23);
+		panelPrincipal.add(btnIngresar);
 		
 		JLabel lblPlataformaDeAdministracin = new JLabel("Plataforma de Administraci\u00F3n");
 		lblPlataformaDeAdministracin.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPlataformaDeAdministracin.setBounds(57, 55, 209, 14);
-		panel_1.add(lblPlataformaDeAdministracin);
-		intFrameAltaPerfil.setVisible(false);
-		
+		lblPlataformaDeAdministracin.setBounds(121, 54, 209, 14);
+		panelPrincipal.add(lblPlataformaDeAdministracin);
+	}
+	
+	public void crearMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -197,6 +133,15 @@ public class inicio extends JFrame {
 		mnNewMenu.add(mnCategra);
 		
 		JMenuItem mntmAltaDeCategrpia = new JMenuItem("Alta de Categor\u00EDa");
+		mntmAltaDeCategrpia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ocultarInternalFrames();
+				panelPrincipal.setVisible(false);
+				intFrameAltaCategoria.setVisible(true);
+			}
+		});
 		mnCategra.add(mntmAltaDeCategrpia);
 		
 		JMenu mnColaboraciones = new JMenu("Colaboraciones");
@@ -222,6 +167,8 @@ public class inicio extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				ocultarInternalFrames();
+				panelPrincipal.setVisible(false);
 				intFrameAltaPerfil.setVisible(true);
 			}
 		});
@@ -239,5 +186,134 @@ public class inicio extends JFrame {
 		
 		JMenuItem mntmDejarDeSe = new JMenuItem("Dejar de Seguir Usuario");
 		mnUsuarios.add(mntmDejarDeSe);
+	}
+	
+	public void crearInternalFrameAltaCategoria() {
+		intFrameAltaCategoria = new JInternalFrame("Alta de Categoría");
+		intFrameAltaCategoria.setBounds(0, 0, 453, 444);
+		contentPane.add(intFrameAltaCategoria);
+		intFrameAltaCategoria.getContentPane().setLayout(null);
+		
+		JPanel panelAltaCategoria = new JPanel();
+		panelAltaCategoria.setBounds(10, 11, 417, 403);
+		intFrameAltaCategoria.getContentPane().add(panelAltaCategoria);
+		panelAltaCategoria.setLayout(null);
+		
+		JLabel lblListaDeCategorías = new JLabel("Lista de categorías existentes");
+		lblListaDeCategorías.setBounds(65, 11, 250, 14);
+		panelAltaCategoria.add(lblListaDeCategorías);
+		listarCategorias();
+		panelAltaCategoria.add(treeListaDeCategorias);
+	}
+	
+	public void listarCategorias() {
+        DefaultMutableTreeNode categorías = new DefaultMutableTreeNode("Categorías");
+        DefaultMutableTreeNode teatro = new DefaultMutableTreeNode("Teatro");
+        DefaultMutableTreeNode musica = new DefaultMutableTreeNode("Música");
+        DefaultMutableTreeNode danza = new DefaultMutableTreeNode("Danza");
+        DefaultMutableTreeNode rock = new DefaultMutableTreeNode("Rock");
+        DefaultMutableTreeNode salsa = new DefaultMutableTreeNode("Salsa");
+        DefaultMutableTreeNode pop = new DefaultMutableTreeNode("Pop");
+        DefaultMutableTreeNode rockClasico = new DefaultMutableTreeNode("Rock clásico");
+        DefaultMutableTreeNode rockAlternativo = new DefaultMutableTreeNode("Rock alternativo");
+        categorías.add(teatro);
+        categorías.add(musica);
+        categorías.add(danza);
+        rock.add(rockClasico);
+        rock.add(rockAlternativo);
+        rockClasico.add(new DefaultMutableTreeNode("Hoja"));
+        rockAlternativo.add(new DefaultMutableTreeNode("Hoja"));
+        teatro.add(new DefaultMutableTreeNode("Hoja"));
+        danza.add(new DefaultMutableTreeNode("Hoja"));
+        salsa.add(new DefaultMutableTreeNode("Hoja"));
+        pop.add(new DefaultMutableTreeNode("Hoja"));
+        musica.add(rock);
+        musica.add(salsa);
+        musica.add(pop);
+        treeListaDeCategorias = new JTree(categorías);
+        treeListaDeCategorias.setBounds(31, 49, 376, 343);
+	}
+	
+	public void crearInternalFrameAltaPerfil() {
+		intFrameAltaPerfil = new JInternalFrame("Registrar un Usuario");
+		intFrameAltaPerfil.setBounds(0, 11, 443, 433);
+		contentPane.add(intFrameAltaPerfil);
+		intFrameAltaPerfil.getContentPane().setLayout(null);
+		
+		JPanel panelRegistrarUsuario = new JPanel();
+		panelRegistrarUsuario.setBounds(10, 11, 407, 381);
+		intFrameAltaPerfil.getContentPane().add(panelRegistrarUsuario);
+		panelRegistrarUsuario.setLayout(null);
+		
+		JLabel lblNickname = new JLabel("Nickname:");
+		lblNickname.setBounds(65, 46, 80, 14);
+		panelRegistrarUsuario.add(lblNickname);
+		
+		JLabel lblIngreseLosSiguientes = new JLabel("Ingrese los siguientes datos");
+		lblIngreseLosSiguientes.setBounds(96, 11, 193, 14);
+		panelRegistrarUsuario.add(lblIngreseLosSiguientes);
+		
+		txtNickname = new JTextField();
+		txtNickname.setBounds(155, 43, 174, 20);
+		panelRegistrarUsuario.add(txtNickname);
+		txtNickname.setColumns(10);
+		
+		JLabel lblNombre = new JLabel("Nombre:");
+		lblNombre.setBounds(65, 74, 80, 14);
+		panelRegistrarUsuario.add(lblNombre);
+		
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(155, 71, 174, 20);
+		panelRegistrarUsuario.add(txtNombre);
+		
+		JLabel lblApellido = new JLabel("Apellido:");
+		lblApellido.setBounds(65, 102, 80, 14);
+		panelRegistrarUsuario.add(lblApellido);
+		
+		txtApellido = new JTextField();
+		txtApellido.setColumns(10);
+		txtApellido.setBounds(155, 99, 174, 20);
+		panelRegistrarUsuario.add(txtApellido);
+		
+		JLabel lblEmail = new JLabel("E-mail:");
+		lblEmail.setBounds(65, 130, 80, 14);
+		panelRegistrarUsuario.add(lblEmail);
+		
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(155, 127, 174, 20);
+		panelRegistrarUsuario.add(txtEmail);
+		
+		JRadioButton rdbtnProponente = new JRadioButton("Proponente");
+		buttonGroup.add(rdbtnProponente);
+		rdbtnProponente.setBounds(116, 172, 91, 23);
+		panelRegistrarUsuario.add(rdbtnProponente);
+		
+		JRadioButton rdbtnColaborador = new JRadioButton("Colaborador");
+		buttonGroup.add(rdbtnColaborador);
+		rdbtnColaborador.setBounds(214, 172, 109, 23);
+		panelRegistrarUsuario.add(rdbtnColaborador);
+		JButton btnSeleecionarImagen = new JButton("Seleecionar Imagen");
+		btnSeleecionarImagen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fileChooser.showOpenDialog(panelRegistrarUsuario);
+			}
+		});
+		btnSeleecionarImagen.setBounds(96, 214, 233, 23);
+		panelRegistrarUsuario.add(btnSeleecionarImagen);
+		
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBounds(94, 263, 99, 23);
+		panelRegistrarUsuario.add(btnAceptar);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(230, 263, 99, 23);
+		panelRegistrarUsuario.add(btnCancelar);
+	}
+	
+	public void ocultarInternalFrames() {
+		intFrameAltaPerfil.setVisible(false);
+		intFrameAltaCategoria.setVisible(false);
 	}
 }
