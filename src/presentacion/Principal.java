@@ -9,11 +9,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.JPasswordField;
-import java.awt.Font;
 
 public class Principal {
 

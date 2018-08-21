@@ -3,9 +3,6 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import datatype.DtPerfilProponente;
-import datatype.DtProponente;
-
 public abstract class Usuario {
     private String nickname;
     private String nombre;
