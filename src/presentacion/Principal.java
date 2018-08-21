@@ -1,29 +1,39 @@
 package presentacion;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
+import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
+import javax.swing.JMenu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import java.awt.Font;
 
-public class Index {
+public class Principal {
 
-	private JFrame frame;
-
+	private JFrame frmPaginaPrincipal;
+	private JPanel panelPrincipal;
+	private JTextField txtLoginNombre;
+	private JPasswordField txtLoginPassword;
+	private AltaPerfil altaPerfil;
+	private AltaCategoria altaCategoria;
+	
 	/**
 	 * Launch the application.
-	 */
+	*/
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Index window = new Index();
-					window.frame.setVisible(true);
+					Principal window = new Principal();
+					window.frmPaginaPrincipal.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -32,27 +42,34 @@ public class Index {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the frame.
 	 */
-	public Index() {
+	
+	public Principal() {
 		initialize();
+		
+		altaPerfil = new AltaPerfil();
+		altaPerfil.setVisible(false);
+		
+		altaCategoria = new AltaCategoria();
+		altaCategoria.setVisible(false);
+		
+		frmPaginaPrincipal.getContentPane().setLayout(null);
+		frmPaginaPrincipal.getContentPane().add(altaPerfil);
+		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel panel = new JPanel();
-		
-		
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		
+	
+	public void initialize() {
+		frmPaginaPrincipal = new JFrame();
+		frmPaginaPrincipal.setTitle("Culturarte");
+		frmPaginaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPaginaPrincipal.setBounds(100, 100, 469, 515);
+		crearMenu();
+	}
+	
+	public void crearMenu() {
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		frmPaginaPrincipal.setJMenuBar(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("Sistema");
 		menuBar.add(mnNewMenu);
@@ -76,6 +93,13 @@ public class Index {
 		mnNewMenu.add(mnCategra);
 		
 		JMenuItem mntmAltaDeCategrpia = new JMenuItem("Alta de Categor\u00EDa");
+		mntmAltaDeCategrpia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				altaCategoria.setVisible(true);
+			}
+		});
 		mnCategra.add(mntmAltaDeCategrpia);
 		
 		JMenu mnColaboraciones = new JMenu("Colaboraciones");
@@ -101,8 +125,7 @@ public class Index {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(new AgregarUsuario());
+				altaPerfil.setVisible(true);
 			}
 		});
 		
