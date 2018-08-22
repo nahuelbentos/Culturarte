@@ -2,5 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="src/libs/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="src/libs/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
