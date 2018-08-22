@@ -1,12 +1,12 @@
 package logica;
 
 import datatype.DtColaboracion;
+import datatype.DtUsuario;
 import datatype.DtProponente;
 
 public interface IUsuarioController {
 
-	// Revisar si es necesario el DtNuevoUsuario
-	//public abstract boolean agregarUsuario(DtNuevoUsuario dtNuevoUsuario);
+	public abstract boolean agregarUsuario(DtUsuario dtNuevoUsuario);
 	
 	// Crear el DtColaborador
 	//public abstract DtColaborador[] listarColaboradores();
