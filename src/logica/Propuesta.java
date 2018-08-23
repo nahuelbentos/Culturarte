@@ -19,7 +19,6 @@ public class Propuesta {
 
    // PseudoAtributos
    private Proponente proponenteACargo;
-   private ArrayList<Colaboracion> colaboraciones;
    private Estado estadoActual;
    private ArrayList<Estado> estadoHistorial;
    private Categoria categoria;
@@ -108,9 +107,5 @@ public class Propuesta {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-   
-    public void addColaboracion(Colaboracion c) {
-    	this.colaboraciones.add(c);
     }
 }   

@@ -1,10 +1,14 @@
 package logica;
 
-import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
-public class Colaborador {
+public class Colaborador extends Usuario{
 
-	// PseudoAtributos
-	private ArrayList<Colaboracion> colaboracionesHechas;
+	public Colaborador(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico,
+			String apellido) {
+		super(nickname, nombre, fechaNacimiento, correoElectronico, apellido);
+		// TODO Auto-generated constructor stub
+	}
+
 	
 }

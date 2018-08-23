@@ -62,13 +62,4 @@ public class ConnectPostgres {
             System.out.println("Error al conectar con la base de datos de PostgreSQL (" + url + "): " + sqle);
         }
     }
- 
-	
-	public static void main(String[] args) {
-		ConnectPostgres javaPostgreSQLBasic = new ConnectPostgres();
-        javaPostgreSQLBasic.connectDatabase();
-        javaPostgreSQLBasic.connectDatabase("localhost", "5432", "pap_culturarte", "postgres", "postgres");
-
-	}
-
 }
