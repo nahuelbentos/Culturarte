@@ -3,21 +3,15 @@ package presentacion;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 
 public class Principal {
 
 	private JFrame frmPaginaPrincipal;
-	private JPanel panelPrincipal;
-	private JTextField txtLoginNombre;
-	private JPasswordField txtLoginPassword;
 	private AltaPerfil altaPerfil;
 	private AltaCategoria altaCategoria;
 	
@@ -60,7 +54,7 @@ public class Principal {
 		frmPaginaPrincipal = new JFrame();
 		frmPaginaPrincipal.setTitle("Culturarte");
 		frmPaginaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmPaginaPrincipal.setBounds(100, 100, 469, 515);
+		frmPaginaPrincipal.setBounds(10, 40, 600, 600);
 		crearMenu();
 	}
 	
