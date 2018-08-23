@@ -15,5 +15,7 @@
 	<classpathentry kind="lib" path="src/libs/jboss-logging-3.3.2.Final.jar"/>
 	<classpathentry kind="lib" path="src/libs/jboss-transaction-api_1.2_spec-1.1.1.Final.jar"/>
 	<classpathentry kind="lib" path="src/libs/postgresql-42.2.4.jar"/>
+	<classpathentry kind="lib" path="src/libs/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="src/libs/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
