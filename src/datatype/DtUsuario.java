@@ -1,7 +1,5 @@
 package datatype;
 
-import java.awt.Image;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DtUsuario {
@@ -11,10 +9,10 @@ public class DtUsuario {
 	private String apellido;
 	private String email;
 	private GregorianCalendar fechaNacimiento;
-	private Image imagen;
+	private String imagen;
 	
 	public DtUsuario(String nickname, String nombre, String apellido, String email, GregorianCalendar fechaNacimiento,
-			Image imagen) {
+			String imagen) {
 		super();
 		this.nickname = nickname;
 		this.nombre = nombre;
@@ -39,7 +37,7 @@ public class DtUsuario {
 	public GregorianCalendar getFechaNacimiento() {
 		return fechaNacimiento;
 	}
-	public Image getImagen() {
+	public String getImagen() {
 		return imagen;
 	}
 	

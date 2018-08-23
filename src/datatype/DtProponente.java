@@ -1,6 +1,5 @@
 package datatype;
 
-import java.awt.Image;
 import java.util.GregorianCalendar;
 
 public class DtProponente extends DtUsuario {
@@ -10,7 +9,7 @@ public class DtProponente extends DtUsuario {
 	private String sitioWeb;
 	
 	public DtProponente(String nickname, String nombre, String apellido, String email, GregorianCalendar fechaNacimiento,
-			Image imagen, String direccion, String biografia, String sitioWeb) {
+			String imagen, String direccion, String biografia, String sitioWeb) {
 		super(nickname, nombre, apellido, email, fechaNacimiento, imagen);
 		this.direccion = direccion;
 		this.biografia = biografia;
