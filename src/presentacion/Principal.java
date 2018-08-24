@@ -16,6 +16,7 @@ public class Principal {
 
 	private JFrame frmPaginaPrincipal;
 	private AltaPerfil altaPerfil;
+	private AltaPropuesta altaPropuesta;
 	private AltaCategoria altaCategoria;
 	private IUsuarioController IUC;
 
@@ -49,15 +50,15 @@ public class Principal {
 		altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 
-		//altaCategoria = new AltaCategoria();
-		//altaCategoria.setVisible(false);
+		altaCategoria = new AltaCategoria();
+		altaCategoria.setVisible(false);
 
 		altaPropuesta = new AltaPropuesta();
 		altaPropuesta.setVisible(false);
 
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
-		//frmPaginaPrincipal.getContentPane().add(altaCategoria);
+		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
 
 	}
@@ -82,8 +83,6 @@ public class Principal {
 
 		JMenuItem mntmAltaDeProp = new JMenuItem("Alta de Propuesta");
 		mntmAltaDeProp.addActionListener(new ActionListener() {
-
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				altaPropuesta.setVisible(true);
 			}
@@ -107,7 +106,7 @@ public class Principal {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				altaPropuesta.setVisible(true);
+				altaCategoria.setVisible(true);
 			}
 		});
 		mnCategra.add(mntmAltaDeCategrpia);
@@ -152,14 +151,5 @@ public class Principal {
 
 		JMenuItem mntmDejarDeSe = new JMenuItem("Dejar de Seguir Usuario");
 		mnUsuarios.add(mntmDejarDeSe);
-	}
-
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
 	}
 }

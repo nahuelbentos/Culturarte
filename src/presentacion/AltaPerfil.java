@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-//import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JDateChooser;
 
 import datatype.DtColaborador;
 import datatype.DtProponente;
@@ -64,7 +64,7 @@ public class AltaPerfil extends JInternalFrame {
 	private JLabel lblDireccion;
 	private JLabel lblBiografia;
 	private JLabel lblSitioWeb;
-//	private JDateChooser dateChooser;
+	private JDateChooser dateChooser;
 	private JTextArea txtBiografia;
 	private JLabel lblRol;
 	private ImageIcon imagenUsuario;
@@ -212,9 +212,9 @@ public class AltaPerfil extends JInternalFrame {
 		lblSitioWeb.setVisible(false);
 		txtSitioWeb.setVisible(false);
 		
-//		dateChooser = new JDateChooser();
-//		dateChooser.setBounds(155, 188, 174, 20);
-//		getContentPane().add(dateChooser);
+		dateChooser = new JDateChooser();
+		dateChooser.setBounds(155, 188, 174, 20);
+		getContentPane().add(dateChooser);
 		
 		txtBiografia = new JTextArea();
 		txtBiografia.setBounds(155, 304, 174, 58);
@@ -300,7 +300,7 @@ public class AltaPerfil extends JInternalFrame {
     					direccion, biografia, sitioWeb);
     		}
     		if (iUsuarioController.agregarUsuario(dtUsuario)) {
-            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con éxito", "Registrar Usuario",
+            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con ï¿½xito", "Registrar Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
 	            limpiarFormulario();
 	            setVisible(false);
@@ -330,7 +330,7 @@ public class AltaPerfil extends JInternalFrame {
     	} else if (rdbtnProponente.isSelected()) {
             if (nickname.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || direccion.isEmpty() || dateChooser.getDate() == null) {
                 JOptionPane.showMessageDialog(this, "Los campos Nickname, Nombre, Apellido, Email, "
-                		+ "Fecha de Nacimiento y Dirección son requeridos.", "Registrar Usuario Proponente",
+                		+ "Fecha de Nacimiento y Direcciï¿½n son requeridos.", "Registrar Usuario Proponente",
                         JOptionPane.ERROR_MESSAGE);
                 return false;
             } else {
@@ -352,7 +352,7 @@ public class AltaPerfil extends JInternalFrame {
 	    	g2.drawImage(img, 0, 0, null);
 	    	g2.dispose();
     		nombreArchivo = UUID.randomUUID().toString();
-    		// Para probar lo guardamos como jpg, debería tomar la extensión de la imagen original
+    		// Para probar lo guardamos como jpg, deberï¿½a tomar la extensiï¿½n de la imagen original
 			ImageIO.write(bufferedImage, "jpg", new File("src/imagenes/" + nombreArchivo + ".jpg"));
 		} catch (IOException | NullPointerException e) {
 			return nombreArchivo;
