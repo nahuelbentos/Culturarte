@@ -3,9 +3,21 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import datatype.DtUsuario;
 
+@Entity
+@Table(name = "USUARIO")
 public abstract class Usuario {
+	
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	
     private String nickname;
     private String nombre;
     private GregorianCalendar fechaNacimiento;
@@ -13,18 +25,31 @@ public abstract class Usuario {
     private String apellido;
     
     // PseudoAtributos
+    /*
     private ArrayList<Propuesta> proFavoritas;
     private ArrayList<Usuario> seguidores;
     private ArrayList<Usuario> seguidos;
+	*/
+    
+    
+    
+    public long getId() {
+		return id;
+	}
 
-    public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico, String apellido) {
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico, String apellido) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.correoElectronico = correoElectronico;
         this.apellido = apellido;
     }
-
+	
+	// SETTERS
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
@@ -45,6 +70,7 @@ public abstract class Usuario {
         this.nombre = nombre;
     }
 
+    // GETTERS
     public String getApellido() {
         return apellido;
     }

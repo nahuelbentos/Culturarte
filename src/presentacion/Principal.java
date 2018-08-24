@@ -8,12 +8,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
 
 public class Principal {
 
 	private JFrame frmPaginaPrincipal;
 	private AltaPerfil altaPerfil;
 	private AltaCategoria altaCategoria;
+	private AltaPropuesta altaPropuesta;
 	
 	/**
 	 * Launch the application.
@@ -42,12 +44,17 @@ public class Principal {
 		altaPerfil = new AltaPerfil();
 		altaPerfil.setVisible(false);
 		
-		altaCategoria = new AltaCategoria();
-		altaCategoria.setVisible(false);
+		//altaCategoria = new AltaCategoria();
+		//altaCategoria.setVisible(false);
+		
+		altaPropuesta = new AltaPropuesta();
+		altaPropuesta.setVisible(false);
 		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
-		frmPaginaPrincipal.getContentPane().add(altaCategoria);
+		//frmPaginaPrincipal.getContentPane().add(altaCategoria);
+		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
+		
 	}
 	
 	public void initialize() {
@@ -68,8 +75,15 @@ public class Principal {
 		JMenu mnPropuesta = new JMenu("Propuestas");
 		mnNewMenu.add(mnPropuesta);
 		
-		JMenuItem mntmAltaDe = new JMenuItem("Alta de Propuesta");
-		mnPropuesta.add(mntmAltaDe);
+		JMenuItem mntmAltaDeProp = new JMenuItem("Alta de Propuesta");
+		mntmAltaDeProp.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				altaPropuesta.setVisible(true);
+			}
+		});
+		mnPropuesta.add(mntmAltaDeProp);
 		
 		JMenuItem mntmModificarDatosDe = new JMenuItem("Modificar datos de Propuesta");
 		mnPropuesta.add(mntmModificarDatosDe);
@@ -88,7 +102,7 @@ public class Principal {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				altaCategoria.setVisible(true);
+				altaPropuesta.setVisible(true);
 			}
 		});
 		mnCategra.add(mntmAltaDeCategrpia);
@@ -135,4 +149,12 @@ public class Principal {
 		mnUsuarios.add(mntmDejarDeSe);
 	}
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
 }
