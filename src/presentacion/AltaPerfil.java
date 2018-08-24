@@ -1,11 +1,18 @@
 package presentacion;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.GregorianCalendar;
+import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,9 +30,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.toedter.calendar.JDateChooser;
 
+import datatype.DtColaborador;
+import datatype.DtProponente;
+import datatype.DtUsuario;
+import logica.IUsuarioController;
+
 @SuppressWarnings("serial")
 public class AltaPerfil extends JInternalFrame {
 
+	private IUsuarioController iUsuarioController;
+	
 	private JTextField txtNickname;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
@@ -53,17 +67,20 @@ public class AltaPerfil extends JInternalFrame {
 	private JDateChooser dateChooser;
 	private JTextArea txtBiografia;
 	private JLabel lblRol;
+	private ImageIcon imagenUsuario;
 
 	/**
 	 * Create the frame.
 	 */
-	public AltaPerfil() {
+	public AltaPerfil(IUsuarioController IUC) {
+		iUsuarioController = IUC;
+		
         setResizable(true);
         setIconifiable(true);
         setMaximizable(true);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setClosable(true);
-        setLayout(null);
+        getContentPane().setLayout(null);
         setTitle("Registrar un Usuario");
         setBounds(10, 10, 563, 520);
 		
@@ -135,10 +152,10 @@ public class AltaPerfil extends JInternalFrame {
                 if (retorno == JFileChooser.APPROVE_OPTION) {
                     String pathName = fileChooser.getSelectedFile().getPath();
                     JOptionPane.showMessageDialog(null, pathName);
-                    ImageIcon icon = new ImageIcon(pathName);
-                    Image imagenPrevia = icon.getImage().getScaledInstance(133, 133, Image.SCALE_SMOOTH);
-                    icon = new ImageIcon(imagenPrevia, pathName);
-                    lblImagen.setIcon(icon);
+                    imagenUsuario = new ImageIcon(pathName);
+                    Image imagenPrevia = imagenUsuario.getImage().getScaledInstance(133, 133, Image.SCALE_SMOOTH);
+                    imagenUsuario = new ImageIcon(imagenPrevia, pathName);
+                    lblImagen.setIcon(imagenUsuario);
                 }
 			}
 		});
@@ -146,6 +163,11 @@ public class AltaPerfil extends JInternalFrame {
 		getContentPane().add(btnSeleecionarImagen);
 		
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				registrarUsuarioActionPerformed(arg0);
+		    }
+		});
 		btnAceptar.setBounds(155, 428, 99, 23);
 		getContentPane().add(btnAceptar);
 		
@@ -229,8 +251,13 @@ public class AltaPerfil extends JInternalFrame {
         txtNombre.setText("");
         txtApellido.setText("");
         txtEmail.setText("");
+        txtDireccion.setText("");
+        txtBiografia.setText("");
+        txtSitioWeb.setText("");
+        dateChooser.setDate(null);
         rdbtnProponente.setSelected(false);
         rdbtnColaborador.setSelected(false);
+        lblImagen.setIcon(null);
     }
     
     private void habilitarProponente() {
@@ -249,5 +276,87 @@ public class AltaPerfil extends JInternalFrame {
 		txtDireccion.setVisible(false);
 		txtBiografia.setVisible(false);
 		txtSitioWeb.setVisible(false);
+    }
+    
+    protected void registrarUsuarioActionPerformed(ActionEvent arg0) {
+        String nickname = txtNickname.getText();
+        String nombre = txtNombre.getText();
+        String apellido = txtApellido.getText();
+        String email = txtEmail.getText();
+        GregorianCalendar fechaNacimiento = new GregorianCalendar();
+        if (dateChooser.getDate() != null) {
+        	fechaNacimiento.setTime(dateChooser.getDate());
+        }
+        String direccion = txtDireccion.getText();
+        String biografia = txtBiografia.getText();
+        String sitioWeb = txtSitioWeb.getText();
+        DtUsuario dtUsuario = null;
+        if (checkFormulario()) {
+        	String nombreImagen = guardarImagen();
+    		if (rdbtnColaborador.isSelected()) {
+    			dtUsuario = new DtColaborador(nickname, nombre, apellido, email, fechaNacimiento, nombreImagen);
+    		} else if (rdbtnProponente.isSelected()) {
+    			dtUsuario = new DtProponente(nickname, nombre, apellido, email, fechaNacimiento, nombreImagen, 
+    					direccion, biografia, sitioWeb);
+    		}
+    		if (iUsuarioController.agregarUsuario(dtUsuario)) {
+            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con éxito", "Registrar Usuario",
+                        JOptionPane.INFORMATION_MESSAGE);
+	            limpiarFormulario();
+	            setVisible(false);
+    		}
+        }
+    }
+    
+    private boolean checkFormulario() {
+        String nickname = txtNickname.getText();
+        String nombre = txtNombre.getText();
+        String apellido = txtApellido.getText();
+        String email = txtEmail.getText();
+        String direccion = txtDireccion.getText();
+        GregorianCalendar fechaNacimiento = new GregorianCalendar();
+        if (dateChooser.getDate() != null) {
+        	fechaNacimiento.setTime(dateChooser.getDate());
+        }
+    	if (rdbtnColaborador.isSelected()) {
+            if (nickname.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || dateChooser.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Los campos Nickname, Nombre, Apellido, Email "
+                		+ "y Fecha de Nacimiento son requeridos.", "Registrar Usuario Colaborador",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            } else {
+            	return true;
+            }
+    	} else if (rdbtnProponente.isSelected()) {
+            if (nickname.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || direccion.isEmpty() || dateChooser.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Los campos Nickname, Nombre, Apellido, Email, "
+                		+ "Fecha de Nacimiento y Dirección son requeridos.", "Registrar Usuario Proponente",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            } else {
+            	return true;
+            }
+    	} else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar Proponente o Colaborador", "Registrar Usuario",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+    	}
+    }
+    
+    private String guardarImagen() {
+    	String nombreArchivo = "";
+    	try {
+	    	Image img = imagenUsuario.getImage();
+	    	BufferedImage bufferedImage = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_ARGB);
+	    	Graphics2D g2 = bufferedImage.createGraphics();
+	    	g2.drawImage(img, 0, 0, null);
+	    	g2.dispose();
+    		nombreArchivo = UUID.randomUUID().toString();
+    		// Para probar lo guardamos como jpg, debería tomar la extensión de la imagen original
+			ImageIO.write(bufferedImage, "jpg", new File("src/imagenes/" + nombreArchivo + ".jpg"));
+		} catch (IOException | NullPointerException e) {
+			return nombreArchivo;
+		}
+    	return nombreArchivo;
     }
 }

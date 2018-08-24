@@ -11,18 +11,21 @@ public abstract class Usuario {
     private GregorianCalendar fechaNacimiento;
     private String correoElectronico;
     private String apellido;
+    private String imagen;
     
     // PseudoAtributos
     private ArrayList<Propuesta> proFavoritas;
     private ArrayList<Usuario> seguidores;
     private ArrayList<Usuario> seguidos;
 
-    public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico, String apellido) {
+    public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento, 
+    		String correoElectronico, String apellido, String imagen) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.correoElectronico = correoElectronico;
         this.apellido = apellido;
+        this.imagen = imagen;
     }
 
     public void setApellido(String apellido) {
@@ -44,6 +47,10 @@ public abstract class Usuario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
     public String getApellido() {
         return apellido;
@@ -63,5 +70,9 @@ public abstract class Usuario {
 
     public String getNombre() {
         return nombre;
+    }
+    
+    public String getImagen() {
+        return imagen;
     }
 }

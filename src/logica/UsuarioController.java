@@ -16,11 +16,11 @@ public class UsuarioController implements IUsuarioController {
 			DtProponente dtProponente = (DtProponente) dtUsuario;
 			usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(), 
 					dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(), 
-					dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido());
+					dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
 		} else if (dtUsuario instanceof DtColaborador) {
 			DtColaborador dtColaborador = (DtColaborador) dtUsuario;
 			usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(), 
-					dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido());
+					dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
 		}
 		usuarioHandler.agregarUsuario(usuario);
 		return true;
