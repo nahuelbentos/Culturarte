@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.toedter.calendar.JDateChooser;
+//import com.toedter.calendar.JDateChooser;
 
 import datatype.DtColaborador;
 import datatype.DtProponente;
@@ -64,7 +64,7 @@ public class AltaPerfil extends JInternalFrame {
 	private JLabel lblDireccion;
 	private JLabel lblBiografia;
 	private JLabel lblSitioWeb;
-	private JDateChooser dateChooser;
+//	private JDateChooser dateChooser;
 	private JTextArea txtBiografia;
 	private JLabel lblRol;
 	private ImageIcon imagenUsuario;
@@ -212,9 +212,9 @@ public class AltaPerfil extends JInternalFrame {
 		lblSitioWeb.setVisible(false);
 		txtSitioWeb.setVisible(false);
 		
-		dateChooser = new JDateChooser();
-		dateChooser.setBounds(155, 188, 174, 20);
-		getContentPane().add(dateChooser);
+//		dateChooser = new JDateChooser();
+//		dateChooser.setBounds(155, 188, 174, 20);
+//		getContentPane().add(dateChooser);
 		
 		txtBiografia = new JTextArea();
 		txtBiografia.setBounds(155, 304, 174, 58);
