@@ -9,6 +9,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.Factory;
 import logica.IUsuarioController;
 
@@ -18,6 +19,7 @@ public class Principal {
 	private AltaPerfil altaPerfil;
 	private AltaPropuesta altaPropuesta;
 	private AltaCategoria altaCategoria;
+	private SeguirUsuario seguirUsuario;
 	private IUsuarioController IUC;
 
 	/**
@@ -55,11 +57,15 @@ public class Principal {
 
 		altaPropuesta = new AltaPropuesta();
 		altaPropuesta.setVisible(false);
+		
+		seguirUsuario = new SeguirUsuario(IUC);
+		seguirUsuario.setVisible(false);
 
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
+		frmPaginaPrincipal.getContentPane().add(seguirUsuario);
 
 	}
 
@@ -147,6 +153,14 @@ public class Principal {
 		mnPerfiles.add(mntmConsultaDePerfil);
 
 		JMenuItem mntmSeguir = new JMenuItem("Seguir Usuario");
+		mntmSeguir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				seguirUsuario.setListaDeUsuariosUno();
+				seguirUsuario.setVisible(true);
+			}
+		});
 		mnUsuarios.add(mntmSeguir);
 
 		JMenuItem mntmDejarDeSe = new JMenuItem("Dejar de Seguir Usuario");
