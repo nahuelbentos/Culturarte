@@ -58,9 +58,11 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public boolean dejarDeSeguirUsuario(String nicknameUno, String nicknameDos) {
-		// TODO Auto-generated method stub
-		return false;
+	public void dejarDeSeguirUsuario(String nicknameUno, String nicknameDos) {
+		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
+        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
+        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
+        usuarioUno.getUsuariosQueSigue().remove(nicknameDos, usuarioDos);
 	}
 
 	@Override

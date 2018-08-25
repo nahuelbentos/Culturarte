@@ -5,23 +5,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtUsuario;
 import excepciones.UsuarioNoExisteElUsuarioException;
-import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.IUsuarioController;
-import javax.swing.JButton;
-import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class SeguirUsuario extends JInternalFrame {
+public class DejarDeSeguirUsuario extends JInternalFrame {
 
 	private IUsuarioController iUsuarioController;
 	private JComboBox<String> cmbUsuarioUno;
@@ -31,7 +30,7 @@ public class SeguirUsuario extends JInternalFrame {
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 	private static final String TEXTO_COMBO_UNO = "No hay usuarios registrados en el sistema";
-	private static final String TEXTO_COMBO_DOS = "No hay más usuarios registrados en el sistema";
+	private static final String TEXTO_COMBO_DOS = "El usuario todavía no sigue a nadie";
 	private static final String TEXTO_COMBO_DOS_INICIAL = "Seleccione un Usuario";
 	private JTextField txtNicknameUno;
 	private JTextField txtNombreUno;
@@ -49,7 +48,7 @@ public class SeguirUsuario extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SeguirUsuario(IUsuarioController IUC) {
+	public DejarDeSeguirUsuario(IUsuarioController IUC) {
 		
 		iUsuarioController = IUC;
 		
@@ -59,7 +58,7 @@ public class SeguirUsuario extends JInternalFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setClosable(true);
         getContentPane().setLayout(null);
-        setTitle("Seguir un Usuario");
+        setTitle("Dejar de Seguir a un Usuario");
         setBounds(10, 10, 563, 520);
 		
         getContentPane().setLayout(null);
@@ -107,19 +106,19 @@ public class SeguirUsuario extends JInternalFrame {
 		getContentPane().add(cmbUsuarioDos);
 		cmbUsuarioDos.addItem("Seleccione un Usuario");
 		
-		lblSeleecioneElUsuario = new JLabel("<html>Seleecione el usuario <br/>que desea realizar el seguimiento:</html>");
+		lblSeleecioneElUsuario = new JLabel("<html>Seleecione el usuario <br/>que desea finalizar el seguimiento:</html>");
 		lblSeleecioneElUsuario.setBounds(28, 55, 197, 69);
 		getContentPane().add(lblSeleecioneElUsuario);
 		
 		lblseleecioneElUsuario = new JLabel("<html>Seleecione el usuario <br/>al que "
-				+ "desea seguir:</html>");
+				+ "no desea seguir más:</html>");
 		lblseleecioneElUsuario.setBounds(312, 55, 197, 69);
 		getContentPane().add(lblseleecioneElUsuario);
 		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				seguirUsuarioActionPerformed(e);
+				dejarDeSeguirUsuarioActionPerformed(e);
 			}
 		});
 		btnAceptar.setBounds(125, 428, 89, 23);
@@ -257,18 +256,14 @@ public class SeguirUsuario extends JInternalFrame {
 
 	}
 	
-	protected void seguirUsuarioActionPerformed(ActionEvent arg0) {
+	protected void dejarDeSeguirUsuarioActionPerformed(ActionEvent arg0) {
 		if (validarSelecciones()) {
-			try {
-				iUsuarioController.seguirUsuario(cmbUsuarioUno.getSelectedItem().toString(), 
-						cmbUsuarioDos.getSelectedItem().toString());
-            	JOptionPane.showMessageDialog(this, "Se ha registrado la acción.\nEl usuario: " 
-						+ cmbUsuarioUno.getSelectedItem().toString() + " ahora sigue al usuario: " 
-            			+ cmbUsuarioDos.getSelectedItem().toString(), "Registrar Usuario",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } catch (UsuarioYaSigueAlUsuarioException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Seguir Usuario", JOptionPane.ERROR_MESSAGE);
-            }
+			iUsuarioController.dejarDeSeguirUsuario(cmbUsuarioUno.getSelectedItem().toString(), 
+					cmbUsuarioDos.getSelectedItem().toString());
+        	JOptionPane.showMessageDialog(this, "Se ha registrado la acción.\nEl usuario: " 
+					+ cmbUsuarioUno.getSelectedItem().toString() + " ahora ya no sigue al usuario: " 
+        			+ cmbUsuarioDos.getSelectedItem().toString(), "Dejar de Seguir a un Usuario",
+                    JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -277,14 +272,14 @@ public class SeguirUsuario extends JInternalFrame {
 			setearPerfilUsuarioUno();
 			setListaDeUsuariosDos();
         } catch (UsuarioNoExisteElUsuarioException e) {
-            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado", "Seguir Usuario", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado", "Dejar de Seguir a un Usuario", JOptionPane.ERROR_MESSAGE);
         }
 	}
 	
 	private boolean validarSelecciones() {
 		if (cmbUsuarioUno.getSelectedItem().toString().equals(TEXTO_COMBO_UNO) || 
 				cmbUsuarioDos.getSelectedItem().toString().equals(TEXTO_COMBO_DOS))  {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar dos usuarios", "Seguir Usuario",
+            JOptionPane.showMessageDialog(this, "Debe seleccionar dos usuarios", "Dejar de Seguir a un Usuario",
                     JOptionPane.ERROR_MESSAGE);
 			return false;
 		} else {
@@ -306,8 +301,8 @@ public class SeguirUsuario extends JInternalFrame {
 	
 	public void setListaDeUsuariosDos() {
 		cmbUsuarioDos.removeAllItems();
-        DtUsuario[] usuarios = iUsuarioController.listarUsuarios();
-        if (usuarios.length > 1) {
+        DtUsuario[] usuarios = iUsuarioController.listarUsuariosQueSigue(cmbUsuarioUno.getSelectedItem().toString());
+        if (usuarios != null) {
             for (int i = 0; i < usuarios.length; i++) {
             	if (!usuarios[i].getNickname().equals(cmbUsuarioUno.getSelectedItem().toString())) {
             		cmbUsuarioDos.addItem(usuarios[i].getNickname());
@@ -375,4 +370,5 @@ public class SeguirUsuario extends JInternalFrame {
         txtFechaDeNacimientoDos.setText("");
         txtRolDos.setText("");
     }
+
 }

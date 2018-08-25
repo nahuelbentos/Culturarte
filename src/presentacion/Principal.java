@@ -9,7 +9,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.Factory;
 import logica.IUsuarioController;
 
@@ -20,6 +19,7 @@ public class Principal {
 	private AltaPropuesta altaPropuesta;
 	private AltaCategoria altaCategoria;
 	private SeguirUsuario seguirUsuario;
+	private DejarDeSeguirUsuario dejarDeSeguirUsuario;
 	private IUsuarioController IUC;
 
 	/**
@@ -60,12 +60,16 @@ public class Principal {
 		
 		seguirUsuario = new SeguirUsuario(IUC);
 		seguirUsuario.setVisible(false);
+		
+		dejarDeSeguirUsuario = new DejarDeSeguirUsuario(IUC);
+		dejarDeSeguirUsuario.setVisible(false);
 
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
 		frmPaginaPrincipal.getContentPane().add(seguirUsuario);
+		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
 
 	}
 
@@ -164,6 +168,14 @@ public class Principal {
 		mnUsuarios.add(mntmSeguir);
 
 		JMenuItem mntmDejarDeSe = new JMenuItem("Dejar de Seguir Usuario");
+		mntmDejarDeSe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dejarDeSeguirUsuario.setListaDeUsuariosUno();
+				dejarDeSeguirUsuario.setVisible(true);
+			}
+		});
 		mnUsuarios.add(mntmDejarDeSe);
 	}
 }
