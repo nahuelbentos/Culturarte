@@ -301,7 +301,7 @@ public class AltaPerfil extends JInternalFrame {
     		}
     		try{
     			iUsuarioController.agregarUsuario(dtUsuario);
-            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con ï¿½xito", "Registrar Usuario",
+            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con éxito", "Registrar Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (UsuarioYaExisteElUsuarioException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
