@@ -1,6 +1,5 @@
 package logica;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;

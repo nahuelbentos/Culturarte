@@ -31,10 +31,8 @@ public interface IUsuarioController {
 	// Revisar si es necesario el DtPerfilProponente
 	//public abstract DtPerfilProponente verPerfilProponente(String nickname);
 	
-	// Revisar si están bien los parámetros que recibe
 	public abstract void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException;
 	
-	// Revisar si están bien los parámetros que recibe
-	public abstract boolean dejarDeSeguirUsuario(String nicknameUno, String nicknameDos);
+	public abstract void dejarDeSeguirUsuario(String nicknameUno, String nicknameDos);
 	
 }
