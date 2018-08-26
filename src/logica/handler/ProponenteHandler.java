@@ -1,19 +1,24 @@
 package logica.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import java.util.Collection;
+//import org.hibernate.mapping.Collection;
 
 import logica.Proponente;
 import logica.Usuario;
 
 public class ProponenteHandler {
 
-	private ArrayList<Proponente> proponentes;
+	private Map<String, Proponente> proponentes;
 	private static ProponenteHandler instancia = null;
-	
+
 	private ProponenteHandler(){
-		proponentes = new ArrayList<Proponente>();
+		proponentes = new HashMap<String, Proponente>();
 	}
-    
+
 	/**
      * Obtiene la instancia del manejador de proponentes de la aplicacion.
      */
@@ -22,9 +27,24 @@ public class ProponenteHandler {
 			instancia = new ProponenteHandler();
 		return instancia;
 	}
-	
-	public void addProponente(Usuario p) {
-		proponentes.add((Proponente)p);
-	}
-	
+
+    public Map<String, Proponente> getProponentes() {
+        if (proponentes.isEmpty())
+            return null;
+        else {
+            return proponentes;
+        }
+    }
+
+
+    public Proponente obtenerProponente(String nickname) {
+        return ((Proponente) proponentes.get(nickname));
+    }
+
+    public void agregarProponente(Proponente prop) {
+        String nickname = prop.getNickname();
+        proponentes.put(nickname, prop);
+    }
+
+
 }

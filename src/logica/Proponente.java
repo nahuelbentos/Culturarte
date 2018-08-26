@@ -3,6 +3,8 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import datatype.DtPerfilProponente;
+
 public class Proponente extends Usuario{
     private String direccion;
     private String biografia;
@@ -48,4 +50,11 @@ public class Proponente extends Usuario{
     	this.propuestas.add(p);
     }
     
+    public DtPerfilProponente getDatosBasicos() {
+    	DtPerfilProponente dtp = new DtPerfilProponente(this.getNickname(), this.getNombre(), this.getApellido(), this.getCorreoElectronico(), 
+    													this.getFechaNacimiento(), this.getImagen(), this.getDireccion(), this.getBiografia(),
+    													this.getLinkWeb(),null, null, null, null, null); //null=Son las colecciones.    	
+		return dtp;
+    	
+    }
 }

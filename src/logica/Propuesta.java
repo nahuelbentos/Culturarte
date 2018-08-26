@@ -1,5 +1,6 @@
 package logica;
 
+import datatype.DtPropuesta;
 import datatype.TipoRetorno;
 
 import java.util.ArrayList;
@@ -107,5 +108,30 @@ public class Propuesta {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+	public Proponente getProponenteACargo() {
+		return proponenteACargo;
+	}
+
+	public void setProponenteACargo(Proponente proponenteACargo) {
+		this.proponenteACargo = proponenteACargo;
+	}
+    
+    public boolean isProponenteACargo(String nickname) {
+    	if(this.proponenteACargo.getNickname()==nickname)
+    		return true;
+    	else
+    		return false;
+    }
+    
+    public DtPropuesta getInfoPropuesta() {
+    	/*DtPropuesta dtp = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
+    									fechaEspecatulo, lugar, precioEntrada, tipo, 0,
+    									proponenteACargo, estadoActual, estadoHistorial, categoria);
+    	
+		*/
+    	return null; //dtp;
+    	
     }
 }   

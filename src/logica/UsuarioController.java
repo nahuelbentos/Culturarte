@@ -1,6 +1,9 @@
 	package logica;
 
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import excepciones.UsuarioNoExisteElUsuarioException;
@@ -46,9 +49,20 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public DtProponente[] listarProponentes() {
+	public  ArrayList<String> listarProponentes() {
+		ProponenteHandler pro = ProponenteHandler.getInstance();
+		ArrayList<String> nicknames=null;
+
+        Collection<Proponente> props = pro.getProponentes().values();
+        Object[] o = props.toArray();
+        Proponente[] proponentes = new Proponente[o.length];
+        for (int i = 0; i < o.length; i++) {
+        	proponentes[i] = (Proponente) o[i];
+        	nicknames.add(proponentes[i].getNickname());
+        }
+
 		// TODO Auto-generated method stub
-		return null;
+		return nicknames;
 	}
 
 	@Override
@@ -149,6 +163,13 @@ public class UsuarioController implements IUsuarioController {
 		}else {
 			throw new ColaboradorNoExisteException("No existen colaboradores registrados");
 		}
+	}
+
+
+	@Override
+	public DtPerfilProponente verPerfilProponente(String nickname) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
