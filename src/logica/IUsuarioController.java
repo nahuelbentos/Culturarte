@@ -33,4 +33,6 @@ public interface IUsuarioController {
 
 	public abstract DtColaborador[] listarColaboradores() throws ColaboradorNoExisteException;
 
+	DtPerfilProponente verPerfilProponente(String nickname);
+
 }

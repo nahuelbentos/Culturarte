@@ -1,6 +1,5 @@
 package logica.handler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,9 +40,9 @@ public class ProponenteHandler {
         return ((Proponente) proponentes.get(nickname));
     }
 
-    public void agregarProponente(Proponente prop) {
+    public void agregarProponente(Usuario prop) {
         String nickname = prop.getNickname();
-        proponentes.put(nickname, prop);
+        proponentes.put(nickname, (Proponente) prop);
     }
 
 

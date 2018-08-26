@@ -29,7 +29,7 @@ public class UsuarioController implements IUsuarioController {
 				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
-				proponenteHandler.addProponente(usuario);
+				proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
@@ -49,16 +49,15 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public  ArrayList<String> listarProponentes() {
+	public  DtProponente[] listarProponentes() {
 		ProponenteHandler pro = ProponenteHandler.getInstance();
-		ArrayList<String> nicknames=null;
+		DtProponente[] nicknames = null;
 
         Collection<Proponente> props = pro.getProponentes().values();
         Object[] o = props.toArray();
         Proponente[] proponentes = new Proponente[o.length];
         for (int i = 0; i < o.length; i++) {
         	proponentes[i] = (Proponente) o[i];
-        	nicknames.add(proponentes[i].getNickname());
         }
 
 		// TODO Auto-generated method stub

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ConsultaColaboracionPropuesta extends JInternalFrame {
 	
-	private JPanel panel;
+	private ListarColaboradores panel;
 	/**
 	 * Create the frame.
 	 */
