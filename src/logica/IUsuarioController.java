@@ -1,6 +1,9 @@
 package logica;
 
+import java.util.ArrayList;
+
 import datatype.DtColaboracion;
+import datatype.DtPerfilProponente;
 import datatype.DtUsuario;
 import datatype.DtProponente;
 
@@ -11,21 +14,21 @@ public interface IUsuarioController {
 	// Crear el DtColaborador
 	//public abstract DtColaborador[] listarColaboradores();
 	
-	// Revisar si están bien los parámetros que recibe
+	// Revisar si estï¿½n bien los parï¿½metros que recibe
 	public abstract DtColaboracion listarColaboracion(String titulo, String nickname);
 	
 	// Revisar si es necesario el DtPerfilColaborador
 	//public abstract DtPerfilColaborador verPerfilColaborador(String nickname);
 	
-	public abstract DtProponente[] listarProponentes();
+	public abstract ArrayList<String> listarProponentes();
 	
 	// Revisar si es necesario el DtPerfilProponente
-	//public abstract DtPerfilProponente verPerfilProponente(String nickname);
+	public abstract DtPerfilProponente verPerfilProponente(String nickname);
 	
-	// Revisar si están bien los parámetros que recibe
+	// Revisar si estï¿½n bien los parï¿½metros que recibe
 	public abstract boolean seguirUsuario(String nicknameUno, String nicknameDos);
 	
-	// Revisar si están bien los parámetros que recibe
+	// Revisar si estï¿½n bien los parï¿½metros que recibe
 	public abstract boolean dejarDeSeguirUsuario(String nicknameUno, String nicknameDos);
 	
 }
