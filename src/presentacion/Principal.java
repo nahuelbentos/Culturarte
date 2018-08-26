@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 
 import datatype.DtColaborador;
 import datatype.DtUsuario;
+import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.Factory;
 import logica.IUsuarioController;
 
@@ -55,7 +56,12 @@ public class Principal {
 
         /* DATOS DE PRUEBA PORQUE NO HAY PERSISTENCIA */
         DtUsuario usu = new DtColaborador("maxi","Maximiliano","Farcilli","maxi@gmail.com",new GregorianCalendar(1992,8,9),null);
-        IUC.agregarUsuario(usu);
+        try {
+			IUC.agregarUsuario(usu);
+		} catch (UsuarioYaExisteElUsuarioException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);

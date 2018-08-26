@@ -73,12 +73,6 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public DtColaborador[] listarColaboradores() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public DtUsuario[] listarUsuarios() {
 		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
         Usuario[] usrs = usuarioHandler.getUsuarios();
