@@ -6,10 +6,12 @@ import logica.Propuesta;
 
 public class PropuestaHandler {
 
-	private ArrayList<Propuesta> colaboradores = new ArrayList<Propuesta>();
+	private ArrayList<Propuesta> propuestas;
 	private static PropuestaHandler instancia = null;
 	
-	private PropuestaHandler(){}
+	private PropuestaHandler(){
+		propuestas = new ArrayList<Propuesta>();
+	}
     
 	/**
      * Obtiene la instancia del manejador de proponentes de la aplicacion.
@@ -20,4 +22,7 @@ public class PropuestaHandler {
 		return instancia;
 	}
 	
+	public void addPropuesta(Propuesta prop) {
+		propuestas.add(prop);
+	}
 }

@@ -2,9 +2,34 @@ package logica;
 
 import java.util.GregorianCalendar;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import datatype.TipoRetorno;
 
+@Entity
+@Table(name = "COLABORACION")
 public class Colaboracion {
+
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	private float monto;
 	private GregorianCalendar fechaAporte;
