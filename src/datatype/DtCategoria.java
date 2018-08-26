@@ -1,11 +1,13 @@
 package datatype;
 
+import java.util.ArrayList;
+
 public class DtCategoria {
 
 	private String nombre;
-	private String categoriaPadre;
+	private ArrayList<String> categoriaPadre;
 	
-	public DtCategoria(String nombre, String categoriaPadre) {
+	public DtCategoria(String nombre, ArrayList<String> categoriaPadre) {
 		this.nombre = nombre;
 		this.categoriaPadre = categoriaPadre;
 	}
@@ -18,16 +20,8 @@ public class DtCategoria {
 		return nombre;
 	}
 	
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	public String getCategoriaPadre() {
+	public ArrayList<String> getPadres() {
 		return categoriaPadre;
-	}
-	
-	public void setCategoriaPadre(String categoriaPadre) {
-		this.categoriaPadre = categoriaPadre;
 	}
 	
 }

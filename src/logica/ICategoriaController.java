@@ -1,10 +1,11 @@
 package logica;
 
 import datatype.DtCategoria;
+import logica.exceptions.ExcepcionCategoriaNoExiste;
 
 public interface ICategoriaController {
 
-	public abstract DtCategoria[] listarCategorias();
+	public abstract DtCategoria[] listarCategorias() throws ExcepcionCategoriaNoExiste;
 	
-	public abstract boolean agregarCategoria(DtCategoria dtCategoria);
+	public abstract void agregarCategoria(DtCategoria dtCategoria);
 }
