@@ -87,6 +87,7 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
 		frmPaginaPrincipal.getContentPane().add(seguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
+		frmPaginaPrincipal.getContentPane().add(consColProp);
 
 	}
 
@@ -150,7 +151,8 @@ public class Principal {
 		JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
 		mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				consColProp.setVisible(false);
+				System.out.println("TAMO ACA");
+				consColProp.setVisible(true);
 			}
 		});
 		mnColaboraciones.add(mntmConsultaDeColaboracin);

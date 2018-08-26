@@ -28,6 +28,7 @@ public class ListarColaboradores extends JPanel {
 		iUsuarioController = IUC;
 		
 		{
+			/*
 			try {
 				DtColaborador[] colaboradores;
 				colaboradores = iUsuarioController.listarColaboradores();
@@ -47,7 +48,7 @@ public class ListarColaboradores extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				//lblNewLabel.setText(e.getMessage());
-			}
+			}*/
 			listColaboradores.setBounds(38, 35, 1, 1);
 			//add(listColaboradores);
 			add(listaScroll);
