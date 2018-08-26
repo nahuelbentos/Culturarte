@@ -21,10 +21,11 @@ public class Principal {
 	private AltaPerfil altaPerfil;
 	private AltaPropuesta altaPropuesta;
 	private AltaCategoria altaCategoria;
+	private SeguirUsuario seguirUsuario;
+	private DejarDeSeguirUsuario dejarDeSeguirUsuario;
 	private ConsultaColaboracionPropuesta consColProp;
-	
 	private IUsuarioController IUC;
-	
+
 	/**
 	 * Launch the application.
 	*/
@@ -55,7 +56,7 @@ public class Principal {
         /* DATOS DE PRUEBA PORQUE NO HAY PERSISTENCIA */
         DtUsuario usu = new DtColaborador("maxi","Maximiliano","Farcilli","maxi@gmail.com",new GregorianCalendar(1992,8,9),null);
         IUC.agregarUsuario(usu);
-        
+
 		altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 
@@ -65,13 +66,21 @@ public class Principal {
 		altaPropuesta = new AltaPropuesta();
 		altaPropuesta.setVisible(false);
 
+		seguirUsuario = new SeguirUsuario(IUC);
+		seguirUsuario.setVisible(false);
+
+		dejarDeSeguirUsuario = new DejarDeSeguirUsuario(IUC);
+		dejarDeSeguirUsuario.setVisible(false);
+
 		consColProp = new ConsultaColaboracionPropuesta(IUC);
 		consColProp.setVisible(false);
-		
+
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
+		frmPaginaPrincipal.getContentPane().add(seguirUsuario);
+		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
 
 	}
 
@@ -164,9 +173,25 @@ public class Principal {
 		mnPerfiles.add(mntmConsultaDePerfil);
 
 		JMenuItem mntmSeguir = new JMenuItem("Seguir Usuario");
+		mntmSeguir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				seguirUsuario.setListaDeUsuariosUno();
+				seguirUsuario.setVisible(true);
+			}
+		});
 		mnUsuarios.add(mntmSeguir);
 
 		JMenuItem mntmDejarDeSe = new JMenuItem("Dejar de Seguir Usuario");
+		mntmDejarDeSe.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dejarDeSeguirUsuario.setListaDeUsuariosUno();
+				dejarDeSeguirUsuario.setVisible(true);
+			}
+		});
 		mnUsuarios.add(mntmDejarDeSe);
 	}
 }

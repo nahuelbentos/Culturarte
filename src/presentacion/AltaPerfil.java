@@ -33,6 +33,7 @@ import com.toedter.calendar.JDateChooser;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtUsuario;
+import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.IUsuarioController;
 
 @SuppressWarnings("serial")
@@ -255,8 +256,7 @@ public class AltaPerfil extends JInternalFrame {
         txtBiografia.setText("");
         txtSitioWeb.setText("");
         dateChooser.setDate(null);
-        rdbtnProponente.setSelected(false);
-        rdbtnColaborador.setSelected(false);
+        buttonGroup.clearSelection();
         lblImagen.setIcon(null);
     }
     
@@ -299,12 +299,15 @@ public class AltaPerfil extends JInternalFrame {
     			dtUsuario = new DtProponente(nickname, nombre, apellido, email, fechaNacimiento, nombreImagen, 
     					direccion, biografia, sitioWeb);
     		}
-    		if (iUsuarioController.agregarUsuario(dtUsuario)) {
-            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con ï¿½xito", "Registrar Usuario",
+    		try{
+    			iUsuarioController.agregarUsuario(dtUsuario);
+            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con éxito", "Registrar Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
-	            limpiarFormulario();
-	            setVisible(false);
-    		}
+            } catch (UsuarioYaExisteElUsuarioException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
+            }
+            limpiarFormulario();
+            setVisible(false);
         }
     }
     

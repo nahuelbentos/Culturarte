@@ -1,6 +1,9 @@
 package logica;
 
+import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,14 +25,10 @@ public abstract class Usuario {
     private String apellido;
     private String imagen;
 
-    // PseudoAtributos
-    /*
-    private ArrayList<Propuesta> proFavoritas;
-    private ArrayList<Usuario> seguidores;
-    private ArrayList<Usuario> seguidos;
-	*/
+//    private ArrayList<Propuesta> proFavoritas;
+//    private ArrayList<Usuario> seguidores;
 
-
+    private Map<String, Usuario> usuariosQueSigue = new HashMap<String, Usuario>();
 
     public long getId() {
 		return id;
@@ -97,5 +96,23 @@ public abstract class Usuario {
 
     public String getImagen() {
         return imagen;
+    }
+
+    public Map<String, Usuario> getUsuariosQueSigue() {
+    	return usuariosQueSigue;
+    }
+
+    public Usuario[] getListaUsuariosQueSigue() {
+        if (usuariosQueSigue.isEmpty())
+            return null;
+        else {
+            Collection<Usuario> usrs = usuariosQueSigue.values();
+            Object[] o = usrs.toArray();
+            Usuario[] usuarios = new Usuario[o.length];
+            for (int i = 0; i < o.length; i++) {
+                usuarios[i] = (Usuario) o[i];
+            }
+            return usuarios;
+        }
     }
 }
