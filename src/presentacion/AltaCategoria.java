@@ -20,29 +20,29 @@ public class AltaCategoria extends JInternalFrame {
         setMaximizable(true);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setClosable(true);
-        setTitle("Alta de Categoría");
+        setTitle("Alta de CategorÃ­a");
         setBounds(10, 40, 417, 351);
 		
         getContentPane().setLayout(null);
 		
-		JLabel lblListaDeCategorias = new JLabel("Lista de categorías existentes");
+		JLabel lblListaDeCategorias = new JLabel("Lista de categorÃ­as existentes");
 		lblListaDeCategorias.setBounds(65, 11, 250, 14);
 		getContentPane().add(lblListaDeCategorias);
 		
-		// Ejemplo de listar categorías con JTree.
+		// Ejemplo de listar categorï¿½as con JTree.
 		listarCategorias();
 		getContentPane().add(treeListaDeCategorias);
 	}
 	
 	public void listarCategorias() {
-        DefaultMutableTreeNode categorias = new DefaultMutableTreeNode("Categorías");
+        DefaultMutableTreeNode categorias = new DefaultMutableTreeNode("CategorÃ­as");
         DefaultMutableTreeNode teatro = new DefaultMutableTreeNode("Teatro");
-        DefaultMutableTreeNode musica = new DefaultMutableTreeNode("Música");
+        DefaultMutableTreeNode musica = new DefaultMutableTreeNode("MÃºsica");
         DefaultMutableTreeNode danza = new DefaultMutableTreeNode("Danza");
         DefaultMutableTreeNode rock = new DefaultMutableTreeNode("Rock");
         DefaultMutableTreeNode salsa = new DefaultMutableTreeNode("Salsa");
         DefaultMutableTreeNode pop = new DefaultMutableTreeNode("Pop");
-        DefaultMutableTreeNode rockClasico = new DefaultMutableTreeNode("Rock clásico");
+        DefaultMutableTreeNode rockClasico = new DefaultMutableTreeNode("Rock clÃ¡sico");
         DefaultMutableTreeNode rockAlternativo = new DefaultMutableTreeNode("Rock alternativo");
         categorias.add(teatro);
         categorias.add(musica);

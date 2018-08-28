@@ -3,21 +3,31 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import datatype.DtPerfilProponente;
 import datatype.DtProponente;
 
+@Entity
+@DiscriminatorValue("P")
 public class Proponente extends Usuario{
+	
+	@Column(name="DIRECCION")
     private String direccion;
+	@Column(name="BIOGRAFIA")
     private String biografia;
+	@Column(name="LINK_WEB")
     private String linkWeb;
     
     // PseudoAtributos
     private ArrayList<Propuesta> propuestas = new ArrayList<Propuesta>();;
 
-    public Proponente(String direccion, String biografia, String linkWeb, 
+    public Proponente(int id, String direccion, String biografia, String linkWeb, 
     		String nickname, String nombre, GregorianCalendar fechaNacimiento, 
     		String correoElectronico, String apellido, String imagen) {
-        super(nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
+        super(id, nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
         this.direccion = direccion;
         this.biografia = biografia;
         this.linkWeb = linkWeb;

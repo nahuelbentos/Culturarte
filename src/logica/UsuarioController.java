@@ -1,8 +1,10 @@
-	package logica;
+package logica;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
@@ -17,8 +19,22 @@ import logica.handler.UsuarioHandler;
 
 public class UsuarioController implements IUsuarioController {
 
+	private static EntityManager em;
+	private static EntityManagerFactory emf;
+
+	public UsuarioController() {
+		super();
+	}
+
 	@Override
 	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException {
+		//Configuramos el EMF a trav�s de la unidad de persistencia
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		//Generamos un EntityManager
+		em = emf.createEntityManager();
+		//Iniciamos una transacci�n
+		em.getTransaction().begin();
+
 		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
 		Usuario usuario = usuarioHandler.obtenerUsuario(dtUsuario.getNickname());
 		if (usuario != null) {
@@ -28,19 +44,26 @@ public class UsuarioController implements IUsuarioController {
 			ProponenteHandler proponenteHandler = ProponenteHandler.getInstance();
 			if (dtUsuario instanceof DtProponente) {
 				DtProponente dtProponente = (DtProponente) dtUsuario;
-				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
+				usuario = new Proponente(0, dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
 				proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
-				usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(),
+				usuario = new Colaborador(0, dtColaborador.getNickname(), dtColaborador.getNombre(),
 						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
 
 				colaboradorHandler.addColaborador(usuario);
 			}
 			usuarioHandler.agregarUsuario(usuario);
+
+			//Persistimos el objeto
+			em.persist(usuario);
+			//Commmiteamos la transacci�n
+			em.getTransaction().commit();
+			//Cerramos el EntityManager
+			em.close();
 		}
 	}
 
@@ -60,7 +83,7 @@ public class UsuarioController implements IUsuarioController {
         Proponente[] proponentes = new Proponente[o.length];
         for (int i = 0; i < o.length; i++) {
         	proponentes[i] = (Proponente) o[i];
-        	nicknames.add(proponentes[i].getNickname());
+					nicknames.add(proponentes[i].getNickname())
         }
 
 		// TODO Auto-generated method stub
@@ -69,23 +92,23 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
-        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
-		if (usuarioUno.getUsuariosQueSigue().containsKey(nicknameDos)) {
-        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
-        			+ " ya sigue al usuario " + nicknameDos);
-		} else {
-	        usuarioUno.getUsuariosQueSigue().put(nicknameDos, usuarioDos);
-		}
+//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
+//        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
+//        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
+//		if (usuarioUno.getUsuariosQueSigue().containsKey(nicknameDos)) {
+//        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
+//        			+ " ya sigue al usuario " + nicknameDos);
+//		} else {
+//	        usuarioUno.getUsuariosQueSigue().put(nicknameDos, usuarioDos);
+//		}
 	}
 
 	@Override
 	public void dejarDeSeguirUsuario(String nicknameUno, String nicknameDos) {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
-        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
-        usuarioUno.getUsuariosQueSigue().remove(nicknameDos, usuarioDos);
+//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
+//        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
+//        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
+//        usuarioUno.getUsuariosQueSigue().remove(nicknameDos, usuarioDos);
 	}
 
 	@Override
@@ -129,19 +152,19 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario[] listarUsuariosQueSigue(String nickname) {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-		Usuario usuarioUno = usuarioHandler.obtenerUsuario(nickname);
-		Usuario[] usuarios = usuarioUno.getListaUsuariosQueSigue();
-		if (usuarios != null) {
-	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.length];
-	        Usuario usuarioDos;
-	        for (int i = 0; i < usuarios.length; i++) {
-	        	usuarioDos = usuarios[i];
-	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
-	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
-	        }
-	        return listaDeUsuarios;
-		}
+//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
+//		Usuario usuarioUno = usuarioHandler.obtenerUsuario(nickname);
+//		Usuario[] usuarios = usuarioUno.getListaUsuariosQueSigue();
+//		if (usuarios != null) {
+//	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.length];
+//	        Usuario usuarioDos;
+//	        for (int i = 0; i < usuarios.length; i++) {
+//	        	usuarioDos = usuarios[i];
+//	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
+//	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
+//	        }
+//	        return listaDeUsuarios;
+//		}
 		return null;
 	}
 
@@ -173,68 +196,68 @@ public class UsuarioController implements IUsuarioController {
 		// TODO Auto-generated method stub
 
 		ProponenteHandler mpro = ProponenteHandler.getInstance();
-		Map<String, Proponente> props = mpro.getProponentes();	
+		Map<String, Proponente> props = mpro.getProponentes();
 
 		PropuestaHandler mpropue = PropuestaHandler.getInstance();
 		Map<String, Propuesta> propues = mpropue.getPropuestas();
-		
+
 		ColaboracionHandler mcol = ColaboracionHandler.getInstance();
 		Map<Long, Colaboracion> colabs = mcol.getMapColaboraciones();
-		
-				
-		
+
+
+
 		Proponente p = props.get(nickname); //1
-		DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2 
-		
+		DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
+
 		ArrayList<DtPropuesta> prPublicadas = new ArrayList<DtPropuesta>();
 		ArrayList<DtPropuesta> prCanceladas = new ArrayList<DtPropuesta>();
 		ArrayList<DtPropuesta> prEnFinanciacion = new ArrayList<DtPropuesta>();
 		ArrayList<DtPropuesta> prFinanciadas = new ArrayList<DtPropuesta>();
 		ArrayList<DtPropuesta> prNoFinanciadas = new ArrayList<DtPropuesta>();
-		
+
 		for(Propuesta prop : propues.values()) { //3
 			if(prop.isProponenteACargo(nickname)) {
-			
+
 				ArrayList<DtColaboracion> colaboraciones = new ArrayList<DtColaboracion>();
 				for(Colaboracion col : colabs.values()) { //6
 					if(col.tieneProp(prop.getTitulo())) {
 						colaboraciones.add(col.getDataColaboracion());
 					}
-				}					
-			
+				}
+
 				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
-				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), prop.getTipo(), 0, 
-				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual().getDtEstado(), prop.getDtEstadoHistorial(), 
+				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), prop.getTipo(), 0,
+				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual().getDtEstado(), prop.getDtEstadoHistorial(),
 				 prop.getCategoria().getDtCategoria(), colaboraciones);
 //				dataPro=prop.getInfoPropuesta(); //4 y5
-				
+
 				switch (dataPro.getEstadoActual().getEstado()){
 					case publicada:
 						prPublicadas.add(dataPro);
 						break;
 					case cancelada:
-						prCanceladas.add(dataPro);					
+						prCanceladas.add(dataPro);
 						break;
 					case enFinanciacion:
-						prEnFinanciacion.add(dataPro);					
+						prEnFinanciacion.add(dataPro);
 						break;
 					case financiada:
-						prFinanciadas.add(dataPro);					
+						prFinanciadas.add(dataPro);
 						break;
 					case noFinanciada:
-						prNoFinanciadas.add(dataPro);					
+						prNoFinanciadas.add(dataPro);
 						break;
 					default:
 						break;
-				}				
+				}
 			}
 		}
-		
+
 		DtPerfilProponente usuProponente = new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
 				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
-				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(), 
+				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
 				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
-		
+
 		return usuProponente;
 	}
 
@@ -243,12 +266,12 @@ public class UsuarioController implements IUsuarioController {
 		// TODO Auto-generated method stub
 
 		ColaboradorHandler mcol = ColaboradorHandler.getInstance();
-		DtColaborador perfil = mcol.obtenerColaborador(nickname); //1y2 
-		
+		DtColaborador perfil = mcol.obtenerColaborador(nickname); //1y2
+
 
 		ColaboracionHandler mcolab = ColaboracionHandler.getInstance();
-		Map<Long, Colaboracion> colabs = mcolab.getMapColaboraciones(); 
-		
+		Map<Long, Colaboracion> colabs = mcolab.getMapColaboraciones();
+
 		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<>();
 		for(Colaboracion c : colabs.values()) { //1*
 			if(c.tieneColaborador(nickname)) { //2* y 2.1*
@@ -259,9 +282,18 @@ public class UsuarioController implements IUsuarioController {
 				 colaboracionesHechas.add(colaboracion);
 			}
 		}
-		 
+
 		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getEmail(),
 				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
+	}
+
+	@Override
+	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
+//		// TODO Auto-generated method stub
+//		ColaboracionHandler c = ColaboracionHandler.getInstance();
+//		Colaboracion[] colaboraciones = c.getColaboraciones();
+//
+		return null;
 	}
 
 }
