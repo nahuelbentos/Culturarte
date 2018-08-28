@@ -1,5 +1,6 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -83,7 +84,7 @@ public class UsuarioController implements IUsuarioController {
         Proponente[] proponentes = new Proponente[o.length];
         for (int i = 0; i < o.length; i++) {
         	proponentes[i] = (Proponente) o[i];
-					nicknames.add(proponentes[i].getNickname())
+			nicknames.add(proponentes[i].getNickname());
         }
 
 		// TODO Auto-generated method stub

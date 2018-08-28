@@ -13,13 +13,16 @@ public class DtCategoria {
 
 	private ArrayList<String> categoriaPadre;
 
+	public DtCategoria(String nombre) {
+		this.nombre = nombre;
+	}
+	
 	public DtCategoria(String nombre, ArrayList<String> categoriaPadre) {
 		this.nombre = nombre;
 		this.categoriaPadre = categoriaPadre;
 	}
 	public DtCategoria(String nombre, ArrayList<DtCategoria> superCategorias,
 			ArrayList<DtCategoria> subCategorias) {
-		super();
 		this.nombre = nombre;
 		this.superCategorias = superCategorias;
 		this.subCategorias = subCategorias;
@@ -35,8 +38,8 @@ public class DtCategoria {
 		return subCategorias;
 	}
 
-	public ArrayList<DtCategoria> getCategoriaPadre() {
-		return subCategorias;
+	public ArrayList<String> getPadres() {
+		return categoriaPadre;
 	}
 
 

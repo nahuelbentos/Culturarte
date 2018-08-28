@@ -38,8 +38,8 @@ public class Colaboracion {
 	private TipoRetorno tipo;
 	
 	// PseudoAtributos
-	//private Propuesta propuestaColaborada;
-	//private Colaborador colaborador;
+	private Propuesta propuestaColaborada;
+	private Colaborador colaborador;
 	
 	public Colaboracion(float monto, GregorianCalendar fechaAporte, TipoRetorno tipo) {
 		super();

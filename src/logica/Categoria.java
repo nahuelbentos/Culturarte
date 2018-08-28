@@ -9,6 +9,7 @@ public class Categoria {
 
 	// PseudoAtributos
 	private ArrayList<Categoria> superCategorias;
+	private ArrayList<Categoria> subCategorias;
 	//private Map<String, Categoria> subCategorias;
 
 	public Categoria(String nombre) {
@@ -41,8 +42,7 @@ public class Categoria {
     }
 
 	public DtCategoria getDtCategoria() {
-		DtCategoria dtc = new DtCategoria(nombre,this.getDtSubCategorias(),this.getDtSuperCategorias());
-		return dtc;
+		return new DtCategoria(nombre, this.getArraySuperCategorias(),this.getDtSubCategorias());
 	}
 
 		public void addPadre(Categoria categoria) {
@@ -58,4 +58,5 @@ public class Categoria {
 			for (int i = 0; i < this.superCategorias.size(); i++)
 				padres.add(this.superCategorias.get(i).getNombre());
 			return padres;
+		}
 }
