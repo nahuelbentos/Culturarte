@@ -1,6 +1,10 @@
 package logica;
 
+import datatype.DtColaborador;
+import datatype.DtDatosPropuesta;
+import datatype.DtEstado;
 import datatype.DtPropuesta;
+import datatype.DtPropuestaColaborada;
 import datatype.TipoRetorno;
 
 import java.util.ArrayList;
@@ -126,12 +130,63 @@ public class Propuesta {
     }
     
     public DtPropuesta getInfoPropuesta() {
-    	/*DtPropuesta dtp = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
-    									fechaEspecatulo, lugar, precioEntrada, tipo, 0,
-    									proponenteACargo, estadoActual, estadoHistorial, categoria);
     	
-		*/
-    	return null; //dtp;
+    	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
+				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
+				proponenteACargo.getDtProponente(), estadoActual.getDtEstado(), this.getDtEstadoHistorial(),
+				categoria.getDtCategoria(),null);    	
+    }
+    
+    public DtPropuestaColaborada getInfoPropuestaColaborada() {
+    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());    	
+    }
+    
+    public ArrayList<DtEstado> getDtEstadoHistorial(){
+    	ArrayList<DtEstado> dte = new ArrayList<DtEstado>() ;
+    	for (Estado e : estadoHistorial) {
+    		dte.add(e.getDtEstado());			
+		}
+    	return dte;
+    }
+    
+    public Estado getEstadoActual() {
+		return estadoActual;
+	}
+
+	public void setEstadoActual(Estado estadoActual) {
+		this.estadoActual = estadoActual;
+	}
+
+	public ArrayList<Estado> getEstadoHistorial() {
+		return estadoHistorial;
+	}
+
+	public void setEstadoHistorial(ArrayList<Estado> estadoHistorial) {
+		this.estadoHistorial = estadoHistorial;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public DtPropuesta getDtPropuesta() {
+    	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
+				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
+				proponenteACargo.getDtProponente(), estadoActual.getDtEstado(), this.getDtEstadoHistorial(),
+				categoria.getDtCategoria(),null);
+    }
+
+	public DtDatosPropuesta getDtDatosPropuesta() {
+		
+		ArrayList<DtColaborador> colaboradores = new ArrayList<DtColaborador>();
+				
+    	return new DtDatosPropuesta(titulo, descripcion, imagen, 
+				montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,
+				tipo, 0, colaboradores);
     	
     }
 }   

@@ -1,7 +1,10 @@
 package logica;
 
-import java.util.ArrayList;
+
 import java.util.GregorianCalendar;
+
+
+import datatype.DtColaborador;
 
 public class Colaborador extends Usuario {
 
@@ -9,6 +12,11 @@ public class Colaborador extends Usuario {
 			String apellido, String imagen) {
 		super(nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
 	}
-
+	public DtColaborador getDtColaborador() {
+		DtColaborador dtc = new DtColaborador(getNickname(), getNombre(), getApellido(),
+				getCorreoElectronico(),getFechaNacimiento(), getImagen());
+		return dtc;
+		
+	}
 
 }

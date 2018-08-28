@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.ArrayList;
+
 import datatype.*;
 import logica.exceptions.ColaboradorNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
@@ -16,16 +18,16 @@ public interface IUsuarioController {
 	public abstract DtColaboracion listarColaboracion(String titulo, String nickname);
 
 	// Revisar si es necesario el DtPerfilColaborador
-	//public abstract DtPerfilColaborador verPerfilColaborador(String nickname);
+	public abstract DtPerfilColaborador verPerfilColaborador(String nickname);
 
 	public abstract DtUsuario[] listarUsuarios();
 
 	public abstract DtUsuario[] listarUsuariosQueSigue(String nickname);
 
-	public abstract DtProponente[] listarProponentes();
+	public abstract ArrayList<String> listarProponentes();
 
 	// Revisar si es necesario el DtPerfilProponente
-	//public abstract DtPerfilProponente verPerfilProponente(String nickname);
+	public abstract DtPerfilProponente verPerfilProponente(String nickname);
 
 	public abstract void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException;
 

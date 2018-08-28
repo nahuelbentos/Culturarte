@@ -2,15 +2,17 @@
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
+
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import datatype.*;
 import logica.exceptions.ColaboradorNoExisteException;
+import logica.handler.ColaboracionHandler;
 import logica.handler.ColaboradorHandler;
 import logica.handler.ProponenteHandler;
+import logica.handler.PropuestaHandler;
 import logica.handler.UsuarioHandler;
 
 public class UsuarioController implements IUsuarioController {
@@ -29,7 +31,7 @@ public class UsuarioController implements IUsuarioController {
 				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
-				proponenteHandler.addProponente(usuario);
+				proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
@@ -51,7 +53,7 @@ public class UsuarioController implements IUsuarioController {
 	@Override
 	public  ArrayList<String> listarProponentes() {
 		ProponenteHandler pro = ProponenteHandler.getInstance();
-		ArrayList<String> nicknames=null;
+		ArrayList<String> nicknames = new ArrayList<String>();
 
         Collection<Proponente> props = pro.getProponentes().values();
         Object[] o = props.toArray();
@@ -169,7 +171,97 @@ public class UsuarioController implements IUsuarioController {
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
 		// TODO Auto-generated method stub
-		return null;
+
+		ProponenteHandler mpro = ProponenteHandler.getInstance();
+		Map<String, Proponente> props = mpro.getProponentes();	
+
+		PropuestaHandler mpropue = PropuestaHandler.getInstance();
+		Map<String, Propuesta> propues = mpropue.getPropuestas();
+		
+		ColaboracionHandler mcol = ColaboracionHandler.getInstance();
+		Map<Long, Colaboracion> colabs = mcol.getMapColaboraciones();
+		
+				
+		
+		Proponente p = props.get(nickname); //1
+		DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2 
+		
+		ArrayList<DtPropuesta> prPublicadas = new ArrayList<DtPropuesta>();
+		ArrayList<DtPropuesta> prCanceladas = new ArrayList<DtPropuesta>();
+		ArrayList<DtPropuesta> prEnFinanciacion = new ArrayList<DtPropuesta>();
+		ArrayList<DtPropuesta> prFinanciadas = new ArrayList<DtPropuesta>();
+		ArrayList<DtPropuesta> prNoFinanciadas = new ArrayList<DtPropuesta>();
+		
+		for(Propuesta prop : propues.values()) { //3
+			if(prop.isProponenteACargo(nickname)) {
+			
+				ArrayList<DtColaboracion> colaboraciones = new ArrayList<DtColaboracion>();
+				for(Colaboracion col : colabs.values()) { //6
+					if(col.tieneProp(prop.getTitulo())) {
+						colaboraciones.add(col.getDataColaboracion());
+					}
+				}					
+			
+				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
+				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), prop.getTipo(), 0, 
+				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual().getDtEstado(), prop.getDtEstadoHistorial(), 
+				 prop.getCategoria().getDtCategoria(), colaboraciones);
+//				dataPro=prop.getInfoPropuesta(); //4 y5
+				
+				switch (dataPro.getEstadoActual().getEstado()){
+					case publicada:
+						prPublicadas.add(dataPro);
+						break;
+					case cancelada:
+						prCanceladas.add(dataPro);					
+						break;
+					case enFinanciacion:
+						prEnFinanciacion.add(dataPro);					
+						break;
+					case financiada:
+						prFinanciadas.add(dataPro);					
+						break;
+					case noFinanciada:
+						prNoFinanciadas.add(dataPro);					
+						break;
+					default:
+						break;
+				}				
+			}
+		}
+		
+		DtPerfilProponente usuProponente = new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
+				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
+				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(), 
+				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
+		
+		return usuProponente;
+	}
+
+	@Override
+	public DtPerfilColaborador verPerfilColaborador(String nickname) {
+		// TODO Auto-generated method stub
+
+		ColaboradorHandler mcol = ColaboradorHandler.getInstance();
+		DtColaborador perfil = mcol.obtenerColaborador(nickname); //1y2 
+		
+
+		ColaboracionHandler mcolab = ColaboracionHandler.getInstance();
+		Map<Long, Colaboracion> colabs = mcolab.getMapColaboraciones(); 
+		
+		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<>();
+		for(Colaboracion c : colabs.values()) { //1*
+			if(c.tieneColaborador(nickname)) { //2* y 2.1*
+				 float montoAportado = c.getMonto(); //3*
+				 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*
+				 DtPropuestaColaborada colaboracion = new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
+						 p.getProponenteACargo(), p.getEstadoActual()); //3.2*
+				 colaboracionesHechas.add(colaboracion);
+			}
+		}
+		 
+		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getEmail(),
+				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
 	}
 
 }

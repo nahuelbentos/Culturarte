@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import datatype.DtPerfilProponente;
+import datatype.DtProponente;
 
 public class Proponente extends Usuario{
     private String direccion;
@@ -56,5 +57,10 @@ public class Proponente extends Usuario{
     													this.getLinkWeb(),null, null, null, null, null); //null=Son las colecciones.    	
 		return dtp;
     	
+    }
+    public DtProponente getDtProponente() {
+    	return new DtProponente(super.getNickname(), super.getNombre(), super.getApellido(),
+    			super.getCorreoElectronico(), super.getFechaNacimiento(), super.getImagen(), this.direccion, 
+    			this.biografia, this.linkWeb);
     }
 }

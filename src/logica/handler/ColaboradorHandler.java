@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import datatype.DtColaborador;
 import logica.Colaborador;
 import logica.Usuario;
 
@@ -42,5 +43,14 @@ public class ColaboradorHandler {
             
             return colTotal;
         }
+	}
+	
+	public Map<String, Colaborador> getMapColaboradores(){
+		return colaboradores;
+	}
+	
+	public DtColaborador obtenerColaborador(String nickname) {
+		
+		return colaboradores.get(nickname).getDtColaborador();
 	}
 }

@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import datatype.DtColaboracion;
+import datatype.DtPropuestaColaborada;
 import datatype.TipoRetorno;
 
 @Entity
@@ -68,6 +70,23 @@ public class Colaboracion {
 
 	public void setTipo(TipoRetorno tipo) {
 		this.tipo = tipo;
+	}
+	
+	public boolean tieneProp(String titulo) {
+		return propuestaColaborada.getTitulo().equals(titulo);
+	}
+	
+	public boolean tieneColaborador(String nickname) {
+		return colaborador.getNickname().equals(nickname);	
+	}
+	
+	public DtColaboracion getDataColaboracion() {
+		return new DtColaboracion(propuestaColaborada.getDtPropuesta(), monto,
+				colaborador.getDtColaborador(), fechaAporte, tipo);
+	}
+	
+	public DtPropuestaColaborada getPropuestaFromColaboracion() {
+		return propuestaColaborada.getInfoPropuestaColaborada();
 	}
 	
 }
