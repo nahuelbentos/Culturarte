@@ -18,11 +18,22 @@ import logica.handler.UsuarioHandler;
 
 public class UsuarioController implements IUsuarioController {
 
-	//private EntityManagerFactory emf = Persistence.createEntityManagerFactory("conection");
-	//private EntityManager em = emf.createEntityManager();
+	private static EntityManager em;
+	private static EntityManagerFactory emf;
+	
+	public UsuarioController() {
+		super();
+	}
 	
 	@Override
 	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException {
+		//Configuramos el EMF a través de la unidad de persistencia
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		//Generamos un EntityManager
+		em = emf.createEntityManager();
+		//Iniciamos una transacción
+		em.getTransaction().begin();
+		
 		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
 		Usuario usuario = usuarioHandler.obtenerUsuario(dtUsuario.getNickname());
 		if (usuario != null) {
@@ -32,21 +43,26 @@ public class UsuarioController implements IUsuarioController {
 			ProponenteHandler proponenteHandler = ProponenteHandler.getInstance();
 			if (dtUsuario instanceof DtProponente) {
 				DtProponente dtProponente = (DtProponente) dtUsuario;
-				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
+				usuario = new Proponente(0, dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
 				proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
-				usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(),
+				usuario = new Colaborador(0, dtColaborador.getNickname(), dtColaborador.getNombre(),
 						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
 
 				colaboradorHandler.addColaborador(usuario);
 			}
 			usuarioHandler.agregarUsuario(usuario);
-			// persisto en base...
-			//em.persist(usuario);
+			
+			//Persistimos el objeto
+			em.persist(usuario);			
+			//Commmiteamos la transacción
+			em.getTransaction().commit();			
+			//Cerramos el EntityManager
+			em.close();
 		}
 	}
 
@@ -74,23 +90,23 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
-        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
-		if (usuarioUno.getUsuariosQueSigue().containsKey(nicknameDos)) {
-        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
-        			+ " ya sigue al usuario " + nicknameDos);
-		} else {
-	        usuarioUno.getUsuariosQueSigue().put(nicknameDos, usuarioDos);
-		}
+//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
+//        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
+//        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
+//		if (usuarioUno.getUsuariosQueSigue().containsKey(nicknameDos)) {
+//        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
+//        			+ " ya sigue al usuario " + nicknameDos);
+//		} else {
+//	        usuarioUno.getUsuariosQueSigue().put(nicknameDos, usuarioDos);
+//		}
 	}
 
 	@Override
 	public void dejarDeSeguirUsuario(String nicknameUno, String nicknameDos) {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
-        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
-        usuarioUno.getUsuariosQueSigue().remove(nicknameDos, usuarioDos);
+//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
+//        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
+//        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
+//        usuarioUno.getUsuariosQueSigue().remove(nicknameDos, usuarioDos);
 	}
 
 	@Override
@@ -134,19 +150,19 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario[] listarUsuariosQueSigue(String nickname) {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-		Usuario usuarioUno = usuarioHandler.obtenerUsuario(nickname);
-		Usuario[] usuarios = usuarioUno.getListaUsuariosQueSigue();
-		if (usuarios != null) {
-	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.length];
-	        Usuario usuarioDos;
-	        for (int i = 0; i < usuarios.length; i++) {
-	        	usuarioDos = usuarios[i];
-	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
-	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
-	        }
-	        return listaDeUsuarios;
-		}
+//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
+//		Usuario usuarioUno = usuarioHandler.obtenerUsuario(nickname);
+//		Usuario[] usuarios = usuarioUno.getListaUsuariosQueSigue();
+//		if (usuarios != null) {
+//	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.length];
+//	        Usuario usuarioDos;
+//	        for (int i = 0; i < usuarios.length; i++) {
+//	        	usuarioDos = usuarios[i];
+//	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
+//	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
+//	        }
+//	        return listaDeUsuarios;
+//		}
 		return null;
 	}
 
@@ -181,10 +197,10 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
-		// TODO Auto-generated method stub
-		ColaboracionHandler c = ColaboracionHandler.getInstance();
-		Colaboracion[] colaboraciones = c.getColaboraciones();
-		
+//		// TODO Auto-generated method stub
+//		ColaboracionHandler c = ColaboracionHandler.getInstance();
+//		Colaboracion[] colaboraciones = c.getColaboraciones();
+//		
 		return null;
 	}
 

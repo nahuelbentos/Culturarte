@@ -1,44 +1,49 @@
 package logica;
 
-import java.util.Collection;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "USUARIO")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="TIPOUSUARIO")
+@Table(name="USUARIO")
 public abstract class Usuario {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
-	
+	@Column(name="ID")
+	private int id;
+	@Column(name="NICKNAME")
     private String nickname;
+	@Column(name="NOMBRE")
     private String nombre;
+	@Column(name="FECHA_DE_NACIMIENTO")
     private GregorianCalendar fechaNacimiento;
+	@Column(name="EMAIL")
     private String correoElectronico;
+	@Column(name="APELLIDO")
     private String apellido;
+	@Column(name="IMAGEN")
     private String imagen;
 
 //    private ArrayList<Propuesta> proFavoritas;
-//    private ArrayList<Usuario> seguidores;
 
-    private Map<String, Usuario> usuariosQueSigue = new HashMap<String, Usuario>();
+    //private Map<String, Usuario> usuariosQueSigue = new HashMap<String, Usuario>();
 
-    public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-    public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento,
+    public Usuario() {
+    	super();
+    }
+    
+    public Usuario(int id, String nickname, String nombre, GregorianCalendar fechaNacimiento,
     		String correoElectronico, String apellido, String imagen) {
+    	super();
+    	this.id = id;
         this.nickname = nickname;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
@@ -48,6 +53,10 @@ public abstract class Usuario {
     }
 
 	// SETTERS
+	public void setId(int id) {
+		this.id = id;
+	}
+    
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
@@ -73,6 +82,10 @@ public abstract class Usuario {
     }
 
     // GETTERS
+	public int getId() {
+		return id;
+	}
+
     public String getApellido() {
         return apellido;
     }
@@ -97,21 +110,21 @@ public abstract class Usuario {
         return imagen;
     }
 
-    public Map<String, Usuario> getUsuariosQueSigue() {
-    	return usuariosQueSigue;
-    }
-
-    public Usuario[] getListaUsuariosQueSigue() {
-        if (usuariosQueSigue.isEmpty())
-            return null;
-        else {
-            Collection<Usuario> usrs = usuariosQueSigue.values();
-            Object[] o = usrs.toArray();
-            Usuario[] usuarios = new Usuario[o.length];
-            for (int i = 0; i < o.length; i++) {
-                usuarios[i] = (Usuario) o[i];
-            }
-            return usuarios;
-        }
-    }
+//    public Map<String, Usuario> getUsuariosQueSigue() {
+//    	return usuariosQueSigue;
+//    }
+//
+//    public Usuario[] getListaUsuariosQueSigue() {
+//        if (usuariosQueSigue.isEmpty())
+//            return null;
+//        else {
+//            Collection<Usuario> usrs = usuariosQueSigue.values();
+//            Object[] o = usrs.toArray();
+//            Usuario[] usuarios = new Usuario[o.length];
+//            for (int i = 0; i < o.length; i++) {
+//                usuarios[i] = (Usuario) o[i];
+//            }
+//            return usuarios;
+//        }
+//    }
 }
