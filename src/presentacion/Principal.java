@@ -3,16 +3,12 @@ package presentacion;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.GregorianCalendar;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import datatype.DtColaborador;
-import datatype.DtUsuario;
-import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.Factory;
 import logica.IUsuarioController;
 
@@ -54,15 +50,6 @@ public class Principal {
         Factory factory = Factory.getInstance();
         IUC = factory.getIUsuarioController();
 
-        /* DATOS DE PRUEBA PORQUE NO HAY PERSISTENCIA */
-        DtUsuario usu = new DtColaborador("maxi","Maximiliano","Farcilli","maxi@gmail.com",new GregorianCalendar(1992,8,9),null);
-        try {
-			IUC.agregarUsuario(usu);
-		} catch (UsuarioYaExisteElUsuarioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 
@@ -95,7 +82,7 @@ public class Principal {
 		frmPaginaPrincipal = new JFrame();
 		frmPaginaPrincipal.setTitle("Culturarte");
 		frmPaginaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmPaginaPrincipal.setBounds(10, 40, 600, 600);
+		frmPaginaPrincipal.setBounds(10, 10, 1366, 768);
 		crearMenu();
 	}
 
@@ -151,7 +138,7 @@ public class Principal {
 		JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
 		mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("TAMO ACA");
+				consColProp.setListarColaboradores();
 				consColProp.setVisible(true);
 			}
 		});

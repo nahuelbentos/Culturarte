@@ -14,10 +14,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "USUARIO")
 public abstract class Usuario {
-
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-
+	
     private String nickname;
     private String nombre;
     private GregorianCalendar fechaNacimiento;

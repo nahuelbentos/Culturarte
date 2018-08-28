@@ -1,20 +1,26 @@
-	package logica;
+package logica;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import datatype.*;
 import logica.exceptions.ColaboradorNoExisteException;
+import logica.handler.ColaboracionHandler;
 import logica.handler.ColaboradorHandler;
 import logica.handler.ProponenteHandler;
 import logica.handler.UsuarioHandler;
 
 public class UsuarioController implements IUsuarioController {
 
+	//private EntityManagerFactory emf = Persistence.createEntityManagerFactory("conection");
+	//private EntityManager em = emf.createEntityManager();
+	
 	@Override
 	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException {
 		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
@@ -39,6 +45,8 @@ public class UsuarioController implements IUsuarioController {
 				colaboradorHandler.addColaborador(usuario);
 			}
 			usuarioHandler.agregarUsuario(usuario);
+			// persisto en base...
+			//em.persist(usuario);
 		}
 	}
 
@@ -168,6 +176,15 @@ public class UsuarioController implements IUsuarioController {
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
+		// TODO Auto-generated method stub
+		ColaboracionHandler c = ColaboracionHandler.getInstance();
+		Colaboracion[] colaboraciones = c.getColaboraciones();
+		
 		return null;
 	}
 
