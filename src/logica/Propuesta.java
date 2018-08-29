@@ -10,36 +10,79 @@ import datatype.TipoRetorno;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="PROPUESTAS")
 public class Propuesta {
-    
-   private String titulo;
-   private String descripcion;
-   private String imagen;
-   private float montoNecesario;
-   private GregorianCalendar fechaPublicacion;
-   private GregorianCalendar fechaEspecatulo;
-   private float precioEntrada;
-   private String lugar;
-   private TipoRetorno tipo;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="ID_PROP")
+	private int id;
+	@Column(name="TITULO")
+	private String titulo;
+	@Column(name="DESCRIPCION")
+	private String descripcion;
+	@Column(name="IMAGEN")
+	private String imagen;
+	@Column(name="MONTO_NECESARIO")
+	private double montoNecesario;
+	@Column(name="FECHA_PUBLICACION")
+	private GregorianCalendar fechaPublicacion;
+	@Column(name="FECHA_ESPECTACULO")
+	private GregorianCalendar fechaEspecatulo;
+	@Column(name="PRECIO_ENTRADA")
+	private double precioEntrada;
+	@Column(name="LUGAR")
+	private String lugar;
+	//@Column(name="TIPO_RETORNO")
+	//private TipoRetorno tipo;
 
    // PseudoAtributos
-   private Proponente proponenteACargo;
-   private Estado estadoActual;
-   private ArrayList<Estado> estadoHistorial;
-   private Categoria categoria;
+	@ManyToOne
+	@JoinColumn(name="ID_PROPONENTE")
+	private Proponente proponenteACargo;
+	
+	@OneToOne
+	@JoinColumn(name="ID_CATEGORIA")
+	private Categoria categoria;   
+   
+	public Propuesta() {
+		super();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+   //private Estado estadoActual;
+   //private ArrayList<Estado> estadoHistorial;
+   
    
    public Propuesta(String titulo, String descripcion, String imagen, 
-			float montoNecesario, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
-			float precioEntrada, String lugar, TipoRetorno tipo) {
+			double d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
+			double e, String lugar, TipoRetorno tipo) {
 	    this.titulo = titulo;
 	    this.descripcion = descripcion;
 	    this.imagen = imagen;
-	    this.montoNecesario = montoNecesario;
+	    this.montoNecesario = d;
 	    this.fechaPublicacion = fechaPublicacion;
 	    this.fechaEspecatulo = fechaEspecatulo;
-	    this.precioEntrada = precioEntrada;
+	    this.precioEntrada = e;
 	    this.lugar = lugar;
-	    this.tipo = tipo;
+	    //this.tipo = tipo;
 	}
 
     public String getDescripcion() {
@@ -62,17 +105,17 @@ public class Propuesta {
         return lugar;
     }
 
-    public float getMontoNecesario() {
+    public double getMontoNecesario() {
         return montoNecesario;
     }
 
-    public float getPrecioEntrada() {
+    public double getPrecioEntrada() {
         return precioEntrada;
     }
 
-    public TipoRetorno getTipo() {
-        return tipo;
-    }
+    //public TipoRetorno getTipo() {
+    //    return tipo;
+    //}
 
     public String getTitulo() {
         return titulo;
@@ -106,9 +149,9 @@ public class Propuesta {
         this.precioEntrada = precioEntrada;
     }
 
-    public void setTipo(TipoRetorno tipo) {
-        this.tipo = tipo;
-    }
+    //public void setTipo(TipoRetorno tipo) {
+    //    this.tipo = tipo;
+    //}
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
@@ -123,32 +166,45 @@ public class Propuesta {
 	}
     
     public boolean isProponenteACargo(String nickname) {
-    	if(this.proponenteACargo.getNickname()==nickname)
-    		return true;
-    	else
-    		return false;
+    	return (this.proponenteACargo.getNickname() == nickname);
     }
     
     public DtPropuesta getInfoPropuesta() {
     	
+    	/*
     	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
 				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
 				proponenteACargo.getDtProponente(), estadoActual.getDtEstado(), this.getDtEstadoHistorial(),
-				categoria.getDtCategoria(),null);    	
+				categoria.getDtCategoria(),null);    
+    	*/
+    	
+    	// CAMBIO EL METODO PARA PROBAR PERSISTENCIA
+    	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
+				fechaEspecatulo, lugar, precioEntrada, TipoRetorno.entradasGratis, 0,
+				proponenteACargo.getDtProponente(), null, this.getDtEstadoHistorial(),
+				null,null);
     }
     
     public DtPropuestaColaborada getInfoPropuestaColaborada() {
-    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());    	
+    	
+    	//return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());
+    	// CAMBIO EL METODO PARA PROBAR PERSISTENCIA
+    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), null);
     }
     
     public ArrayList<DtEstado> getDtEstadoHistorial(){
+    	/*
+    	 * // CAMBIO EL METODO PARA PROBAR PERSISTENCIA
     	ArrayList<DtEstado> dte = new ArrayList<DtEstado>() ;
     	for (Estado e : estadoHistorial) {
     		dte.add(e.getDtEstado());			
 		}
     	return dte;
+    	*/
+    	return null;
     }
     
+    /*
     public Estado getEstadoActual() {
 		return estadoActual;
 	}
@@ -156,7 +212,7 @@ public class Propuesta {
 	public void setEstadoActual(Estado estadoActual) {
 		this.estadoActual = estadoActual;
 	}
-
+	
 	public ArrayList<Estado> getEstadoHistorial() {
 		return estadoHistorial;
 	}
@@ -164,7 +220,7 @@ public class Propuesta {
 	public void setEstadoHistorial(ArrayList<Estado> estadoHistorial) {
 		this.estadoHistorial = estadoHistorial;
 	}
-
+    */
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -174,19 +230,30 @@ public class Propuesta {
 	}
 
 	public DtPropuesta getDtPropuesta() {
-    	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
+    	/*
+    	 * // CAMBIO EL METODO PARA PROBAR PERSISTENCIA
+    	 * return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
 				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
 				proponenteACargo.getDtProponente(), estadoActual.getDtEstado(), this.getDtEstadoHistorial(),
 				categoria.getDtCategoria(),null);
+    	*/
+    	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
+				fechaEspecatulo, lugar, precioEntrada, TipoRetorno.entradasGratis, 0,
+				proponenteACargo.getDtProponente(), null, this.getDtEstadoHistorial(),
+				null,null);
     }
 
 	public DtDatosPropuesta getDtDatosPropuesta() {
-		
+		/*
+		 * 
+		 * // CAMBIO EL METODO PARA PROBAR PERSISTENCIA
+		 
 		ArrayList<DtColaborador> colaboradores = new ArrayList<DtColaborador>();
 				
     	return new DtDatosPropuesta(titulo, descripcion, imagen, 
 				montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,
 				tipo, 0, colaboradores);
-    	
+    	*/
+		return null;
     }
 }   

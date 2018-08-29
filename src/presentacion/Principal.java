@@ -49,7 +49,10 @@ public class Principal {
 
         Factory factory = Factory.getInstance();
         IUC = factory.getIUsuarioController();
-
+        
+        //LO EJECUTO UNA SOLA VEZ.
+        //IUC.crearPropuestaAuxiliar();
+        
 		altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 

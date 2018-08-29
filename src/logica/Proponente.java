@@ -14,6 +14,7 @@ import datatype.DtProponente;
 @DiscriminatorValue("P")
 public class Proponente extends Usuario{
 	
+	
 	@Column(name="DIRECCION")
     private String direccion;
 	@Column(name="BIOGRAFIA")
@@ -21,9 +22,10 @@ public class Proponente extends Usuario{
 	@Column(name="LINK_WEB")
     private String linkWeb;
     
-    // PseudoAtributos
-    private ArrayList<Propuesta> propuestas = new ArrayList<Propuesta>();;
-
+	public Proponente() {
+		super();
+	}
+	
     public Proponente(int id, String direccion, String biografia, String linkWeb, 
     		String nickname, String nombre, GregorianCalendar fechaNacimiento, 
     		String correoElectronico, String apellido, String imagen) {
@@ -55,10 +57,6 @@ public class Proponente extends Usuario{
 
     public void setLinkWeb(String linkWeb) {
         this.linkWeb = linkWeb;
-    }
-    
-    public void addPropuesta(Propuesta p) {
-    	this.propuestas.add(p);
     }
     
     public DtPerfilProponente getDatosBasicos() {

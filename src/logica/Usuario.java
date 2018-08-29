@@ -17,13 +17,13 @@ import javax.persistence.Table;
 @Table(name="USUARIO")
 public abstract class Usuario {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID")
+	@Column(name="ID_USU")
 	private int id;
 	@Column(name="NICKNAME")
     private String nickname;
 	@Column(name="NOMBRE")
     private String nombre;
-	@Column(name="FECHA_DE_NACIMIENTO")
+	@Column(name="FECHA_NACIMIENTO")
     private GregorianCalendar fechaNacimiento;
 	@Column(name="EMAIL")
     private String correoElectronico;

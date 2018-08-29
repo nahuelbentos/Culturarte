@@ -23,11 +23,11 @@ public class ColaboracionHandler {
 			instancia = new ColaboracionHandler();
 		return instancia;
 	}
-	
+	/*
 	public void addColaboracion(Colaboracion c) {
-		colaboraciones.put((Long)c.getId(), c);
+		colaboraciones.put(c., c);
 	}
-	
+	*/
 	public Map<Long,Colaboracion> getMapColaboraciones() {
         if (colaboraciones.isEmpty())
             return null;

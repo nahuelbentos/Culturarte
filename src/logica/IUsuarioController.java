@@ -37,4 +37,6 @@ public interface IUsuarioController {
 	
 	public abstract DtPropuesta[] listarPropuestasDeUnColaborador(String nickname);
 
+	public abstract void crearPropuestaAuxiliar();
+
 }

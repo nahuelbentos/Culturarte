@@ -2,10 +2,14 @@ package logica;
 
 import java.util.GregorianCalendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import datatype.DtColaboracion;
@@ -13,33 +17,27 @@ import datatype.DtPropuestaColaborada;
 import datatype.TipoRetorno;
 
 @Entity
-@Table(name = "COLABORACION")
+@IdClass(ColaboracionID.class)
+@Table(name="COLABORACIONES")
 public class Colaboracion {
-
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
 	
-	/**
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
+	@Id
+	@ManyToOne
+	@JoinColumn(name="ID_COLABORADOR")
+	private Colaborador colaborador;
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
-
+	@Id
+	@ManyToOne
+	@JoinColumn(name="ID_PROPUESTA")
+	private Propuesta propuestaColaborada;
+	
+	@Column(name="MONTO_APORTADO")
 	private float monto;
+	@Column(name="FECHA_APORTADO")
 	private GregorianCalendar fechaAporte;
+	@Column(name="TIPO_RETORNO")
 	private TipoRetorno tipo;
 	
-	// PseudoAtributos
-	private Propuesta propuestaColaborada;
-	private Colaborador colaborador;
 	
 	public Colaboracion(float monto, GregorianCalendar fechaAporte, TipoRetorno tipo) {
 		super();

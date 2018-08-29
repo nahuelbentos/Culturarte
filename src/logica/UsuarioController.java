@@ -2,6 +2,7 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,7 +34,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		//Generamos un EntityManager
 		em = emf.createEntityManager();
-		//Iniciamos una transacci�n
+		//Iniciamos una transaccion
 		em.getTransaction().begin();
 
 		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
@@ -195,7 +196,7 @@ public class UsuarioController implements IUsuarioController {
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
 		// TODO Auto-generated method stub
-
+/*
 		ProponenteHandler mpro = ProponenteHandler.getInstance();
 		Map<String, Proponente> props = mpro.getProponentes();
 
@@ -260,6 +261,9 @@ public class UsuarioController implements IUsuarioController {
 				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
 
 		return usuProponente;
+		*/
+		
+		return null;
 	}
 
 	@Override
@@ -290,11 +294,36 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
-//		// TODO Auto-generated method stub
 //		ColaboracionHandler c = ColaboracionHandler.getInstance();
 //		Colaboracion[] colaboraciones = c.getColaboraciones();
 //
 		return null;
 	}
-
+	
+	@Override
+	public void crearPropuestaAuxiliar() {
+		//Configuramos el EMF a trav�s de la unidad de persistencia
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		//Generamos un EntityManager
+		em = emf.createEntityManager();
+		//Iniciamos una transaccion
+		em.getTransaction().begin();
+		
+		Categoria c = new Categoria("Probando");
+		Propuesta p = new Propuesta("probando","una nueva propuesta","/etc/algo.png",10.00, new GregorianCalendar(2018,8,28),new GregorianCalendar(2019,1,28), 5.00, "mi casa", TipoRetorno.entradasGratis);
+		
+		em.persist(c);
+		Proponente prop = em.find(Proponente.class, 1);
+		p.setCategoria(c);
+		p.setProponenteACargo(prop);
+		
+		em.persist(p);
+		
+		//Commmiteamos la transacci�n
+		em.getTransaction().commit();
+		//Cerramos el EntityManager
+		em.close();
+	}
+	
+	
 }
