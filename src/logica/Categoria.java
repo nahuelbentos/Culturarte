@@ -12,6 +12,7 @@ public class Categoria {
 	public Categoria(String nombre) {
 		super();
 		this.nombre = nombre;
+		superCategorias = new ArrayList<>();
 	}
 
 	public String getNombre() {
