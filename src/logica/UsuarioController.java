@@ -93,15 +93,25 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException {
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
 //		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
 //        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
 //        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
+        Usuario usuarioUno = em.find(Usuario.class, nicknameUno);
+        Usuario usuarioDos = em.find(Usuario.class, nicknameDos);
 //		if (usuarioUno.getUsuariosQueSigue().containsKey(nicknameDos)) {
 //        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
 //        			+ " ya sigue al usuario " + nicknameDos);
 //		} else {
 //	        usuarioUno.getUsuariosQueSigue().put(nicknameDos, usuarioDos);
 //		}
+        usuarioUno.seguirUsuario(usuarioDos);
+		em.flush();
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override

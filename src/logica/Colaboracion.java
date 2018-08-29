@@ -12,11 +12,11 @@ import datatype.DtColaboracion;
 import datatype.DtPropuestaColaborada;
 import datatype.TipoRetorno;
 
-@Entity
-@Table(name = "COLABORACION")
+//@Entity
+//@Table(name = "COLABORACION")
 public class Colaboracion {
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+//	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
 	/**
