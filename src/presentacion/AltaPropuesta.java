@@ -3,20 +3,29 @@ package presentacion;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import com.toedter.calendar.JDateChooser;
 
 import logica.CategoriaController;
+import logica.PropuestaController;
 import logica.UsuarioController;
+import logica.exceptions.CategoriaNoExisteException;
 import logica.exceptions.ExcepcionCategoriaNoExiste;
+import logica.exceptions.ProponenteNoExisteException;
+import logica.exceptions.PropuestaRepetidaException;
 import datatype.DtCategoria;
+import datatype.DtEstado;
 import datatype.DtProponente;
+import datatype.DtPropuesta;
 import datatype.TipoRetorno;
 
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
@@ -45,6 +54,18 @@ public class AltaPropuesta extends JInternalFrame {
 	private JComboBox<String> entCategoria;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
+	
+	private String titulo;
+	private String descripcion;
+	private String imagen;
+	private float montoNecesario;
+	private GregorianCalendar fechaPublicacion;
+	private GregorianCalendar fechaEspecatulo;
+	private String lugar;
+	private float precioEntrada;
+	private TipoRetorno tipo;
+	private String nicknameProponente;
+	private String categoria;
 
 	/**
 	 * Create the frame.
@@ -186,23 +207,44 @@ public class AltaPropuesta extends JInternalFrame {
 	}
 	
 	private void registrarPropuesta(ActionEvent arg0) {
-		
+		if (formularioOk()) {
+			PropuestaController cp = new PropuestaController();
+			DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, "", "", "", "");
+			DtCategoria dtCat = new DtCategoria(categoria);
+			DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat);
+			try {
+				cp.altaPropuesta(dtPropuesta);
+				JOptionPane.showMessageDialog(this, "La propuesta se ha creado con éxito", "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
+			} catch (PropuestaRepetidaException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, e, "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
+			} catch (ProponenteNoExisteException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, e, "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
+			} catch (CategoriaNoExisteException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, e, "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
 	}
 	
 	private boolean formularioOk() {
-		if (
-				entTitulo.getText().isEmpty() || entDescripcion.getText().isEmpty() 
-				private JTextField entImagen.getText().isEmpty()
-				private JTextField entMontoNecesario.getText().isEmpty()
-				private JTextField entLugar.getText().isEmpty()
-				private JTextField entPrecioEntrada.getText().isEmpty()
-				private JDateChooser entFechaPublicacion;
-				private JDateChooser entFechaEspectaculo;
-				private JComboBox<String> entProponente;
-				private JComboBox<TipoRetorno> entTipoRetorno;
-				private JComboBox<String> entCategoria;
-				
-				);
+		titulo = entTitulo.getText();
+		descripcion = entDescripcion.getText();
+		imagen = entImagen.getText();
+		montoNecesario = Float.parseFloat(entMontoNecesario.getText());	//	habría que agregar Document Filters con una expresión regular para que solamente acepte números desde el teclado
+		fechaPublicacion = new GregorianCalendar();
+		if (entFechaPublicacion.getDate()!=null)
+			fechaPublicacion.setTime(entFechaPublicacion.getDate());
+		if (entFechaEspectaculo.getDate()!=null)
+			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
+		lugar = entLugar.getText();
+		precioEntrada = Float.parseFloat(entPrecioEntrada.getText());
+		tipo = (TipoRetorno) entTipoRetorno.getSelectedItem();
+		nicknameProponente = entProponente.getSelectedItem().toString();
+		categoria = entCategoria.getSelectedItem().toString();
+		
+		// acá hay que poner las validaciones del caso de uso
 		return true;
 	}
 }
