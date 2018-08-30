@@ -63,11 +63,11 @@ public class UsuarioController implements IUsuarioController {
 
         Collection<Proponente> props = pro.getProponentes().values();
         Object[] o = props.toArray();
-        Proponente[] proponentes = new Proponente[o.length];
+        nicknames = new DtProponente[o.length];
         for (int i = 0; i < o.length; i++) {
-        	proponentes[i] = (Proponente) o[i];
+        	nicknames[i] = (DtProponente) o[i];
         }
-
+        
 		// TODO Auto-generated method stub
 		return nicknames;
 	}

@@ -3,10 +3,14 @@ package logica;
 import datatype.DtColaboracion;
 import datatype.DtPropuesta;
 import datatype.EstadoPropuesta;
+import logica.exceptions.CategoriaNoExisteException;
+import logica.exceptions.ProponenteNoExisteException;
+import logica.exceptions.PropuestaNoExisteException;
+import logica.exceptions.PropuestaRepetidaException;
 
 public interface IPropuestaController {
 
-	public abstract boolean altaPropuesta(DtPropuesta dtPropuesta);
+	public abstract void altaPropuesta(DtPropuesta dtPropuesta)  throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException;
 	
 	public abstract DtPropuesta[] listarPropuestas();
 	
@@ -27,7 +31,7 @@ public interface IPropuestaController {
 	
 	public abstract boolean altaColaboracion(DtColaboracion dtColaboracion);
 	
-	// Revisar si están bien los parámetros que recibe
+	// Revisar si estï¿½n bien los parï¿½metros que recibe
 	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
 
 }

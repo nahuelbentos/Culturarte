@@ -1,6 +1,7 @@
 package logica;
 
 import datatype.DtPropuesta;
+import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 
 import java.util.ArrayList;
@@ -36,6 +37,20 @@ public class Propuesta {
 	    this.precioEntrada = precioEntrada;
 	    this.lugar = lugar;
 	    this.tipo = tipo;
+	}
+   
+   public Propuesta(DtPropuesta dtP) {
+	    this.titulo = dtP.getTitulo();
+	    this.descripcion = dtP.getDescripcion();
+	    this.imagen = dtP.getImagen();
+	    this.montoNecesario = dtP.getMontoNecesario();
+	    this.fechaPublicacion = dtP.getFechaPublicacion();
+	    this.fechaEspecatulo = dtP.getFechaEspecatulo();
+	    this.precioEntrada = dtP.getPrecioEntrada();
+	    this.lugar = dtP.getLugar();
+	    this.tipo = dtP.getTipo();
+	    this.estadoActual = new Estado(EstadoPropuesta.ingresada);
+	    this.estadoHistorial = null; // Ya hay que setear el ingresada o al historial pasa al momento del cambio?
 	}
 
     public String getDescripcion() {
@@ -116,6 +131,10 @@ public class Propuesta {
 
 	public void setProponenteACargo(Proponente proponenteACargo) {
 		this.proponenteACargo = proponenteACargo;
+	}
+	
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
     
     public boolean isProponenteACargo(String nickname) {
