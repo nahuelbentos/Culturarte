@@ -32,15 +32,9 @@ public abstract class Usuario {
     private String apellido;
 	@Column(name="IMAGEN")
     private String imagen;
-
-//    private ArrayList<Propuesta> proFavoritas;
-
-	//@OneToMany(mappedBy="usuario",cascade=CascadeType.DETACH,orphanRemoval=true)
 	
 	@OneToMany(mappedBy="usuarioDos", cascade = CascadeType.ALL,orphanRemoval=true)
 	private List<UsuarioSigue> usuariosQueSigue = new ArrayList<>();
-	
-//    private Map<String, Usuario> usuariosQueSigue = new HashMap<String, Usuario>();
 
     public Usuario() {
     	super();
@@ -108,28 +102,9 @@ public abstract class Usuario {
     public String getImagen() {
         return imagen;
     }
-
-//    public Map<String, Usuario> getUsuariosQueSigue() {
-//    	return usuariosQueSigue;
-//    }
-//
-//    public Usuario[] getListaUsuariosQueSigue() {
-//        if (usuariosQueSigue.isEmpty())
-//            return null;
-//        else {
-//            Collection<Usuario> usrs = usuariosQueSigue.values();
-//            Object[] o = usrs.toArray();
-//            Usuario[] usuarios = new Usuario[o.length];
-//            for (int i = 0; i < o.length; i++) {
-//                usuarios[i] = (Usuario) o[i];
-//            }
-//            return usuarios;
-//        }
-//    }
-    
+   
 	public void seguirUsuario(Usuario usuarioASeguir) {
 		UsuarioSigue u = new UsuarioSigue(this, usuarioASeguir);
 		usuariosQueSigue.add(u);
-//		socio.getInscripciones().add(i);
 	}
 }
