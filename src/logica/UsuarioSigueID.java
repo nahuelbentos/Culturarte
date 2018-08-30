@@ -13,6 +13,12 @@ public class UsuarioSigueID implements Serializable {
 		super();
 	}
 	
+	public UsuarioSigueID(String usuarioUno, String usuarioDos) {
+		super();
+		this.usuarioUno = usuarioUno;
+		this.usuarioDos = usuarioDos;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

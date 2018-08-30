@@ -13,16 +13,14 @@ public class UsuarioSigue {
 	@Id 
 	@ManyToOne
 	@JoinColumn(
-			name="USUARIO_UNO_ID",
-			columnDefinition="integer"
+			name="USUARIO_UNO_ID"
 	)
 	private Usuario usuarioUno;
 	
 	@Id
 	@ManyToOne
 	@JoinColumn(
-			name="USUARIO_DOS_ID",
-			columnDefinition="integer"
+			name="USUARIO_DOS_ID"
 	)
 	private Usuario usuarioDos;
 	
