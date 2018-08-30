@@ -2,21 +2,29 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import datatype.DtColaboracion;
+import datatype.DtColaborador;
+import datatype.DtPerfilColaborador;
+import datatype.DtPerfilProponente;
+import datatype.DtProponente;
+import datatype.DtPropuesta;
+import datatype.DtPropuestaColaborada;
+import datatype.DtUsuario;
+import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
-import excepciones.UsuarioNoExisteElUsuarioException;
-import datatype.*;
 import logica.exceptions.ColaboradorNoExisteException;
 import logica.handler.ColaboracionHandler;
 import logica.handler.ColaboradorHandler;
 import logica.handler.ProponenteHandler;
 import logica.handler.PropuestaHandler;
-import logica.handler.UsuarioHandler;
 
 public class UsuarioController implements IUsuarioController {
 
@@ -29,15 +37,11 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException {
-		//Configuramos el EMF a trav�s de la unidad de persistencia
 		emf = Persistence.createEntityManagerFactory("Conexion");
-		//Generamos un EntityManager
 		em = emf.createEntityManager();
-		//Iniciamos una transacci�n
 		em.getTransaction().begin();
 
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-		Usuario usuario = usuarioHandler.obtenerUsuario(dtUsuario.getNickname());
+		Usuario usuario = em.find(Usuario.class, dtUsuario.getNickname());
 		if (usuario != null) {
 			throw new UsuarioYaExisteElUsuarioException("El usuario " + dtUsuario.getNickname() + " ya esta registrado");
 		} else {
@@ -45,25 +49,21 @@ public class UsuarioController implements IUsuarioController {
 			ProponenteHandler proponenteHandler = ProponenteHandler.getInstance();
 			if (dtUsuario instanceof DtProponente) {
 				DtProponente dtProponente = (DtProponente) dtUsuario;
-				usuario = new Proponente(0, dtProponente.getDireccion(), dtProponente.getBiografia(),
+				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
 				proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
-				usuario = new Colaborador(0, dtColaborador.getNickname(), dtColaborador.getNombre(),
+				usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(),
 						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
 
 				colaboradorHandler.addColaborador(usuario);
 			}
-			usuarioHandler.agregarUsuario(usuario);
-
-			//Persistimos el objeto
+			
 			em.persist(usuario);
-			//Commmiteamos la transacci�n
 			em.getTransaction().commit();
-			//Cerramos el EntityManager
 			em.close();
 		}
 	}
@@ -93,15 +93,26 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException {
-//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-//        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
-//        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
-//		if (usuarioUno.getUsuariosQueSigue().containsKey(nicknameDos)) {
-//        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
-//        			+ " ya sigue al usuario " + nicknameDos);
-//		} else {
-//	        usuarioUno.getUsuariosQueSigue().put(nicknameDos, usuarioDos);
-//		}
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+
+        Usuario usuarioUno = em.find(Usuario.class, nicknameUno);
+        Usuario usuarioDos = em.find(Usuario.class, nicknameDos);
+        
+        UsuarioSigueID usuarioSIgueID = new UsuarioSigueID(nicknameUno,nicknameDos);
+        UsuarioSigue usuarioSigue = em.find(UsuarioSigue.class, usuarioSIgueID);
+        
+		if (usuarioSigue != null) {
+        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
+        			+ " ya sigue al usuario " + nicknameDos);
+		} else {
+			usuarioUno.seguirUsuario(usuarioDos);
+		}
+        
+		em.flush();
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override
@@ -114,25 +125,34 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario[] listarUsuarios() {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario[] usrs = usuarioHandler.getUsuarios();
-        if (usrs != null) {
-            DtUsuario[] dtUsuario = new DtUsuario[usrs.length];
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        if (usuarios != null) {
+            dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
-            for (int i = 0; i < usrs.length; i++) {
-                usuario = usrs[i];
+            for (int i = 0; i < usuarios.size(); i++) {
+                usuario = usuarios.get(i);
                 dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
             }
-            return dtUsuario;
         }
-        return null;
+        
+        em.close();
+        
+        return dtUsuario;
 	}
 
 	@Override
 	public DtUsuario verPerfilUsuario(String nickname) throws UsuarioNoExisteElUsuarioException {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario usuario = usuarioHandler.obtenerUsuario(nickname);
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Usuario usuario = em.find(Usuario.class, nickname);
         DtUsuario dtUsuario = null;
         if (usuario != null) {
         	if (usuario instanceof Proponente) {
@@ -145,27 +165,33 @@ public class UsuarioController implements IUsuarioController {
 				dtUsuario = new DtColaborador(colaborador.getNickname(), colaborador.getNombre(), colaborador.getApellido(),
 						colaborador.getCorreoElectronico(), colaborador.getFechaNacimiento(), colaborador.getImagen());
 			}
-        	return dtUsuario;
         } else {
             throw new UsuarioNoExisteElUsuarioException("El usuario " + nickname + " no existe");
         }
+        
+        em.close();
+        
+        return dtUsuario;
 	}
 
 	@Override
 	public DtUsuario[] listarUsuariosQueSigue(String nickname) {
-//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-//		Usuario usuarioUno = usuarioHandler.obtenerUsuario(nickname);
-//		Usuario[] usuarios = usuarioUno.getListaUsuariosQueSigue();
-//		if (usuarios != null) {
-//	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.length];
-//	        Usuario usuarioDos;
-//	        for (int i = 0; i < usuarios.length; i++) {
-//	        	usuarioDos = usuarios[i];
-//	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
-//	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
-//	        }
-//	        return listaDeUsuarios;
-//		}
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
+		if (usuarios != null) {
+	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.size()];
+	        Usuario usuarioDos;
+	        for (int i = 0; i < usuarios.size(); i++) {
+	        	usuarioDos = usuarios.get(i);
+	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
+	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
+	        }
+	        return listaDeUsuarios;
+		}
 		return null;
 	}
 

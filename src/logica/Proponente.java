@@ -24,10 +24,10 @@ public class Proponente extends Usuario{
     // PseudoAtributos
     private ArrayList<Propuesta> propuestas = new ArrayList<Propuesta>();;
 
-    public Proponente(int id, String direccion, String biografia, String linkWeb, 
+    public Proponente(String direccion, String biografia, String linkWeb, 
     		String nickname, String nombre, GregorianCalendar fechaNacimiento, 
     		String correoElectronico, String apellido, String imagen) {
-        super(id, nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
+        super(nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
         this.direccion = direccion;
         this.biografia = biografia;
         this.linkWeb = linkWeb;
