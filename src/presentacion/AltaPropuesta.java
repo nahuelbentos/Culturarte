@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+
+import com.sun.xml.internal.ws.developer.StreamingAttachmentFeature;
 import com.toedter.calendar.JDateChooser;
 
 import logica.CategoriaController;
@@ -17,14 +19,16 @@ import logica.exceptions.ExcepcionCategoriaNoExiste;
 import logica.exceptions.ProponenteNoExisteException;
 import logica.exceptions.PropuestaRepetidaException;
 import datatype.DtCategoria;
-import datatype.DtEstado;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.TipoRetorno;
 
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.GregorianCalendar;
 import java.awt.event.ActionEvent;
 
@@ -44,9 +48,9 @@ public class AltaPropuesta extends JInternalFrame {
 	private JTextField entTitulo;
 	private JTextField entDescripcion;
 	private JTextField entImagen;
-	private JTextField entMontoNecesario;
+	private JFormattedTextField entMontoNecesario;
 	private JTextField entLugar;
-	private JTextField entPrecioEntrada;
+	private JFormattedTextField entPrecioEntrada;
 	private JDateChooser entFechaPublicacion;
 	private JDateChooser entFechaEspectaculo;
 	private JComboBox<String> entProponente;
@@ -77,7 +81,7 @@ public class AltaPropuesta extends JInternalFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setClosable(true);
         setTitle("Alta de Propuesta");
-        setBounds(10, 40, 405, 445);
+        setBounds(10, 40, 408, 445);
 		
         getContentPane().setLayout(null);
         
@@ -112,7 +116,8 @@ public class AltaPropuesta extends JInternalFrame {
         lblMontoNecesario.setBounds(12, 98, 131, 15);
         getContentPane().add(lblMontoNecesario);
         
-        entMontoNecesario = new JTextField();
+        entMontoNecesario = new JFormattedTextField(DecimalFormat.getInstance());
+        entMontoNecesario.setValue(montoNecesario);
         entMontoNecesario.setColumns(10);
         entMontoNecesario.setBounds(143, 96, 239, 19);
         getContentPane().add(entMontoNecesario);
@@ -146,7 +151,8 @@ public class AltaPropuesta extends JInternalFrame {
         lblPrecioEntrada.setBounds(12, 214, 131, 15);
         getContentPane().add(lblPrecioEntrada);
         
-        entPrecioEntrada = new JTextField();
+        entPrecioEntrada = new JFormattedTextField(DecimalFormat.getInstance());
+        entPrecioEntrada.setValue(precioEntrada);
         entPrecioEntrada.setColumns(10);
         entPrecioEntrada.setBounds(143, 212, 239, 19);
         getContentPane().add(entPrecioEntrada);
@@ -165,11 +171,11 @@ public class AltaPropuesta extends JInternalFrame {
         getContentPane().add(lblProponente);
         
         entProponente = new JComboBox<>();
-//        UsuarioController uc = new UsuarioController();
-//        DtProponente[] dtP = uc.listarProponentes();
-//        for (DtProponente i : dtP) {
-//        	entProponente.addItem(i.getNickname());
-//        }
+        UsuarioController uc = new UsuarioController();
+        DtProponente[] dtP = uc.listarProponentes();
+        for (DtProponente i : dtP) {
+        	entProponente.addItem(i.getNickname());
+        }
         entProponente.setBounds(143, 272, 239, 24);
         getContentPane().add(entProponente);
         
@@ -216,13 +222,10 @@ public class AltaPropuesta extends JInternalFrame {
 				cp.altaPropuesta(dtPropuesta);
 				JOptionPane.showMessageDialog(this, "La propuesta se ha creado con éxito", "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
 			} catch (PropuestaRepetidaException e) {
-				e.printStackTrace();
 				JOptionPane.showMessageDialog(this, e, "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
 			} catch (ProponenteNoExisteException e) {
-				e.printStackTrace();
 				JOptionPane.showMessageDialog(this, e, "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
 			} catch (CategoriaNoExisteException e) {
-				e.printStackTrace();
 				JOptionPane.showMessageDialog(this, e, "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
@@ -232,14 +235,12 @@ public class AltaPropuesta extends JInternalFrame {
 		titulo = entTitulo.getText();
 		descripcion = entDescripcion.getText();
 		imagen = entImagen.getText();
-		montoNecesario = Float.parseFloat(entMontoNecesario.getText());	//	habría que agregar Document Filters con una expresión regular para que solamente acepte números desde el teclado
 		fechaPublicacion = new GregorianCalendar();
 		if (entFechaPublicacion.getDate()!=null)
 			fechaPublicacion.setTime(entFechaPublicacion.getDate());
 		if (entFechaEspectaculo.getDate()!=null)
 			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
 		lugar = entLugar.getText();
-		precioEntrada = Float.parseFloat(entPrecioEntrada.getText());
 		tipo = (TipoRetorno) entTipoRetorno.getSelectedItem();
 		nicknameProponente = entProponente.getSelectedItem().toString();
 		categoria = entCategoria.getSelectedItem().toString();
