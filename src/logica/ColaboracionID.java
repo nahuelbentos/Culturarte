@@ -6,26 +6,26 @@ public class ColaboracionID implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private int colaborador;
-	private int propuestaColaborada;
+	private String colaborador;
+	private String propuestaColaborada;
 	
 	public ColaboracionID() {
 		super();
 	}
 
-	public int getIdColaborador() {
+	public String getIdColaborador() {
 		return colaborador;
 	}
 
-	public void setIdColaborador(int idColaborador) {
+	public void setIdColaborador(String idColaborador) {
 		this.colaborador = idColaborador;
 	}
 
-	public int getIdPropuesta() {
+	public String getIdPropuesta() {
 		return propuestaColaborada;
 	}
 
-	public void setIdPropuesta(int idPropuesta) {
+	public void setIdPropuesta(String idPropuesta) {
 		this.propuestaColaborada = idPropuesta;
 	}
 
@@ -33,8 +33,8 @@ public class ColaboracionID implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + colaborador;
-		result = prime * result + propuestaColaborada;
+		result = prime * result + ((colaborador == null) ? 0 : colaborador.hashCode());
+		result = prime * result + ((propuestaColaborada == null) ? 0 : propuestaColaborada.hashCode());
 		return result;
 	}
 
@@ -47,14 +47,18 @@ public class ColaboracionID implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ColaboracionID other = (ColaboracionID) obj;
-		if (colaborador != other.colaborador)
+		if (colaborador == null) {
+			if (other.colaborador != null)
+				return false;
+		} else if (!colaborador.equals(other.colaborador))
 			return false;
-		if (propuestaColaborada != other.propuestaColaborada)
+		if (propuestaColaborada == null) {
+			if (other.propuestaColaborada != null)
+				return false;
+		} else if (!propuestaColaborada.equals(other.propuestaColaborada))
 			return false;
 		return true;
 	}
-	
-	
 	
 	
 }

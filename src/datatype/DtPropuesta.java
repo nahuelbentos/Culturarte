@@ -25,7 +25,9 @@ public class DtPropuesta {
    private DtCategoria categoria;
    private ArrayList<DtColaboracion> colaboraciones;
    
-	
+	public DtPropuesta() {
+		super();
+	}
 
 	public DtPropuesta(String titulo, String descripcion, String imagen, double montoNecesario2,
 		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada2,

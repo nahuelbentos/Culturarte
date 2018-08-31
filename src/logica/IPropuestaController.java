@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
+import datatype.DtPropuestaMinificado;
 import datatype.EstadoPropuesta;
+import logica.exceptions.ColaboradorNoExisteException;
+import logica.exceptions.PropuestaNoExisteException;
 
 public interface IPropuestaController {
 
 	public abstract boolean altaPropuesta(DtPropuesta dtPropuesta);
 	
-	public abstract DtPropuesta[] listarPropuestas();
+	public abstract DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException;
 	
 	public abstract DtPropuesta seleccionarPropuesta(String titulo);
 	
@@ -32,5 +35,9 @@ public interface IPropuestaController {
 	
 	// Revisar si est�n bien los par�metros que recibe
 	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
+
+	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException;
+	
+	public abstract void nuevaColaboracionAuxiliarHarcode();
 
 }

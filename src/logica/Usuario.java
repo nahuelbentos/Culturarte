@@ -16,9 +16,7 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name="TIPOUSUARIO")
 @Table(name="USUARIO")
 public abstract class Usuario {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID_USU")
-	private int id;
+	@Id
 	@Column(name="NICKNAME")
     private String nickname;
 	@Column(name="NOMBRE")
@@ -40,10 +38,9 @@ public abstract class Usuario {
     	super();
     }
     
-    public Usuario(int id, String nickname, String nombre, GregorianCalendar fechaNacimiento,
+    public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento,
     		String correoElectronico, String apellido, String imagen) {
     	super();
-    	this.id = id;
         this.nickname = nickname;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
@@ -51,11 +48,6 @@ public abstract class Usuario {
         this.apellido = apellido;
         this.imagen = imagen;
     }
-
-	// SETTERS
-	public void setId(int id) {
-		this.id = id;
-	}
     
     public void setApellido(String apellido) {
         this.apellido = apellido;
@@ -82,10 +74,6 @@ public abstract class Usuario {
     }
 
     // GETTERS
-	public int getId() {
-		return id;
-	}
-
     public String getApellido() {
         return apellido;
     }

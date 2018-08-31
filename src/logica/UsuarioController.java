@@ -3,6 +3,7 @@ package logica;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,14 +47,14 @@ public class UsuarioController implements IUsuarioController {
 			ProponenteHandler proponenteHandler = ProponenteHandler.getInstance();
 			if (dtUsuario instanceof DtProponente) {
 				DtProponente dtProponente = (DtProponente) dtUsuario;
-				usuario = new Proponente(0, dtProponente.getDireccion(), dtProponente.getBiografia(),
+				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
 				proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
-				usuario = new Colaborador(0, dtColaborador.getNickname(), dtColaborador.getNombre(),
+				usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(),
 						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
 
 				colaboradorHandler.addColaborador(usuario);
@@ -173,20 +174,51 @@ public class UsuarioController implements IUsuarioController {
 	@Override
 	public DtColaborador[] listarColaboradores() throws ColaboradorNoExisteException {
 
-		ColaboradorHandler mcol = ColaboradorHandler.getInstance();
-		Colaborador[] cols = mcol.getColaboradores();
+/*
 
-		if (cols != null) {
-			DtColaborador[] dtcols = new DtColaborador[cols.length];
-			Colaborador cola;
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        if (usuarios != null) {
+            dtUsuario = new DtUsuario[usuarios.size()];
+            Usuario usuario;
+            for (int i = 0; i < usuarios.size(); i++) {
+                usuario = usuarios.get(i);
+                dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
+                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
+            }
+        }
+        
+        em.close();
+        
+        return dtUsuario;
 
-			for (int i = 0; i < cols.length; i++) {
-				cola = cols[i];
-				dtcols[i] = new DtColaborador(cola.getNickname(), cola.getNombre(), cola.getApellido(),
-						cola.getCorreoElectronico(), cola.getFechaNacimiento(), cola.getImagen());
+
+ * */
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtColaborador[] dtColaboradores = null;
+		
+
+		@SuppressWarnings("unchecked")
+		List<Colaborador> colaboradores = em.createQuery("FROM Colaborador").getResultList();
+		
+		if (colaboradores != null) {
+			dtColaboradores = new DtColaborador[colaboradores.size()];
+			Colaborador c;
+
+			for (int i = 0; i < colaboradores.size(); i++) {
+				c = colaboradores.get(i);
+				dtColaboradores[i] = new DtColaborador(c.getNickname(), c.getNombre(), c.getApellido(),
+						c.getCorreoElectronico(), c.getFechaNacimiento(), c.getImagen());
             }
 
-			return dtcols;
+			return dtColaboradores;
 		}else {
 			throw new ColaboradorNoExisteException("No existen colaboradores registrados");
 		}
@@ -268,7 +300,7 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPerfilColaborador verPerfilColaborador(String nickname) {
-		// TODO Auto-generated method stub
+		/*
 
 		ColaboradorHandler mcol = ColaboradorHandler.getInstance();
 		DtColaborador perfil = mcol.obtenerColaborador(nickname); //1y2
@@ -290,6 +322,8 @@ public class UsuarioController implements IUsuarioController {
 
 		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getEmail(),
 				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
+		*/
+		return null;
 	}
 
 	@Override
@@ -309,11 +343,11 @@ public class UsuarioController implements IUsuarioController {
 		//Iniciamos una transaccion
 		em.getTransaction().begin();
 		
-		Categoria c = new Categoria("Probando");
-		Propuesta p = new Propuesta("probando","una nueva propuesta","/etc/algo.png",10.00, new GregorianCalendar(2018,8,28),new GregorianCalendar(2019,1,28), 5.00, "mi casa", TipoRetorno.entradasGratis);
+		Categoria c = new Categoria("Categorias");
+		Propuesta p = new Propuesta("probando","una nueva propuesta","/etc/algo.png",10000.50, new GregorianCalendar(2018,8,28),new GregorianCalendar(2019,1,28), 5.00, "mi casa", TipoRetorno.entradasGratis);
 		
 		em.persist(c);
-		Proponente prop = em.find(Proponente.class, 1);
+		Proponente prop = em.find(Proponente.class, "maxi");
 		p.setCategoria(c);
 		p.setProponenteACargo(prop);
 		

@@ -23,9 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="PROPUESTAS")
 public class Propuesta {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID_PROP")
-	private int id;
+	@Id
 	@Column(name="TITULO")
 	private String titulo;
 	@Column(name="DESCRIPCION")
@@ -47,7 +45,7 @@ public class Propuesta {
 
    // PseudoAtributos
 	@ManyToOne
-	@JoinColumn(name="ID_PROPONENTE")
+	@JoinColumn(name="NICK_PROPONENTE")
 	private Proponente proponenteACargo;
 	
 	@OneToOne
@@ -58,18 +56,8 @@ public class Propuesta {
 		super();
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-
    //private Estado estadoActual;
    //private ArrayList<Estado> estadoHistorial;
-   
    
    public Propuesta(String titulo, String descripcion, String imagen, 
 			double d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
@@ -84,7 +72,6 @@ public class Propuesta {
 	    this.lugar = lugar;
 	    //this.tipo = tipo;
 	}
-
     public String getDescripcion() {
         return descripcion;
     }
