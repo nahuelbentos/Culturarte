@@ -1,11 +1,11 @@
 package logica;
 
 import datatype.DtColaboracion;
+import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
 import datatype.EstadoPropuesta;
 import logica.exceptions.CategoriaNoExisteException;
 import logica.exceptions.ProponenteNoExisteException;
-import logica.exceptions.PropuestaNoExisteException;
 import logica.exceptions.PropuestaRepetidaException;
 
 public interface IPropuestaController {
@@ -25,7 +25,7 @@ public interface IPropuestaController {
 	public abstract DtPropuesta[] listarPropuestasExistentes();
 	
 	// Falta crear el DtDatosPropuesta
-	//public DtDatosPropuesta consultarPropuesta(String titulo);
+	public DtDatosPropuesta consultarPropuesta(String titulo);
 	
 	public abstract DtPropuesta[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta);
 	

@@ -2,6 +2,8 @@ package logica;
 
 import java.util.ArrayList;
 
+import datatype.DtCategoria;
+
 public class Categoria {
 	private String nombre;
 	
@@ -31,10 +33,14 @@ public class Categoria {
 		return this.superCategorias;
 	}
 	
-	public ArrayList<String> getDtSuperCategorias() {
-		ArrayList<String> padres = new ArrayList<>();
+	public DtCategoria getDtCategoria() {
+		return new DtCategoria(nombre, superCategorias);
+	}
+	
+	public ArrayList<Categoria> getDtSuperCategorias() {
+		ArrayList<Categoria> padres = new ArrayList<>();
 		for (int i = 0; i < this.superCategorias.size(); i++)
-			padres.add(this.superCategorias.get(i).getNombre());
+			padres.add(superCategorias.get(i));
 		return padres;
 	}
 }

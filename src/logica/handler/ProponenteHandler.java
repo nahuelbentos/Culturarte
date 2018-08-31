@@ -3,7 +3,6 @@ package logica.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import java.util.Collection;
 //import org.hibernate.mapping.Collection;
 
 import logica.Proponente;
@@ -31,6 +30,13 @@ public class ProponenteHandler {
         if (proponentes.isEmpty())
             return null;
         else {
+//        	Collection<Proponente> props = this.proponentes.values();
+//            Object[] o = props.toArray();
+//            Proponente[] proponentes = new Proponente[o.length];
+//            for (int i = 0; i < o.length; i++) {
+//            	proponentes[i] = (Proponente) o[i];
+//            }
+//            
             return proponentes;
         }
     }

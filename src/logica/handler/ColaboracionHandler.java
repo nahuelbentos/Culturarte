@@ -28,6 +28,14 @@ public class ColaboracionHandler {
 		colaboraciones.put((Long)c.getId(), c);
 	}
 	
+	public Map<Long,Colaboracion> getMapColaboraciones() {
+        if (colaboraciones.isEmpty())
+            return null;
+        else {
+            return colaboraciones;
+        }
+	}
+	
 	public Colaboracion[] getColaboraciones() {
         if (colaboraciones.isEmpty())
             return null;

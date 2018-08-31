@@ -1,16 +1,27 @@
 package presentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.GregorianCalendar;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 
-import com.sun.xml.internal.ws.developer.StreamingAttachmentFeature;
 import com.toedter.calendar.JDateChooser;
 
+import datatype.DtCategoria;
+import datatype.DtProponente;
+import datatype.DtPropuesta;
+import datatype.DtUsuario;
+import datatype.TipoRetorno;
 import logica.CategoriaController;
 import logica.PropuestaController;
 import logica.UsuarioController;
@@ -18,19 +29,6 @@ import logica.exceptions.CategoriaNoExisteException;
 import logica.exceptions.ExcepcionCategoriaNoExiste;
 import logica.exceptions.ProponenteNoExisteException;
 import logica.exceptions.PropuestaRepetidaException;
-import datatype.DtCategoria;
-import datatype.DtProponente;
-import datatype.DtPropuesta;
-import datatype.TipoRetorno;
-
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.GregorianCalendar;
-import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class AltaPropuesta extends JInternalFrame {
@@ -172,8 +170,11 @@ public class AltaPropuesta extends JInternalFrame {
         
         entProponente = new JComboBox<>();
         UsuarioController uc = new UsuarioController();
-        DtProponente[] dtP = uc.listarProponentes();
-        for (DtProponente i : dtP) {
+        
+        
+        // lo cambie a DtUsuario, habría que volverlo a cambiar a DtProponente
+        DtUsuario[] dtP = uc.listarProponentes();
+        for (DtUsuario i : dtP) {
         	entProponente.addItem(i.getNickname());
         }
         entProponente.setBounds(143, 272, 239, 24);
@@ -217,7 +218,9 @@ public class AltaPropuesta extends JInternalFrame {
 			PropuestaController cp = new PropuestaController();
 			DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, "", "", "", "");
 			DtCategoria dtCat = new DtCategoria(categoria);
-			DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat);
+			// revisar esto
+			//DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat);
+			DtPropuesta dtPropuesta = null; // cambiar!
 			try {
 				cp.altaPropuesta(dtPropuesta);
 				JOptionPane.showMessageDialog(this, "La propuesta se ha creado con Ã©xito", "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);

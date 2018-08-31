@@ -1,0 +1,42 @@
+package datatype;
+
+public class DtPropuestaColaborada {
+   private String titulo;
+   private String descripcion;
+   private String imagen;
+   private float montoAportado;
+   // PseudoAtributos
+   private DtProponente proponenteACargo;
+   private DtEstado estadoActual;
+	   
+   public DtPropuestaColaborada(String titulo, String descripcion, String imagen, float montoAportado,
+			DtProponente proponenteACargo, DtEstado estadoActual) {
+		super();
+		this.titulo = titulo;
+		this.descripcion = descripcion;
+		this.imagen = imagen;
+		this.montoAportado = montoAportado;
+		this.proponenteACargo = proponenteACargo;
+		this.estadoActual = estadoActual;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public String getImagen() {
+		return imagen;
+	}
+	public float getMontoAportado() {
+		return montoAportado;
+	}
+	public DtProponente getProponenteACargo() {
+		return proponenteACargo;
+	}
+	public DtEstado getEstadoActual() {
+		return estadoActual;
+	}
+	   
+	   
+}

@@ -3,11 +3,22 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import datatype.DtPerfilProponente;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
+import datatype.DtPerfilProponente;
+import datatype.DtProponente;
+
+@Entity
+@DiscriminatorValue("P")
 public class Proponente extends Usuario{
+	
+	@Column(name="DIRECCION")
     private String direccion;
+	@Column(name="BIOGRAFIA")
     private String biografia;
+	@Column(name="LINK_WEB")
     private String linkWeb;
     
     // PseudoAtributos
@@ -56,5 +67,10 @@ public class Proponente extends Usuario{
     													this.getLinkWeb(),null, null, null, null, null); //null=Son las colecciones.    	
 		return dtp;
     	
+    }
+    public DtProponente getDtProponente() {
+    	return new DtProponente(super.getNickname(), super.getNombre(), super.getApellido(),
+    			super.getCorreoElectronico(), super.getFechaNacimiento(), super.getImagen(), this.direccion, 
+    			this.biografia, this.linkWeb);
     }
 }

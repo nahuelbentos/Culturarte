@@ -1,5 +1,6 @@
 package logica;
 
+import datatype.DtEstado;
 import datatype.EstadoPropuesta;
 
 public class Estado {
@@ -19,5 +20,8 @@ public class Estado {
 		this.estado = estado;
 	}
 	
-	
+	public DtEstado getDtEstado() {
+		DtEstado dte = new DtEstado(estado);
+		return dte;
+	}
 }

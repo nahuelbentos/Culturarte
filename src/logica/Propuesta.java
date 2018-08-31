@@ -1,11 +1,13 @@
 package logica;
 
-import datatype.DtPropuesta;
-import datatype.EstadoPropuesta;
-import datatype.TipoRetorno;
-
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+
+import datatype.DtEstado;
+import datatype.DtPropuesta;
+import datatype.DtPropuestaColaborada;
+import datatype.EstadoPropuesta;
+import datatype.TipoRetorno;
 
 public class Propuesta {
     
@@ -88,6 +90,26 @@ public class Propuesta {
     public String getTitulo() {
         return titulo;
     }
+    
+    public Estado getEstadoActual() {
+ 		return estadoActual;
+ 	}
+
+ 	public void setEstadoActual(Estado estadoActual) {
+ 		this.estadoActual = estadoActual;
+ 	}
+
+ 	public ArrayList<Estado> getEstadoHistorial() {
+ 		return estadoHistorial;
+ 	}
+
+ 	public void setEstadoHistorial(ArrayList<Estado> estadoHistorial) {
+ 		this.estadoHistorial = estadoHistorial;
+ 	}
+
+ 	public Categoria getCategoria() {
+ 		return categoria;
+ 	}
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
@@ -153,4 +175,17 @@ public class Propuesta {
     	return null; //dtp;
     	
     }
+       
+    public DtPropuestaColaborada getInfoPropuestaColaborada() {
+    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());    	
+    }
+    
+    public ArrayList<DtEstado> getDtEstadoHistorial(){
+    	ArrayList<DtEstado> dte = new ArrayList<DtEstado>() ;
+    	for (Estado e : estadoHistorial) {
+    		dte.add(e.getDtEstado());			
+		}
+    	return dte;
+    }
+    
 }   
