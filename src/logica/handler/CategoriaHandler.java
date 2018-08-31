@@ -1,6 +1,7 @@
 package logica.handler;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import logica.Categoria;
 
@@ -8,7 +9,9 @@ public class CategoriaHandler {
 	private Map<String, Categoria> categorias;
 	private static CategoriaHandler instancia = null;
 
-	private CategoriaHandler() {}
+	private CategoriaHandler() {
+		categorias = new HashMap<String, Categoria>();
+	}
 
 	public static CategoriaHandler getInstancia() {
 		if (instancia == null)
@@ -17,7 +20,7 @@ public class CategoriaHandler {
 	}
 
 	public Categoria[] getCategorias() {
-		if (categorias.isEmpty())
+		if (categorias==null)
             return null;
         else {
             Collection<Categoria> cats = categorias.values();
@@ -32,7 +35,10 @@ public class CategoriaHandler {
 	}
 
 	public boolean isMember(String nombre) {
-		return ((Categoria) categorias.get(nombre)) == null;
+		if (!(categorias==null))
+			return categorias.containsKey(nombre);
+		else
+			return false;
 	}
 
 	public Categoria getCategoria(String nombre) {
@@ -40,6 +46,9 @@ public class CategoriaHandler {
 	}
 
 	public void addCategoria(Categoria cat) {
-		categorias.put(cat.getNombre(), cat);
+//		if (!(cat==null)) {
+			String nombre = cat.getNombre();
+			categorias.put(nombre, cat);
+//		}
 	}
 }

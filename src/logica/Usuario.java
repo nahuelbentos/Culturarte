@@ -1,14 +1,17 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,7 +24,7 @@ public abstract class Usuario {
     private String nickname;
 	@Column(name="NOMBRE")
     private String nombre;
-	@Column(name="FECHA_NACIMIENTO")
+	@Column(name="FECHA_DE_NACIMIENTO")
     private GregorianCalendar fechaNacimiento;
 	@Column(name="EMAIL")
     private String correoElectronico;
@@ -29,10 +32,9 @@ public abstract class Usuario {
     private String apellido;
 	@Column(name="IMAGEN")
     private String imagen;
-
-//    private ArrayList<Propuesta> proFavoritas;
-
-    //private Map<String, Usuario> usuariosQueSigue = new HashMap<String, Usuario>();
+	
+	@OneToMany(mappedBy="usuarioDos", cascade = CascadeType.ALL,orphanRemoval=true)
+	private List<UsuarioSigue> usuariosQueSigue = new ArrayList<>();
 
     public Usuario() {
     	super();
@@ -48,6 +50,8 @@ public abstract class Usuario {
         this.apellido = apellido;
         this.imagen = imagen;
     }
+
+	// SETTERS
     
     public void setApellido(String apellido) {
         this.apellido = apellido;
@@ -74,6 +78,7 @@ public abstract class Usuario {
     }
 
     // GETTERS
+
     public String getApellido() {
         return apellido;
     }
@@ -97,22 +102,9 @@ public abstract class Usuario {
     public String getImagen() {
         return imagen;
     }
-
-//    public Map<String, Usuario> getUsuariosQueSigue() {
-//    	return usuariosQueSigue;
-//    }
-//
-//    public Usuario[] getListaUsuariosQueSigue() {
-//        if (usuariosQueSigue.isEmpty())
-//            return null;
-//        else {
-//            Collection<Usuario> usrs = usuariosQueSigue.values();
-//            Object[] o = usrs.toArray();
-//            Usuario[] usuarios = new Usuario[o.length];
-//            for (int i = 0; i < o.length; i++) {
-//                usuarios[i] = (Usuario) o[i];
-//            }
-//            return usuarios;
-//        }
-//    }
+   
+	public void seguirUsuario(Usuario usuarioASeguir) {
+		UsuarioSigue u = new UsuarioSigue(this, usuarioASeguir);
+		usuariosQueSigue.add(u);
+	}
 }

@@ -1,18 +1,20 @@
 package logica;
 
-import java.util.ArrayList;
-
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.EstadoPropuesta;
+
 import logica.exceptions.ColaboradorNoExisteException;
 import logica.exceptions.PropuestaNoExisteException;
+import logica.exceptions.CategoriaNoExisteException;
+import logica.exceptions.ProponenteNoExisteException;
+import logica.exceptions.PropuestaRepetidaException;
 
 public interface IPropuestaController {
 
-	public abstract boolean altaPropuesta(DtPropuesta dtPropuesta);
+	public abstract void altaPropuesta(DtPropuesta dtPropuesta)  throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException;
 	
 	public abstract DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException;
 	
@@ -24,7 +26,7 @@ public interface IPropuestaController {
 	
 	// Falta crear el DtEstadoPropuesta
 	//public abstract DtEstadoPropuesta[] listarEstadosDePropuestas();
-	public abstract ArrayList<DtPropuesta> listarPropuestasExistentes();
+	public abstract DtPropuesta[] listarPropuestasExistentes();
 	
 	// Falta crear el DtDatosPropuesta
 	public DtDatosPropuesta consultarPropuesta(String titulo);
@@ -38,6 +40,5 @@ public interface IPropuestaController {
 
 	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException;
 	
-	public abstract void nuevaColaboracionAuxiliarHarcode();
-
 }
+

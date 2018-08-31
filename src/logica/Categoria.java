@@ -21,7 +21,7 @@ public class Categoria {
 	private int id;
 	@Column(name="NOMBRE", nullable=false, length=50)
 	private String nombre;
-
+	
 	public Categoria() {
 		super();
 	}
@@ -33,14 +33,15 @@ public class Categoria {
 	public void setId(int id) {
 		this.id = id;
 	}
-	// PseudoAtributos
+
 	//private ArrayList<Categoria> superCategorias;
 	//private ArrayList<Categoria> subCategorias;
-	//private Map<String, Categoria> subCategorias;
+	private ArrayList<Categoria> superCategorias;
 
 	public Categoria(String nombre) {
 		super();
 		this.nombre = nombre;
+		superCategorias = new ArrayList<>();
 	}
 
 	public String getNombre() {
@@ -50,40 +51,19 @@ public class Categoria {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-/*
-    public ArrayList<DtCategoria> getDtSubCategorias(){
-    	ArrayList<DtCategoria> dtc = new ArrayList<DtCategoria>() ;
-    	for (Categoria c : subCategorias) {
-    		dtc.add(c.getDtCategoria());
-		}
-    	return dtc;
-    }
-
-    public ArrayList<DtCategoria> getArraySuperCategorias(){
-    	ArrayList<DtCategoria> dtc = new ArrayList<DtCategoria>();
-    	for (Categoria c : superCategorias) {
-    		dtc.add(c.getDtCategoria());
-		}
-    	return dtc;
-    }
-
-	public DtCategoria getDtCategoria() {
-		return new DtCategoria(nombre, this.getArraySuperCategorias(),this.getDtSubCategorias());
+	
+	public ArrayList<Categoria> getSuperCategorias() {
+		return this.superCategorias;
 	}
-
-		public void addPadre(Categoria categoria) {
-			this.superCategorias.add(categoria);
-		}
-
-		public ArrayList<Categoria> getSuperCategorias() {
-			return this.superCategorias;
-		}
-
-		public ArrayList<String> getDtSuperCategorias() {
-			ArrayList<String> padres = new ArrayList<>();
-			for (int i = 0; i < this.superCategorias.size(); i++)
-				padres.add(this.superCategorias.get(i).getNombre());
-			return padres;
-		}
-		*/
+	
+	public DtCategoria getDtCategoria() {
+		return new DtCategoria(nombre, superCategorias);
+	}
+	
+	public ArrayList<Categoria> getDtSuperCategorias() {
+		ArrayList<Categoria> padres = new ArrayList<>();
+		for (int i = 0; i < this.superCategorias.size(); i++)
+			padres.add(superCategorias.get(i));
+		return padres;
+	}
 }

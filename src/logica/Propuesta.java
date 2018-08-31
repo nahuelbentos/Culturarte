@@ -1,10 +1,13 @@
 package logica;
 
-import datatype.DtColaborador;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
 import datatype.DtDatosPropuesta;
 import datatype.DtEstado;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
+import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 
 import java.util.ArrayList;
@@ -17,15 +20,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="PROPUESTAS")
 public class Propuesta {
+	
 	@Id
 	@Column(name="TITULO")
 	private String titulo;
+	
 	@Column(name="DESCRIPCION")
 	private String descripcion;
 	@Column(name="IMAGEN")
@@ -40,8 +46,8 @@ public class Propuesta {
 	private double precioEntrada;
 	@Column(name="LUGAR")
 	private String lugar;
-	//@Column(name="TIPO_RETORNO")
-	//private TipoRetorno tipo;
+	@Column(name="TIPO_RETORNO")
+	private TipoRetorno tipo;
 
    // PseudoAtributos
 	@ManyToOne
@@ -50,14 +56,21 @@ public class Propuesta {
 	
 	@OneToOne
 	@JoinColumn(name="ID_CATEGORIA")
-	private Categoria categoria;   
-   
+	private Categoria categoria;
+	
+	@Id
+	@ManyToOne
+	@JoinColumn(name="ESTADO_ACTUAL")
+	private Estado estadoActual;
+	
+	/*
+	@OneToMany
+	private ArrayList<Estado> estadoHistorial;   
+   */
+	
 	public Propuesta() {
 		super();
 	}
-
-   //private Estado estadoActual;
-   //private ArrayList<Estado> estadoHistorial;
    
    public Propuesta(String titulo, String descripcion, String imagen, 
 			double d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
@@ -72,6 +85,21 @@ public class Propuesta {
 	    this.lugar = lugar;
 	    //this.tipo = tipo;
 	}
+
+   public Propuesta(DtPropuesta dtP) {
+	    this.titulo = dtP.getTitulo();
+	    this.descripcion = dtP.getDescripcion();
+	    this.imagen = dtP.getImagen();
+	    this.montoNecesario = dtP.getMontoNecesario();
+	    this.fechaPublicacion = dtP.getFechaPublicacion();
+	    this.fechaEspecatulo = dtP.getFechaEspecatulo();
+	    this.precioEntrada = dtP.getPrecioEntrada();
+	    this.lugar = dtP.getLugar();
+	    this.tipo = dtP.getTipo();
+	    this.estadoActual = new Estado(EstadoPropuesta.ingresada);
+	    //this.estadoHistorial = null; // Ya hay que setear el ingresada o al historial pasa al momento del cambio?
+	}
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -107,7 +135,23 @@ public class Propuesta {
     public String getTitulo() {
         return titulo;
     }
+    
+    public Estado getEstadoActual() {
+ 		return estadoActual;
+ 	}
 
+ 	public void setEstadoActual(Estado estadoActual) {
+ 		this.estadoActual = estadoActual;
+ 	}
+/*
+ 	public ArrayList<Estado> getEstadoHistorial() {
+ 		return estadoHistorial;
+ 	}
+
+ 	public void setEstadoHistorial(ArrayList<Estado> estadoHistorial) {
+ 		this.estadoHistorial = estadoHistorial;
+ 	}
+*/
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -157,7 +201,9 @@ public class Propuesta {
     }
     
     public DtPropuesta getInfoPropuesta() {
-    	
+    	/*DtPropuesta dtp = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
+    									fechaEspecatulo, lugar, precioEntrada, tipo, 0,
+    									proponenteACargo, estadoActual, estadoHistorial, categoria);
     	/*
     	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
 				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
@@ -172,24 +218,6 @@ public class Propuesta {
 				null,null);
     }
     
-    public DtPropuestaColaborada getInfoPropuestaColaborada() {
-    	
-    	//return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());
-    	// CAMBIO EL METODO PARA PROBAR PERSISTENCIA
-    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), null);
-    }
-    
-    public ArrayList<DtEstado> getDtEstadoHistorial(){
-    	/*
-    	 * // CAMBIO EL METODO PARA PROBAR PERSISTENCIA
-    	ArrayList<DtEstado> dte = new ArrayList<DtEstado>() ;
-    	for (Estado e : estadoHistorial) {
-    		dte.add(e.getDtEstado());			
-		}
-    	return dte;
-    	*/
-    	return null;
-    }
     
     /*
     public Estado getEstadoActual() {
@@ -241,6 +269,21 @@ public class Propuesta {
 				montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,
 				tipo, 0, colaboradores);
     	*/
-		return null;
+
+    	return null; //dtp;
+    	
     }
+
+    public DtPropuestaColaborada getInfoPropuestaColaborada() {
+    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());    	
+    }
+    
+    public ArrayList<DtEstado> getDtEstadoHistorial(){
+    	ArrayList<DtEstado> dte = new ArrayList<DtEstado>() ;
+//    	for (Estado e : estadoHistorial) {
+//    		dte.add(e.getDtEstado());			
+//		}
+    	return dte;
+    }
+    
 }   

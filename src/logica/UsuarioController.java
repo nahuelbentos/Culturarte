@@ -2,23 +2,30 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import datatype.DtColaboracion;
+import datatype.DtColaborador;
+import datatype.DtPerfilColaborador;
+import datatype.DtPerfilProponente;
+import datatype.DtProponente;
+import datatype.DtPropuesta;
+import datatype.DtPropuestaColaborada;
+import datatype.DtUsuario;
+import datatype.TipoRetorno;
+import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
-import excepciones.UsuarioNoExisteElUsuarioException;
-import datatype.*;
 import logica.exceptions.ColaboradorNoExisteException;
 import logica.handler.ColaboracionHandler;
 import logica.handler.ColaboradorHandler;
 import logica.handler.ProponenteHandler;
 import logica.handler.PropuestaHandler;
-import logica.handler.UsuarioHandler;
 
 public class UsuarioController implements IUsuarioController {
 
@@ -31,15 +38,11 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException {
-		//Configuramos el EMF a trav�s de la unidad de persistencia
 		emf = Persistence.createEntityManagerFactory("Conexion");
-		//Generamos un EntityManager
 		em = emf.createEntityManager();
-		//Iniciamos una transaccion
 		em.getTransaction().begin();
 
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-		Usuario usuario = usuarioHandler.obtenerUsuario(dtUsuario.getNickname());
+		Usuario usuario = em.find(Usuario.class, dtUsuario.getNickname());
 		if (usuario != null) {
 			throw new UsuarioYaExisteElUsuarioException("El usuario " + dtUsuario.getNickname() + " ya esta registrado");
 		} else {
@@ -59,13 +62,9 @@ public class UsuarioController implements IUsuarioController {
 
 				colaboradorHandler.addColaborador(usuario);
 			}
-			usuarioHandler.agregarUsuario(usuario);
-
-			//Persistimos el objeto
+			
 			em.persist(usuario);
-			//Commmiteamos la transacci�n
 			em.getTransaction().commit();
-			//Cerramos el EntityManager
 			em.close();
 		}
 	}
@@ -77,33 +76,53 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public  ArrayList<String> listarProponentes() {
-		ProponenteHandler pro = ProponenteHandler.getInstance();
-		ArrayList<String> nicknames = new ArrayList<String>();
-
-        Collection<Proponente> props = pro.getProponentes().values();
-        Object[] o = props.toArray();
-        Proponente[] proponentes = new Proponente[o.length];
-        for (int i = 0; i < o.length; i++) {
-        	proponentes[i] = (Proponente) o[i];
-			nicknames.add(proponentes[i].getNickname());
+	public  DtUsuario[] listarProponentes() {
+		
+		// Falta agregar la condicion en la query para que traiga solo los proponentes
+		
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        if (usuarios != null) {
+            dtUsuario = new DtUsuario[usuarios.size()];
+            Usuario usuario;
+            for (int i = 0; i < usuarios.size(); i++) {
+                usuario = usuarios.get(i);
+                dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
+                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
+            }
         }
-
-		// TODO Auto-generated method stub
-		return nicknames;
+        
+        em.close();
+        
+        return dtUsuario;
 	}
 
 	@Override
 	public void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException {
-//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-//        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
-//        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
-//		if (usuarioUno.getUsuariosQueSigue().containsKey(nicknameDos)) {
-//        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
-//        			+ " ya sigue al usuario " + nicknameDos);
-//		} else {
-//	        usuarioUno.getUsuariosQueSigue().put(nicknameDos, usuarioDos);
-//		}
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+
+        Usuario usuarioUno = em.find(Usuario.class, nicknameUno);
+        Usuario usuarioDos = em.find(Usuario.class, nicknameDos);
+        
+        UsuarioSigueID usuarioSIgueID = new UsuarioSigueID(nicknameUno,nicknameDos);
+        UsuarioSigue usuarioSigue = em.find(UsuarioSigue.class, usuarioSIgueID);
+        
+		if (usuarioSigue != null) {
+        	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
+        			+ " ya sigue al usuario " + nicknameDos);
+		} else {
+			usuarioUno.seguirUsuario(usuarioDos);
+		}
+        
+		em.flush();
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override
@@ -116,25 +135,34 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario[] listarUsuarios() {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario[] usrs = usuarioHandler.getUsuarios();
-        if (usrs != null) {
-            DtUsuario[] dtUsuario = new DtUsuario[usrs.length];
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        if (usuarios != null) {
+            dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
-            for (int i = 0; i < usrs.length; i++) {
-                usuario = usrs[i];
+            for (int i = 0; i < usuarios.size(); i++) {
+                usuario = usuarios.get(i);
                 dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
             }
-            return dtUsuario;
         }
-        return null;
+        
+        em.close();
+        
+        return dtUsuario;
 	}
 
 	@Override
 	public DtUsuario verPerfilUsuario(String nickname) throws UsuarioNoExisteElUsuarioException {
-		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-        Usuario usuario = usuarioHandler.obtenerUsuario(nickname);
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Usuario usuario = em.find(Usuario.class, nickname);
         DtUsuario dtUsuario = null;
         if (usuario != null) {
         	if (usuario instanceof Proponente) {
@@ -147,27 +175,33 @@ public class UsuarioController implements IUsuarioController {
 				dtUsuario = new DtColaborador(colaborador.getNickname(), colaborador.getNombre(), colaborador.getApellido(),
 						colaborador.getCorreoElectronico(), colaborador.getFechaNacimiento(), colaborador.getImagen());
 			}
-        	return dtUsuario;
         } else {
             throw new UsuarioNoExisteElUsuarioException("El usuario " + nickname + " no existe");
         }
+        
+        em.close();
+        
+        return dtUsuario;
 	}
 
 	@Override
 	public DtUsuario[] listarUsuariosQueSigue(String nickname) {
-//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-//		Usuario usuarioUno = usuarioHandler.obtenerUsuario(nickname);
-//		Usuario[] usuarios = usuarioUno.getListaUsuariosQueSigue();
-//		if (usuarios != null) {
-//	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.length];
-//	        Usuario usuarioDos;
-//	        for (int i = 0; i < usuarios.length; i++) {
-//	        	usuarioDos = usuarios[i];
-//	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
-//	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
-//	        }
-//	        return listaDeUsuarios;
-//		}
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
+		if (usuarios != null) {
+	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.size()];
+	        Usuario usuarioDos;
+	        for (int i = 0; i < usuarios.size(); i++) {
+	        	usuarioDos = usuarios.get(i);
+	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
+	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
+	        }
+	        return listaDeUsuarios;
+		}
 		return null;
 	}
 
@@ -228,7 +262,7 @@ public class UsuarioController implements IUsuarioController {
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
 		// TODO Auto-generated method stub
-/*
+
 		ProponenteHandler mpro = ProponenteHandler.getInstance();
 		Map<String, Proponente> props = mpro.getProponentes();
 
@@ -260,7 +294,7 @@ public class UsuarioController implements IUsuarioController {
 				}
 
 				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
-				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), prop.getTipo(), 0,
+				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
 				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual().getDtEstado(), prop.getDtEstadoHistorial(),
 				 prop.getCategoria().getDtCategoria(), colaboraciones);
 //				dataPro=prop.getInfoPropuesta(); //4 y5
@@ -293,14 +327,11 @@ public class UsuarioController implements IUsuarioController {
 				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
 
 		return usuProponente;
-		*/
-		
-		return null;
 	}
 
 	@Override
 	public DtPerfilColaborador verPerfilColaborador(String nickname) {
-		/*
+		// TODO Auto-generated method stub
 
 		ColaboradorHandler mcol = ColaboradorHandler.getInstance();
 		DtColaborador perfil = mcol.obtenerColaborador(nickname); //1y2
@@ -312,7 +343,7 @@ public class UsuarioController implements IUsuarioController {
 		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<>();
 		for(Colaboracion c : colabs.values()) { //1*
 			if(c.tieneColaborador(nickname)) { //2* y 2.1*
-				 float montoAportado = c.getMonto(); //3*
+				 double montoAportado = c.getMonto(); //3*
 				 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*
 				 DtPropuestaColaborada colaboracion = new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
 						 p.getProponenteACargo(), p.getEstadoActual()); //3.2*
@@ -322,42 +353,21 @@ public class UsuarioController implements IUsuarioController {
 
 		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getEmail(),
 				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
-		*/
-		return null;
 	}
 
 	@Override
 	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
+//		// TODO Auto-generated method stub
 //		ColaboracionHandler c = ColaboracionHandler.getInstance();
 //		Colaboracion[] colaboraciones = c.getColaboraciones();
 //
 		return null;
 	}
-	
+
 	@Override
 	public void crearPropuestaAuxiliar() {
-		//Configuramos el EMF a trav�s de la unidad de persistencia
-		emf = Persistence.createEntityManagerFactory("Conexion");
-		//Generamos un EntityManager
-		em = emf.createEntityManager();
-		//Iniciamos una transaccion
-		em.getTransaction().begin();
+		// TODO Auto-generated method stub
 		
-		Categoria c = new Categoria("Categorias");
-		Propuesta p = new Propuesta("probando","una nueva propuesta","/etc/algo.png",10000.50, new GregorianCalendar(2018,8,28),new GregorianCalendar(2019,1,28), 5.00, "mi casa", TipoRetorno.entradasGratis);
-		
-		em.persist(c);
-		Proponente prop = em.find(Proponente.class, "maxi");
-		p.setCategoria(c);
-		p.setProponenteACargo(prop);
-		
-		em.persist(p);
-		
-		//Commmiteamos la transacci�n
-		em.getTransaction().commit();
-		//Cerramos el EntityManager
-		em.close();
 	}
-	
-	
+
 }

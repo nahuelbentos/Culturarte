@@ -24,7 +24,7 @@ public interface IUsuarioController {
 
 	public abstract DtUsuario[] listarUsuariosQueSigue(String nickname);
 
-	public abstract ArrayList<String> listarProponentes();
+	public abstract DtUsuario[] listarProponentes();
 
 	// Revisar si es necesario el DtPerfilProponente
 	public abstract DtPerfilProponente verPerfilProponente(String nickname);
@@ -36,7 +36,7 @@ public interface IUsuarioController {
 	public abstract DtColaborador[] listarColaboradores() throws ColaboradorNoExisteException;
 	
 	public abstract DtPropuesta[] listarPropuestasDeUnColaborador(String nickname);
-
+	
 	public abstract void crearPropuestaAuxiliar();
 
 }

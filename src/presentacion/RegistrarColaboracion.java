@@ -31,7 +31,6 @@ import javax.swing.JComboBox;
 public class RegistrarColaboracion extends JInternalFrame {
 	
 	private static final String TEXTO_COMBO_UNO = "No hay usuarios registrados en el sistema";
-	//private static final String TITULO = "Registrar colaboración";
 	
 	private ListarPropuestas grillaPropuestas;
 	private PropuestaSeleccionada propSeleccionada;
