@@ -23,7 +23,7 @@ public class CategoriaController implements ICategoriaController {
 
             return dtC;
         } else
-            throw new ExcepcionCategoriaNoExiste("No existen usuarios registrados");
+            throw new ExcepcionCategoriaNoExiste("No existen categorías registradas");
 	}
 
 	@Override
@@ -37,13 +37,15 @@ public class CategoriaController implements ICategoriaController {
 			ArrayList<String> padres = dtC.getPadres();
 			
 			// busco los objetos relativos a los padres para agregarlos
-			for (int i = 0; i < padres.size(); i++) {
-				Categoria padre = catHan.getCategoria(padres.get(i));
-				if (!(padre==null))
-					cat.addPadre(padre);
+			if (!(padres==null)) {
+				for (int i = 0; i < padres.size(); i++) {
+					Categoria padre = catHan.getCategoria(padres.get(i));
+					if (!(padre==null))
+						cat.addPadre(padre);
+				}
 			}
 			catHan.addCategoria(cat);
-		};
+		}
 	}
 
 }

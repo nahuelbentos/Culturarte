@@ -75,20 +75,29 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public  ArrayList<String> listarProponentes() {
-		ProponenteHandler pro = ProponenteHandler.getInstance();
-		ArrayList<String> nicknames = new ArrayList<String>();
-
-        Collection<Proponente> props = pro.getProponentes().values();
-        Object[] o = props.toArray();
-        Proponente[] proponentes = new Proponente[o.length];
-        for (int i = 0; i < o.length; i++) {
-        	proponentes[i] = (Proponente) o[i];
-			nicknames.add(proponentes[i].getNickname());
+	public  DtUsuario[] listarProponentes() {
+		
+		// Falta agregar la condicion en la query para que traiga solo los proponentes
+		
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        if (usuarios != null) {
+            dtUsuario = new DtUsuario[usuarios.size()];
+            Usuario usuario;
+            for (int i = 0; i < usuarios.size(); i++) {
+                usuario = usuarios.get(i);
+                dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
+                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
+            }
         }
-
-		// TODO Auto-generated method stub
-		return nicknames;
+        
+        em.close();
+        
+        return dtUsuario;
 	}
 
 	@Override

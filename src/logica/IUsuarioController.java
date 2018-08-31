@@ -24,7 +24,7 @@ public interface IUsuarioController {
 
 	public abstract DtUsuario[] listarUsuariosQueSigue(String nickname);
 
-	public abstract ArrayList<String> listarProponentes();
+	public abstract DtUsuario[] listarProponentes();
 
 	// Revisar si es necesario el DtPerfilProponente
 	public abstract DtPerfilProponente verPerfilProponente(String nickname);
