@@ -172,7 +172,7 @@ public class AltaPropuesta extends JInternalFrame {
         UsuarioController uc = new UsuarioController();
         
         
-        // lo cambie a DtUsuario, habría que volverlo a cambiar a DtProponente
+        // lo cambie a DtUsuario, habrï¿½a que volverlo a cambiar a DtProponente
         DtUsuario[] dtP = uc.listarProponentes();
         for (DtUsuario i : dtP) {
         	entProponente.addItem(i.getNickname());
@@ -245,7 +245,8 @@ public class AltaPropuesta extends JInternalFrame {
 			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
 		lugar = entLugar.getText();
 		tipo = (TipoRetorno) entTipoRetorno.getSelectedItem();
-		nicknameProponente = entProponente.getSelectedItem().toString();
+		if (entProponente.getSelectedItem() != null)
+			nicknameProponente = entProponente.getSelectedItem().toString();
 		categoria = entCategoria.getSelectedItem().toString();
 		
 		// acÃ¡ hay que poner las validaciones del caso de uso
