@@ -2,14 +2,41 @@ package logica;
 
 import java.util.ArrayList;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import datatype.DtCategoria;
 
+@Entity
+@Table(name="CATEGORIAS")
 public class Categoria {
+
+
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="ID_CAT")
+	private int id;
+	@Column(name="NOMBRE", nullable=false, length=50)
 	private String nombre;
 	
-	// PseudoAtributos
+	public Categoria() {
+		super();
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	//private ArrayList<Categoria> superCategorias;
+	//private ArrayList<Categoria> subCategorias;
 	private ArrayList<Categoria> superCategorias;
-	//private Map<String, Categoria> subCategorias;
 
 	public Categoria(String nombre) {
 		super();
@@ -23,10 +50,6 @@ public class Categoria {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	
-	public void addPadre(Categoria categoria) {
-		this.superCategorias.add(categoria);
 	}
 	
 	public ArrayList<Categoria> getSuperCategorias() {

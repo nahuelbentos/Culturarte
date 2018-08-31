@@ -3,30 +3,31 @@ package datatype;
 import java.util.GregorianCalendar;
 
 public class DtColaboracion {
-    private DtPropuesta propuesta;
-    private float monto;
-    private DtColaborador colaborador;
+    
+	private String tituloPropuesta;
+	private String colaborador;
+	private double monto;
 	private GregorianCalendar fechaAporte;
 	private TipoRetorno tipo;
 	
-	
-	public DtColaboracion(DtPropuesta propuesta, float monto, DtColaborador colaborador, GregorianCalendar fechaAporte,
+	public DtColaboracion(String tituloPropuesta, String colaborador, double monto, GregorianCalendar fechaAporte,
 			TipoRetorno tipo) {
 		super();
-		this.propuesta = propuesta;
-		this.monto = monto;
+		this.tituloPropuesta = tituloPropuesta;
 		this.colaborador = colaborador;
+		this.monto = monto;
 		this.fechaAporte = fechaAporte;
 		this.tipo = tipo;
 	}
-	public DtPropuesta getPropuesta() {
-		return propuesta;
+	
+	public String getTituloPropuesta() {
+		return tituloPropuesta;
 	}
-	public float getMonto() {
-		return monto;
-	}
-	public DtColaborador getColaborador() {
+	public String getColaborador() {
 		return colaborador;
+	}
+	public double getMonto() {
+		return monto;
 	}
 	public GregorianCalendar getFechaAporte() {
 		return fechaAporte;
@@ -36,5 +37,6 @@ public class DtColaboracion {
 	}
 	
 	
-    
+	
+	
 }

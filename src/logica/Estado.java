@@ -1,10 +1,20 @@
 package logica;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import datatype.DtEstado;
 import datatype.EstadoPropuesta;
 
+@Entity
+@Table(name="ESTADOS")
 public class Estado {
 	
+	
+	@Id
+	@Column(name="NOMBRE",columnDefinition="VARCHAR(15)")
 	private EstadoPropuesta estado;
 
 	public Estado(EstadoPropuesta estado) {

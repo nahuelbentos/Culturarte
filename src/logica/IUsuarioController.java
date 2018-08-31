@@ -36,5 +36,7 @@ public interface IUsuarioController {
 	public abstract DtColaborador[] listarColaboradores() throws ColaboradorNoExisteException;
 	
 	public abstract DtPropuesta[] listarPropuestasDeUnColaborador(String nickname);
+	
+	public abstract void crearPropuestaAuxiliar();
 
 }

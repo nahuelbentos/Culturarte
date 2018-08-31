@@ -10,11 +10,11 @@ public class DtPropuesta {
    private String titulo;
    private String descripcion;
    private String imagen;
-   private float montoNecesario;
+   private double montoNecesario;
    private GregorianCalendar fechaPublicacion;
    private GregorianCalendar fechaEspecatulo;
    private String lugar;
-   private float precioEntrada;
+   private double precioEntrada;
    private TipoRetorno tipo;
    private float recaudado;
 
@@ -25,10 +25,8 @@ public class DtPropuesta {
    private DtCategoria categoria;
    private ArrayList<DtColaboracion> colaboraciones;
    
-	
-
-	public DtPropuesta(String titulo, String descripcion, String imagen, float montoNecesario,
-		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, float precioEntrada,
+   public DtPropuesta(String titulo, String descripcion, String imagen, double montoNecesario,
+		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
 		TipoRetorno tipo, float recaudado, DtProponente proponenteACargo, DtEstado estadoActual,
 		ArrayList<DtEstado> estadoHistorial, DtCategoria categoria, ArrayList<DtColaboracion> colaboraciones) {
 	super();
@@ -61,7 +59,7 @@ public class DtPropuesta {
 		return imagen;
 	}
 
-	public float getMontoNecesario() {
+	public double getMontoNecesario() {
 		return montoNecesario;
 	}
 
@@ -77,7 +75,7 @@ public class DtPropuesta {
 		return lugar;
 	}
 
-	public float getPrecioEntrada() {
+	public double getPrecioEntrada() {
 		return precioEntrada;
 	}
 
@@ -112,9 +110,4 @@ public class DtPropuesta {
 	public void setColaboraciones(ArrayList<DtColaboracion> colaboraciones) {
 		this.colaboraciones = colaboraciones;
 	}
-	
-	
-	
-	
 }
-

@@ -1,14 +1,21 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import datatype.DtColaboracion;
 import datatype.DtColaborador;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
+import datatype.DtPropuestaMinificado;
 import datatype.EstadoPropuesta;
 import logica.exceptions.CategoriaNoExisteException;
+import logica.exceptions.ColaboradorNoExisteException;
 import logica.exceptions.ProponenteNoExisteException;
 import logica.exceptions.PropuestaNoExisteException;
 import logica.exceptions.PropuestaRepetidaException;
@@ -19,6 +26,9 @@ import logica.handler.PropuestaHandler;
 
 public class PropuestaController implements IPropuestaController {
 
+	private static EntityManager em;
+	private static EntityManagerFactory emf;
+	
 	@Override
 	public void altaPropuesta(DtPropuesta dtPropuesta) throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException{
 		PropuestaHandler propHan = PropuestaHandler.getInstance();
@@ -54,15 +64,89 @@ public class PropuestaController implements IPropuestaController {
 	}
 
 	@Override
-	public DtPropuesta[] listarPropuestas() {
-		// TODO Auto-generated method stub
-		return null;
+	public DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException {
+		
+		//Configuramos el EMF a trav�s de la unidad de persistencia
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		//Generamos un EntityManager
+		em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        
+        if (propuestas != null) {
+			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
+			Propuesta pro;
+			for (int i = 0; i < propsMin.length; i++) {
+				pro = propuestas.get(i);
+				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
+			}
+			
+			em.close();
+			return propsMin;
+		}else {
+			
+			em.close();
+			throw new PropuestaNoExisteException("No existen propuestas en el sistema.");
+		}
+	}
+	
+	@Override
+	public void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException{
+		//Configuramos el EMF a trav�s de la unidad de persistencia
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		//Generamos un EntityManager
+		em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Colaborador c = em.find(Colaborador.class, colaboracion.getColaborador());
+		if (c != null) {
+			Propuesta p = em.find(Propuesta.class, colaboracion.getTituloPropuesta());
+			
+			if (p != null) {
+				
+				Colaboracion beanCol = new Colaboracion(colaboracion.getMonto(),colaboracion.getFechaAporte(),colaboracion.getTipo());
+				beanCol.setColaborador(c);
+				beanCol.setPropuestaColaborada(p);
+				
+				//Persistimos el objeto
+				em.persist(beanCol);
+				//Commmiteamos la transacci�n
+				em.getTransaction().commit();
+				//Cerramos el EntityManager
+				em.close();
+				
+			}else {
+				em.getTransaction().rollback();
+				em.close();
+				throw new PropuestaNoExisteException("No existe propuesta");
+			}
+				
+		}else {
+			em.getTransaction().rollback();
+			em.close();
+			throw new ColaboradorNoExisteException("No existe colaborador");
+		}
+		
 	}
 
 	@Override
 	public DtPropuesta seleccionarPropuesta(String titulo) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Propuesta p = em.find(Propuesta.class, titulo);
+		DtPropuesta dtp = p.getDtPropuesta();
+		
+		em.close();
+		
+		return dtp;
 	}
 
 	@Override

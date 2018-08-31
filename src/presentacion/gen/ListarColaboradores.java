@@ -1,4 +1,4 @@
-package presentacion;
+package presentacion.gen;
 
 import javax.swing.JPanel;
 

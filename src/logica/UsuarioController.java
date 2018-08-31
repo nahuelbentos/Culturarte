@@ -17,6 +17,7 @@ import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.DtUsuario;
+import datatype.TipoRetorno;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
@@ -52,7 +53,7 @@ public class UsuarioController implements IUsuarioController {
 				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
-				proponenteHandler.agregarProponente(usuario);
+				//proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
@@ -207,20 +208,51 @@ public class UsuarioController implements IUsuarioController {
 	@Override
 	public DtColaborador[] listarColaboradores() throws ColaboradorNoExisteException {
 
-		ColaboradorHandler mcol = ColaboradorHandler.getInstance();
-		Colaborador[] cols = mcol.getColaboradores();
+/*
 
-		if (cols != null) {
-			DtColaborador[] dtcols = new DtColaborador[cols.length];
-			Colaborador cola;
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtUsuario[] dtUsuario = null;
+        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        if (usuarios != null) {
+            dtUsuario = new DtUsuario[usuarios.size()];
+            Usuario usuario;
+            for (int i = 0; i < usuarios.size(); i++) {
+                usuario = usuarios.get(i);
+                dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
+                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
+            }
+        }
+        
+        em.close();
+        
+        return dtUsuario;
 
-			for (int i = 0; i < cols.length; i++) {
-				cola = cols[i];
-				dtcols[i] = new DtColaborador(cola.getNickname(), cola.getNombre(), cola.getApellido(),
-						cola.getCorreoElectronico(), cola.getFechaNacimiento(), cola.getImagen());
+
+ * */
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtColaborador[] dtColaboradores = null;
+		
+
+		@SuppressWarnings("unchecked")
+		List<Colaborador> colaboradores = em.createQuery("FROM Colaborador").getResultList();
+		
+		if (colaboradores != null) {
+			dtColaboradores = new DtColaborador[colaboradores.size()];
+			Colaborador c;
+
+			for (int i = 0; i < colaboradores.size(); i++) {
+				c = colaboradores.get(i);
+				dtColaboradores[i] = new DtColaborador(c.getNickname(), c.getNombre(), c.getApellido(),
+						c.getCorreoElectronico(), c.getFechaNacimiento(), c.getImagen());
             }
 
-			return dtcols;
+			return dtColaboradores;
 		}else {
 			throw new ColaboradorNoExisteException("No existen colaboradores registrados");
 		}
@@ -262,7 +294,7 @@ public class UsuarioController implements IUsuarioController {
 				}
 
 				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
-				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), prop.getTipo(), 0,
+				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
 				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual().getDtEstado(), prop.getDtEstadoHistorial(),
 				 prop.getCategoria().getDtCategoria(), colaboraciones);
 //				dataPro=prop.getInfoPropuesta(); //4 y5
@@ -311,7 +343,7 @@ public class UsuarioController implements IUsuarioController {
 		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<>();
 		for(Colaboracion c : colabs.values()) { //1*
 			if(c.tieneColaborador(nickname)) { //2* y 2.1*
-				 float montoAportado = c.getMonto(); //3*
+				 double montoAportado = c.getMonto(); //3*
 				 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*
 				 DtPropuestaColaborada colaboracion = new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
 						 p.getProponenteACargo(), p.getEstadoActual()); //3.2*
@@ -330,6 +362,12 @@ public class UsuarioController implements IUsuarioController {
 //		Colaboracion[] colaboraciones = c.getColaboraciones();
 //
 		return null;
+	}
+
+	@Override
+	public void crearPropuestaAuxiliar() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

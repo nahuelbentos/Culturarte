@@ -3,7 +3,11 @@ package logica;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
+import datatype.DtPropuestaMinificado;
 import datatype.EstadoPropuesta;
+
+import logica.exceptions.ColaboradorNoExisteException;
+import logica.exceptions.PropuestaNoExisteException;
 import logica.exceptions.CategoriaNoExisteException;
 import logica.exceptions.ProponenteNoExisteException;
 import logica.exceptions.PropuestaRepetidaException;
@@ -12,7 +16,7 @@ public interface IPropuestaController {
 
 	public abstract void altaPropuesta(DtPropuesta dtPropuesta)  throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException;
 	
-	public abstract DtPropuesta[] listarPropuestas();
+	public abstract DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException;
 	
 	public abstract DtPropuesta seleccionarPropuesta(String titulo);
 	
@@ -34,4 +38,7 @@ public interface IPropuestaController {
 	// Revisar si est�n bien los par�metros que recibe
 	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
 
+	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException;
+	
 }
+

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import logica.Categoria;
 
-
 public class DtCategoria {
 
 	private String nombre;

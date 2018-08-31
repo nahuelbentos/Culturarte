@@ -9,6 +9,7 @@ public class CategoriaController implements ICategoriaController {
 
 	@Override
 	public DtCategoria[] listarCategorias() throws ExcepcionCategoriaNoExiste{
+
 	    CategoriaHandler catHan = CategoriaHandler.getInstancia();
         Categoria[] cats = catHan.getCategorias();
 
@@ -40,8 +41,8 @@ public class CategoriaController implements ICategoriaController {
 			if (!(padres==null)) {
 				for (int i = 0; i < padres.size(); i++) {
 					Categoria padre = catHan.getCategoria(padres.get(i));
-					if (!(padre==null))
-						cat.addPadre(padre);
+					//if (!(padre==null))
+						//cat.addPadre(padre);
 				}
 			}
 			catHan.addCategoria(cat);

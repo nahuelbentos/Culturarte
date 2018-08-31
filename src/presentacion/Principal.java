@@ -10,7 +10,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logica.Factory;
+import logica.IPropuestaController;
 import logica.IUsuarioController;
+import presentacion.gen.ListarPropuestas;
 
 public class Principal {
 
@@ -21,8 +23,11 @@ public class Principal {
 	private SeguirUsuario seguirUsuario;
 	private DejarDeSeguirUsuario dejarDeSeguirUsuario;
 	private ConsultaColaboracionPropuesta consColProp;
+	private RegistrarColaboracion registrarColaboracion;
+	
 	private IUsuarioController IUC;
-
+	private IPropuestaController IPC;
+	
 	/**
 	 * Launch the application.
 	*/
@@ -49,7 +54,13 @@ public class Principal {
 
         Factory factory = Factory.getInstance();
         IUC = factory.getIUsuarioController();
-
+        
+        IPC = factory.getIPropuestaController();
+        
+        //LO EJECUTO UNA SOLA VEZ.
+        //IUC.crearPropuestaAuxiliar();
+        //IPC.nuevaColaboracionAuxiliarHarcode();
+        
 		altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 
@@ -67,7 +78,10 @@ public class Principal {
 
 		consColProp = new ConsultaColaboracionPropuesta(IUC);
 		consColProp.setVisible(false);
-
+		
+		registrarColaboracion = new RegistrarColaboracion(IPC,IUC);
+		registrarColaboracion.setVisible(false);
+		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
@@ -75,7 +89,8 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(seguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(consColProp);
-
+		frmPaginaPrincipal.getContentPane().add(registrarColaboracion);
+		
 	}
 
 	public void initialize() {
@@ -130,6 +145,11 @@ public class Principal {
 		mnNewMenu.add(mnColaboraciones);
 
 		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
+		mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				registrarColaboracion.setVisible(true);
+			}
+		});
 		mnColaboraciones.add(mntmRegistrarColaboracinA);
 
 		JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");

@@ -53,4 +53,17 @@ public class ColaboradorHandler {
 		
 		return colaboradores.get(nickname).getDtColaborador();
 	}
+	
+	public Colaborador findColaborador(String nickname) {
+		return colaboradores.get(nickname);
+	}
+	
+	public boolean esMiembroColaborador(String nickname) {
+		Colaborador c = colaboradores.get(nickname);
+		if (c != null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }
