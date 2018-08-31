@@ -4,6 +4,7 @@ import java.util.GregorianCalendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -20,12 +21,12 @@ import datatype.TipoRetorno;
 public class Colaboracion {
 	
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="COLABORADOR")
 	private Colaborador colaborador;
 
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PROPUESTA")
 	private Propuesta propuestaColaborada;
 	

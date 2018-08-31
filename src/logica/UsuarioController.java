@@ -17,6 +17,7 @@ import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.DtUsuario;
+import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElUsuarioException;
@@ -295,7 +296,7 @@ public class UsuarioController implements IUsuarioController {
 
 				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
 				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
-				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual().getDtEstado(), prop.getDtEstadoHistorial(),
+				 prop.getProponenteACargo().getDtProponente(),/* prop.getEstadoActual().getDtEstado()*/null, prop.getDtEstadoHistorial(),
 				 prop.getCategoria().getDtCategoria(), colaboraciones);
 //				dataPro=prop.getInfoPropuesta(); //4 y5
 

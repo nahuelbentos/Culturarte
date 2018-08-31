@@ -10,17 +10,12 @@ import datatype.DtPropuestaColaborada;
 import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -50,7 +45,7 @@ public class Propuesta {
 	private TipoRetorno tipo;
 
    // PseudoAtributos
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="NICK_PROPONENTE")
 	private Proponente proponenteACargo;
 	
@@ -58,11 +53,12 @@ public class Propuesta {
 	@JoinColumn(name="ID_CATEGORIA")
 	private Categoria categoria;
 	
+	/*
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ESTADO_ACTUAL")
 	private Estado estadoActual;
-	
+	*/
 	/*
 	@OneToMany
 	private ArrayList<Estado> estadoHistorial;   
@@ -96,7 +92,7 @@ public class Propuesta {
 	    this.precioEntrada = dtP.getPrecioEntrada();
 	    this.lugar = dtP.getLugar();
 	    this.tipo = dtP.getTipo();
-	    this.estadoActual = new Estado(EstadoPropuesta.ingresada);
+	    //this.estadoActual = new Estado(EstadoPropuesta.ingresada);
 	    //this.estadoHistorial = null; // Ya hay que setear el ingresada o al historial pasa al momento del cambio?
 	}
 
@@ -135,7 +131,7 @@ public class Propuesta {
     public String getTitulo() {
         return titulo;
     }
-    
+    /*
     public Estado getEstadoActual() {
  		return estadoActual;
  	}
@@ -275,7 +271,8 @@ public class Propuesta {
     }
 
     public DtPropuestaColaborada getInfoPropuestaColaborada() {
-    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());    	
+    	//return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());
+    	return null;
     }
     
     public ArrayList<DtEstado> getDtEstadoHistorial(){
