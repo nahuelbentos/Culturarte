@@ -1,51 +1,74 @@
 package logica;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import datatype.DtCategoria;
+import logica.exceptions.CategoriaYaExisteException;
 import logica.exceptions.ExcepcionCategoriaNoExiste;
 import logica.handler.CategoriaHandler;
 
 public class CategoriaController implements ICategoriaController {
+	
+	private static EntityManager em;
+	private static EntityManagerFactory emf;
 
 	@Override
 	public DtCategoria[] listarCategorias() throws ExcepcionCategoriaNoExiste{
-
-	    CategoriaHandler catHan = CategoriaHandler.getInstancia();
-        Categoria[] cats = catHan.getCategorias();
-
+		
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtCategoria[] dtC = null;
+        List<Categoria> cats = em.createQuery("FROM Categoria").getResultList();
+		
         if (cats != null) {
-            DtCategoria[] dtC = new DtCategoria[cats.length];
+            dtC = new DtCategoria[cats.size()];
             Categoria categ;
 
-            for (int i = 0; i < cats.length; i++) {
-                categ = cats[i];
+            for (int i = 0; i < cats.size(); i++) {
+                categ = cats.get(i);
                 dtC[i] = new DtCategoria(categ.getNombre(), categ.getDtSuperCategorias());
             }
-
+            
+            em.close();
             return dtC;
         } else
+        	em.close();
             throw new ExcepcionCategoriaNoExiste("No existen categorías registradas");
 	}
 
 	@Override
-	public void agregarCategoria(DtCategoria dtC) {
-		CategoriaHandler catHan = CategoriaHandler.getInstancia();
-		if (!catHan.isMember(dtC.getNombre())) {
-			// create categoria
-			Categoria cat = new Categoria(dtC.getNombre());
+	public void agregarCategoria(DtCategoria dtC) throws CategoriaYaExisteException {
+		
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+
+		Categoria categoria = em.find(Categoria.class, dtC.getNombre());
+		
+		if (categoria != null)
+			throw new CategoriaYaExisteException("Ya existe la categoría " + dtC.getNombre());
+		else {
+
+			categoria = new Categoria(dtC.getNombre());
 			
-			// leo la lista de padres recibida
 			ArrayList<String> padres = dtC.getPadres();
-			
-			// busco los objetos relativos a los padres para agregarlos
-			if (!(padres==null)) {
+			if (padres !=null) {
 				for (int i = 0; i < padres.size(); i++) {
-					Categoria padre = catHan.getCategoria(padres.get(i));
-					//if (!(padre==null))
-						//cat.addPadre(padre);
+					Categoria padre = em.find(Categoria.class, padres.get(i));
+					if (padre !=null)
+						categoria.addPadre(padre);
 				}
 			}
-			catHan.addCategoria(cat);
+			
+			em.persist(categoria);
+			em.getTransaction().commit();
+			em.close();
 		}
 	}
 

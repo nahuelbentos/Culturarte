@@ -1,12 +1,16 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import datatype.DtCategoria;
@@ -16,33 +20,34 @@ import datatype.DtCategoria;
 public class Categoria {
 
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID_CAT")
-	private int id;
+//	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+//	@Column(name="ID_CAT")
+//	private int id;
+	@Id
 	@Column(name="NOMBRE", nullable=false, length=50)
 	private String nombre;
+	
+	// Pseudoatributos
+	@OneToMany
+	@JoinColumn(name="ID_CAT_SUPER")
+	private List<Categoria> superCategorias = new ArrayList<>();
 	
 	public Categoria() {
 		super();
 	}
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	//private ArrayList<Categoria> superCategorias;
-	//private ArrayList<Categoria> subCategorias;
-	private ArrayList<Categoria> superCategorias;
-
 	public Categoria(String nombre) {
 		super();
 		this.nombre = nombre;
-		superCategorias = new ArrayList<>();
 	}
+
+//	public int getId() {
+//		return id;
+//	}
+//
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 
 	public String getNombre() {
 		return nombre;
@@ -53,11 +58,11 @@ public class Categoria {
 	}
 	
 	public ArrayList<Categoria> getSuperCategorias() {
-		return this.superCategorias;
+		return (ArrayList<Categoria>) this.superCategorias;
 	}
 	
 	public DtCategoria getDtCategoria() {
-		return new DtCategoria(nombre, superCategorias);
+		return new DtCategoria(nombre, (ArrayList<Categoria>) superCategorias);
 	}
 	
 	public ArrayList<Categoria> getDtSuperCategorias() {
@@ -65,5 +70,9 @@ public class Categoria {
 		for (int i = 0; i < this.superCategorias.size(); i++)
 			padres.add(superCategorias.get(i));
 		return padres;
+	}
+
+	public void addPadre(Categoria padre) {
+		this.superCategorias.add(padre);
 	}
 }

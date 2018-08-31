@@ -16,6 +16,10 @@ public class Estado {
 	@Id
 	@Column(name="NOMBRE",columnDefinition="VARCHAR(15)")
 	private EstadoPropuesta estado;
+	
+	public Estado() {
+		super();
+	}
 
 	public Estado(EstadoPropuesta estado) {
 		super();

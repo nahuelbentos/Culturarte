@@ -31,36 +31,39 @@ public class PropuestaController implements IPropuestaController {
 	
 	@Override
 	public void altaPropuesta(DtPropuesta dtPropuesta) throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException{
-		PropuestaHandler propHan = PropuestaHandler.getInstance();
-		Propuesta prop = propHan.obtenerPropuesta(dtPropuesta.getTitulo());
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+
+		Propuesta propuesta = em.find(Propuesta.class, dtPropuesta.getTitulo());
 		
 		//------------------------- Seteo los PseudoAtributos -------------------------
 		// Proponente a cargo
-		ProponenteHandler proponenteH = ProponenteHandler.getInstance();
 		String nicknameProponente = dtPropuesta.getProponenteACargo().getNickname();
-		Proponente proponente = proponenteH.obtenerProponente(nicknameProponente);
+		Proponente proponente = em.find(Proponente.class, nicknameProponente);
 		
 		if (proponente == null)
 			throw new ProponenteNoExisteException("No existe el proponente " + nicknameProponente);
 		
 		// Categoria
-		CategoriaHandler catHan = CategoriaHandler.getInstancia();
 		String nombreCategoria = dtPropuesta.getCategoria().getNombre();
-		Categoria cat = catHan.getCategoria(nombreCategoria);
+		Categoria cat = em.find(Categoria.class, nombreCategoria);
 		
 		if (cat == null)
 			throw new CategoriaNoExisteException("No existe la categoría " + nombreCategoria);
 		
 		
 		// Cargo la categoría
-		if (prop != null)
+		if (propuesta != null)
 			throw new PropuestaRepetidaException("Ya existe la propuesta" + dtPropuesta.getTitulo());
 		
-		prop = new Propuesta(dtPropuesta);
-		prop.setProponenteACargo(proponente);
-		prop.setCategoria(cat);
-		propHan.agregarPropuesta(prop);
+		propuesta = new Propuesta(dtPropuesta);
+		propuesta.setProponenteACargo(proponente);
+		propuesta.setCategoria(cat);
 		
+		em.persist(propuesta);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override

@@ -84,100 +84,97 @@ public class AltaPropuesta extends JInternalFrame {
         getContentPane().setLayout(null);
         
         lblNombre = new JLabel("Título");
-        lblNombre.setBounds(12, 14, 66, 15);
+        lblNombre.setBounds(12, 44, 66, 15);
         getContentPane().add(lblNombre);
         
         entTitulo = new JTextField();
-        entTitulo.setBounds(143, 12, 239, 19);
+        entTitulo.setBounds(143, 42, 239, 19);
         getContentPane().add(entTitulo);
         entTitulo.setColumns(10);
         
         lblDescripcion = new JLabel("Descripción");
-        lblDescripcion.setBounds(12, 40, 79, 15);
+        lblDescripcion.setBounds(12, 70, 79, 15);
         getContentPane().add(lblDescripcion);
         
         entDescripcion = new JTextField();
         entDescripcion.setColumns(10);
-        entDescripcion.setBounds(143, 38, 239, 19);
+        entDescripcion.setBounds(143, 68, 239, 19);
         getContentPane().add(entDescripcion);
         
         lblImagen = new JLabel("Imagen");
-        lblImagen.setBounds(12, 69, 66, 15);
+        lblImagen.setBounds(12, 99, 66, 15);
         getContentPane().add(lblImagen);
         
         entImagen = new JTextField();
         entImagen.setColumns(10);
-        entImagen.setBounds(143, 67, 239, 19);
+        entImagen.setBounds(143, 97, 239, 19);
         getContentPane().add(entImagen);
         
         lblMontoNecesario = new JLabel("Monto necesario");
-        lblMontoNecesario.setBounds(12, 98, 131, 15);
+        lblMontoNecesario.setBounds(12, 128, 131, 15);
         getContentPane().add(lblMontoNecesario);
         
         entMontoNecesario = new JFormattedTextField(DecimalFormat.getInstance());
         entMontoNecesario.setValue(montoNecesario);
         entMontoNecesario.setColumns(10);
-        entMontoNecesario.setBounds(143, 96, 239, 19);
+        entMontoNecesario.setBounds(143, 126, 239, 19);
         getContentPane().add(entMontoNecesario);
         
         lblFechaPublicacin = new JLabel("Fecha publicación");
-        lblFechaPublicacin.setBounds(12, 127, 131, 15);
+        lblFechaPublicacin.setBounds(12, 157, 131, 15);
         getContentPane().add(lblFechaPublicacin);
         
         entFechaPublicacion = new JDateChooser();
-        entFechaPublicacion.setBounds(143, 125, 239, 20);
+        entFechaPublicacion.setBounds(143, 155, 239, 20);
         getContentPane().add(entFechaPublicacion);
         
         lblFechaEspectculo = new JLabel("Fecha espectáculo");
-        lblFechaEspectculo.setBounds(12, 156, 131, 15);
+        lblFechaEspectculo.setBounds(12, 186, 131, 15);
         getContentPane().add(lblFechaEspectculo);
         
         entFechaEspectaculo = new JDateChooser();
-        entFechaEspectaculo.setBounds(143, 154, 239, 20);
+        entFechaEspectaculo.setBounds(143, 184, 239, 20);
         getContentPane().add(entFechaEspectaculo);
         
         lblLugar = new JLabel("Lugar");
-        lblLugar.setBounds(12, 185, 131, 15);
+        lblLugar.setBounds(12, 215, 131, 15);
         getContentPane().add(lblLugar);
         
         entLugar = new JTextField();
         entLugar.setColumns(10);
-        entLugar.setBounds(143, 183, 239, 19);
+        entLugar.setBounds(143, 213, 239, 19);
         getContentPane().add(entLugar);
         
         lblPrecioEntrada = new JLabel("Precio entrada");
-        lblPrecioEntrada.setBounds(12, 214, 131, 15);
+        lblPrecioEntrada.setBounds(12, 244, 131, 15);
         getContentPane().add(lblPrecioEntrada);
         
         entPrecioEntrada = new JFormattedTextField(DecimalFormat.getInstance());
         entPrecioEntrada.setValue(precioEntrada);
         entPrecioEntrada.setColumns(10);
-        entPrecioEntrada.setBounds(143, 212, 239, 19);
+        entPrecioEntrada.setBounds(143, 242, 239, 19);
         getContentPane().add(entPrecioEntrada);
         
         lblTipoRetorno = new JLabel("Tipo retorno");
-        lblTipoRetorno.setBounds(12, 248, 131, 15);
+        lblTipoRetorno.setBounds(12, 278, 131, 15);
         getContentPane().add(lblTipoRetorno);
         
         entTipoRetorno = new JComboBox<>();
         entTipoRetorno.setModel(new DefaultComboBoxModel<>(TipoRetorno.values()));
-        entTipoRetorno.setBounds(143, 243, 239, 24);
+        entTipoRetorno.setBounds(143, 273, 239, 24);
         getContentPane().add(entTipoRetorno);
         
         lblProponente = new JLabel("Proponente");
-        lblProponente.setBounds(12, 277, 131, 15);
+        lblProponente.setBounds(12, 13, 131, 15);
         getContentPane().add(lblProponente);
         
         entProponente = new JComboBox<>();
         UsuarioController uc = new UsuarioController();
-        
-        
-        // lo cambie a DtUsuario, habr�a que volverlo a cambiar a DtProponente
         DtUsuario[] dtP = uc.listarProponentes();
         for (DtUsuario i : dtP) {
         	entProponente.addItem(i.getNickname());
         }
-        entProponente.setBounds(143, 272, 239, 24);
+        entProponente.setBounds(143, 8, 239, 24);
         getContentPane().add(entProponente);
         
         lblCategora = new JLabel("Categoría");
@@ -199,6 +196,12 @@ public class AltaPropuesta extends JInternalFrame {
         getContentPane().add(entCategoria);
         
         btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(new ActionListener() {
+    	    public void actionPerformed(ActionEvent e) {
+                limpiarFormulario();
+                setVisible(false);
+            }
+        });
         btnCancelar.setBounds(237, 357, 114, 25);
         getContentPane().add(btnCancelar);
         
@@ -206,6 +209,7 @@ public class AltaPropuesta extends JInternalFrame {
         btnAceptar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		registrarPropuesta(arg0);
+        		limpiarFormulario();
         	}
         });
         btnAceptar.setBounds(53, 357, 114, 25);
@@ -218,9 +222,7 @@ public class AltaPropuesta extends JInternalFrame {
 			PropuestaController cp = new PropuestaController();
 			DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, "", "", "", "");
 			DtCategoria dtCat = new DtCategoria(categoria);
-			// revisar esto
-			//DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat);
-			DtPropuesta dtPropuesta = null; // cambiar!
+			DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat, null);
 			try {
 				cp.altaPropuesta(dtPropuesta);
 				JOptionPane.showMessageDialog(this, "La propuesta se ha creado con éxito", "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
@@ -231,7 +233,8 @@ public class AltaPropuesta extends JInternalFrame {
 			} catch (CategoriaNoExisteException e) {
 				JOptionPane.showMessageDialog(this, e, "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
 			}
-		}
+		}else
+			JOptionPane.showMessageDialog(this, "Debe completar todos los campos", "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private boolean formularioOk() {
@@ -241,8 +244,8 @@ public class AltaPropuesta extends JInternalFrame {
 		fechaPublicacion = new GregorianCalendar();
 		if (entFechaPublicacion.getDate()!=null)
 			fechaPublicacion.setTime(entFechaPublicacion.getDate());
-		if (entFechaEspectaculo.getDate()!=null)
-			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
+//		if (entFechaEspectaculo.getDate()!=null)
+//			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
 		lugar = entLugar.getText();
 		tipo = (TipoRetorno) entTipoRetorno.getSelectedItem();
 		if (entProponente.getSelectedItem() != null)
@@ -250,6 +253,18 @@ public class AltaPropuesta extends JInternalFrame {
 		categoria = entCategoria.getSelectedItem().toString();
 		
 		// acá hay que poner las validaciones del caso de uso
-		return true;
+		return (!(nicknameProponente.isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || imagen.isEmpty() || fechaPublicacion == null || 
+				/*fechaEspecatulo == null || */lugar.isEmpty() || tipo == null || categoria == null));
+	}
+	
+	private void limpiarFormulario() {
+		entTitulo.setText("");
+		entDescripcion.setText("");;
+		entImagen.setText("");
+		entMontoNecesario.setValue(0);
+		entLugar.setText("");
+		entPrecioEntrada.setValue(0);
+		entFechaPublicacion.setDate(null);
+		entFechaEspectaculo.setDate(null);
 	}
 }

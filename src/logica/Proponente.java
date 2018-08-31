@@ -23,7 +23,11 @@ public class Proponente extends Usuario{
     
     // PseudoAtributos
     private ArrayList<Propuesta> propuestas = new ArrayList<Propuesta>();;
-
+    
+    public Proponente() {
+    	super();
+    }
+    
     public Proponente(String direccion, String biografia, String linkWeb, 
     		String nickname, String nombre, GregorianCalendar fechaNacimiento, 
     		String correoElectronico, String apellido, String imagen) {

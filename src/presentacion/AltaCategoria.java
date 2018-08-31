@@ -3,18 +3,26 @@ package presentacion;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import logica.CategoriaController;
+import logica.exceptions.CategoriaYaExisteException;
 import logica.exceptions.ExcepcionCategoriaNoExiste;
 import datatype.DtCategoria;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 @SuppressWarnings("serial")
 public class AltaCategoria extends JInternalFrame {
 
 	private JTree treeListaDeCategorias;
+	private JTextField entCategoria;
+	private String categoria;
 	
 	/**
 	 * Create the frame.
@@ -26,7 +34,7 @@ public class AltaCategoria extends JInternalFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setClosable(true);
         setTitle("Alta de Categoría");
-        setBounds(10, 40, 417, 351);
+        setBounds(10, 40, 414, 381);
 		
         getContentPane().setLayout(null);
 		
@@ -34,19 +42,38 @@ public class AltaCategoria extends JInternalFrame {
 		lblListaDeCategorias.setBounds(65, 11, 250, 14);
 		getContentPane().add(lblListaDeCategorias);
 		
-		CategoriaController cc = new CategoriaController();
-		DtCategoria dtC = new DtCategoria("Música", null);
-		cc.agregarCategoria(dtC);
-		
-		dtC = new DtCategoria("Teatro", null);
-		cc.agregarCategoria(dtC);
-		
-		dtC = new DtCategoria("Espectaculos", null);
-		cc.agregarCategoria(dtC);
-		
 		// Ejemplo de listar categor�as con JTree.
 		listarCategorias();
 		getContentPane().add(treeListaDeCategorias);
+		
+		entCategoria = new JTextField();
+		entCategoria.setBounds(155, 233, 233, 19);
+		getContentPane().add(entCategoria);
+		entCategoria.setColumns(10);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				limpiarFormulario();
+				setVisible(false);
+			}
+		});
+		btnCancelar.setBounds(239, 305, 114, 25);
+		getContentPane().add(btnCancelar);
+		
+		JButton btnAceptar = new JButton("Confirmar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				altaDeCategoria();
+				limpiarFormulario();
+			}
+		});
+		btnAceptar.setBounds(45, 305, 114, 25);
+		getContentPane().add(btnAceptar);
+		
+		JLabel lblNuevaCategoria = new JLabel("Nueva categoria");
+		lblNuevaCategoria.setBounds(12, 235, 125, 15);
+		getContentPane().add(lblNuevaCategoria);
 	}
 	
 	public void listarCategorias() {
@@ -66,35 +93,35 @@ public class AltaCategoria extends JInternalFrame {
 			e.printStackTrace();
 		}
         treeListaDeCategorias = new JTree(categorias);
-        treeListaDeCategorias.setBounds(31, 49, 376, 343);
-		
-		
-		
-//        DefaultMutableTreeNode categorias = new DefaultMutableTreeNode("Categorías");
-//        DefaultMutableTreeNode teatro = new DefaultMutableTreeNode("Teatro");
-//        DefaultMutableTreeNode musica = new DefaultMutableTreeNode("Música");
-//        DefaultMutableTreeNode danza = new DefaultMutableTreeNode("Danza");
-//        DefaultMutableTreeNode rock = new DefaultMutableTreeNode("Rock");
-//        DefaultMutableTreeNode salsa = new DefaultMutableTreeNode("Salsa");
-//        DefaultMutableTreeNode pop = new DefaultMutableTreeNode("Pop");
-//        DefaultMutableTreeNode rockClasico = new DefaultMutableTreeNode("Rock clásico");
-//        DefaultMutableTreeNode rockAlternativo = new DefaultMutableTreeNode("Rock alternativo");
-//        categorias.add(teatro);
-//        categorias.add(musica);
-//        categorias.add(danza);
-//        rock.add(rockClasico);
-//        rock.add(rockAlternativo);
-//        rockClasico.add(new DefaultMutableTreeNode("Hoja"));
-//        rockAlternativo.add(new DefaultMutableTreeNode("Hoja"));
-//        teatro.add(new DefaultMutableTreeNode("Hoja"));
-//        danza.add(new DefaultMutableTreeNode("Hoja"));
-//        salsa.add(new DefaultMutableTreeNode("Hoja"));
-//        pop.add(new DefaultMutableTreeNode("Hoja"));
-//        musica.add(rock);
-//        musica.add(salsa);
-//        musica.add(pop);
-//        treeListaDeCategorias = new JTree(categorias);
-//        treeListaDeCategorias.setBounds(31, 49, 376, 343);
+        treeListaDeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
+        treeListaDeCategorias.setBounds(12, 33, 376, 174);
 	}
-
+	
+	private void altaDeCategoria() {
+		if (formularioOk()) {
+			CategoriaController cc = new CategoriaController();
+			
+			// FALTA AGREGAR QUE SE SUBAN LOS PADRES. El DtCategoria está mal hecho, ya que el ArrayList de padres es del tipo Categoria
+			
+			DtCategoria dtC = new DtCategoria(categoria, null);
+			try {
+				cc.agregarCategoria(dtC);
+				JOptionPane.showMessageDialog(this, "La categoría se ha creado con éxito", "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
+			} catch (CategoriaYaExisteException e) {
+				JOptionPane.showMessageDialog(this, e, "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}else
+			JOptionPane.showMessageDialog(this, "Debe completar todos los campos", "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private boolean formularioOk() {
+		categoria = entCategoria.getText();
+		
+		return (!(categoria.isEmpty()));
+	}
+	
+	private void limpiarFormulario() {
+		entCategoria.setText("");
+		// habría que refrescar el arbol de categorías
+	}
 }

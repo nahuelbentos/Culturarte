@@ -43,7 +43,10 @@ public class Propuesta {
 	private String lugar;
 	@Column(name="TIPO_RETORNO")
 	private TipoRetorno tipo;
-
+	@Column(name="ESTADO_ACTUAL")
+	private EstadoPropuesta estadoActual;
+	
+	
    // PseudoAtributos
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="NICK_PROPONENTE")
@@ -53,12 +56,6 @@ public class Propuesta {
 	@JoinColumn(name="ID_CATEGORIA")
 	private Categoria categoria;
 	
-	/*
-	@Id
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ESTADO_ACTUAL")
-	private Estado estadoActual;
-	*/
 	/*
 	@OneToMany
 	private ArrayList<Estado> estadoHistorial;   
@@ -79,7 +76,7 @@ public class Propuesta {
 	    this.fechaEspecatulo = fechaEspecatulo;
 	    this.precioEntrada = e;
 	    this.lugar = lugar;
-	    //this.tipo = tipo;
+	    this.tipo = tipo;
 	}
 
    public Propuesta(DtPropuesta dtP) {
@@ -92,7 +89,7 @@ public class Propuesta {
 	    this.precioEntrada = dtP.getPrecioEntrada();
 	    this.lugar = dtP.getLugar();
 	    this.tipo = dtP.getTipo();
-	    //this.estadoActual = new Estado(EstadoPropuesta.ingresada);
+	    this.estadoActual = EstadoPropuesta.ingresada;
 	    //this.estadoHistorial = null; // Ya hay que setear el ingresada o al historial pasa al momento del cambio?
 	}
 
@@ -124,19 +121,19 @@ public class Propuesta {
         return precioEntrada;
     }
 
-    //public TipoRetorno getTipo() {
-    //    return tipo;
-    //}
+    public TipoRetorno getTipo() {
+        return tipo;
+    }
 
     public String getTitulo() {
         return titulo;
     }
-    /*
-    public Estado getEstadoActual() {
+    
+    public EstadoPropuesta getEstadoActual() {
  		return estadoActual;
  	}
 
- 	public void setEstadoActual(Estado estadoActual) {
+ 	public void setEstadoActual(EstadoPropuesta estadoActual) {
  		this.estadoActual = estadoActual;
  	}
 /*
@@ -176,9 +173,9 @@ public class Propuesta {
         this.precioEntrada = precioEntrada;
     }
 
-    //public void setTipo(TipoRetorno tipo) {
-    //    this.tipo = tipo;
-    //}
+    public void setTipo(TipoRetorno tipo) {
+        this.tipo = tipo;
+    }
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
