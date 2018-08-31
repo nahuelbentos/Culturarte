@@ -53,7 +53,7 @@ public class UsuarioController implements IUsuarioController {
 				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
-				proponenteHandler.agregarProponente(usuario);
+				//proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
