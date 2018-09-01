@@ -19,10 +19,12 @@ import datatype.DtPropuestaColaborada;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
+import excepciones.ColaboradorNoExisteException;
+import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
-import logica.exceptions.ColaboradorNoExisteException;
 import logica.handler.ColaboracionHandler;
 import logica.handler.ColaboradorHandler;
 import logica.handler.ProponenteHandler;
@@ -78,15 +80,12 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public  DtUsuario[] listarProponentes() {
-		
-		// Falta agregar la condicion en la query para que traiga solo los proponentes
-		
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		DtUsuario[] dtUsuario = null;
-        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -96,9 +95,7 @@ public class UsuarioController implements IUsuarioController {
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
             }
         }
-        
         em.close();
-        
         return dtUsuario;
 	}
 
@@ -151,9 +148,7 @@ public class UsuarioController implements IUsuarioController {
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
             }
         }
-        
         em.close();
-        
         return dtUsuario;
 	}
 
@@ -213,7 +208,7 @@ public class UsuarioController implements IUsuarioController {
 		em.getTransaction().begin();
 		
 		DtUsuario[] dtUsuario = null;
-        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -222,15 +217,12 @@ public class UsuarioController implements IUsuarioController {
                 dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
             }
-            
             em.close();
             return dtUsuario;
         }else {
         	em.close();
         	throw new ColaboradorNoExisteException("No hay colaboradores registrados");
         }
-        
-
 	}
 
 

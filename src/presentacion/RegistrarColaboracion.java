@@ -4,8 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
-import logica.exceptions.ColaboradorNoExisteException;
-import logica.exceptions.PropuestaNoExisteException;
 import presentacion.gen.ListarPropuestas;
 import presentacion.gen.PropuestaSeleccionada;
 import javax.swing.JLabel;
@@ -17,6 +15,8 @@ import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import datatype.TipoRetorno;
+import excepciones.ColaboradorNoExisteException;
+import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 
 import javax.swing.JButton;

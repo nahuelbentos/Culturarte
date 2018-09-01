@@ -7,8 +7,8 @@ import javax.swing.JTable;
 
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
+import excepciones.PropuestaNoExisteException;
 import logica.IPropuestaController;
-import logica.exceptions.PropuestaNoExisteException;
 
 import java.awt.GridLayout;
 

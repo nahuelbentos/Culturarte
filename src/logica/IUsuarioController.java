@@ -3,8 +3,10 @@ package logica;
 import java.util.ArrayList;
 
 import datatype.*;
-import logica.exceptions.ColaboradorNoExisteException;
+import excepciones.ColaboradorNoExisteException;
+import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 

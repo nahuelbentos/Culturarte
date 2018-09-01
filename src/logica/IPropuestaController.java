@@ -5,12 +5,11 @@ import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.EstadoPropuesta;
-
-import logica.exceptions.ColaboradorNoExisteException;
-import logica.exceptions.PropuestaNoExisteException;
-import logica.exceptions.CategoriaNoExisteException;
-import logica.exceptions.ProponenteNoExisteException;
-import logica.exceptions.PropuestaRepetidaException;
+import excepciones.CategoriaNoExisteException;
+import excepciones.ColaboradorNoExisteException;
+import excepciones.ProponenteNoExisteException;
+import excepciones.PropuestaNoExisteException;
+import excepciones.PropuestaRepetidaException;
 
 public interface IPropuestaController {
 

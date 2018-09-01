@@ -67,7 +67,7 @@ public class Principal {
 		altaCategoria = new AltaCategoria();
 		altaCategoria.setVisible(false);
 
-		altaPropuesta = new AltaPropuesta();
+		altaPropuesta = new AltaPropuesta(IUC);
 		altaPropuesta.setVisible(false);
 
 		seguirUsuario = new SeguirUsuario(IUC);

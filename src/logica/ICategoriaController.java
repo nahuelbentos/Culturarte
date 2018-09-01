@@ -1,8 +1,8 @@
 package logica;
 
 import datatype.DtCategoria;
-import logica.exceptions.CategoriaYaExisteException;
-import logica.exceptions.ExcepcionCategoriaNoExiste;
+import excepciones.CategoriaYaExisteException;
+import excepciones.ExcepcionCategoriaNoExiste;
 
 public interface ICategoriaController {
 
