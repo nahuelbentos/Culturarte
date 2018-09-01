@@ -1,9 +1,12 @@
 package presentacion;
 
+import java.awt.EventQueue;
+
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 
 import logica.IUsuarioController;
+import presentacion.gen.ListarColaboradores;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -14,40 +17,47 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-@SuppressWarnings("serial")
 public class ConsultaPerfilProponente extends JInternalFrame {
-	private JTextField txtNickname;
 
 	/**
 	 * Create the frame.
 	 */
 	public ConsultaPerfilProponente(IUsuarioController IUC) {
-		setBounds(100, 100, 673, 425);
+		setClosable(true);
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new GridLayout(3, 0, 0, 0));
-		
-		JLabel lblProponentes = new JLabel("Proponentes:");
-		panel.add(lblProponentes);
-		
-		JComboBox proponentes = new JComboBox();
-		panel.add(proponentes);
-		
-		JLabel lblNickname = new JLabel("Nickname:");
-		panel.add(lblNickname);
-		
-		txtNickname = new JTextField();
-		panel.add(txtNickname);
-		txtNickname.setColumns(10);
-		
-		JButton btnConsultaPerfilProponente = new JButton("Consultar");
-		btnConsultaPerfilProponente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		panel.add(btnConsultaPerfilProponente);
+
+//		setNormalBounds(new Rectangle(0, 0, 0, 50));
+		//setBounds(100, 100, 673, 425);
+		setBounds(10, 10, 700, 600);
+        setResizable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        getContentPane().setLayout(null);
+        
+        JPanel panelListarProponentes = new JPanel();
+        panelListarProponentes.setBounds(0, 0, 690, 568);
+        getContentPane().add(panelListarProponentes);
+        panelListarProponentes.setLayout(null);
+        
+        ListarColaboradores listarProponentes = new ListarColaboradores((IUsuarioController) null);
+        listarProponentes.setBounds(0, 0, 690, 568);
+        panelListarProponentes.add(listarProponentes);
+
+//        ListarProponentes listarProponentes = new ListarProponentes((IUsuarioController) null);
+//        listarProponentes.setBounds(0, 0, 0, 0);
+//        panelListarProponentes.add(listarProponentes);
+        
+        JPanel panelVerPerfilProponente = new JPanel();
+        panelVerPerfilProponente.setBounds(10, 10, 690, 355);
+        getContentPane().add(panelVerPerfilProponente);
+        panelVerPerfilProponente.setLayout(null);
+         
+        VerPerfilProponente verPerfilProponente = new VerPerfilProponente(IUC, "pepe");
+        verPerfilProponente.setBounds(0, 0, 690, 355);
+        panelVerPerfilProponente.add(verPerfilProponente);
+        
+        panelListarProponentes.setVisible(true);
+        panelVerPerfilProponente.setVisible(false);
 
 	}
-
 }

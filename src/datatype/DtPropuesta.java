@@ -17,17 +17,17 @@ public class DtPropuesta {
    private double precioEntrada;
    private TipoRetorno tipo;
    private float recaudado;
+   private EstadoPropuesta estadoActual;
 
    // PseudoAtributos
    private DtProponente proponenteACargo;
-   private DtEstado estadoActual;
    private ArrayList<DtEstado> estadoHistorial;
    private DtCategoria categoria;
    private ArrayList<DtColaboracion> colaboraciones;
    
    public DtPropuesta(String titulo, String descripcion, String imagen, double montoNecesario,
 		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
-		TipoRetorno tipo, float recaudado, DtProponente proponenteACargo, DtEstado estadoActual,
+		TipoRetorno tipo, float recaudado, DtProponente proponenteACargo, EstadoPropuesta estadoActual,
 		ArrayList<DtEstado> estadoHistorial, DtCategoria categoria, ArrayList<DtColaboracion> colaboraciones) {
 	super();
 	this.titulo = titulo;
@@ -91,7 +91,7 @@ public class DtPropuesta {
 		return proponenteACargo;
 	}
 
-	public DtEstado getEstadoActual() {
+	public EstadoPropuesta getEstadoActual() {
 		return estadoActual;
 	}
 

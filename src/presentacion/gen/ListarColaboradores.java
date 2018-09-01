@@ -31,7 +31,7 @@ public class ListarColaboradores extends JPanel {
 		
 		
 		modelNicknames = new DefaultListModel<String>();
-		listColaboradores = new JList<>(modelNicknames);
+		listColaboradores = 	new JList<>(modelNicknames);
 		listColaboradores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listColaboradores.setBorder(new LineBorder(Color.DARK_GRAY, 1, true));
 		listColaboradores.setBounds(27, 52, 163, 184);
@@ -61,3 +61,4 @@ public class ListarColaboradores extends JPanel {
 		return listColaboradores.getSelectedValue();
 	}
 }
+

@@ -19,7 +19,7 @@ public class DtColaboracion {
 		this.fechaAporte = fechaAporte;
 		this.tipo = tipo;
 	}
-	
+			
 	public String getTituloPropuesta() {
 		return tituloPropuesta;
 	}

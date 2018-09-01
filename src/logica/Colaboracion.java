@@ -97,10 +97,10 @@ public class Colaboracion {
 	}
 	
 	public DtColaboracion getDataColaboracion() {
-		//return new DtColaboracion(propuestaColaborada.getInfoPropuesta(), monto,
-		//		colaborador.getDtColaborador(), fechaAporte, tipo);
+		return new DtColaboracion(propuestaColaborada.getTitulo(), colaborador.getNickname(),
+				monto, fechaAporte, tipo);
 		
-		return null;
+//		return null;
 	}
 	
 	public DtPropuestaColaborada getPropuestaFromColaboracion() {

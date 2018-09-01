@@ -198,28 +198,34 @@ public class PropuestaController implements IPropuestaController {
 	@Override
 	public DtDatosPropuesta consultarPropuesta(String titulo) {
 		// la comento, hay que revisar si se puede usar otro Dt.
-//		PropuestaHandler mpropue = PropuestaHandler.getInstance();
-//		Propuesta p = mpropue.obtenerPropuesta(titulo); //1
-//		
-//		DtDatosPropuesta datapro = p.getDtDatosPropuesta(); //2
-//		
-//		ColaboracionHandler mcolab = ColaboracionHandler.getInstance();
-//		Colaboracion[] colColab = mcolab.getColaboraciones();
-//		ArrayList<DtColaborador> colaboradores = new ArrayList<DtColaborador>();
-//		float montoTotal=0;
-//		for (Colaboracion col : colColab) { //3
-//			if(col.tieneProp(titulo)) { //4 
-//				montoTotal += col.getMonto(); //5.1 
-//				colaboradores.add(col.getDataColaboracion().getColaborador()); //5.2				
-//			}
-//		}
-//		
-//		DtDatosPropuesta dtp = new DtDatosPropuesta(datapro.getTitulo(), datapro.getDescripcion(), datapro.getImagen(),
-//				datapro.getMontoNecesario(), datapro.getFechaPublicacion(), datapro.getFechaEspecatulo(), datapro.getLugar(),
-//				datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores);
-//		return dtp;
 		
-		return null;
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Propuesta p = em.find(Propuesta.class, titulo); //1
+		
+		DtDatosPropuesta datapro= p.getDtDatosPropuesta(); //2
+		
+        List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
+        
+		ArrayList<String> colaboradores = new ArrayList<String>();
+		double montoTotal=0;
+		for (Colaboracion col : colColab) { //3
+			if(col.tieneProp(titulo)) { //4 
+				montoTotal += col.getMonto(); //5.1 
+				colaboradores.add(col.getColaborador().getNickname()); //5.2				
+			}
+		}
+		
+
+		em.close();
+		
+		return new DtDatosPropuesta(datapro.getTitulo(), datapro.getDescripcion(), datapro.getImagen(),
+		datapro.getMontoNecesario(), datapro.getFechaPublicacion(), datapro.getFechaEspecatulo(), datapro.getLugar(),
+		datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores);
+		
 	}
 
 }
