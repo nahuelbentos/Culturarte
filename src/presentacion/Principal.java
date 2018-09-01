@@ -19,6 +19,7 @@ public class Principal {
 	private JFrame frmPaginaPrincipal;
 	private AltaPerfil altaPerfil;
 	private AltaPropuesta altaPropuesta;
+	private ModificarPropuesta modificarPropuesta;
 	private AltaCategoria altaCategoria;
 	private SeguirUsuario seguirUsuario;
 	private DejarDeSeguirUsuario dejarDeSeguirUsuario;
@@ -68,8 +69,11 @@ public class Principal {
 		altaCategoria = new AltaCategoria(ICC);
 		altaCategoria.setVisible(false);
 
-		altaPropuesta = new AltaPropuesta(IUC, ICC);
+		altaPropuesta = new AltaPropuesta(IUC, ICC, IPC);
 		altaPropuesta.setVisible(false);
+		
+		modificarPropuesta = new ModificarPropuesta(IUC, ICC, IPC);
+		modificarPropuesta.setVisible(false);
 
 		seguirUsuario = new SeguirUsuario(IUC);
 		seguirUsuario.setVisible(false);
@@ -87,6 +91,7 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
+		frmPaginaPrincipal.getContentPane().add(modificarPropuesta);
 		frmPaginaPrincipal.getContentPane().add(seguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(consColProp);
@@ -122,6 +127,14 @@ public class Principal {
 		mnPropuesta.add(mntmAltaDeProp);
 
 		JMenuItem mntmModificarDatosDe = new JMenuItem("Modificar datos de Propuesta");
+		mntmModificarDatosDe.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				modificarPropuesta.setListaDePropuestas();
+				modificarPropuesta.setVisible(true);
+			}
+		});
 		mnPropuesta.add(mntmModificarDatosDe);
 
 		JMenuItem mntmConsultaDePropuesta = new JMenuItem("Consulta de Propuesta");

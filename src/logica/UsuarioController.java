@@ -256,7 +256,7 @@ public class UsuarioController implements IUsuarioController {
 				}
 
 				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
-				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
+				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.EntradasGratis, 0,
 				 prop.getProponenteACargo().getDtProponente(),/* prop.getEstadoActual().getDtEstado()*/null, prop.getDtEstadoHistorial(),
 				 prop.getCategoria().getDtCategoria(), colaboraciones);
 //				dataPro=prop.getInfoPropuesta(); //4 y5

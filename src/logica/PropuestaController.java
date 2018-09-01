@@ -13,6 +13,7 @@ import datatype.DtColaborador;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
+import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboradorNoExisteException;
@@ -135,15 +136,15 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtPropuesta seleccionarPropuesta(String titulo) {
-		
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
-		
 		em.getTransaction().begin();
 		
+		DtPropuesta dtp = null;
 		Propuesta p = em.find(Propuesta.class, titulo);
-		
-		DtPropuesta dtp = p.getDtPropuesta();
+		if(p != null) {
+			dtp = p.getDtPropuesta();
+		}
 		
 		em.close();
 		
@@ -152,8 +153,39 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public boolean modificarPropuesta(DtPropuesta dtPropuesta) {
-		// TODO Auto-generated method stub
-		return false;
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Proponente proponente = em.find(Proponente.class, dtPropuesta.getProponenteACargo().getNickname());
+		Categoria categoria = em.find(Categoria.class, dtPropuesta.getCategoria().getNombre());
+		
+		em.createQuery("UPDATE Propuesta SET descripcion = :descripcion, "
+				+ "imagen = :imagen, "
+				+ "fechaPublicacion = :fechaPublicacion, "
+				+ "fechaEspecatulo = :fechaEspecatulo, "
+				+ "precioEntrada = :precioEntrada, "
+				+ "lugar = :lugar, "
+				+ "tipo = :tipo, "
+				+ "proponenteACargo = :proponente, "
+				+ "categoria = :categoria "
+				+ "where titulo = :titulo")
+		.setParameter("titulo", dtPropuesta.getTitulo())
+		.setParameter("descripcion", dtPropuesta.getDescripcion())
+		.setParameter("imagen", dtPropuesta.getImagen())
+		.setParameter("fechaPublicacion", dtPropuesta.getFechaPublicacion())
+		.setParameter("fechaEspecatulo", dtPropuesta.getFechaEspecatulo())
+		.setParameter("precioEntrada", dtPropuesta.getPrecioEntrada())
+		.setParameter("lugar", dtPropuesta.getLugar())
+		.setParameter("tipo", dtPropuesta.getTipo())
+		.setParameter("proponente", proponente)
+		.setParameter("categoria", categoria)
+		.executeUpdate();
+
+		em.getTransaction().commit();
+		em.close();
+		
+		return true;
 	}
 
 	@Override
@@ -164,17 +196,26 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasExistentes() {
-		// la comento, hay que hacerlo desde la base, es mas facil
-//		PropuestaHandler mpropue = PropuestaHandler.getInstance();
-//		Map<String, Propuesta> props = mpropue.getPropuestas();
-//		
-//		ArrayList<DtPropuesta> DtPropuestas = new ArrayList<DtPropuesta>(); 
-//		for(Propuesta p : props.values()) {
-//			DtPropuestas.add(p.getInfoPropuesta());
-//		}
-//
-//		return DtPropuestas;
-		return null;
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtPropuesta[] dtPropuesta = null;
+        List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        if (propuestas  != null) {
+            dtPropuesta = new DtPropuesta[propuestas.size()];
+            Propuesta propuesta;
+            for (int i = 0; i < propuestas.size(); i++) {
+                propuesta = propuestas.get(i);
+                dtPropuesta[i] = new DtPropuesta(propuesta.getTitulo(), propuesta.getDescripcion(), propuesta.getImagen(), 
+                		propuesta.getMontoNecesario(), propuesta.getFechaPublicacion(), propuesta.getFechaEspecatulo(), 
+                		propuesta.getLugar(), propuesta.getPrecioEntrada(), propuesta.getTipo(), 0, 
+                		propuesta.getProponenteACargo().getDtProponente(), null, null, 
+                		propuesta.getCategoria().getDtCategoriaSimple(), null); 
+            }
+        }
+        em.close();
+        return dtPropuesta;
 	}
 	
 	@Override

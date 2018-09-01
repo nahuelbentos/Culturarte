@@ -50,6 +50,10 @@ public class Categoria {
 		return new DtCategoria(nombre, (ArrayList<Categoria>) superCategorias);
 	}
 	
+	public DtCategoria getDtCategoriaSimple() {
+		return new DtCategoria(nombre);
+	}
+	
 	public ArrayList<Categoria> getDtSuperCategorias() {
 		ArrayList<Categoria> padres = new ArrayList<>();
 		for (int i = 0; i < this.superCategorias.size(); i++)

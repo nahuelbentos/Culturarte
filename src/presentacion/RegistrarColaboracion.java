@@ -157,7 +157,7 @@ public class RegistrarColaboracion extends JInternalFrame {
 
 	protected void registrarColaboracionActionPerformed(ActionEvent arg0) {
 		String c = (String)cbColaborador.getSelectedItem();
-		DtColaboracion colaboracion = new DtColaboracion(propuesta.getTitulo(), c, Double.parseDouble(txtMonto.getText()), new GregorianCalendar(), TipoRetorno.entradasGratis);
+		DtColaboracion colaboracion = new DtColaboracion(propuesta.getTitulo(), c, Double.parseDouble(txtMonto.getText()), new GregorianCalendar(), TipoRetorno.EntradasGratis);
 		
 		try {
 			iPropCon.generarColaboracion(colaboracion);
