@@ -33,7 +33,7 @@ public interface IUsuarioController {
 
 	public abstract void dejarDeSeguirUsuario(String nicknameUno, String nicknameDos);
 
-	public abstract DtColaborador[] listarColaboradores() throws ColaboradorNoExisteException;
+	public abstract DtUsuario[] listarColaboradores() throws ColaboradorNoExisteException;
 	
 	public abstract DtPropuesta[] listarPropuestasDeUnColaborador(String nickname);
 	

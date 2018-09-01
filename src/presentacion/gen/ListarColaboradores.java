@@ -3,6 +3,7 @@ package presentacion.gen;
 import javax.swing.JPanel;
 
 import datatype.DtColaborador;
+import datatype.DtUsuario;
 import logica.IUsuarioController;
 import logica.exceptions.ColaboradorNoExisteException;
 
@@ -45,7 +46,7 @@ public class ListarColaboradores extends JPanel {
 	public void actualizarColaboradores() {
 		modelNicknames.removeAllElements();
 		try {
-			DtColaborador[] cols = iUsuController.listarColaboradores();
+			DtUsuario[] cols = iUsuController.listarColaboradores();
 			for (int i = 0; i < cols.length; i++) {
 				modelNicknames.addElement(cols[i].getNickname());
 			}

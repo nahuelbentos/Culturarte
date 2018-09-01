@@ -66,17 +66,17 @@ public class Proponente extends Usuario{
     }
     
     public DtPerfilProponente getDatosBasicos() {
-    	DtPerfilProponente dtp = null;
-    	//DtPerfilProponente dtp = new DtPerfilProponente(this.getNickname(), this.getNombre(), this.getApellido(), this.getCorreoElectronico(), 
-    	//												this.getFechaNacimiento(), this.getImagen(), this.getDireccion(), this.getBiografia(),
-    	//												this.getLinkWeb(),null, null, null, null, null); //null=Son las colecciones.    	
+    	
+    	DtPerfilProponente dtp = new DtPerfilProponente(this.getNickname(), this.getNombre(), this.getApellido(), this.getCorreoElectronico(), 
+    													this.getFechaNacimiento(), this.getImagen(), this.getDireccion(), this.getBiografia(),
+    													this.getLinkWeb(),null, null, null, null, null); //null=Son las colecciones.    	
 		return dtp;
     	
     }
     public DtProponente getDtProponente() {
-//    	return new DtProponente(super.getNickname(), super.getNombre(), super.getApellido(),
-//    			super.getCorreoElectronico(), super.getFechaNacimiento(), super.getImagen(), this.direccion, 
-//    			this.biografia, this.linkWeb);
-    	return null;
+    	return new DtProponente(super.getNickname(), super.getNombre(), super.getApellido(),
+    			super.getCorreoElectronico(), super.getFechaNacimiento(), super.getImagen(), this.direccion, 
+    			this.biografia, this.linkWeb);
+    	
     }
 }

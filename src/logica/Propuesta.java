@@ -48,7 +48,7 @@ public class Propuesta {
 	
 	
    // PseudoAtributos
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="NICK_PROPONENTE")
 	private Proponente proponenteACargo;
 	

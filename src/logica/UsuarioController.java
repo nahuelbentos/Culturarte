@@ -207,10 +207,7 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public DtColaborador[] listarColaboradores() throws ColaboradorNoExisteException {
-
-/*
-
+	public DtUsuario[] listarColaboradores() throws ColaboradorNoExisteException {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -225,38 +222,15 @@ public class UsuarioController implements IUsuarioController {
                 dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
             }
+            
+            em.close();
+            return dtUsuario;
+        }else {
+        	em.close();
+        	throw new ColaboradorNoExisteException("No hay colaboradores registrados");
         }
         
-        em.close();
-        
-        return dtUsuario;
 
-
- * */
-		emf = Persistence.createEntityManagerFactory("Conexion");
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		
-		DtColaborador[] dtColaboradores = null;
-		
-
-		@SuppressWarnings("unchecked")
-		List<Colaborador> colaboradores = em.createQuery("FROM Colaborador").getResultList();
-		
-		if (colaboradores != null) {
-			dtColaboradores = new DtColaborador[colaboradores.size()];
-			Colaborador c;
-
-			for (int i = 0; i < colaboradores.size(); i++) {
-				c = colaboradores.get(i);
-				dtColaboradores[i] = new DtColaborador(c.getNickname(), c.getNombre(), c.getApellido(),
-						c.getCorreoElectronico(), c.getFechaNacimiento(), c.getImagen());
-            }
-
-			return dtColaboradores;
-		}else {
-			throw new ColaboradorNoExisteException("No existen colaboradores registrados");
-		}
 	}
 
 

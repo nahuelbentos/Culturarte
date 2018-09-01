@@ -145,6 +145,7 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
 		Propuesta p = em.find(Propuesta.class, titulo);
+		
 		DtPropuesta dtp = p.getDtPropuesta();
 		
 		em.close();

@@ -6,6 +6,8 @@ import datatype.DtPropuesta;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 
@@ -32,109 +34,122 @@ public class PropuestaSeleccionada extends JPanel {
 	 * Create the panel.
 	 */
 	public PropuestaSeleccionada() {
-		setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, Color.GRAY));
 		setLayout(null);
 		{
 			lblTitulo = new JLabel("Titulo: ");
-			lblTitulo.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblTitulo.setBounds(10, 12, 46, 14);
+			lblTitulo.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblTitulo.setBounds(10, 12, 142, 14);
 			add(lblTitulo);
 		}
 		{
 			lblCargoTitulo = new JLabel("New label");
-			lblCargoTitulo.setBounds(66, 11, 173, 14);
+			lblCargoTitulo.setFont(new Font("Georgia", Font.PLAIN, 11));
+			lblCargoTitulo.setBounds(210, 12, 173, 14);
 			lblCargoTitulo.setText("cargo titulo");
 			add(lblCargoTitulo);
 		}
 		{
 			lblDescripcin = new JLabel("Descripci\u00F3n: ");
-			lblDescripcin.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblDescripcin.setBounds(10, 37, 77, 14);
+			lblDescripcin.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblDescripcin.setBounds(10, 37, 142, 14);
 			add(lblDescripcin);
 		}
 		{
 			lblFecha = new JLabel("Fecha: ");
-			lblFecha.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblFecha.setBounds(10, 62, 46, 14);
+			lblFecha.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblFecha.setBounds(10, 62, 142, 14);
 			add(lblFecha);
 		}
 		{
 			lblPublicada = new JLabel("Publicada: ");
-			lblPublicada.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblPublicada.setBounds(10, 87, 77, 14);
+			lblPublicada.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblPublicada.setBounds(10, 87, 142, 14);
 			add(lblPublicada);
 		}
 		{
 			lblLugar = new JLabel("Lugar: ");
-			lblLugar.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblLugar.setBounds(10, 112, 46, 14);
+			lblLugar.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblLugar.setBounds(10, 112, 142, 14);
 			add(lblLugar);
 		}
 		{
 			lblARecaudar = new JLabel("A recaudar:");
-			lblARecaudar.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblARecaudar.setBounds(10, 137, 77, 14);
+			lblARecaudar.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblARecaudar.setBounds(10, 137, 142, 14);
 			add(lblARecaudar);
 		}
 		{
 			lblValorEntrada = new JLabel("Valor entrada?");
-			lblValorEntrada.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblValorEntrada.setBounds(10, 162, 92, 14);
+			lblValorEntrada.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblValorEntrada.setBounds(10, 162, 142, 14);
 			add(lblValorEntrada);
 		}
 		{
 			lblProponente = new JLabel("De: ");
-			lblProponente.setFont(new Font("Sitka Small", Font.BOLD, 11));
-			lblProponente.setBounds(75, 249, 46, 14);
+			lblProponente.setFont(new Font("Dialog", Font.BOLD, 12));
+			lblProponente.setBounds(219, 210, 46, 14);
 			add(lblProponente);
 		}
 		{
 			lblCargoDescripcion = new JLabel("cargo descripcion");
-			lblCargoDescripcion.setBounds(97, 36, 142, 14);
+			lblCargoDescripcion.setFont(new Font("Georgia", Font.PLAIN, 11));
+			lblCargoDescripcion.setBounds(210, 38, 142, 14);
 			add(lblCargoDescripcion);
 		}
 		{
 			lblCargoFecha = new JLabel("cargo fecha");
-			lblCargoFecha.setBounds(66, 61, 173, 14);
+			lblCargoFecha.setFont(new Font("Georgia", Font.PLAIN, 11));
+			lblCargoFecha.setBounds(210, 62, 173, 14);
 			add(lblCargoFecha);
 		}
 		{
 			lblCargoFechapublicada = new JLabel("cargo fecha_publicada");
-			lblCargoFechapublicada.setBounds(91, 86, 148, 14);
+			lblCargoFechapublicada.setFont(new Font("Georgia", Font.PLAIN, 11));
+			lblCargoFechapublicada.setBounds(210, 86, 148, 14);
 			add(lblCargoFechapublicada);
 		}
 		{
 			lblCargoLugar = new JLabel("cargo lugar");
-			lblCargoLugar.setBounds(66, 111, 173, 14);
+			lblCargoLugar.setFont(new Font("Georgia", Font.PLAIN, 11));
+			lblCargoLugar.setBounds(210, 112, 173, 14);
 			add(lblCargoLugar);
 		}
 		{
 			lblCargoArecaudar = new JLabel("cargo a_recaudar");
-			lblCargoArecaudar.setBounds(97, 136, 142, 14);
+			lblCargoArecaudar.setFont(new Font("Georgia", Font.PLAIN, 11));
+			lblCargoArecaudar.setBounds(210, 136, 142, 14);
 			add(lblCargoArecaudar);
 		}
 		{
 			lblCargoValorEntrada = new JLabel("cargo valor entrada");
-			lblCargoValorEntrada.setBounds(112, 161, 127, 14);
+			lblCargoValorEntrada.setFont(new Font("Georgia", Font.PLAIN, 11));
+			lblCargoValorEntrada.setBounds(210, 161, 127, 14);
 			add(lblCargoValorEntrada);
 		}
 		{
 			lblCargoProponente = new JLabel("cargo proponente");
-			lblCargoProponente.setBounds(112, 248, 127, 14);
+			lblCargoProponente.setFont(new Font("Georgia", Font.BOLD, 12));
+			lblCargoProponente.setBounds(256, 209, 222, 14);
 			add(lblCargoProponente);
 		}
 		
 	}
 	
 	public void setPropuesta(DtPropuesta prop) {
-		lblCargoTitulo.setText(prop.getTitulo());
-		lblCargoDescripcion.setText(prop.getDescripcion());
-		lblCargoFecha.setText(prop.getFechaEspecatulo().toString());
-		lblCargoFechapublicada.setText(prop.getFechaPublicacion().toString());
-		lblCargoLugar.setText(prop.getLugar());
-		lblCargoProponente.setText(prop.getProponenteACargo().getNickname());
-		lblCargoValorEntrada.setText(Double.toString(prop.getPrecioEntrada()));
-		lblCargoArecaudar.setText(Double.toString(prop.getMontoNecesario()));
+		try {
+			lblCargoTitulo.setText(prop.getTitulo());
+			lblCargoDescripcion.setText(prop.getDescripcion());
+			lblCargoFechapublicada.setText(prop.getFechaPublicacion().toString());
+			lblCargoLugar.setText(prop.getLugar());
+			lblCargoProponente.setText(prop.getProponenteACargo().getNickname());
+			lblCargoValorEntrada.setText(Double.toString(prop.getPrecioEntrada()));
+			lblCargoArecaudar.setText(Double.toString(prop.getMontoNecesario()));
+			lblCargoFecha.setText(prop.getFechaEspecatulo().toString());
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
 		
 	}
 

@@ -147,6 +147,7 @@ public class Principal {
 		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
 		mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				registrarColaboracion.setListaDeColaboradores();
 				registrarColaboracion.setVisible(true);
 			}
 		});
