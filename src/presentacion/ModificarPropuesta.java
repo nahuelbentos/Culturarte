@@ -357,6 +357,8 @@ public class ModificarPropuesta extends JInternalFrame {
 			entCategoria.setSelectedItem(dtPropuesta.getCategoria().getNombre());
 			setListaDeTiposDeRetorno();
 			entTipoRetorno.setSelectedItem(dtPropuesta.getTipo());
+			entFechaPublicacion.setDate(dtPropuesta.getFechaPublicacion().getTime());
+			entFechaEspectaculo.setDate(dtPropuesta.getFechaEspecatulo().getTime());
 		}
 	}
 	

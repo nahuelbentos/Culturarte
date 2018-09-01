@@ -236,11 +236,13 @@ public class AltaPropuesta extends JInternalFrame {
 		titulo = entTitulo.getText();
 		descripcion = entDescripcion.getText();
 		imagen = entImagen.getText();
+		montoNecesario = Float.valueOf(entMontoNecesario.getText());
+		precioEntrada = Float.valueOf(entPrecioEntrada.getText());
 		fechaPublicacion = new GregorianCalendar();
 		if (entFechaPublicacion.getDate()!=null)
 			fechaPublicacion.setTime(entFechaPublicacion.getDate());
-//		if (entFechaEspectaculo.getDate()!=null)
-//			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
+		if (entFechaEspectaculo.getDate()!=null)
+			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
 		lugar = entLugar.getText();
 		tipo = (TipoRetorno) entTipoRetorno.getSelectedItem();
 		if (entProponente.getSelectedItem() != null)
