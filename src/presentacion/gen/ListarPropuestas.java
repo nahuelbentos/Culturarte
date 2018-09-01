@@ -52,6 +52,7 @@ public class ListarPropuestas extends JPanel {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage(),"Grilla propuestas", JOptionPane.ERROR_MESSAGE);
 		}
+		
 		this.table = new JTable(data,columnNames) {
 			public boolean isCellEditable(int rowIndex, int vColIndex) {
 	            return false;
@@ -64,6 +65,8 @@ public class ListarPropuestas extends JPanel {
 	
 	public DtPropuesta getPropuestaSeleccionada() {
 		int filaSeleccionada = table.getSelectedRow();
+		
+		System.out.println(filaSeleccionada);
 		DtPropuestaMinificado[] colProp;
 		try {
 			colProp = iPC.listarPropuestas();
@@ -72,13 +75,38 @@ public class ListarPropuestas extends JPanel {
 			
 			return propuestaCompleto;
 		} catch (PropuestaNoExisteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
-		
-		
-		
 	}
+	
+	public void actualizarPropuestas() {
+		try {
+			
+			DtPropuestaMinificado[] props = iPC.listarPropuestas();
+			data = new Object[props.length][columnNames.length];
+			
+			for (int i = 0; i < props.length; i++) {
+				for (int j = 0; j < columnNames.length; j++) {
+					switch (j) {
+					case 0:
+						data[i][j] = props[i].getTitulo();
+						break;
+					case 1:
+						data[i][j] = props[i].getProponente();
+						break;
+					}
+				}
+				
+			}
+		} catch (PropuestaNoExisteException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, e.getMessage(),"Grilla propuestas", JOptionPane.ERROR_MESSAGE);
+		}
+		
+//		this.table = new JTable(data,columnNames);
+	}
+	
+	
 	
 }

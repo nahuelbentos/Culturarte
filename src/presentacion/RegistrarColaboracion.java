@@ -28,8 +28,6 @@ import javax.swing.JComboBox;
 @SuppressWarnings("serial")
 public class RegistrarColaboracion extends JInternalFrame {
 	
-	private static final String TEXTO_COMBO_UNO = "No hay usuarios registrados en el sistema";
-	
 	private ListarPropuestas grillaPropuestas;
 	private PropuestaSeleccionada propSeleccionada;
 	private JLabel lblPropuestasDelSistema;
@@ -139,20 +137,29 @@ public class RegistrarColaboracion extends JInternalFrame {
 			
 	}
 	
-	public void setListaDeColaboradores() {
+	/**
+	 * Metodo que se crea para que al 
+	 * recargue todos los datos necesarios del panel.
+	 */
+	public void refreshFrame() {
+		actualizarPropuestas();
+		setListaDeColaboradores();
+	}
+	
+	private void setListaDeColaboradores() {
 		cbColaborador.removeAllItems();
 		DtUsuario[] usuarios;
 		try {
 			usuarios = iUsuCon.listarColaboradores();
-	        if (usuarios.length > 1) {
-	            for (int i = 0; i < usuarios.length; i++) {
-	            	cbColaborador.addItem(usuarios[i].getNickname());
-	            }
-	        }
+	        for (int i = 0; i < usuarios.length; i++) 
+	        	cbColaborador.addItem(usuarios[i].getNickname());
 		} catch (ColaboradorNoExisteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void actualizarPropuestas() {
+		grillaPropuestas.actualizarPropuestas();
 	}
 
 	protected void registrarColaboracionActionPerformed(ActionEvent arg0) {

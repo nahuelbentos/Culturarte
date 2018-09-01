@@ -66,11 +66,8 @@ public class PropuestaController implements IPropuestaController {
 	@Override
 	public DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException {
 		
-		//Configuramos el EMF a trav�s de la unidad de persistencia
 		emf = Persistence.createEntityManagerFactory("Conexion");
-		//Generamos un EntityManager
 		em = emf.createEntityManager();
-		
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")

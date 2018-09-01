@@ -321,10 +321,25 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
-//		// TODO Auto-generated method stub
-//		ColaboracionHandler c = ColaboracionHandler.getInstance();
-//		Colaboracion[] colaboraciones = c.getColaboraciones();
-//
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtPropuesta[] dtp = null;
+		
+		@SuppressWarnings("unchecked")
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE colaborador = :colaborador").setParameter("colaborador", nickname).getResultList();
+		if (colaboraciones != null) {
+			dtp = new DtPropuesta[colaboraciones.size()];
+			int i = 0;
+			for (Colaboracion colaboracion : colaboraciones) {
+				DtPropuesta itemDtp = colaboracion.obtPropuesta();
+				dtp[i] = itemDtp;
+				
+				i++;
+			}
+		}
+
 		return null;
 	}
 
