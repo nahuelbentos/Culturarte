@@ -264,6 +264,7 @@ public class DejarDeSeguirUsuario extends JInternalFrame {
 					+ cmbUsuarioUno.getSelectedItem().toString() + " ahora ya no sigue al usuario: " 
         			+ cmbUsuarioDos.getSelectedItem().toString(), "Dejar de Seguir a un Usuario",
                     JOptionPane.INFORMATION_MESSAGE);
+        	limpiarFormulario();
 		}
 	}
 	
@@ -277,7 +278,8 @@ public class DejarDeSeguirUsuario extends JInternalFrame {
 	}
 	
 	private boolean validarSelecciones() {
-		if (cmbUsuarioUno.getSelectedItem().toString().equals(TEXTO_COMBO_UNO) || 
+		if (cmbUsuarioUno.getSelectedItem() == null || cmbUsuarioDos.getSelectedItem() == null ||				 
+				cmbUsuarioUno.getSelectedItem().toString().equals(TEXTO_COMBO_UNO) || 
 				cmbUsuarioDos.getSelectedItem().toString().equals(TEXTO_COMBO_DOS))  {
             JOptionPane.showMessageDialog(this, "Debe seleccionar dos usuarios", "Dejar de Seguir a un Usuario",
                     JOptionPane.ERROR_MESSAGE);

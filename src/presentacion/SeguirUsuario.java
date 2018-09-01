@@ -266,6 +266,7 @@ public class SeguirUsuario extends JInternalFrame {
 						+ cmbUsuarioUno.getSelectedItem().toString() + " ahora sigue al usuario: " 
             			+ cmbUsuarioDos.getSelectedItem().toString(), "Registrar Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
+            	limpiarFormulario();
             } catch (UsuarioYaSigueAlUsuarioException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Seguir Usuario", JOptionPane.ERROR_MESSAGE);
             }
@@ -282,7 +283,8 @@ public class SeguirUsuario extends JInternalFrame {
 	}
 	
 	private boolean validarSelecciones() {
-		if (cmbUsuarioUno.getSelectedItem().toString().equals(TEXTO_COMBO_UNO) || 
+		if (cmbUsuarioUno.getSelectedItem() == null || cmbUsuarioDos.getSelectedItem() == null || 
+				cmbUsuarioUno.getSelectedItem().toString().equals(TEXTO_COMBO_UNO) || 
 				cmbUsuarioDos.getSelectedItem().toString().equals(TEXTO_COMBO_DOS))  {
             JOptionPane.showMessageDialog(this, "Debe seleccionar dos usuarios", "Seguir Usuario",
                     JOptionPane.ERROR_MESSAGE);

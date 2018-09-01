@@ -10,9 +10,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logica.Factory;
+import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
-import presentacion.gen.ListarPropuestas;
 
 public class Principal {
 
@@ -26,6 +26,7 @@ public class Principal {
 	private RegistrarColaboracion registrarColaboracion;
 	
 	private IUsuarioController IUC;
+	private ICategoriaController ICC;
 	private IPropuestaController IPC;
 	
 	/**
@@ -54,7 +55,7 @@ public class Principal {
 
         Factory factory = Factory.getInstance();
         IUC = factory.getIUsuarioController();
-        
+        ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
         
         //LO EJECUTO UNA SOLA VEZ.
@@ -64,10 +65,10 @@ public class Principal {
 		altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 
-		altaCategoria = new AltaCategoria();
+		altaCategoria = new AltaCategoria(ICC);
 		altaCategoria.setVisible(false);
 
-		altaPropuesta = new AltaPropuesta(IUC);
+		altaPropuesta = new AltaPropuesta(IUC, ICC);
 		altaPropuesta.setVisible(false);
 
 		seguirUsuario = new SeguirUsuario(IUC);
@@ -114,6 +115,7 @@ public class Principal {
 		JMenuItem mntmAltaDeProp = new JMenuItem("Alta de Propuesta");
 		mntmAltaDeProp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				altaPropuesta.setListaDeProponentes();
 				altaPropuesta.setVisible(true);
 			}
 		});

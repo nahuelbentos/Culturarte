@@ -1,7 +1,6 @@
 package logica;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -17,19 +16,12 @@ import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.DtUsuario;
-import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.ColaboradorNoExisteException;
-import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
-import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.handler.ColaboracionHandler;
-import logica.handler.ColaboradorHandler;
-import logica.handler.ProponenteHandler;
-import logica.handler.PropuestaHandler;
-
 public class UsuarioController implements IUsuarioController {
 
 	private static EntityManager em;
@@ -49,21 +41,16 @@ public class UsuarioController implements IUsuarioController {
 		if (usuario != null) {
 			throw new UsuarioYaExisteElUsuarioException("El usuario " + dtUsuario.getNickname() + " ya esta registrado");
 		} else {
-			ColaboradorHandler colaboradorHandler = ColaboradorHandler.getInstance();
-			ProponenteHandler proponenteHandler = ProponenteHandler.getInstance();
 			if (dtUsuario instanceof DtProponente) {
 				DtProponente dtProponente = (DtProponente) dtUsuario;
 				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
 						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
-				//proponenteHandler.agregarProponente(usuario);
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
 				usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(),
 						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
-
-				colaboradorHandler.addColaborador(usuario);
 			}
 			
 			em.persist(usuario);
@@ -125,10 +112,21 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void dejarDeSeguirUsuario(String nicknameUno, String nicknameDos) {
-//		UsuarioHandler usuarioHandler = UsuarioHandler.getInstance();
-//        Usuario usuarioUno = usuarioHandler.obtenerUsuario(nicknameUno);
-//        Usuario usuarioDos = usuarioHandler.obtenerUsuario(nicknameDos);
-//        usuarioUno.getUsuariosQueSigue().remove(nicknameDos, usuarioDos);
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+
+        Usuario usuarioUno = em.find(Usuario.class, nicknameUno);
+        Usuario usuarioDos = em.find(Usuario.class, nicknameDos);
+        usuarioUno.dejarDeSeguirUsuario(usuarioDos);
+        
+        UsuarioSigueID usuarioSigueId = new UsuarioSigueID();
+        usuarioSigueId.setUsuarioUno(nicknameUno);
+        usuarioSigueId.setUsuarioDos(nicknameDos);
+        
+		em.createQuery("delete from UsuarioSigue where id = :id").setParameter("id", usuarioSigueId).executeUpdate();
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override
@@ -228,20 +226,16 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
-		// TODO Auto-generated method stub
-
-		ProponenteHandler mpro = ProponenteHandler.getInstance();
-		Map<String, Proponente> props = mpro.getProponentes();
-
-		PropuestaHandler mpropue = PropuestaHandler.getInstance();
-		Map<String, Propuesta> propues = mpropue.getPropuestas();
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+        List<Propuesta> propouestas = em.createQuery("FROM Propuesta").getResultList();
 
 		ColaboracionHandler mcol = ColaboracionHandler.getInstance();
 		Map<Long, Colaboracion> colabs = mcol.getMapColaboraciones();
-
-
-
-		Proponente p = props.get(nickname); //1
+		
+		Proponente p = em.find(Proponente.class, nickname);
 		DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
 
 		ArrayList<DtPropuesta> prPublicadas = new ArrayList<DtPropuesta>();
@@ -250,7 +244,8 @@ public class UsuarioController implements IUsuarioController {
 		ArrayList<DtPropuesta> prFinanciadas = new ArrayList<DtPropuesta>();
 		ArrayList<DtPropuesta> prNoFinanciadas = new ArrayList<DtPropuesta>();
 
-		for(Propuesta prop : propues.values()) { //3
+		for(int i = 0; i < propouestas.size(); i++) { //3
+			Propuesta prop = propouestas.get(i);
 			if(prop.isProponenteACargo(nickname)) {
 
 				ArrayList<DtColaboracion> colaboraciones = new ArrayList<DtColaboracion>();
@@ -293,16 +288,18 @@ public class UsuarioController implements IUsuarioController {
 				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
 				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
 
+		em.close();
+		
 		return usuProponente;
 	}
 
 	@Override
-	public DtPerfilColaborador verPerfilColaborador(String nickname) {
-		// TODO Auto-generated method stub
-
-		ColaboradorHandler mcol = ColaboradorHandler.getInstance();
-		DtColaborador perfil = mcol.obtenerColaborador(nickname); //1y2
-
+	public DtPerfilColaborador verPerfilColaborador(String nickname) {		
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Usuario perfil = em.find(Usuario.class, nickname);
 
 		ColaboracionHandler mcolab = ColaboracionHandler.getInstance();
 		Map<Long, Colaboracion> colabs = mcolab.getMapColaboraciones();
@@ -317,8 +314,8 @@ public class UsuarioController implements IUsuarioController {
 				 colaboracionesHechas.add(colaboracion);
 			}
 		}
-
-		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getEmail(),
+		em.close();
+		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getCorreoElectronico(),
 				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
 	}
 

@@ -23,18 +23,17 @@ import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
-import excepciones.ExcepcionCategoriaNoExiste;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaRepetidaException;
-import logica.CategoriaController;
+import logica.ICategoriaController;
 import logica.IUsuarioController;
 import logica.PropuestaController;
-import logica.UsuarioController;
 
 @SuppressWarnings("serial")
 public class AltaPropuesta extends JInternalFrame {
 	
 	private IUsuarioController iUsuarioController;
+	private ICategoriaController iCategoriaController;
 	private JLabel lblNombre;
 	private JLabel lblImagen;
 	private JLabel lblDescripcion;
@@ -75,9 +74,10 @@ public class AltaPropuesta extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AltaPropuesta(IUsuarioController IUC) {
+	public AltaPropuesta(IUsuarioController IUC, ICategoriaController ICC) {
 		
 		iUsuarioController = IUC;
+		iCategoriaController = ICC;
 		
         setResizable(true);
         setIconifiable(true);
@@ -184,16 +184,7 @@ public class AltaPropuesta extends JInternalFrame {
         getContentPane().add(lblCategora);
         
         entCategoria = new JComboBox<>();
-        CategoriaController cc = new CategoriaController();
-        DtCategoria[] dtC = null;
-        try {
-			dtC = cc.listarCategorias();
-		} catch (ExcepcionCategoriaNoExiste e) {
-			e.printStackTrace();
-		}
-        for (DtCategoria i : dtC) {
-        	entCategoria.addItem(i.getNombre());
-        }
+        setListaDeCategorias();
         entCategoria.setBounds(143, 304, 239, 24);
         getContentPane().add(entCategoria);
         
@@ -280,5 +271,17 @@ public class AltaPropuesta extends JInternalFrame {
         } else {
         	entProponente.addItem("No hay proponentes registrados en el sistema");
         }
+	}
+	
+	public void setListaDeCategorias() {
+		entCategoria.removeAllItems();
+		DtCategoria[] categorias = iCategoriaController.listarCategorias();
+        if (categorias != null) {
+            for (int i = 0; i < categorias.length; i++) {
+            	entCategoria.addItem(categorias[i].getNombre());
+            }
+        } else {
+        	entProponente.addItem("No hay categorias registradas en el sistema");
+        }        
 	}
 }
