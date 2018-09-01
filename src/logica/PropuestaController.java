@@ -19,10 +19,7 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
-import logica.handler.CategoriaHandler;
-import logica.handler.ProponenteHandler;
 import logica.handler.ColaboracionHandler;
-import logica.handler.PropuestaHandler;
 
 public class PropuestaController implements IPropuestaController {
 

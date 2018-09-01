@@ -107,4 +107,9 @@ public abstract class Usuario {
 		UsuarioSigue u = new UsuarioSigue(this, usuarioASeguir);
 		usuariosQueSigue.add(u);
 	}
+	
+	public void dejarDeSeguirUsuario(Usuario usuarioADejarDeSeguir) {
+		UsuarioSigue u = new UsuarioSigue(this, usuarioADejarDeSeguir);
+		usuariosQueSigue.remove(u);
+	}
 }

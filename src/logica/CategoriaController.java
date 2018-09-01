@@ -8,8 +8,6 @@ import javax.persistence.Persistence;
 
 import datatype.DtCategoria;
 import excepciones.CategoriaYaExisteException;
-import excepciones.ExcepcionCategoriaNoExiste;
-import logica.handler.CategoriaHandler;
 
 public class CategoriaController implements ICategoriaController {
 	
@@ -17,7 +15,7 @@ public class CategoriaController implements ICategoriaController {
 	private static EntityManagerFactory emf;
 
 	@Override
-	public DtCategoria[] listarCategorias() throws ExcepcionCategoriaNoExiste{
+	public DtCategoria[] listarCategorias(){
 		
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
@@ -34,12 +32,9 @@ public class CategoriaController implements ICategoriaController {
                 categ = cats.get(i);
                 dtC[i] = new DtCategoria(categ.getNombre(), categ.getDtSuperCategorias());
             }
-            
-            em.close();
-            return dtC;
-        } else
-        	em.close();
-            throw new ExcepcionCategoriaNoExiste("No existen categorías registradas");
+        }
+        em.close();
+        return dtC;
 	}
 
 	@Override

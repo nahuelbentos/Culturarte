@@ -10,19 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import datatype.DtColaboracion;
-import datatype.DtColaborador;
-import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import datatype.TipoRetorno;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.PropuestaNoExisteException;
-import excepciones.UsuarioYaExisteElUsuarioException;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.GregorianCalendar;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;

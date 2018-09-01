@@ -5,11 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,10 +16,6 @@ import datatype.DtCategoria;
 @Table(name="CATEGORIAS")
 public class Categoria {
 
-
-//	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-//	@Column(name="ID_CAT")
-//	private int id;
 	@Id
 	@Column(name="NOMBRE", nullable=false, length=50)
 	private String nombre;
@@ -40,14 +33,6 @@ public class Categoria {
 		super();
 		this.nombre = nombre;
 	}
-
-//	public int getId() {
-//		return id;
-//	}
-//
-//	public void setId(int id) {
-//		this.id = id;
-//	}
 
 	public String getNombre() {
 		return nombre;

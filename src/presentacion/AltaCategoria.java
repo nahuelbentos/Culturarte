@@ -8,9 +8,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import logica.CategoriaController;
+import logica.ICategoriaController;
 import datatype.DtCategoria;
 import excepciones.CategoriaYaExisteException;
-import excepciones.ExcepcionCategoriaNoExiste;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class AltaCategoria extends JInternalFrame {
 
+	private ICategoriaController iCategoriaController;
+	private DefaultMutableTreeNode categorias;
 	private JTree treeListaDeCategorias;
 	private JTextField entCategoria;
 	private String categoria;
@@ -28,7 +30,10 @@ public class AltaCategoria extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AltaCategoria() {
+	public AltaCategoria(ICategoriaController ICC) {
+		
+		iCategoriaController = ICC;
+		
         setResizable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -43,7 +48,6 @@ public class AltaCategoria extends JInternalFrame {
 		lblListaDeCategorias.setBounds(65, 11, 250, 14);
 		getContentPane().add(lblListaDeCategorias);
 		
-		// Ejemplo de listar categor�as con JTree.
 		listarCategorias();
 		getContentPane().add(treeListaDeCategorias);
 		
@@ -78,35 +82,29 @@ public class AltaCategoria extends JInternalFrame {
 	}
 	
 	public void listarCategorias() {
-		CategoriaController cc = new CategoriaController();
 		DtCategoria dtC[] = null;
-		DefaultMutableTreeNode categorias = new DefaultMutableTreeNode("Categorías");
-		try {
-			dtC = cc.listarCategorias();
+		categorias = new DefaultMutableTreeNode("Categor�as");
+		dtC = iCategoriaController.listarCategorias();
+		if (dtC != null) {
 			for(int i = 0; i < dtC.length; i++) {
 				DefaultMutableTreeNode categoria;
 				categoria = new DefaultMutableTreeNode(dtC[i].getNombre());
-				
 				categorias.add(categoria);
 			}
-		} catch (ExcepcionCategoriaNoExiste e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	        treeListaDeCategorias = new JTree(categorias);
+	        treeListaDeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
+	        treeListaDeCategorias.setBounds(12, 33, 376, 174);
 		}
-        treeListaDeCategorias = new JTree(categorias);
-        treeListaDeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
-        treeListaDeCategorias.setBounds(12, 33, 376, 174);
 	}
 	
 	private void altaDeCategoria() {
 		if (formularioOk()) {
-			CategoriaController cc = new CategoriaController();
 			
 			// FALTA AGREGAR QUE SE SUBAN LOS PADRES. El DtCategoria está mal hecho, ya que el ArrayList de padres es del tipo Categoria
 			
 			DtCategoria dtC = new DtCategoria(categoria, null);
 			try {
-				cc.agregarCategoria(dtC);
+				iCategoriaController.agregarCategoria(dtC);
 				JOptionPane.showMessageDialog(this, "La categoría se ha creado con éxito", "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
 			} catch (CategoriaYaExisteException e) {
 				JOptionPane.showMessageDialog(this, e, "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
