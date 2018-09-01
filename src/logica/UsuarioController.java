@@ -2,7 +2,6 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -232,10 +231,12 @@ public class UsuarioController implements IUsuarioController {
 		
         List<Propuesta> propouestas = em.createQuery("FROM Propuesta").getResultList();
 
-		ColaboracionHandler mcol = ColaboracionHandler.getInstance();
-		Map<Long, Colaboracion> colabs = mcol.getMapColaboraciones();
+//		ColaboracionHandler mcol = ColaboracionHandler.getInstance();
+//		Map<Long, Colaboracion> colabs = mcol.getMapColaboraciones();
+
+        List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
 		
-		Proponente p = em.find(Proponente.class, nickname);
+        Proponente p = em.find(Proponente.class, nickname); //1
 		DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
 
 		ArrayList<DtPropuesta> prPublicadas = new ArrayList<DtPropuesta>();
@@ -249,7 +250,7 @@ public class UsuarioController implements IUsuarioController {
 			if(prop.isProponenteACargo(nickname)) {
 
 				ArrayList<DtColaboracion> colaboraciones = new ArrayList<DtColaboracion>();
-				for(Colaboracion col : colabs.values()) { //6
+				for(Colaboracion col : colabs) { //6
 					if(col.tieneProp(prop.getTitulo())) {
 						colaboraciones.add(col.getDataColaboracion());
 					}
@@ -259,9 +260,8 @@ public class UsuarioController implements IUsuarioController {
 				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.EntradasGratis, 0,
 				 prop.getProponenteACargo().getDtProponente(),/* prop.getEstadoActual().getDtEstado()*/null, prop.getDtEstadoHistorial(),
 				 prop.getCategoria().getDtCategoria(), colaboraciones);
-//				dataPro=prop.getInfoPropuesta(); //4 y5
-
-				switch (dataPro.getEstadoActual().getEstado()){
+				
+				switch (dataPro.getEstadoActual()){
 					case publicada:
 						prPublicadas.add(dataPro);
 						break;
@@ -283,14 +283,12 @@ public class UsuarioController implements IUsuarioController {
 			}
 		}
 
-		DtPerfilProponente usuProponente = new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
+		em.close();
+		
+		return new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
 				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
 				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
 				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
-
-		em.close();
-		
-		return usuProponente;
 	}
 
 	@Override
@@ -299,13 +297,13 @@ public class UsuarioController implements IUsuarioController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		Usuario perfil = em.find(Usuario.class, nickname);
+		Usuario perfil = em.find(Usuario.class, nickname); //1y2
 
-		ColaboracionHandler mcolab = ColaboracionHandler.getInstance();
-		Map<Long, Colaboracion> colabs = mcolab.getMapColaboraciones();
+        List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
 
-		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<>();
-		for(Colaboracion c : colabs.values()) { //1*
+		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<DtPropuestaColaborada>();
+		
+		for(Colaboracion c : colabs) { //1*
 			if(c.tieneColaborador(nickname)) { //2* y 2.1*
 				 double montoAportado = c.getMonto(); //3*
 				 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*

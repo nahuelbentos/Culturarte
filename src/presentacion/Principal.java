@@ -25,6 +25,12 @@ public class Principal {
 	private DejarDeSeguirUsuario dejarDeSeguirUsuario;
 	private ConsultaColaboracionPropuesta consColProp;
 	private RegistrarColaboracion registrarColaboracion;
+
+	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
+
+	private ConsultaPerfilProponente consultaPerfilProponente;
+
+	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	
 	private IUsuarioController IUC;
 	private ICategoriaController ICC;
@@ -87,6 +93,11 @@ public class Principal {
 		registrarColaboracion = new RegistrarColaboracion(IPC,IUC);
 		registrarColaboracion.setVisible(false);
 		
+		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
+		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
+		consultaPerfilProponente.setVisible(false);
+		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
+		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
@@ -96,7 +107,11 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(consColProp);
 		frmPaginaPrincipal.getContentPane().add(registrarColaboracion);
-		
+
+
+		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
+		frmPaginaPrincipal.getContentPane().add(consultaPerfilProponente);
+		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	}
 
 	public void initialize() {
@@ -198,6 +213,12 @@ public class Principal {
 		mnPerfiles.add(mntmAltaDePerfil);
 
 		JMenuItem mntmNewMenuItem = new JMenuItem("Consulta de Perfil de proponente");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				consultaPerfilProponente.setVisible(true);
+				
+			}
+		});
 		mnPerfiles.add(mntmNewMenuItem);
 
 		JMenuItem mntmConsultaDePerfil = new JMenuItem("Consulta de Perfil de colaborador");
