@@ -1,4 +1,4 @@
-package logica.exceptions;
+package excepciones;
 
 @SuppressWarnings("serial")
 public class ProponenteNoExisteException extends Exception {

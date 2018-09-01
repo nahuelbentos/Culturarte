@@ -8,9 +8,10 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import logica.CategoriaController;
-import logica.exceptions.CategoriaYaExisteException;
-import logica.exceptions.ExcepcionCategoriaNoExiste;
 import datatype.DtCategoria;
+import excepciones.CategoriaYaExisteException;
+import excepciones.ExcepcionCategoriaNoExiste;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;

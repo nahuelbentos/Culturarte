@@ -4,8 +4,8 @@ import javax.swing.JPanel;
 
 import datatype.DtColaborador;
 import datatype.DtUsuario;
+import excepciones.ColaboradorNoExisteException;
 import logica.IUsuarioController;
-import logica.exceptions.ColaboradorNoExisteException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;

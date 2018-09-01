@@ -7,8 +7,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import datatype.DtCategoria;
-import logica.exceptions.CategoriaYaExisteException;
-import logica.exceptions.ExcepcionCategoriaNoExiste;
+import excepciones.CategoriaYaExisteException;
+import excepciones.ExcepcionCategoriaNoExiste;
 import logica.handler.CategoriaHandler;
 
 public class CategoriaController implements ICategoriaController {

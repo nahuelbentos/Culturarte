@@ -22,16 +22,19 @@ import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import datatype.TipoRetorno;
+import excepciones.CategoriaNoExisteException;
+import excepciones.ExcepcionCategoriaNoExiste;
+import excepciones.ProponenteNoExisteException;
+import excepciones.PropuestaRepetidaException;
 import logica.CategoriaController;
+import logica.IUsuarioController;
 import logica.PropuestaController;
 import logica.UsuarioController;
-import logica.exceptions.CategoriaNoExisteException;
-import logica.exceptions.ExcepcionCategoriaNoExiste;
-import logica.exceptions.ProponenteNoExisteException;
-import logica.exceptions.PropuestaRepetidaException;
 
 @SuppressWarnings("serial")
 public class AltaPropuesta extends JInternalFrame {
+	
+	private IUsuarioController iUsuarioController;
 	private JLabel lblNombre;
 	private JLabel lblImagen;
 	private JLabel lblDescripcion;
@@ -72,7 +75,10 @@ public class AltaPropuesta extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AltaPropuesta() {
+	public AltaPropuesta(IUsuarioController IUC) {
+		
+		iUsuarioController = IUC;
+		
         setResizable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -168,12 +174,8 @@ public class AltaPropuesta extends JInternalFrame {
         lblProponente.setBounds(12, 13, 131, 15);
         getContentPane().add(lblProponente);
         
-        entProponente = new JComboBox<>();
-        UsuarioController uc = new UsuarioController();
-        DtUsuario[] dtP = uc.listarProponentes();
-        for (DtUsuario i : dtP) {
-        	entProponente.addItem(i.getNickname());
-        }
+        entProponente = new JComboBox<>();      
+        setListaDeProponentes();
         entProponente.setBounds(143, 8, 239, 24);
         getContentPane().add(entProponente);
         
@@ -266,5 +268,17 @@ public class AltaPropuesta extends JInternalFrame {
 		entPrecioEntrada.setValue(0);
 		entFechaPublicacion.setDate(null);
 		entFechaEspectaculo.setDate(null);
+	}
+	
+	public void setListaDeProponentes() {
+		entProponente.removeAllItems();
+        DtUsuario[] proponentes = iUsuarioController.listarProponentes();
+        if (proponentes != null) {
+            for (int i = 0; i < proponentes.length; i++) {
+            	entProponente.addItem(proponentes[i].getNickname());
+            }
+        } else {
+        	entProponente.addItem("No hay proponentes registrados en el sistema");
+        }
 	}
 }
