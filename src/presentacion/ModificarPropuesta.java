@@ -266,12 +266,14 @@ public class ModificarPropuesta extends JInternalFrame {
 	private boolean formularioOk() {
 		titulo = entTitulo.getText();
 		descripcion = entDescripcion.getText();
-		imagen = entImagen.getText();
+		montoNecesario = Float.valueOf(entMontoNecesario.getText());
+		precioEntrada = Float.valueOf(entPrecioEntrada.getText());
 		fechaPublicacion = new GregorianCalendar();
+		fechaEspecatulo = new GregorianCalendar();
 		if (entFechaPublicacion.getDate()!=null)
 			fechaPublicacion.setTime(entFechaPublicacion.getDate());
-//		if (entFechaEspectaculo.getDate()!=null)
-//			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
+		if (entFechaEspectaculo.getDate()!=null)
+			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
 		lugar = entLugar.getText();
 		tipo = (TipoRetorno) entTipoRetorno.getSelectedItem();
 		if (entProponente.getSelectedItem() != null)
@@ -279,8 +281,9 @@ public class ModificarPropuesta extends JInternalFrame {
 		categoria = entCategoria.getSelectedItem().toString();
 		
 		// acá hay que poner las validaciones del caso de uso
-		return (!(nicknameProponente.isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || imagen.isEmpty() || fechaPublicacion == null || 
-				/*fechaEspecatulo == null || */lugar.isEmpty() || tipo == null || categoria == null));
+//		return (!(nicknameProponente.isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || imagen.isEmpty() || fechaPublicacion == null || 
+//				fechaEspecatulo == null || lugar.isEmpty() || tipo == null || categoria == null));
+		return true;
 	}
 	
 	private void limpiarFormulario() {

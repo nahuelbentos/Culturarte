@@ -164,6 +164,7 @@ public class PropuestaController implements IPropuestaController {
 				+ "imagen = :imagen, "
 				+ "fechaPublicacion = :fechaPublicacion, "
 				+ "fechaEspecatulo = :fechaEspecatulo, "
+				+ "montoNecesario = :montoNecesario, "
 				+ "precioEntrada = :precioEntrada, "
 				+ "lugar = :lugar, "
 				+ "tipo = :tipo, "
@@ -175,6 +176,7 @@ public class PropuestaController implements IPropuestaController {
 		.setParameter("imagen", dtPropuesta.getImagen())
 		.setParameter("fechaPublicacion", dtPropuesta.getFechaPublicacion())
 		.setParameter("fechaEspecatulo", dtPropuesta.getFechaEspecatulo())
+		.setParameter("montoNecesario", dtPropuesta.getMontoNecesario())
 		.setParameter("precioEntrada", dtPropuesta.getPrecioEntrada())
 		.setParameter("lugar", dtPropuesta.getLugar())
 		.setParameter("tipo", dtPropuesta.getTipo())

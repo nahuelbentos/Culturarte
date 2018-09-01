@@ -239,6 +239,7 @@ public class AltaPropuesta extends JInternalFrame {
 		montoNecesario = Float.valueOf(entMontoNecesario.getText());
 		precioEntrada = Float.valueOf(entPrecioEntrada.getText());
 		fechaPublicacion = new GregorianCalendar();
+		fechaEspecatulo = new GregorianCalendar();
 		if (entFechaPublicacion.getDate()!=null)
 			fechaPublicacion.setTime(entFechaPublicacion.getDate());
 		if (entFechaEspectaculo.getDate()!=null)
@@ -251,7 +252,7 @@ public class AltaPropuesta extends JInternalFrame {
 		
 		// acá hay que poner las validaciones del caso de uso
 		return (!(nicknameProponente.isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || imagen.isEmpty() || fechaPublicacion == null || 
-				/*fechaEspecatulo == null || */lugar.isEmpty() || tipo == null || categoria == null));
+				fechaEspecatulo == null || lugar.isEmpty() || tipo == null || categoria == null));
 	}
 	
 	private void limpiarFormulario() {
