@@ -5,6 +5,7 @@ import javax.swing.JInternalFrame;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
 import presentacion.gen.ListarPropuestas;
+import presentacion.gen.ListarPropuestasProponente;
 import presentacion.gen.PropuestaSeleccionada;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

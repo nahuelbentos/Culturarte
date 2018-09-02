@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 
+import excepciones.PropuestaNoExisteException;
+import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.IUsuarioController;
 import presentacion.gen.ListarColaboradores;
 
@@ -15,49 +17,83 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.awt.event.ActionEvent;
+import java.awt.Rectangle;
 
 public class ConsultaPerfilProponente extends JInternalFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws UsuarioNoExisteElUsuarioException 
 	 */
-	public ConsultaPerfilProponente(IUsuarioController IUC) {
+	private VerPerfilProponente verPerfilProponente;
+	public ConsultaPerfilProponente(IUsuarioController IUC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException{
+		setNormalBounds(new Rectangle(0, 0, 800, 800));
 		setClosable(true);
 		
 
 //		setNormalBounds(new Rectangle(0, 0, 0, 50));
 		//setBounds(100, 100, 673, 425);
-		setBounds(10, 10, 700, 600);
+		setBounds(10, 10, 745, 681);
         setResizable(true);
         setIconifiable(true);
         setMaximizable(true);
         getContentPane().setLayout(null);
         
         JPanel panelListarProponentes = new JPanel();
-        panelListarProponentes.setBounds(0, 0, 690, 568);
+        panelListarProponentes.setBounds(0, 0, 400, 250);
         getContentPane().add(panelListarProponentes);
         panelListarProponentes.setLayout(null);
         
-        ListarColaboradores listarProponentes = new ListarColaboradores((IUsuarioController) null);
-        listarProponentes.setBounds(0, 0, 690, 568);
+        ListarProponentes listarProponentes = new ListarProponentes(IUC);
+        listarProponentes.setBounds(0, 0, 400, 250);
         panelListarProponentes.add(listarProponentes);
-
-//        ListarProponentes listarProponentes = new ListarProponentes((IUsuarioController) null);
-//        listarProponentes.setBounds(0, 0, 0, 0);
-//        panelListarProponentes.add(listarProponentes);
         
+
+
         JPanel panelVerPerfilProponente = new JPanel();
-        panelVerPerfilProponente.setBounds(10, 10, 690, 355);
-        getContentPane().add(panelVerPerfilProponente);
-        panelVerPerfilProponente.setLayout(null);
-         
-        VerPerfilProponente verPerfilProponente = new VerPerfilProponente(IUC, "pepe");
-        verPerfilProponente.setBounds(0, 0, 690, 355);
+        panelVerPerfilProponente.setBounds(0, 255, 500, 355);
+        
+        
+		if(listarProponentes.getColaboradorSeleccionado() == null)
+        	verPerfilProponente = new VerPerfilProponente(IUC, "proponente1");
+        else
+        	verPerfilProponente = new VerPerfilProponente(IUC, listarProponentes.getColaboradorSeleccionado());
+        	
+        verPerfilProponente.setBounds(0, 25, 500, 355);
         panelVerPerfilProponente.add(verPerfilProponente);
         
-        panelListarProponentes.setVisible(true);
-        panelVerPerfilProponente.setVisible(false);
+        getContentPane().add(panelVerPerfilProponente);
+        panelVerPerfilProponente.setLayout(null);
+        
+        JButton btnVerPerfil = new JButton("VerPfil");
+        btnVerPerfil.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		try {
+        			verPerfilProponente.removeAll();
+					verPerfilProponente = new VerPerfilProponente(IUC, listarProponentes.getColaboradorSeleccionado());
+					verPerfilProponente.setBounds(0, 25, 500, 355);
+			        panelVerPerfilProponente.add(verPerfilProponente);
+			        
+			        getContentPane().add(panelVerPerfilProponente);
+			        panelVerPerfilProponente.setLayout(null);
+			        
+			        JButton btnVerpfil = new JButton("VerPfil");
+				} catch (UsuarioNoExisteElUsuarioException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (PropuestaNoExisteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        });
+        btnVerPerfil.setBounds(405, 225, 114, 25);
+        getContentPane().add(btnVerPerfil);
+        
+        
+        
 
 	}
 }

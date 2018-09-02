@@ -1,7 +1,6 @@
 package presentacion.gen;
 
 
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,46 +12,41 @@ import excepciones.PropuestaNoExisteException;
 import logica.IPropuestaController;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class ListarPropuestas extends JPanel {
+public class ListarPropuestasProponente extends JPanel {
 
 	private Object[][] data;
 	
 	private final Object[] columnNames = { 
 	                              "Titulo:",
-	                              "Por:"};		    
+	                              "Descripcion:"};		    
 	private JScrollPane grilla;
 	private JTable table;
 	
 	private IPropuestaController iPC;
 	
-	public ListarPropuestas(IPropuestaController IPU) {
+	public ListarPropuestasProponente(ArrayList<DtPropuesta> props) {
 		setLayout(new GridLayout(1,1));
+//		System.out.println("ListarPropuestaProponente \n");
+//
+//		System.out.println("Propuesta1: " + props.get(0).getTitulo()+ " \n");
+//		System.out.println("PropuestaDescripcion0: " + props.get(0).getDescripcion()+ " \n");
 		
-		iPC = IPU;
+		data = new Object[props.size()][columnNames.length];
 		
-		try {
-			
-			DtPropuestaMinificado[] props = iPC.listarPropuestas();
-			data = new Object[props.length][columnNames.length];
-			
-			for (int i = 0; i < props.length; i++) {
-				for (int j = 0; j < columnNames.length; j++) {
-					switch (j) {
-					case 0:
-						data[i][j] = props[i].getTitulo();
-						break;
-					case 1:
-						data[i][j] = props[i].getProponente();
-						break;
-					}
+		for (int i = 0; i < props.size(); i++) {
+			for (int j = 0; j < columnNames.length; j++) {
+				switch (j) {
+				case 0:
+					data[i][j] = props.get(i).getTitulo();
+					break;
+				case 1:
+					data[i][j] = props.get(i).getDescripcion();
+					break;
 				}
-				
 			}
-		} catch (PropuestaNoExisteException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, e.getMessage(),"Grilla propuestas", JOptionPane.ERROR_MESSAGE);
 		}
 		this.table = new JTable(data,columnNames) {
 			public boolean isCellEditable(int rowIndex, int vColIndex) {
@@ -84,3 +78,9 @@ public class ListarPropuestas extends JPanel {
 	}
 	
 }
+
+
+
+
+
+

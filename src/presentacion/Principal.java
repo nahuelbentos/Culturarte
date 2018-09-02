@@ -9,6 +9,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import excepciones.PropuestaNoExisteException;
+import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.Factory;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
@@ -54,11 +56,13 @@ public class Principal {
 
 	/**
 	 * Create the frame.
+	 * @throws UsuarioNoExisteElUsuarioException 
+	 * @throws PropuestaNoExisteException 
 	 */
 
-	public Principal() {
+	public Principal() throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		initialize();
-
+ 
         Factory factory = Factory.getInstance();
         IUC = factory.getIUsuarioController();
         ICC = factory.getICategoriaController();

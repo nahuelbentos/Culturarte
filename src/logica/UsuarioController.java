@@ -228,67 +228,79 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+
         List<Propuesta> propouestas = em.createQuery("FROM Propuesta").getResultList();
-
-//		ColaboracionHandler mcol = ColaboracionHandler.getInstance();
-//		Map<Long, Colaboracion> colabs = mcol.getMapColaboraciones();
-
         List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
-		
-        Proponente p = em.find(Proponente.class, nickname); //1
-		DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
+    	Usuario usuario = em.find(Usuario.class, nickname);
 
-		ArrayList<DtPropuesta> prPublicadas = new ArrayList<DtPropuesta>();
-		ArrayList<DtPropuesta> prCanceladas = new ArrayList<DtPropuesta>();
-		ArrayList<DtPropuesta> prEnFinanciacion = new ArrayList<DtPropuesta>();
-		ArrayList<DtPropuesta> prFinanciadas = new ArrayList<DtPropuesta>();
-		ArrayList<DtPropuesta> prNoFinanciadas = new ArrayList<DtPropuesta>();
-
-		for(int i = 0; i < propouestas.size(); i++) { //3
-			Propuesta prop = propouestas.get(i);
-			if(prop.isProponenteACargo(nickname)) {
-
-				ArrayList<DtColaboracion> colaboraciones = new ArrayList<DtColaboracion>();
-				for(Colaboracion col : colabs) { //6
-					if(col.tieneProp(prop.getTitulo())) {
-						colaboraciones.add(col.getDataColaboracion());
-					}
-				}
-
-				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
-				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
-				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual(), prop.getDtEstadoHistorial(),
-				 prop.getCategoria().getDtCategoria(), colaboraciones);
-				
-				switch (dataPro.getEstadoActual()){
-					case publicada:
-						prPublicadas.add(dataPro);
-						break;
-					case cancelada:
-						prCanceladas.add(dataPro);
-						break;
-					case enFinanciacion:
-						prEnFinanciacion.add(dataPro);
-						break;
-					case financiada:
-						prFinanciadas.add(dataPro);
-						break;
-					case noFinanciada:
-						prNoFinanciadas.add(dataPro);
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
-		em.close();
-		
-		return new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
-				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
-				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
-				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
+    	em.close();
+    	
+    	if (usuario != null) {
+        	if (usuario instanceof Proponente) {
+				Proponente p = (Proponente) usuario;
+	        	System.out.println("parm nickname: " + nickname + " \n");
+	        	System.out.println("Usuario nombre: " + p.getNombre() + " \n");
+	        	
+	        	DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
+	
+	    		ArrayList<DtPropuesta> prPublicadas = new ArrayList<DtPropuesta>();
+	    		ArrayList<DtPropuesta> prCanceladas = new ArrayList<DtPropuesta>();
+	    		ArrayList<DtPropuesta> prEnFinanciacion = new ArrayList<DtPropuesta>();
+	    		ArrayList<DtPropuesta> prFinanciadas = new ArrayList<DtPropuesta>();
+	    		ArrayList<DtPropuesta> prNoFinanciadas = new ArrayList<DtPropuesta>();
+	
+	    		for(int i = 0; i < propouestas.size(); i++) { //3
+	    			Propuesta prop = propouestas.get(i);
+	    			if(prop.isProponenteACargo(nickname)) {
+	
+	    				ArrayList<DtColaboracion> colaboraciones = new ArrayList<DtColaboracion>();
+	    				for(Colaboracion col : colabs) { //6
+	    					if(col.tieneProp(prop.getTitulo())) {
+	    						colaboraciones.add(col.getDataColaboracion());
+	    					}
+	    				}
+	
+	    				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
+	    				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
+	    				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual(), prop.getDtEstadoHistorial(),
+	    				 prop.getCategoria().getDtCategoria(), colaboraciones);
+	    				
+	    				switch (dataPro.getEstadoActual()){
+	    					case publicada:
+	    						prPublicadas.add(dataPro);
+	    						break;
+	    					case cancelada:
+	    						prCanceladas.add(dataPro);
+	    						break;
+	    					case enFinanciacion:
+	    						prEnFinanciacion.add(dataPro);
+	    						break;
+	    					case financiada:
+	    						prFinanciadas.add(dataPro);
+	    						break;
+	    					case noFinanciada:
+	    						prNoFinanciadas.add(dataPro);
+	    						break;
+	    					default:
+	    						break;
+	    				}
+	    			}
+	    		}
+	        	
+	    		return new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
+	    				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
+	    				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
+	    				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas); 
+        	}else
+        		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", null,
+            			"pruebaController","pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
+        		
+        }else {
+        	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", null,
+        			"pruebaController","pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
+        }
+        
+        
 	}
 
 	@Override
@@ -315,6 +327,8 @@ public class UsuarioController implements IUsuarioController {
 		em.close();
 		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getCorreoElectronico(),
 				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
+				
+        
 	}
 
 	@Override
