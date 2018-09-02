@@ -2,7 +2,6 @@ package presentacion.gen;
 
 import javax.swing.JPanel;
 
-import datatype.DtColaborador;
 import datatype.DtUsuario;
 import excepciones.ColaboradorNoExisteException;
 import logica.IUsuarioController;
@@ -15,6 +14,8 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
 public class ListarColaboradores extends JPanel {
@@ -26,6 +27,7 @@ public class ListarColaboradores extends JPanel {
 	 * Create the panel.
 	 */
 	public ListarColaboradores(IUsuarioController IUC) {
+		setBorder(new TitledBorder(null, "Colaboradores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(null);
 		iUsuController = IUC;
 		
@@ -36,11 +38,6 @@ public class ListarColaboradores extends JPanel {
 		listColaboradores.setBorder(new LineBorder(Color.DARK_GRAY, 1, true));
 		listColaboradores.setBounds(27, 52, 163, 184);
 		add(listColaboradores);
-		
-		JLabel lblSeleccioneUnColaborador = new JLabel("Seleccione un colaborador");
-		lblSeleccioneUnColaborador.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
-		lblSeleccioneUnColaborador.setBounds(12, 12, 308, 15);
-		add(lblSeleccioneUnColaborador);
 	}
 	
 	public void actualizarColaboradores() {
