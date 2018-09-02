@@ -46,7 +46,12 @@ public class DtPropuesta {
 	this.categoria = categoria;
 	this.colaboraciones = colaboraciones;
 }
-
+   
+	public DtPropuesta(String titulo) {
+		super();
+		this.titulo = titulo;
+	}
+	
 	public String getTitulo() {
 		return titulo;
 	}

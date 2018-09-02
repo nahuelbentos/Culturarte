@@ -51,7 +51,7 @@ public class UsuarioController implements IUsuarioController {
 				usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(),
 						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
 			}
-			
+
 			em.persist(usuario);
 			em.getTransaction().commit();
 			em.close();
@@ -69,7 +69,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+
 		DtUsuario[] dtUsuario = null;
         List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
         if (usuarios != null) {
@@ -93,17 +93,17 @@ public class UsuarioController implements IUsuarioController {
 
         Usuario usuarioUno = em.find(Usuario.class, nicknameUno);
         Usuario usuarioDos = em.find(Usuario.class, nicknameDos);
-        
+
         UsuarioSigueID usuarioSIgueID = new UsuarioSigueID(nicknameUno,nicknameDos);
         UsuarioSigue usuarioSigue = em.find(UsuarioSigue.class, usuarioSIgueID);
-        
+
 		if (usuarioSigue != null) {
         	throw new UsuarioYaSigueAlUsuarioException("El usuario " + nicknameUno
         			+ " ya sigue al usuario " + nicknameDos);
 		} else {
 			usuarioUno.seguirUsuario(usuarioDos);
 		}
-        
+
 		em.flush();
 		em.getTransaction().commit();
 		em.close();
@@ -118,11 +118,11 @@ public class UsuarioController implements IUsuarioController {
         Usuario usuarioUno = em.find(Usuario.class, nicknameUno);
         Usuario usuarioDos = em.find(Usuario.class, nicknameDos);
         usuarioUno.dejarDeSeguirUsuario(usuarioDos);
-        
+
         UsuarioSigueID usuarioSigueId = new UsuarioSigueID();
         usuarioSigueId.setUsuarioUno(nicknameUno);
         usuarioSigueId.setUsuarioDos(nicknameDos);
-        
+
 		em.createQuery("delete from UsuarioSigue where id = :id").setParameter("id", usuarioSigueId).executeUpdate();
 		em.getTransaction().commit();
 		em.close();
@@ -133,7 +133,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+
 		DtUsuario[] dtUsuario = null;
         List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
         if (usuarios != null) {
@@ -154,7 +154,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+
 		Usuario usuario = em.find(Usuario.class, nickname);
         DtUsuario dtUsuario = null;
         if (usuario != null) {
@@ -171,9 +171,9 @@ public class UsuarioController implements IUsuarioController {
         } else {
             throw new UsuarioNoExisteElUsuarioException("El usuario " + nickname + " no existe");
         }
-        
+
         em.close();
-        
+
         return dtUsuario;
 	}
 
@@ -182,7 +182,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+
 		DtUsuario[] dtUsuario = null;
         List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
 		if (usuarios != null) {
@@ -203,7 +203,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+
 		DtUsuario[] dtUsuario = null;
         List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
         if (usuarios != null) {
@@ -234,37 +234,37 @@ public class UsuarioController implements IUsuarioController {
     	Usuario usuario = em.find(Usuario.class, nickname);
 
     	em.close();
-    	
+
     	if (usuario != null) {
         	if (usuario instanceof Proponente) {
 				Proponente p = (Proponente) usuario;
 	        	System.out.println("parm nickname: " + nickname + " \n");
 	        	System.out.println("Usuario nombre: " + p.getNombre() + " \n");
-	        	
+
 	        	DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
-	
+
 	    		ArrayList<DtPropuesta> prPublicadas = new ArrayList<DtPropuesta>();
 	    		ArrayList<DtPropuesta> prCanceladas = new ArrayList<DtPropuesta>();
 	    		ArrayList<DtPropuesta> prEnFinanciacion = new ArrayList<DtPropuesta>();
 	    		ArrayList<DtPropuesta> prFinanciadas = new ArrayList<DtPropuesta>();
 	    		ArrayList<DtPropuesta> prNoFinanciadas = new ArrayList<DtPropuesta>();
-	
+
 	    		for(int i = 0; i < propouestas.size(); i++) { //3
 	    			Propuesta prop = propouestas.get(i);
 	    			if(prop.isProponenteACargo(nickname)) {
-	
+
 	    				ArrayList<DtColaboracion> colaboraciones = new ArrayList<DtColaboracion>();
 	    				for(Colaboracion col : colabs) { //6
 	    					if(col.tieneProp(prop.getTitulo())) {
 	    						colaboraciones.add(col.getDataColaboracion());
 	    					}
 	    				}
-	
+
 	    				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
 	    				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
 	    				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual(), prop.getDtEstadoHistorial(),
 	    				 prop.getCategoria().getDtCategoria(), colaboraciones);
-	    				
+
 	    				switch (dataPro.getEstadoActual()){
 	    					case publicada:
 	    						prPublicadas.add(dataPro);
@@ -286,35 +286,35 @@ public class UsuarioController implements IUsuarioController {
 	    				}
 	    			}
 	    		}
-	        	
+
 	    		return new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
 	    				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
 	    				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
-	    				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas); 
+	    				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
         	}else
         		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", null,
             			"pruebaController","pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
-        		
+
         }else {
         	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", null,
         			"pruebaController","pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
         }
-        
-        
+
+
 	}
 
 	@Override
-	public DtPerfilColaborador verPerfilColaborador(String nickname) {		
+	public DtPerfilColaborador verPerfilColaborador(String nickname) {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+
 		Usuario perfil = em.find(Usuario.class, nickname); //1y2
 
         List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
 
 		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<DtPropuestaColaborada>();
-		
+
 		for(Colaboracion c : colabs) { //1*
 			if(c.tieneColaborador(nickname)) { //2* y 2.1*
 				 double montoAportado = c.getMonto(); //3*
@@ -327,23 +327,38 @@ public class UsuarioController implements IUsuarioController {
 		em.close();
 		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getCorreoElectronico(),
 				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
-				
-        
+
+
 	}
 
 	@Override
 	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
-//		// TODO Auto-generated method stub
-//		ColaboracionHandler c = ColaboracionHandler.getInstance();
-//		Colaboracion[] colaboraciones = c.getColaboraciones();
-//
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+
+		DtPropuesta[] dtp = null;
+
+		@SuppressWarnings("unchecked")
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE colaborador = :colaborador").setParameter("colaborador", nickname).getResultList();
+		if (colaboraciones != null) {
+			dtp = new DtPropuesta[colaboraciones.size()];
+			int i = 0;
+			for (Colaboracion colaboracion : colaboraciones) {
+				DtPropuesta itemDtp = colaboracion.obtPropuesta();
+				dtp[i] = itemDtp;
+
+				i++;
+			}
+		}
+
 		return null;
 	}
 
 	@Override
 	public void crearPropuestaAuxiliar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

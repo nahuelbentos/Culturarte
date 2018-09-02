@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import datatype.DtColaboracion;
+import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.TipoRetorno;
 
@@ -105,5 +106,9 @@ public class Colaboracion {
 	
 	public DtPropuestaColaborada getPropuestaFromColaboracion() {
 		return propuestaColaborada.getInfoPropuestaColaborada();
+	}
+	
+	public DtPropuesta obtPropuesta() {
+		return new DtPropuesta(propuestaColaborada.getTitulo());
 	}
 }
