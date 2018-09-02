@@ -1,6 +1,7 @@
 package logica;
 
 import datatype.*;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElUsuarioException;
@@ -12,8 +13,7 @@ public interface IUsuarioController {
 
 	public abstract DtUsuario verPerfilUsuario(String nickname) throws UsuarioNoExisteElUsuarioException;
 
-	// Revisar si est�n bien los par�metros que recibe
-	public abstract DtColaboracion listarColaboracion(String titulo, String nickname);
+	public abstract DtColaboracion listarColaboracion(String titulo, String nickname) throws ColaboracionNoExisteException;
 
 	// Revisar si es necesario el DtPerfilColaborador
 	public abstract DtPerfilColaborador verPerfilColaborador(String nickname);
@@ -34,7 +34,5 @@ public interface IUsuarioController {
 	public abstract DtUsuario[] listarColaboradores() throws ColaboradorNoExisteException;
 	
 	public abstract DtPropuesta[] listarPropuestasDeUnColaborador(String nickname);
-	
-	public abstract void crearPropuestaAuxiliar();
 
 }

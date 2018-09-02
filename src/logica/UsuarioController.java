@@ -16,6 +16,7 @@ import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.DtUsuario;
 import datatype.TipoRetorno;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElUsuarioException;
@@ -59,9 +60,22 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public DtColaboracion listarColaboracion(String titulo, String nickname) {
-		// TODO Auto-generated method stub
-		return null;
+	public DtColaboracion listarColaboracion(String titulo, String nickname) throws ColaboracionNoExisteException{
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		/*Defino la clave en colaboracion a buscar, recibida por parametro.*/
+		ColaboracionID claveColaboracion = new ColaboracionID();
+		claveColaboracion.setIdColaborador(nickname);
+		claveColaboracion.setIdPropuesta(titulo);
+		
+		Colaboracion c = em.find(Colaboracion.class, claveColaboracion);
+		em.close();
+		if (c != null)
+			return new DtColaboracion(titulo,nickname,c.getMonto(),c.getFechaAporte(),c.getTipo());
+		else 
+			throw new ColaboracionNoExisteException("No existe colaboracion del usuairo " + nickname + " para " + titulo);
 	}
 
 	@Override
@@ -69,7 +83,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-
+		
 		DtUsuario[] dtUsuario = null;
         List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
         if (usuarios != null) {
@@ -171,9 +185,9 @@ public class UsuarioController implements IUsuarioController {
         } else {
             throw new UsuarioNoExisteElUsuarioException("El usuario " + nickname + " no existe");
         }
-
+        
         em.close();
-
+        
         return dtUsuario;
 	}
 
@@ -182,7 +196,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-
+		
 		DtUsuario[] dtUsuario = null;
         List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
 		if (usuarios != null) {
@@ -203,7 +217,7 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-
+		
 		DtUsuario[] dtUsuario = null;
         List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
         if (usuarios != null) {
@@ -261,7 +275,7 @@ public class UsuarioController implements IUsuarioController {
 	    				}
 
 	    				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
-	    				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
+	    				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.EntradasGratis, 0,
 	    				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual(), prop.getDtEstadoHistorial(),
 	    				 prop.getCategoria().getDtCategoria(), colaboraciones);
 
@@ -336,29 +350,27 @@ public class UsuarioController implements IUsuarioController {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-
+		
 		DtPropuesta[] dtp = null;
-
+		
+		/** Obtengo el colaborador que deseo buscar sus colaboraciones. **/
+		Colaborador col = em.find(Colaborador.class, nickname);
+		
+		/** Obtengo las colaboraciones del colaborador "col" **/
 		@SuppressWarnings("unchecked")
-		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE colaborador = :colaborador").setParameter("colaborador", nickname).getResultList();
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE colaborador = :colaborador").setParameter("colaborador", col).getResultList();
+		em.close();
 		if (colaboraciones != null) {
 			dtp = new DtPropuesta[colaboraciones.size()];
 			int i = 0;
 			for (Colaboracion colaboracion : colaboraciones) {
 				DtPropuesta itemDtp = colaboracion.obtPropuesta();
 				dtp[i] = itemDtp;
-
+				
 				i++;
 			}
 		}
-
-		return null;
-	}
-
-	@Override
-	public void crearPropuestaAuxiliar() {
-		// TODO Auto-generated method stub
-
+		return dtp;
 	}
 
 }
