@@ -205,7 +205,7 @@ public class Propuesta {
     	
     	// CAMBIO EL METODO PARA PROBAR PERSISTENCIA
     	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
-				fechaEspecatulo, lugar, precioEntrada, TipoRetorno.entradasGratis, 0,
+				fechaEspecatulo, lugar, precioEntrada, TipoRetorno.EntradasGratis, 0,
 				proponenteACargo.getDtProponente(), null, this.getDtEstadoHistorial(),
 				null,null);
     }
@@ -245,9 +245,9 @@ public class Propuesta {
 				categoria.getDtCategoria(),null);
     	*/
     	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
-				fechaEspecatulo, lugar, precioEntrada, TipoRetorno.entradasGratis, 0,
+				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
 				proponenteACargo.getDtProponente(), null, this.getDtEstadoHistorial(),
-				null,null);
+				categoria.getDtCategoriaSimple() ,null);
     }
 
 	public DtDatosPropuesta getDtDatosPropuesta() {
