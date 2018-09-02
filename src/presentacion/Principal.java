@@ -65,11 +65,7 @@ public class Principal {
         ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
         
-        //LO EJECUTO UNA SOLA VEZ.
-        //IUC.crearPropuestaAuxiliar();
-        //IPC.nuevaColaboracionAuxiliarHarcode();
-        
-		altaPerfil = new AltaPerfil(IUC);
+        altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 
 		altaCategoria = new AltaCategoria(ICC);
@@ -177,7 +173,7 @@ public class Principal {
 		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
 		mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				registrarColaboracion.setListaDeColaboradores();
+				registrarColaboracion.refreshFrame();
 				registrarColaboracion.setVisible(true);
 			}
 		});

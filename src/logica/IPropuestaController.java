@@ -15,6 +15,12 @@ public interface IPropuestaController {
 
 	public abstract void altaPropuesta(DtPropuesta dtPropuesta)  throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException;
 	
+	/**
+	 * Se listan las propuestas del sistema en un array con el titulo de la propuesta y el proponente a cargo. Se lanza
+	 * PropuestaNoExisteException en caso de no existir propuestas en el sistema. 
+	 * @return DtPropuestaMinificado[]
+	 * @throws PropuestaNoExisteException
+	 */
 	public abstract DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException;
 	
 	public abstract DtPropuesta seleccionarPropuesta(String titulo);
@@ -36,7 +42,8 @@ public interface IPropuestaController {
 	
 	// Revisar si est�n bien los par�metros que recibe
 	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
-
+	
+	
 	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException;
 	
 }
