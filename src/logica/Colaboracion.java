@@ -22,12 +22,12 @@ import datatype.TipoRetorno;
 public class Colaboracion {
 	
 	@Id
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="COLABORADOR")
 	private Colaborador colaborador;
 
 	@Id
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="PROPUESTA")
 	private Propuesta propuestaColaborada;
 	

@@ -176,13 +176,7 @@ public class VerPerfilProponente extends JPanel {
 	}
 	
 	public void setTable(IUsuarioController IUC,String n) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
-		System.out.println("Entro en setTableString \n");
-		
-		DtPerfilProponente dtp2 =  IUC.verPerfilProponente(n);
-		System.out.println(" a ver si vos funcionas la concha de tu madre: " + dtp2.getNickname());
-		txtNickname.setText(dtp2.getNickname());
-		txtNombre.setText(dtp2.getNombre());
-		txtApellido.setText(dtp2.getApellido());
+		/*
 		txtEmail.setText(dtp2.getEmail());
 		//txtFechaDeNacimiento.setText(dtp2.getFechaNacimiento().getCalendarType());
 		txtImagen.setText(dtp2.getImagen());
@@ -192,7 +186,7 @@ public class VerPerfilProponente extends JPanel {
 		
 		
 		ArrayList<DtPropuesta> prPublicadas = dtp2.getPrPublicadas();
-		data = new Object[prPublicadas.size()][columnNames.length];
+		//data = new Object[prPublicadas.size()][columnNames.length];
 		System.out.println("armo la table prPublicadas.size: " + prPublicadas.size() +  " \n");
 		for (int i = 0; i < prPublicadas.size(); i++) {
 			for (int j = 0; j < columnNames.length; j++) {
@@ -214,5 +208,6 @@ public class VerPerfilProponente extends JPanel {
 				
 		
 		System.out.println("Termino setListaDeProponentes \n");
+		*/
 	}
 }

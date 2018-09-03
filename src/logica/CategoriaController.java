@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import datatype.DtCategoria;
+import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
 
 public class CategoriaController implements ICategoriaController {
@@ -26,11 +27,11 @@ public class CategoriaController implements ICategoriaController {
 		
         if (cats != null) {
             dtC = new DtCategoria[cats.size()];
-            Categoria categ;
+            DtCategoria categ;
 
             for (int i = 0; i < cats.size(); i++) {
-                categ = cats.get(i);
-                dtC[i] = new DtCategoria(categ.getNombre(), categ.getDtSuperCategorias());
+                categ = cats.get(i).getDtCategoria();
+                dtC[i] = new DtCategoria(categ.getNombre(), categ.getSuperCategorias());
             }
         }
         em.close();
@@ -38,7 +39,7 @@ public class CategoriaController implements ICategoriaController {
 	}
 
 	@Override
-	public void agregarCategoria(DtCategoria dtC) throws CategoriaYaExisteException {
+	public void agregarCategoria(DtCategoria dtC) throws CategoriaYaExisteException, CategoriaNoExisteException {
 		
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
@@ -46,21 +47,25 @@ public class CategoriaController implements ICategoriaController {
 
 		Categoria categoria = em.find(Categoria.class, dtC.getNombre());
 		
-		if (categoria != null)
+		if (categoria != null) {
+			em.getTransaction().rollback();
+			em.close();
 			throw new CategoriaYaExisteException("Ya existe la categoría " + dtC.getNombre());
-		else {
-
-			categoria = new Categoria(dtC.getNombre());
+		}else {
 			
-			ArrayList<String> padres = dtC.getPadres();
-			if (padres !=null) {
-				for (int i = 0; i < padres.size(); i++) {
-					Categoria padre = em.find(Categoria.class, padres.get(i));
-					if (padre !=null)
-						categoria.addPadre(padre);
+			ArrayList<Categoria> padres = new ArrayList<>();
+			for (DtCategoria p : dtC.getSuperCategorias()) {
+				Categoria padre = em.find(Categoria.class, p.getNombre());
+				if (padre != null) {
+					padres.add(padre);
+				} else {
+					em.getTransaction().rollback();
+					em.close();
+					throw new CategoriaNoExisteException("No existe la categoría padre: " + p.getNombre());
 				}
 			}
 			
+			categoria = new Categoria(dtC.getNombre(), padres);
 			em.persist(categoria);
 			em.getTransaction().commit();
 			em.close();

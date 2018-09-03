@@ -12,6 +12,8 @@ import datatype.TipoRetorno;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,6 +45,7 @@ public class Propuesta {
 	@Column(name="TIPO_RETORNO")
 	private TipoRetorno tipo;
 	@Column(name="ESTADO_ACTUAL")
+	@Enumerated(EnumType.ORDINAL)
 	private EstadoPropuesta estadoActual;
 	
 	
@@ -54,11 +57,6 @@ public class Propuesta {
 	@OneToOne
 	@JoinColumn(name="ID_CATEGORIA")
 	private Categoria categoria;
-	
-	/*
-	@OneToMany
-	private ArrayList<Estado> estadoHistorial;   
-   */
 	
 	public Propuesta() {
 		super();
@@ -76,6 +74,7 @@ public class Propuesta {
 	    this.precioEntrada = e;
 	    this.lugar = lugar;
 	    this.tipo = tipo;
+	    this.estadoActual = EstadoPropuesta.ingresada;
 	}
 
    public Propuesta(DtPropuesta dtP) {
