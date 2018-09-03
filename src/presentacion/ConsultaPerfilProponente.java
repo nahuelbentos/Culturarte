@@ -56,13 +56,13 @@ public class ConsultaPerfilProponente extends JInternalFrame {
         panelVerPerfilProponente.setBounds(0, 255, 500, 355);
         
         
-		if(listarProponentes.getColaboradorSeleccionado() == null)
-        	verPerfilProponente = new VerPerfilProponente(IUC, "proponente1");
-        else
-        	verPerfilProponente = new VerPerfilProponente(IUC, listarProponentes.getColaboradorSeleccionado());
+//		if(listarProponentes.getColaboradorSeleccionado() == null)
+//        	verPerfilProponente = new VerPerfilProponente(IUC, "proponente1");
+//        else
+//        	verPerfilProponente = new VerPerfilProponente(IUC, listarProponentes.getColaboradorSeleccionado());
         	
-        verPerfilProponente.setBounds(0, 25, 500, 355);
-        panelVerPerfilProponente.add(verPerfilProponente);
+//        verPerfilProponente.setBounds(0, 25, 500, 355);
+//        panelVerPerfilProponente.add(verPerfilProponente);
         
         getContentPane().add(panelVerPerfilProponente);
         panelVerPerfilProponente.setLayout(null);

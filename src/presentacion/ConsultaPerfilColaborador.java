@@ -57,13 +57,13 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
         panelVerPerfilColaborador.setBounds(0, 255, 900, 500);
         
         
-		if(listarColaboradores.getColaboradorSeleccionado() == null)
-        	verPerfilColaborador = new VerPerfilColaborador(IUC, "col1");
-        else
-        	verPerfilColaborador = new VerPerfilColaborador(IUC, listarColaboradores.getColaboradorSeleccionado());
-        	
-        verPerfilColaborador.setBounds(0, 25, 500, 355);
-        panelVerPerfilColaborador.add(verPerfilColaborador);
+//		if(listarColaboradores.getColaboradorSeleccionado() == null)
+//        	verPerfilColaborador = new VerPerfilColaborador(IUC, "col1");
+//        else
+//        	verPerfilColaborador = new VerPerfilColaborador(IUC, listarColaboradores.getColaboradorSeleccionado());
+//        	
+//        verPerfilColaborador.setBounds(0, 25, 500, 355);
+//        panelVerPerfilColaborador.add(verPerfilColaborador);
         
         getContentPane().add(panelVerPerfilColaborador);
         panelVerPerfilColaborador.setLayout(null);

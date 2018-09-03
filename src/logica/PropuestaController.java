@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,6 @@ public class PropuestaController implements IPropuestaController {
 		if (cat == null)
 			throw new CategoriaNoExisteException("No existe la categoría " + nombreCategoria);
 		
-		
 		// Cargo la categoría
 		if (propuesta != null)
 			throw new PropuestaRepetidaException("Ya existe la propuesta" + dtPropuesta.getTitulo());
@@ -60,6 +60,11 @@ public class PropuestaController implements IPropuestaController {
 		propuesta.setCategoria(cat);
 		
 		em.persist(propuesta);
+		
+		// Inicializo el historial de la propuesta.
+		Estado e = new Estado(EstadoPropuesta.ingresada,propuesta,new GregorianCalendar());
+		em.persist(e);
+		
 		em.getTransaction().commit();
 		em.close();
 	}
@@ -105,12 +110,46 @@ public class PropuestaController implements IPropuestaController {
 			Propuesta p = em.find(Propuesta.class, colaboracion.getTituloPropuesta());
 			
 			if (p != null) {
-				
 				Colaboracion beanCol = new Colaboracion(colaboracion.getMonto(),colaboracion.getFechaAporte(),colaboracion.getTipo());
 				beanCol.setColaborador(c);
 				beanCol.setPropuestaColaborada(p);
 				
 				em.persist(beanCol);
+				
+				/* Una vez registrada la colaboracion actualizo el estado de la propuesta. */
+				
+				EstadoPropuesta estadoActual = null;
+				boolean actualizo = true;
+				
+				// Actualizo el estado de la propuesta.
+				/* Busco las colaboraciones que tenga la propuesta, 		 *
+				 * calculo el recaudado y cambio el estado segun corresponda */
+				@SuppressWarnings("unchecked")
+				List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE propuestaColaborada = :propuesta").setParameter("propuesta", p).getResultList();
+				if (colaboraciones != null) {
+					double recaudado = 0;
+					
+					for (Colaboracion auxCol : colaboraciones)
+						recaudado += auxCol.getMonto();
+					
+					if (recaudado >= p.getMontoNecesario())
+						estadoActual = EstadoPropuesta.financiada;
+					else 
+						actualizo = false; // no debo actualizar estado
+					
+				} else {
+					estadoActual = EstadoPropuesta.enFinanciacion;
+				}
+				
+				if (actualizo) {
+					// Actualizo estado Actual de la propuesta
+					em.createQuery("UPDATE Propuesta SET estadoActual = :estado").setParameter("estado", estadoActual).executeUpdate();
+					
+					// Actualizo historial del estado de la propuesta
+					Estado e = new Estado(estadoActual, p, new GregorianCalendar());
+					em.persist(e);
+				}
+				
 				em.getTransaction().commit();
 				em.close();
 				
@@ -119,14 +158,13 @@ public class PropuestaController implements IPropuestaController {
 				em.close();
 				throw new PropuestaNoExisteException("No existe propuesta");
 			}
-				
 		}else {
 			em.getTransaction().rollback();
 			em.close();
 			throw new ColaboradorNoExisteException("No existe colaborador");
 		}
-		
 	}
+
 
 	@Override
 	public DtPropuesta seleccionarPropuesta(String titulo) {

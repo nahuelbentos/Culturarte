@@ -6,15 +6,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import logica.CategoriaController;
 import logica.ICategoriaController;
 import datatype.DtCategoria;
+import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 
@@ -23,7 +26,7 @@ public class AltaCategoria extends JInternalFrame {
 
 	private ICategoriaController iCategoriaController;
 	private DefaultMutableTreeNode categorias;
-	private JTree treeListaDeCategorias;
+	private JTree treeCategorias;
 	private JTextField entCategoria;
 	private String categoria;
 	
@@ -49,7 +52,10 @@ public class AltaCategoria extends JInternalFrame {
 		getContentPane().add(lblListaDeCategorias);
 		
 		listarCategorias();
-		getContentPane().add(treeListaDeCategorias);
+		treeCategorias = new JTree(categorias);
+		treeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
+		treeCategorias.setBounds(12, 37, 376, 184);
+		getContentPane().add(treeCategorias);
 		
 		entCategoria = new JTextField();
 		entCategoria.setBounds(155, 233, 233, 19);
@@ -83,7 +89,8 @@ public class AltaCategoria extends JInternalFrame {
 	
 	public void listarCategorias() {
 		DtCategoria dtC[] = null;
-		categorias = new DefaultMutableTreeNode("Categor�as");
+		//treeCategorias.removeAll();
+		categorias = new DefaultMutableTreeNode("Categorías");
 		dtC = iCategoriaController.listarCategorias();
 		if (dtC != null) {
 			for(int i = 0; i < dtC.length; i++) {
@@ -91,9 +98,6 @@ public class AltaCategoria extends JInternalFrame {
 				categoria = new DefaultMutableTreeNode(dtC[i].getNombre());
 				categorias.add(categoria);
 			}
-	        treeListaDeCategorias = new JTree(categorias);
-	        treeListaDeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
-	        treeListaDeCategorias.setBounds(12, 33, 376, 174);
 		}
 	}
 	
@@ -101,12 +105,21 @@ public class AltaCategoria extends JInternalFrame {
 		if (formularioOk()) {
 			
 			// FALTA AGREGAR QUE SE SUBAN LOS PADRES. El DtCategoria está mal hecho, ya que el ArrayList de padres es del tipo Categoria
+			ArrayList<DtCategoria> padres = new ArrayList<>();
+			if (treeCategorias.getSelectionPaths() != null) {
+			TreePath[] tpCol = treeCategorias.getSelectionPaths();
+				for (TreePath tp : tpCol) {
+					padres.add(new DtCategoria(tp.getLastPathComponent().toString()));
+				}
+			}
 			
-			DtCategoria dtC = new DtCategoria(categoria, null);
+			DtCategoria dtC = new DtCategoria(categoria, padres);
 			try {
 				iCategoriaController.agregarCategoria(dtC);
 				JOptionPane.showMessageDialog(this, "La categoría se ha creado con éxito", "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
 			} catch (CategoriaYaExisteException e) {
+				JOptionPane.showMessageDialog(this, e, "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
+			} catch (CategoriaNoExisteException e) {
 				JOptionPane.showMessageDialog(this, e, "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}else
@@ -121,6 +134,7 @@ public class AltaCategoria extends JInternalFrame {
 	
 	private void limpiarFormulario() {
 		entCategoria.setText("");
+		listarCategorias();
 		// habría que refrescar el arbol de categorías
 	}
 }

@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,7 +22,7 @@ public class Categoria {
 	private String nombre;
 	
 	// Pseudoatributos
-	@OneToMany
+	@ManyToMany
 	@JoinColumn(name="ID_CAT_SUPER")
 	private List<Categoria> superCategorias = new ArrayList<>();
 	
@@ -32,6 +33,12 @@ public class Categoria {
 	public Categoria(String nombre) {
 		super();
 		this.nombre = nombre;
+	}
+	
+	public Categoria(String nombre, ArrayList<Categoria> superCategorias) {
+		super();
+		this.nombre = nombre;
+		this.superCategorias = superCategorias;
 	}
 
 	public String getNombre() {
@@ -47,7 +54,12 @@ public class Categoria {
 	}
 	
 	public DtCategoria getDtCategoria() {
-		return new DtCategoria(nombre, (ArrayList<Categoria>) superCategorias);
+		ArrayList<DtCategoria> padres = new ArrayList<>();
+		for (Categoria c : superCategorias) {
+			padres.add(new DtCategoria(c.getNombre()));
+		}
+		
+		return new DtCategoria(this.nombre, padres);
 	}
 	
 	public DtCategoria getDtCategoriaSimple() {

@@ -59,11 +59,6 @@ public class Propuesta {
 	@JoinColumn(name="ID_CATEGORIA")
 	private Categoria categoria;
 	
-	/*
-	@OneToMany
-	private ArrayList<Estado> estadoHistorial;   
-   */
-	
 	public Propuesta() {
 		super();
 	}
@@ -80,6 +75,7 @@ public class Propuesta {
 	    this.precioEntrada = e;
 	    this.lugar = lugar;
 	    this.tipo = tipo;
+	    this.estadoActual = EstadoPropuesta.ingresada;
 	}
 
    public Propuesta(DtPropuesta dtP) {
