@@ -110,11 +110,8 @@ public class PropuestaController implements IPropuestaController {
 				beanCol.setColaborador(c);
 				beanCol.setPropuestaColaborada(p);
 				
-				//Persistimos el objeto
 				em.persist(beanCol);
-				//Commmiteamos la transacci�n
 				em.getTransaction().commit();
-				//Cerramos el EntityManager
 				em.close();
 				
 			}else {
