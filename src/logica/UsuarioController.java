@@ -345,7 +345,7 @@ public class UsuarioController implements IUsuarioController {
 								 p.getProponenteACargo(), p.getEstadoActual()); //3.2*
 						 colaboracionesHechas.add(colaboracion);
 						 }else {
-							 System.out.println("Arregla esto papei, no funca \n");
+							 // revisar
 						 }
 						 
 					}
