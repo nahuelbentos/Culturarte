@@ -28,7 +28,7 @@ import javax.swing.event.ListSelectionEvent;
 public class ListarProponentes extends JPanel {
 	
 	private IUsuarioController iUsuController;
-	private JList<String> listProponentes;
+	public JList<String> listProponentes;
 	private DefaultListModel<String> modelNicknames;
 	/**
 	 * Create the panel.

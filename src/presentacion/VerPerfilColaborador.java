@@ -154,7 +154,7 @@ public class VerPerfilColaborador extends JPanel {
 		System.out.println("Entro en setTableString \n");
 		
 		DtPerfilColaborador dtp2 =  IUC.verPerfilColaborador(n);
-		System.out.println(" a ver si vos funcionas la concha de tu madre: " + dtp2.getNickname());
+		System.out.println(" Nickname: " + dtp2.getNickname());
 		txtNickname.setText(dtp2.getNickname());
 		txtNombre.setText(dtp2.getNombre());
 		txtApellido.setText(dtp2.getApellido());

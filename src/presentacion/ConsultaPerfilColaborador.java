@@ -28,6 +28,7 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 	 * @throws UsuarioNoExisteElUsuarioException 
 	 */
 	private VerPerfilColaborador verPerfilColaborador;
+	
 	public ConsultaPerfilColaborador(IUsuarioController IUC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException{
 		setNormalBounds(new Rectangle(0, 0, 800, 800));
 		setClosable(true);
@@ -57,13 +58,17 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
         panelVerPerfilColaborador.setBounds(0, 255, 900, 500);
         
         
-		if(listarColaboradores.getColaboradorSeleccionado() == null)
-        	verPerfilColaborador = new VerPerfilColaborador(IUC, "col1");
-        else
+		if(listarColaboradores.getColaboradorSeleccionado() != null)
         	verPerfilColaborador = new VerPerfilColaborador(IUC, listarColaboradores.getColaboradorSeleccionado());
-        	
+		else {
+			listarColaboradores.listColaboradores.setSelectedIndex(0);
+			verPerfilColaborador = new VerPerfilColaborador(IUC, listarColaboradores.getColaboradorSeleccionado());
+		}	
         verPerfilColaborador.setBounds(0, 25, 500, 355);
         panelVerPerfilColaborador.add(verPerfilColaborador);
+        
+        
+        
         
         getContentPane().add(panelVerPerfilColaborador);
         panelVerPerfilColaborador.setLayout(null);
