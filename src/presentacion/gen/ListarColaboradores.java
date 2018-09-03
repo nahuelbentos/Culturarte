@@ -21,7 +21,7 @@ import javax.swing.border.TitledBorder;
 public class ListarColaboradores extends JPanel {
 	
 	private IUsuarioController iUsuController;
-	private JList<String> listColaboradores;
+	public JList<String> listColaboradores;
 	private DefaultListModel<String> modelNicknames;
 	/**
 	 * Create the panel.

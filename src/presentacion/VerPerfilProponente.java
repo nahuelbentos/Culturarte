@@ -179,7 +179,7 @@ public class VerPerfilProponente extends JPanel {
 		System.out.println("Entro en setTableString \n");
 		
 		DtPerfilProponente dtp2 =  IUC.verPerfilProponente(n);
-		System.out.println(" a ver si vos funcionas la concha de tu madre: " + dtp2.getNickname());
+		System.out.println(" Nickname: " + dtp2.getNickname());
 		txtNickname.setText(dtp2.getNickname());
 		txtNombre.setText(dtp2.getNombre());
 		txtApellido.setText(dtp2.getApellido());
