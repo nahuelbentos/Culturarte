@@ -27,7 +27,7 @@ public class Colaboracion {
 	private Colaborador colaborador;
 
 	@Id
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name="PROPUESTA")
 	private Propuesta propuestaColaborada;
 	
@@ -104,6 +104,7 @@ public class Colaboracion {
 //		return null;
 	}
 	
+		
 	public DtPropuestaColaborada getPropuestaFromColaboracion() {
 		return propuestaColaborada.getInfoPropuestaColaborada();
 	}

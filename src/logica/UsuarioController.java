@@ -259,12 +259,13 @@ public class UsuarioController implements IUsuarioController {
 	    						colaboraciones.add(col.getDataColaboracion());
 	    					}
 	    				}
-
+//	    					**--*-**-*--*-*-*-*-* [VOLVER PARA ATRAS DESPUES EL getDtCategoriaSimpla -> gtDtCategoria]*-*--*-*-*-*-*-*-*-*
 	    				DtPropuesta dataPro = new DtPropuesta(prop.getTitulo(), prop.getDescripcion(), prop.getImagen(),prop.getMontoNecesario(),
-	    				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.entradasGratis, 0,
+	    				 prop.getFechaPublicacion(), prop.getFechaEspecatulo(), prop.getLugar(), prop.getPrecioEntrada(), TipoRetorno.EntradasGratis, 0,
 	    				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual(), prop.getDtEstadoHistorial(),
-	    				 prop.getCategoria().getDtCategoria(), colaboraciones);
-
+	    				 prop.getCategoria().getDtCategoriaSimple(), colaboraciones);
+	    				
+	    				System.out.println("dataPro.Estadoactual: " + dataPro.getEstadoActual() + " \n");
 	    				switch (dataPro.getEstadoActual()){
 	    					case publicada:
 	    						prPublicadas.add(dataPro);
@@ -309,25 +310,41 @@ public class UsuarioController implements IUsuarioController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Usuario perfil = em.find(Usuario.class, nickname); //1y2
+		Usuario usuario = em.find(Usuario.class, nickname); //1y2
 
         List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
 
 		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<DtPropuestaColaborada>();
 
-		for(Colaboracion c : colabs) { //1*
-			if(c.tieneColaborador(nickname)) { //2* y 2.1*
-				 double montoAportado = c.getMonto(); //3*
-				 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*
-				 DtPropuestaColaborada colaboracion = new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
-						 p.getProponenteACargo(), p.getEstadoActual()); //3.2*
-				 colaboracionesHechas.add(colaboracion);
-			}
-		}
 		em.close();
-		return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getCorreoElectronico(),
-				perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
-
+    	if (usuario != null) {
+        	if (usuario instanceof Colaborador) {
+				Colaborador perfil = (Colaborador) usuario;
+		
+				for(Colaboracion c : colabs) { //1*
+					if(c.tieneColaborador(nickname)) { //2* y 2.1*
+						 double montoAportado = c.getMonto(); //3*
+						 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*
+						 if (p != null) {
+							 System.out.println("p.titulo: " + p.getTitulo());
+						 DtPropuestaColaborada colaboracion = new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
+								 p.getProponenteACargo(), p.getEstadoActual()); //3.2*
+						 colaboracionesHechas.add(colaboracion);
+						 }else {
+							 System.out.println("Arregla esto papei, no funca \n");
+						 }
+						 
+					}
+				}
+				return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getCorreoElectronico(),
+						perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
+        	}else
+        		return  new  DtPerfilColaborador("Fallo_perfil.getNickname()", "fallo_perfil.getNombre()", "Fallo_perfil.getApellido()",
+        				"falo_perfil.getCorreoElectronico()", null,"fallo_perfil.getImagen()",null);
+        }else
+        	return  new  DtPerfilColaborador("Fallo2_perfil.getNickname()", "Fallo2_perfil.getNombre()", "Fallo2_perfil.getApellido()",
+    				"Fallo2_perfil.getCorreoElectronico()", null,"Fallo2_perfil.getImagen()",null);
+        
 
 	}
 

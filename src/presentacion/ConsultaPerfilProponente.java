@@ -67,7 +67,7 @@ public class ConsultaPerfilProponente extends JInternalFrame {
         getContentPane().add(panelVerPerfilProponente);
         panelVerPerfilProponente.setLayout(null);
         
-        JButton btnVerPerfil = new JButton("VerPfil");
+        JButton btnVerPerfil = new JButton("Ver Perfil");
         btnVerPerfil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		try {
@@ -79,7 +79,6 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 			        getContentPane().add(panelVerPerfilProponente);
 			        panelVerPerfilProponente.setLayout(null);
 			        
-			        JButton btnVerpfil = new JButton("VerPfil");
 				} catch (UsuarioNoExisteElUsuarioException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

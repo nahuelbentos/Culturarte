@@ -31,6 +31,7 @@ public class Principal {
 	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 
 	private ConsultaPerfilProponente consultaPerfilProponente;
+	private ConsultaPerfilColaborador consultaPerfilColaborador;
 
 	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	
@@ -96,6 +97,8 @@ public class Principal {
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
 		consultaPerfilProponente.setVisible(false);
+		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC);
+		consultaPerfilColaborador.setVisible(false);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
@@ -111,6 +114,7 @@ public class Principal {
 
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		frmPaginaPrincipal.getContentPane().add(consultaPerfilProponente);
+		frmPaginaPrincipal.getContentPane().add(consultaPerfilColaborador);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	}
 
@@ -212,17 +216,22 @@ public class Principal {
 
 		mnPerfiles.add(mntmAltaDePerfil);
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("Consulta de Perfil de proponente");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
+		JMenuItem mntmConsultaDeProponente = new JMenuItem("Consulta de Perfil de proponente");
+		mntmConsultaDeProponente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				consultaPerfilProponente.setVisible(true);
 				
 			}
 		});
-		mnPerfiles.add(mntmNewMenuItem);
+		mnPerfiles.add(mntmConsultaDeProponente);
 
-		JMenuItem mntmConsultaDePerfil = new JMenuItem("Consulta de Perfil de colaborador");
-		mnPerfiles.add(mntmConsultaDePerfil);
+		JMenuItem mntmConsultaDePerfilColaborador = new JMenuItem("Consulta de Perfil de colaborador");
+		mntmConsultaDePerfilColaborador.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				consultaPerfilColaborador.setVisible(true);
+			}
+		});
+		mnPerfiles.add(mntmConsultaDePerfilColaborador);
 
 		JMenuItem mntmSeguir = new JMenuItem("Seguir Usuario");
 		mntmSeguir.addActionListener(new ActionListener() {

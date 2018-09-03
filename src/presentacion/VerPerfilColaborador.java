@@ -4,14 +4,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelListener;
 
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import datatype.DtPerfilColaborador;
 import datatype.DtPerfilProponente;
 import datatype.DtPropuesta;
+import datatype.DtPropuestaColaborada;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import excepciones.PropuestaNoExisteException;
@@ -26,13 +32,16 @@ import javax.swing.JOptionPane;
 
 import java.awt.FlowLayout;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
-public class VerPerfilProponente extends JPanel {
+public class VerPerfilColaborador extends JPanel {
 	private JTable tableDatos;
 	private IUsuarioController iUsuController;
 	private JList<String> listPropuestas;
@@ -45,11 +54,6 @@ public class VerPerfilProponente extends JPanel {
 	private JTextField txtEmail;
 	private JTextField txtFechaDeNacimiento;
 	private JTextField txtImagen;
-	private JTextField txtDireccion;
-	private JTextField txtBiografia;
-	private JLabel lblBiografia;
-	private JTextField txtLinkWeb;
-	private JLabel lblLinkweb;
 	private JTable tablePropuestaPublicada;
 	
 	private Object[][] data;
@@ -57,12 +61,13 @@ public class VerPerfilProponente extends JPanel {
 	private final Object[] columnNames = { 
 	                              "Titulo:",
 	                              "Por:"};	
+	private JTable tableColaboracionesHechas;
 	/**
 	 * Create the panel.
 	 * @throws UsuarioNoExisteElUsuarioException 
 	 * @throws PropuestaNoExisteException 
 	 */
-	public VerPerfilProponente(IUsuarioController IUC,String nickname) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
+	public VerPerfilColaborador(IUsuarioController IUC,String nickname) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		setLayout(null);
 		
 		
@@ -129,42 +134,12 @@ public class VerPerfilProponente extends JPanel {
 		lblImagen.setBounds(12, 166, 66, 15);
 		add(lblImagen);
 		
-		txtDireccion = new JTextField();
-		txtDireccion.setEnabled(false);
-		txtDireccion.setBounds(164, 194, 124, 19);
-		add(txtDireccion);
-		txtDireccion.setColumns(10);
-		
-		JLabel lblDireccion = new JLabel("Dirección:");
-		lblDireccion.setBounds(12, 192, 84, 15);
-		add(lblDireccion);
-		
-		txtBiografia = new JTextField();
-		txtBiografia.setEnabled(false);
-		txtBiografia.setBounds(164, 222, 124, 19);
-		add(txtBiografia);
-		txtBiografia.setColumns(10);
-		
-		lblBiografia = new JLabel("Biografía:");
-		lblBiografia.setBounds(12, 220, 66, 15);
-		add(lblBiografia);
-		
-		txtLinkWeb = new JTextField();
-		txtLinkWeb.setEnabled(false);
-		txtLinkWeb.setBounds(164, 253, 124, 19);
-		add(txtLinkWeb);
-		txtLinkWeb.setColumns(10);
-		
-		lblLinkweb = new JLabel("Linkweb:");
-		lblLinkweb.setBounds(12, 247, 66, 15);
-		add(lblLinkweb);
+		tableColaboracionesHechas = new JTable();
+		tableColaboracionesHechas.setBounds(12, 231, 850, 172);
+		add(tableColaboracionesHechas);
 		
 		
 		iUsuController = IUC;
-
-		tablePropuestaPublicada = new JTable();
-		tablePropuestaPublicada.setBounds(137, 284, 168, 100);
-		add(tablePropuestaPublicada);
 		
 //		DtPerfilProponente dtp = iUsuController.verPerfilProponente(nickname);
 		modelTitulos = new DefaultListModel<String>();
@@ -178,7 +153,7 @@ public class VerPerfilProponente extends JPanel {
 	public void setTable(IUsuarioController IUC,String n) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		System.out.println("Entro en setTableString \n");
 		
-		DtPerfilProponente dtp2 =  IUC.verPerfilProponente(n);
+		DtPerfilColaborador dtp2 =  IUC.verPerfilColaborador(n);
 		System.out.println(" a ver si vos funcionas la concha de tu madre: " + dtp2.getNickname());
 		txtNickname.setText(dtp2.getNickname());
 		txtNombre.setText(dtp2.getNombre());
@@ -186,32 +161,23 @@ public class VerPerfilProponente extends JPanel {
 		txtEmail.setText(dtp2.getEmail());
 		//txtFechaDeNacimiento.setText(dtp2.getFechaNacimiento().getCalendarType());
 		txtImagen.setText(dtp2.getImagen());
-		txtDireccion.setText(dtp2.getDireccion());
-		txtBiografia.setText(dtp2.getBiografia());
-		txtLinkWeb.setText(dtp2.getSitioWeb());	
 		
 		
-		ArrayList<DtPropuesta> prPublicadas = dtp2.getPrPublicadas();
-		ArrayList<DtPropuesta> prCanceladas = dtp2.getPrCanceladas();
-		ArrayList<DtPropuesta> prEnFinanciacion = dtp2.getPrEnFinanciacion();
-		ArrayList<DtPropuesta> prFinanciadas= dtp2.getPrFinanciadas();
-		ArrayList<DtPropuesta> prNoFinanciadas = dtp2.getPrNoFinanciadas();
-		data = new Object[prPublicadas.size()][columnNames.length];
-		System.out.println("armo la table prPublicadas.size: " + prPublicadas.size() +  " \n");
-		System.out.println("armo la table prCanceladas.size: " + prCanceladas.size() +  " \n");
-		System.out.println("armo la table prEnFinanciacion.size: " + prEnFinanciacion.size() +  " \n");
-		System.out.println("armo la table prFinanciadas.size: " + prFinanciadas.size() +  " \n");
-		System.out.println("armo la table prNoFinanciadas.size: " + prNoFinanciadas.size() +  " \n");
-		for (int i = 0; i < prPublicadas.size(); i++) {
+//		ArrayList<DtPropuestaColaborada> ColaboracionesHechas = dtp2.getColaboracionesHechas();
+		
+		/*
+		data = new Object[ColaboracionesHechas.size()][columnNames.length];
+		System.out.println("armo la table ColaboracionesHechas.size: " + ColaboracionesHechas.size() +  " \n");
+		for (int i = 0; i < ColaboracionesHechas.size(); i++) {
 			for (int j = 0; j < columnNames.length; j++) {
 				switch (j) {
 				case 0:
-					data[i][j] = prPublicadas.get(i).getTitulo();
-					System.out.println("Titulo " + i + " " + prPublicadas.get(i).getTitulo() + "\n");
+					data[i][j] = ColaboracionesHechas.get(i).getTitulo();
+					System.out.println("Titulo " + i + " " + ColaboracionesHechas.get(i).getTitulo() + "\n");
 					break;
 				case 1:
-					data[i][j] = prPublicadas.get(i).getDescripcion();
-					System.out.println("Titulo " + i + " " + prPublicadas.get(i).getTitulo() + "\n");
+					data[i][j] = ColaboracionesHechas.get(i).getDescripcion();
+					System.out.println("Titulo " + i + " " + ColaboracionesHechas.get(i).getTitulo() + "\n");
 					break;
 				}
 			}
@@ -219,8 +185,45 @@ public class VerPerfilProponente extends JPanel {
 		}
 		
 		tablePropuestaPublicada = new JTable(data, columnNames);
-				
+				*/
+		agregarDatosTable(dtp2.getColaboracionesHechas());
 		
 		System.out.println("Termino setListaDeProponentes \n");
+	}
+	
+	public void agregarDatosTable(ArrayList<DtPropuestaColaborada> ColaboracionesHechas) {
+		System.out.println("agregar datos table");
+		tableColaboracionesHechas.removeAll();
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		System.out.println("dm.getRowCount(): " + dm.getRowCount());
+		while (dm.getRowCount()>0)
+        {
+			dm.removeRow(0);
+        }
+		
+	    String header[] = new String[] { "Titulo", "Descripcion", "Imagen",
+	            "Prop. Nickname", "Prop. Nombre", "Prop. Apellido", "Prop. Email", "Monto aportado", "Estado" };
+	    dm.setColumnIdentifiers(header);
+	    dm.addRow(header);
+	    tableColaboracionesHechas.setModel(dm);
+	    tableColaboracionesHechas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    System.out.println("ColaboracionesHechas.size(): " + ColaboracionesHechas.size() + "\n"); 
+	    for (DtPropuestaColaborada dtp : ColaboracionesHechas) {
+		
+	        Vector<Object> data = new Vector<Object>();
+	        data.add(dtp.getTitulo());
+	        data.add(dtp.getDescripcion());
+	        data.add(dtp.getImagen());
+	        data.add(dtp.getProponenteACargo().getNickname());
+	        data.add(dtp.getProponenteACargo().getNombre());
+	        data.add(dtp.getProponenteACargo().getApellido());
+	        data.add(dtp.getProponenteACargo().getEmail());
+	        data.add(dtp.getMontoAportado());
+	        data.add(dtp.getEstadoActual());
+	        
+	        System.out.println("Titulo :- " + dtp.getTitulo());
+	        dm.addRow(data);
+
+	    }
 	}
 }

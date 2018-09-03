@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 import datatype.DtDatosPropuesta;
 import datatype.DtEstado;
+import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.EstadoPropuesta;
@@ -12,6 +13,8 @@ import datatype.TipoRetorno;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,6 +46,7 @@ public class Propuesta {
 	@Column(name="TIPO_RETORNO")
 	private TipoRetorno tipo;
 	@Column(name="ESTADO_ACTUAL")
+	@Enumerated(EnumType.ORDINAL)
 	private EstadoPropuesta estadoActual;
 	
 	
@@ -189,7 +193,7 @@ public class Propuesta {
 	}
     
     public boolean isProponenteACargo(String nickname) {
-    	return (this.proponenteACargo.getNickname() == nickname);
+    	return (this.proponenteACargo.getNickname().equals(nickname));
     }
     
     public DtPropuesta getInfoPropuesta() {
@@ -205,8 +209,8 @@ public class Propuesta {
     	
     	// CAMBIO EL METODO PARA PROBAR PERSISTENCIA
     	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
-				fechaEspecatulo, lugar, precioEntrada, TipoRetorno.EntradasGratis, 0,
-				proponenteACargo.getDtProponente(), null, this.getDtEstadoHistorial(),
+				fechaEspecatulo, lugar, precioEntrada, TipoRetorno.EntradasGratis, 0 /* recaudado*/ ,
+				proponenteACargo.getDtProponente(), estadoActual, this.getDtEstadoHistorial(),
 				null,null);
     }
     
@@ -248,7 +252,8 @@ public class Propuesta {
 				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
 				proponenteACargo.getDtProponente(), null, this.getDtEstadoHistorial(),
 				categoria.getDtCategoriaSimple() ,null);
-    }
+	}
+	
 
 	public DtDatosPropuesta getDtDatosPropuesta() {
 		/*
@@ -267,8 +272,8 @@ public class Propuesta {
     }
 
     public DtPropuestaColaborada getInfoPropuestaColaborada() {
-    	//return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual.getDtEstado());
-    	return null;
+    	return new DtPropuestaColaborada(titulo, descripcion, imagen, 0, proponenteACargo.getDtProponente(), estadoActual);
+    	
     }
     
     public ArrayList<DtEstado> getDtEstadoHistorial(){

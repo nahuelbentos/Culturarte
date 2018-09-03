@@ -7,10 +7,10 @@ public class DtPropuestaColaborada {
    private double montoAportado;
    // PseudoAtributos
    private DtProponente proponenteACargo;
-   private DtEstado estadoActual;
+   private EstadoPropuesta estadoActual;
 	   
    public DtPropuestaColaborada(String titulo, String descripcion, String imagen, double montoAportado,
-			DtProponente proponenteACargo, DtEstado estadoActual) {
+			DtProponente proponenteACargo, EstadoPropuesta estadoActual) {
 		super();
 		this.titulo = titulo;
 		this.descripcion = descripcion;
@@ -34,7 +34,7 @@ public class DtPropuestaColaborada {
 	public DtProponente getProponenteACargo() {
 		return proponenteACargo;
 	}
-	public DtEstado getEstadoActual() {
+	public EstadoPropuesta getEstadoActual() {
 		return estadoActual;
 	}
 	   
