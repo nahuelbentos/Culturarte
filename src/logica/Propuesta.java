@@ -76,6 +76,7 @@ public class Propuesta {
 	    this.precioEntrada = e;
 	    this.lugar = lugar;
 	    this.tipo = tipo;
+	    this.estadoActual = EstadoPropuesta.ingresada;
 	}
 
    public Propuesta(DtPropuesta dtP) {
