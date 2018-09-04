@@ -242,7 +242,7 @@ public class AltaPropuesta extends JInternalFrame {
 		fechaEspecatulo = new GregorianCalendar();
 		if (entFechaPublicacion.getDate()!=null)
 			fechaPublicacion.setTime(entFechaPublicacion.getDate());
-		if (entFechaEspectaculo.getDate()!=null)
+		if (entFechaEspectaculo.getDate() != null)
 			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
 		lugar = entLugar.getText();
 		tipo = (TipoRetorno) entTipoRetorno.getSelectedItem();
@@ -251,8 +251,8 @@ public class AltaPropuesta extends JInternalFrame {
 		categoria = entCategoria.getSelectedItem().toString();
 		
 		// acá hay que poner las validaciones del caso de uso
-		return (!(nicknameProponente.isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || imagen.isEmpty() || fechaPublicacion == null || 
-				fechaEspecatulo == null || lugar.isEmpty() || tipo == null || categoria == null));
+		return (!(entProponente.getSelectedItem().toString().isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || imagen.isEmpty() || entFechaPublicacion.getDate() == null || 
+				entFechaEspectaculo.getDate() == null || lugar.isEmpty() || tipo == null || categoria == null));
 	}
 	
 	private void limpiarFormulario() {

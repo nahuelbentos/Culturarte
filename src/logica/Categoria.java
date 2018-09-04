@@ -5,10 +5,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import datatype.DtCategoria;
@@ -22,9 +22,10 @@ public class Categoria {
 	private String nombre;
 	
 	// Pseudoatributos
-	@ManyToMany
-	@JoinColumn(name="ID_CAT_SUPER")
-	private List<Categoria> superCategorias = new ArrayList<>();
+	
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinColumn(name="ID_CAT_SUB")
+	private List<Categoria> subCategorias = new ArrayList<>();
 	
 	public Categoria() {
 		super();
@@ -33,12 +34,6 @@ public class Categoria {
 	public Categoria(String nombre) {
 		super();
 		this.nombre = nombre;
-	}
-	
-	public Categoria(String nombre, ArrayList<Categoria> superCategorias) {
-		super();
-		this.nombre = nombre;
-		this.superCategorias = superCategorias;
 	}
 
 	public String getNombre() {
@@ -49,31 +44,60 @@ public class Categoria {
 		this.nombre = nombre;
 	}
 	
-	public ArrayList<Categoria> getSuperCategorias() {
-		return (ArrayList<Categoria>) this.superCategorias;
+	public List<Categoria> getSubCategorias() {
+		return this.subCategorias;
 	}
 	
 	public DtCategoria getDtCategoria() {
-		ArrayList<DtCategoria> padres = new ArrayList<>();
-		for (Categoria c : superCategorias) {
-			padres.add(new DtCategoria(c.getNombre()));
+		
+		ArrayList<DtCategoria> hijos = new ArrayList<>();
+		for (Categoria c : subCategorias) {
+			hijos.add(new DtCategoria(c.getNombre()));
 		}
 		
-		return new DtCategoria(this.nombre, padres);
+		return new DtCategoria(this.nombre, hijos);
+	}
+	
+	public DtCategoria getDtCategoriaFull() {
+		
+		ArrayList<DtCategoria> hijos = new ArrayList<>();
+		for (Categoria c : subCategorias) {
+			hijos.add(rec(c));
+		}
+		
+		return new DtCategoria(this.nombre, hijos);
+	}
+	
+	private DtCategoria rec(Categoria categ) {
+		if (categ == null) {
+			return null;
+		} else {
+			DtCategoria dtC = new DtCategoria(categ.getNombre(), new ArrayList<>());
+			if (categ.getSubCategorias()!=null) {
+				for (Categoria sub : categ.getSubCategorias()) {
+					DtCategoria hijo = new DtCategoria(sub.getNombre());
+					hijo = rec(sub);
+					if (hijo!=null) {
+						dtC.addHijo(hijo);
+					}
+				}
+			}
+			return dtC;
+		}
 	}
 	
 	public DtCategoria getDtCategoriaSimple() {
 		return new DtCategoria(nombre);
 	}
 	
-	public ArrayList<Categoria> getDtSuperCategorias() {
-		ArrayList<Categoria> padres = new ArrayList<>();
-		for (int i = 0; i < this.superCategorias.size(); i++)
-			padres.add(superCategorias.get(i));
-		return padres;
+	public ArrayList<Categoria> getDtSubCategorias() {
+		ArrayList<Categoria> hijos = new ArrayList<>();
+		for (int i = 0; i < this.subCategorias.size(); i++)
+			hijos.add(subCategorias.get(i));
+		return hijos;
 	}
-
-	public void addPadre(Categoria padre) {
-		this.superCategorias.add(padre);
+	
+	public void addHijo(Categoria hijo) {
+		this.subCategorias.add(hijo);
 	}
 }

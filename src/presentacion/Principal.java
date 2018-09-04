@@ -170,6 +170,7 @@ public class Principal {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				altaCategoria.listarCategorias();
 				altaCategoria.setVisible(true);
 			}
 		});
