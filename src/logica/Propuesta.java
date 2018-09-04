@@ -16,6 +16,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,8 +31,9 @@ public class Propuesta {
 	
 	@Column(name="DESCRIPCION")
 	private String descripcion;
+	@Lob
 	@Column(name="IMAGEN")
-	private String imagen;
+	private byte[] imagen;
 	@Column(name="MONTO_NECESARIO")
 	private double montoNecesario;
 	@Column(name="FECHA_PUBLICACION")
@@ -63,7 +65,7 @@ public class Propuesta {
 		super();
 	}
    
-   public Propuesta(String titulo, String descripcion, String imagen, 
+   public Propuesta(String titulo, String descripcion, byte[] imagen, 
 			double d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
 			double e, String lugar, TipoRetorno tipo) {
 	    this.titulo = titulo;
@@ -104,7 +106,7 @@ public class Propuesta {
         return fechaPublicacion;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
@@ -156,7 +158,7 @@ public class Propuesta {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 

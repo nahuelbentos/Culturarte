@@ -1,19 +1,31 @@
 package presentacion;
 
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -60,10 +72,13 @@ public class AltaPropuesta extends JInternalFrame {
 	private JComboBox<String> entCategoria;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
+	private ImageIcon imagenPropuesta;
+	private JButton btnSeleecionarImagen;
+	private JFileChooser fileChooser = new JFileChooser();
 	
 	private String titulo;
 	private String descripcion;
-	private String imagen;
+	private byte[] imagen;
 	private float montoNecesario;
 	private GregorianCalendar fechaPublicacion;
 	private GregorianCalendar fechaEspecatulo;
@@ -72,7 +87,7 @@ public class AltaPropuesta extends JInternalFrame {
 	private TipoRetorno tipo;
 	private String nicknameProponente;
 	private String categoria;
-
+	
 	/**
 	 * Create the frame.
 	 */
@@ -110,9 +125,29 @@ public class AltaPropuesta extends JInternalFrame {
         entDescripcion.setBounds(143, 68, 239, 19);
         getContentPane().add(entDescripcion);
         
-        lblImagen = new JLabel("Imagen");
-        lblImagen.setBounds(12, 99, 66, 15);
-        getContentPane().add(lblImagen);
+		btnSeleecionarImagen = new JButton("Selecionar Imagen");
+		btnSeleecionarImagen.setHorizontalAlignment(SwingConstants.LEFT);
+		btnSeleecionarImagen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int retorno = fileChooser.showOpenDialog(getContentPane());
+                if (retorno == JFileChooser.APPROVE_OPTION) {
+                    String pathName = fileChooser.getSelectedFile().getPath();
+                    JOptionPane.showMessageDialog(null, pathName);
+                    imagenPropuesta = new ImageIcon(pathName);
+                    Image imagenPrevia = imagenPropuesta.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                    imagenPropuesta = new ImageIcon(imagenPrevia, pathName);
+                    lblImagen.setIcon(imagenPropuesta);
+                    try {
+                    	imagen = levantarImagen(pathName);
+                    	imagen = scale(imagen, 150, 150);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+                }
+			}
+		});
+		btnSeleecionarImagen.setBounds(389, 226, 133, 20);
+		getContentPane().add(btnSeleecionarImagen);
         
         entImagen = new JTextField();
         entImagen.setColumns(10);
@@ -235,7 +270,7 @@ public class AltaPropuesta extends JInternalFrame {
 	private boolean formularioOk() {
 		titulo = entTitulo.getText();
 		descripcion = entDescripcion.getText();
-		imagen = entImagen.getText();
+		
 		montoNecesario = Float.valueOf(entMontoNecesario.getText());
 		precioEntrada = Float.valueOf(entPrecioEntrada.getText());
 		fechaPublicacion = new GregorianCalendar();
@@ -251,7 +286,7 @@ public class AltaPropuesta extends JInternalFrame {
 		categoria = entCategoria.getSelectedItem().toString();
 		
 		// acá hay que poner las validaciones del caso de uso
-		return (!(entProponente.getSelectedItem().toString().isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || imagen.isEmpty() || entFechaPublicacion.getDate() == null || 
+		return (!(entProponente.getSelectedItem().toString().isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || entFechaPublicacion.getDate() == null || 
 				entFechaEspectaculo.getDate() == null || lugar.isEmpty() || tipo == null || categoria == null));
 	}
 	
@@ -289,4 +324,30 @@ public class AltaPropuesta extends JInternalFrame {
         	entProponente.addItem("No hay categorias registradas en el sistema");
         }        
 	}
+	
+    private byte[] levantarImagen(String pathName) throws IOException {
+    	File file = new File(pathName);
+    	byte[] picInBytes = new byte[(int) file.length()];
+    	FileInputStream fileInputStream = new FileInputStream(file);
+    	fileInputStream.read(picInBytes);
+    	fileInputStream.close();
+		return picInBytes;
+    }
+    
+    public byte[] scale(byte[] fileData, int width, int height) throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream(fileData);
+        BufferedImage img = ImageIO.read(in);
+        if(height == 0) {
+            height = (width * img.getHeight())/ img.getWidth(); 
+        }
+        if(width == 0) {
+            width = (height * img.getWidth())/ img.getHeight();
+        }
+        Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0,0,0), null);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        ImageIO.write(imageBuff, "jpg", buffer);
+        return buffer.toByteArray();
+    }
 }
