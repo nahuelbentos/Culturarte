@@ -6,12 +6,12 @@ import java.util.GregorianCalendar;
 public class DtDatosPropuesta {
    private String titulo;
    private String descripcion;
-   private String imagen;
-   private float montoNecesario;
+   private byte[] imagen;
+   private double montoNecesario;
    private GregorianCalendar fechaPublicacion;
    private GregorianCalendar fechaEspecatulo;
    private String lugar;
-   private float precioEntrada;
+   private double precioEntrada;
    private TipoRetorno tipo;
    private double recaudado;
    
@@ -20,8 +20,8 @@ public class DtDatosPropuesta {
    
 	   
 	
-	public DtDatosPropuesta(String titulo, String descripcion, String imagen, float montoNecesario,
-			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, float precioEntrada,
+	public DtDatosPropuesta(String titulo, String descripcion, byte[] imagen, double montoNecesario,
+			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
 			TipoRetorno tipo, double recaudado, ArrayList<String> colaboradores) {
 		super();
 		this.titulo = titulo;
@@ -37,6 +37,9 @@ public class DtDatosPropuesta {
 		this.colaboradores = colaboradores;
 	}
 	
+	public DtDatosPropuesta() {
+		
+	}
 	public String getTitulo() {
 		return titulo;
 	}
@@ -45,11 +48,11 @@ public class DtDatosPropuesta {
 		return descripcion;
 	}
 	
-	public String getImagen() {
+	public byte[] getImagen() {
 		return imagen;
 	}
 	
-	public float getMontoNecesario() {
+	public double getMontoNecesario() {
 		return montoNecesario;
 	}
 	
@@ -65,7 +68,7 @@ public class DtDatosPropuesta {
 		return lugar;
 	}
 	
-	public float getPrecioEntrada() {
+	public double getPrecioEntrada() {
 		return precioEntrada;
 	}
 	

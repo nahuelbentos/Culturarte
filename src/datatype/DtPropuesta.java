@@ -9,7 +9,7 @@ public class DtPropuesta {
     
    private String titulo;
    private String descripcion;
-   private String imagen;
+   private byte[] imagen;
    private double montoNecesario;
    private GregorianCalendar fechaPublicacion;
    private GregorianCalendar fechaEspecatulo;
@@ -25,7 +25,7 @@ public class DtPropuesta {
    private DtCategoria categoria;
    private ArrayList<DtColaboracion> colaboraciones;
    
-   public DtPropuesta(String titulo, String descripcion, String imagen, double montoNecesario,
+   public DtPropuesta(String titulo, String descripcion, byte[] imagen, double montoNecesario,
 		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
 		TipoRetorno tipo, float recaudado, DtProponente proponenteACargo, EstadoPropuesta estadoActual,
 		ArrayList<DtEstado> estadoHistorial, DtCategoria categoria, ArrayList<DtColaboracion> colaboraciones) {
@@ -60,7 +60,7 @@ public class DtPropuesta {
 		return descripcion;
 	}
 
-	public String getImagen() {
+	public byte[] getImagen() {
 		return imagen;
 	}
 

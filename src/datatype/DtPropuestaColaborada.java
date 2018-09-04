@@ -3,13 +3,13 @@ package datatype;
 public class DtPropuestaColaborada {
    private String titulo;
    private String descripcion;
-   private String imagen;
+   private byte[] imagen;
    private double montoAportado;
    // PseudoAtributos
    private DtProponente proponenteACargo;
    private EstadoPropuesta estadoActual;
 	   
-   public DtPropuestaColaborada(String titulo, String descripcion, String imagen, double montoAportado,
+   public DtPropuestaColaborada(String titulo, String descripcion, byte[] imagen, double montoAportado,
 			DtProponente proponenteACargo, EstadoPropuesta estadoActual) {
 		super();
 		this.titulo = titulo;
@@ -25,7 +25,7 @@ public class DtPropuestaColaborada {
 	public String getDescripcion() {
 		return descripcion;
 	}
-	public String getImagen() {
+	public byte[] getImagen() {
 		return imagen;
 	}
 	public double getMontoAportado() {
