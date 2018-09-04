@@ -235,7 +235,8 @@ public class PropuestaController implements IPropuestaController {
 	@Override
 	public DtDatosPropuesta consultarPropuesta(String titulo) {
 		// la comento, hay que revisar si se puede usar otro Dt.
-		
+
+		System.out.println("Consultar Propuesta \n");
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		
@@ -243,25 +244,48 @@ public class PropuestaController implements IPropuestaController {
 		
 		Propuesta p = em.find(Propuesta.class, titulo); //1
 		
-		DtDatosPropuesta datapro= p.getDtDatosPropuesta(); //2
-		
         List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
-        
-		ArrayList<String> colaboradores = new ArrayList<String>();
-		double montoTotal=0;
-		for (Colaboracion col : colColab) { //3
-			if(col.tieneProp(titulo)) { //4 
-				montoTotal += col.getMonto(); //5.1 
-				colaboradores.add(col.getColaborador().getNickname()); //5.2				
-			}
-		}
-		
 
 		em.close();
+		DtDatosPropuesta dtp = new DtDatosPropuesta();
+		if (p != null) {
+//			System.out.println("1 \n");
+//			System.out.println("\n p.titulo: " + p.getTitulo());
+			DtDatosPropuesta datapro= p.getDtDatosPropuesta(); //2
+
+//			System.out.println("2 \n");
+	        if(datapro!=null) {
+//				System.out.println("3 \n");
+//				System.out.println("\n datapro.Descripcion: " + datapro.getDescripcion());
+				ArrayList<String> colaboradores = new ArrayList<String>();
+				double montoTotal=0;
+				for (Colaboracion col : colColab) { //3
+					if(col.tieneProp(titulo)) { //4 
+						montoTotal += col.getMonto(); //5.1 
+						colaboradores.add(col.getColaborador().getNickname()); //5.2				
+					}
+				}
+				
 		
-		return new DtDatosPropuesta(datapro.getTitulo(), datapro.getDescripcion(), datapro.getImagen(),
-		datapro.getMontoNecesario(), datapro.getFechaPublicacion(), datapro.getFechaEspecatulo(), datapro.getLugar(),
-		datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores);
+//				System.out.println("\n Titulo: " + datapro.getTitulo());
+//				System.out.println("\n Descripcion: " + datapro.getDescripcion());
+//				System.out.println("\n Imagen: " + datapro.getImagen());
+//				System.out.println("\n Monto Necesario: " + datapro.getMontoNecesario());
+//				System.out.println("\n Fecha Publicacion: " + datapro.getFechaPublicacion());
+//				System.out.println("\n Fecha Especatulo: " + datapro.getFechaEspecatulo());
+//				System.out.println("\n Lugar: " + datapro.getLugar());
+//				System.out.println("\n Precio Entrada: " + datapro.getPrecioEntrada());
+//				System.out.println("\n Tipo: " + datapro.getTipo());
+//				System.out.println("\n montoTotal: " + montoTotal);
+//				System.out.println("\n colaboradores: " + colaboradores);
+				
+				return  new DtDatosPropuesta(datapro.getTitulo(), datapro.getDescripcion(), datapro.getImagen(),
+				datapro.getMontoNecesario(), datapro.getFechaPublicacion(), datapro.getFechaEspecatulo(), datapro.getLugar(),
+				datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores);
+	        }else
+	        	return dtp;
+		}else 
+			return dtp;
 		
 	}
 

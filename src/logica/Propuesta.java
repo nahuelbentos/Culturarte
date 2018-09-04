@@ -3,6 +3,7 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import datatype.DtColaborador;
 import datatype.DtDatosPropuesta;
 import datatype.DtEstado;
 import datatype.DtProponente;
@@ -259,15 +260,16 @@ public class Propuesta {
 		/*
 		 * 
 		 * // CAMBIO EL METODO PARA PROBAR PERSISTENCIA
+		
 		 
-		ArrayList<DtColaborador> colaboradores = new ArrayList<DtColaborador>();
-				
-    	return new DtDatosPropuesta(titulo, descripcion, imagen, 
-				montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,
-				tipo, 0, colaboradores);
-    	*/
-
     	return null; //dtp;
+    	*/
+		
+		ArrayList<String> colaboradores = new ArrayList<String>();
+				
+    	return new DtDatosPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,tipo, 0, colaboradores);
+
+
     	
     }
 

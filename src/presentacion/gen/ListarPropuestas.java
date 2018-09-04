@@ -82,6 +82,38 @@ public class ListarPropuestas extends JPanel {
 		}
 	}
 	
+	public String getPropuestaTituloSeleccionada() {
+		int filaSeleccionada = table.getSelectedRow();
+		
+		System.out.println(filaSeleccionada);
+		if (filaSeleccionada>=0) {
+			DtPropuestaMinificado[] colProp;
+			try {
+				colProp = iPC.listarPropuestas();
+							
+				return colProp[filaSeleccionada].getTitulo();
+			} catch (PropuestaNoExisteException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}else {
+			return null;
+		}
+		
+	}
+	
+	public String getPrimerTitulo() {
+		DtPropuestaMinificado[] colProp;
+		try {
+			colProp = iPC.listarPropuestas();
+			
+			return colProp[0].getTitulo();
+		} catch (PropuestaNoExisteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public void actualizarPropuestas() {
 		try {
 			
