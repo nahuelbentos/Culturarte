@@ -1,17 +1,18 @@
 package presentacion;
 
-import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
-import java.util.UUID;
-
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -69,6 +70,7 @@ public class AltaPerfil extends JInternalFrame {
 	private JTextArea txtBiografia;
 	private JLabel lblRol;
 	private ImageIcon imagenUsuario;
+	private byte[] imagenUsuarioByte;
 
 	/**
 	 * Create the frame.
@@ -154,9 +156,15 @@ public class AltaPerfil extends JInternalFrame {
                     String pathName = fileChooser.getSelectedFile().getPath();
                     JOptionPane.showMessageDialog(null, pathName);
                     imagenUsuario = new ImageIcon(pathName);
-                    Image imagenPrevia = imagenUsuario.getImage().getScaledInstance(133, 133, Image.SCALE_SMOOTH);
+                    Image imagenPrevia = imagenUsuario.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
                     imagenUsuario = new ImageIcon(imagenPrevia, pathName);
                     lblImagen.setIcon(imagenUsuario);
+                    try {
+                    	imagenUsuarioByte = levantarImagen(pathName);
+                    	imagenUsuarioByte = scale(imagenUsuarioByte, 150, 150);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
                 }
 			}
 		});
@@ -292,11 +300,10 @@ public class AltaPerfil extends JInternalFrame {
         String sitioWeb = txtSitioWeb.getText();
         DtUsuario dtUsuario = null;
         if (checkFormulario()) {
-        	String nombreImagen = guardarImagen();
     		if (rdbtnColaborador.isSelected()) {
-    			dtUsuario = new DtColaborador(nickname, nombre, apellido, email, fechaNacimiento, nombreImagen);
+    			dtUsuario = new DtColaborador(nickname, nombre, apellido, email, fechaNacimiento, imagenUsuarioByte);
     		} else if (rdbtnProponente.isSelected()) {
-    			dtUsuario = new DtProponente(nickname, nombre, apellido, email, fechaNacimiento, nombreImagen, 
+    			dtUsuario = new DtProponente(nickname, nombre, apellido, email, fechaNacimiento, imagenUsuarioByte, 
     					direccion, biografia, sitioWeb);
     		}
     		try{
@@ -346,20 +353,29 @@ public class AltaPerfil extends JInternalFrame {
     	}
     }
     
-    private String guardarImagen() {
-    	String nombreArchivo = "";
-    	try {
-	    	Image img = imagenUsuario.getImage();
-	    	BufferedImage bufferedImage = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_ARGB);
-	    	Graphics2D g2 = bufferedImage.createGraphics();
-	    	g2.drawImage(img, 0, 0, null);
-	    	g2.dispose();
-    		nombreArchivo = UUID.randomUUID().toString();
-    		// Para probar lo guardamos como jpg, deber�a tomar la extensi�n de la imagen original
-			ImageIO.write(bufferedImage, "jpg", new File("src/imagenes/" + nombreArchivo + ".jpg"));
-		} catch (IOException | NullPointerException e) {
-			return nombreArchivo;
-		}
-    	return nombreArchivo;
+    private byte[] levantarImagen(String pathName) throws IOException {
+    	File file = new File(pathName);
+    	byte[] picInBytes = new byte[(int) file.length()];
+    	FileInputStream fileInputStream = new FileInputStream(file);
+    	fileInputStream.read(picInBytes);
+    	fileInputStream.close();
+		return picInBytes;
+    }
+    
+    public byte[] scale(byte[] fileData, int width, int height) throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream(fileData);
+        BufferedImage img = ImageIO.read(in);
+        if(height == 0) {
+            height = (width * img.getHeight())/ img.getWidth(); 
+        }
+        if(width == 0) {
+            width = (height * img.getWidth())/ img.getHeight();
+        }
+        Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0,0,0), null);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        ImageIO.write(imageBuff, "jpg", buffer);
+        return buffer.toByteArray();
     }
 }
