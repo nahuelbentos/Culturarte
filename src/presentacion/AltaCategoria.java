@@ -9,7 +9,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import logica.CategoriaController;
 import logica.ICategoriaController;
 import datatype.DtCategoria;
 import excepciones.CategoriaNoExisteException;
@@ -19,7 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
@@ -114,7 +112,6 @@ public class AltaCategoria extends JInternalFrame {
 		if (raiz==null) {
 			return null;
 		}else {
-//			System.out.println(raiz.getNombre());
 			DefaultMutableTreeNode categoria = new DefaultMutableTreeNode(raiz.getNombre());
 			if (raiz.getSubCategorias()!=null) {
 				for (DtCategoria d : raiz.getSubCategorias()) {
@@ -161,6 +158,5 @@ public class AltaCategoria extends JInternalFrame {
 	private void limpiarFormulario() {
 		listarCategorias();
 		entCategoria.setText("");
-		// habría que refrescar el arbol de categorías
 	}
 }

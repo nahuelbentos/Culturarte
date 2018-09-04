@@ -1,11 +1,9 @@
 package logica;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import datatype.DtCategoria;
 import excepciones.CategoriaNoExisteException;
@@ -27,6 +25,7 @@ public class CategoriaController implements ICategoriaController {
 		
 		DtCategoria[] dtC = null;
 		// Me traigo la categoría base "Categorías", la cual me traera todas por ser sus hijas
+		@SuppressWarnings("unchecked")
 		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE='Categorías'").getResultList();
 		
         if (cats != null) {
@@ -47,6 +46,7 @@ public class CategoriaController implements ICategoriaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
+		@SuppressWarnings("unchecked")
 		List<Categoria> cats = em.createQuery("FROM Categoria").getResultList();
 		
         if (cats.isEmpty()) {
