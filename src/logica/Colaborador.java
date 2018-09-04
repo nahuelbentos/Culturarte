@@ -15,7 +15,7 @@ public class Colaborador extends Usuario {
 	}
 
 	public Colaborador(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico,
-			String apellido, String imagen) {
+			String apellido, byte[] imagen) {
 		super(nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
 	}
 	public DtColaborador getDtColaborador() {

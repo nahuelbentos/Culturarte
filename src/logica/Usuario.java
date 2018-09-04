@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,8 +31,9 @@ public abstract class Usuario {
     private String correoElectronico;
 	@Column(name="APELLIDO")
     private String apellido;
+	@Lob
 	@Column(name="IMAGEN")
-    private String imagen;
+    private byte[] imagen;
 	
 	@OneToMany(mappedBy="usuarioDos", cascade = CascadeType.ALL,orphanRemoval=true)
 	private List<UsuarioSigue> usuariosQueSigue = new ArrayList<>();
@@ -41,7 +43,7 @@ public abstract class Usuario {
     }
     
     public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento,
-    		String correoElectronico, String apellido, String imagen) {
+    		String correoElectronico, String apellido, byte[] imagen) {
     	super();
         this.nickname = nickname;
         this.nombre = nombre;
@@ -73,7 +75,7 @@ public abstract class Usuario {
         this.nombre = nombre;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
@@ -99,7 +101,7 @@ public abstract class Usuario {
         return nombre;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
    

@@ -9,10 +9,10 @@ public class DtUsuario {
 	private String apellido;
 	private String email;
 	private GregorianCalendar fechaNacimiento;
-	private String imagen;
+	private byte[] imagen;
 	
 	public DtUsuario(String nickname, String nombre, String apellido, String email, GregorianCalendar fechaNacimiento,
-			String imagen) {
+			byte[] imagen) {
 		super();
 		this.nickname = nickname;
 		this.nombre = nombre;
@@ -37,7 +37,7 @@ public class DtUsuario {
 	public GregorianCalendar getFechaNacimiento() {
 		return fechaNacimiento;
 	}
-	public String getImagen() {
+	public byte[] getImagen() {
 		return imagen;
 	}
 	

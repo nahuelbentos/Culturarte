@@ -13,7 +13,7 @@ public class DtPerfilProponente extends DtProponente{
 	
 	
 	public DtPerfilProponente(String nickname, String nombre, String apellido, String email,
-			GregorianCalendar fechaNacimiento, String imagen, String direccion, String biografia, String sitioWeb,
+			GregorianCalendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb,
 			ArrayList<DtPropuesta> prPublicadas,ArrayList<DtPropuesta> prCanceladas,ArrayList<DtPropuesta> prEnFinanciacion,
 			ArrayList<DtPropuesta> prFinanciadas,ArrayList<DtPropuesta> prNoFinanciadas) {
 		super(nickname, nombre, apellido, email, fechaNacimiento, imagen, direccion, biografia, sitioWeb);
