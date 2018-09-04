@@ -41,6 +41,14 @@ import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
 import logica.PropuestaController;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.BorderLayout;
+import javax.swing.JTextPane;
+import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
 public class AltaPropuesta extends JInternalFrame {
@@ -56,16 +64,12 @@ public class AltaPropuesta extends JInternalFrame {
 	private JLabel lblPrecioEntrada;
 	private JLabel lblCategora;
 	private JLabel lblMontoNecesario;
-	private JLabel lblFechaPublicacin;
 	private JLabel lblProponente;
 	private JLabel lblTipoRetorno;
 	private JTextField entTitulo;
-	private JTextField entDescripcion;
-	private JTextField entImagen;
 	private JFormattedTextField entMontoNecesario;
 	private JTextField entLugar;
 	private JFormattedTextField entPrecioEntrada;
-	private JDateChooser entFechaPublicacion;
 	private JDateChooser entFechaEspectaculo;
 	private JComboBox<String> entProponente;
 	private JComboBox<TipoRetorno> entTipoRetorno;
@@ -87,6 +91,12 @@ public class AltaPropuesta extends JInternalFrame {
 	private TipoRetorno tipo;
 	private String nicknameProponente;
 	private String categoria;
+	private JPanel panelDatos;
+	private JPanel panelProponente;
+	private JTextPane entDescripcion;
+	private JPanel panelImagen;
+	private JPanel panel;
+	private JLabel lblNewLabel;
 	
 	/**
 	 * Create the frame.
@@ -103,30 +113,239 @@ public class AltaPropuesta extends JInternalFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setClosable(true);
         setTitle("Alta de Propuesta");
-        setBounds(10, 40, 408, 445);
+        setBounds(10, 40, 683, 569);
 		
         getContentPane().setLayout(null);
         
-        lblNombre = new JLabel("Título");
-        lblNombre.setBounds(12, 44, 66, 15);
-        getContentPane().add(lblNombre);
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(new ActionListener() {
+    	    public void actionPerformed(ActionEvent e) {
+                limpiarFormulario();
+                setVisible(false);
+            }
+        });
+        btnCancelar.setBounds(425, 357, 114, 25);
+        getContentPane().add(btnCancelar);
         
-        entTitulo = new JTextField();
-        entTitulo.setBounds(143, 42, 239, 19);
-        getContentPane().add(entTitulo);
-        entTitulo.setColumns(10);
+        btnAceptar = new JButton("Confirmar");
+        btnAceptar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		registrarPropuesta(arg0);
+        		limpiarFormulario();
+        	}
+        });
+        btnAceptar.setBounds(549, 357, 114, 25);
+        getContentPane().add(btnAceptar);
+        {
+        	this.panelDatos = new JPanel();
+        	this.panelDatos.setBorder(new TitledBorder(null, "Datos b\u00E1sicos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        	this.panelDatos.setBounds(318, 8, 345, 234);
+        	getContentPane().add(this.panelDatos);
+        	GridBagLayout gbl_panelDatos = new GridBagLayout();
+        	gbl_panelDatos.columnWidths = new int[]{0, 0, 0, 0};
+        	gbl_panelDatos.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+        	gbl_panelDatos.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+        	gbl_panelDatos.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        	this.panelDatos.setLayout(gbl_panelDatos);
+        	
+        	lblNombre = new JLabel("Título");
+        	GridBagConstraints gbc_lblNombre = new GridBagConstraints();
+        	gbc_lblNombre.anchor = GridBagConstraints.EAST;
+        	gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
+        	gbc_lblNombre.gridx = 0;
+        	gbc_lblNombre.gridy = 0;
+        	this.panelDatos.add(this.lblNombre, gbc_lblNombre);
+        	
+        	entTitulo = new JTextField();
+        	GridBagConstraints gbc_entTitulo = new GridBagConstraints();
+        	gbc_entTitulo.fill = GridBagConstraints.HORIZONTAL;
+        	gbc_entTitulo.weightx = 10.0;
+        	gbc_entTitulo.insets = new Insets(0, 0, 5, 5);
+        	gbc_entTitulo.gridx = 1;
+        	gbc_entTitulo.gridy = 0;
+        	this.panelDatos.add(this.entTitulo, gbc_entTitulo);
+        	entTitulo.setColumns(10);
+        	
+        	lblDescripcion = new JLabel("Descripción");
+        	GridBagConstraints gbc_lblDescripcion = new GridBagConstraints();
+        	gbc_lblDescripcion.anchor = GridBagConstraints.NORTHEAST;
+        	gbc_lblDescripcion.insets = new Insets(0, 0, 5, 5);
+        	gbc_lblDescripcion.gridx = 0;
+        	gbc_lblDescripcion.gridy = 1;
+        	this.panelDatos.add(this.lblDescripcion, gbc_lblDescripcion);
+        	
+        	this.entDescripcion = new JTextPane();
+        	GridBagConstraints gbc_entDescripcion = new GridBagConstraints();
+        	gbc_entDescripcion.weighty = 3.0;
+        	gbc_entDescripcion.weightx = 10.0;
+        	gbc_entDescripcion.insets = new Insets(0, 0, 5, 5);
+        	gbc_entDescripcion.fill = GridBagConstraints.BOTH;
+        	gbc_entDescripcion.gridx = 1;
+        	gbc_entDescripcion.gridy = 1;
+        	this.panelDatos.add(this.entDescripcion, gbc_entDescripcion);
+        	
+        	lblMontoNecesario = new JLabel("Monto necesario");
+        	GridBagConstraints gbc_lblMontoNecesario = new GridBagConstraints();
+        	gbc_lblMontoNecesario.anchor = GridBagConstraints.EAST;
+        	gbc_lblMontoNecesario.insets = new Insets(0, 0, 5, 5);
+        	gbc_lblMontoNecesario.gridx = 0;
+        	gbc_lblMontoNecesario.gridy = 2;
+        	this.panelDatos.add(this.lblMontoNecesario, gbc_lblMontoNecesario);
+        	
+        	entMontoNecesario = new JFormattedTextField(DecimalFormat.getInstance());
+        	GridBagConstraints gbc_entMontoNecesario = new GridBagConstraints();
+        	gbc_entMontoNecesario.anchor = GridBagConstraints.WEST;
+        	gbc_entMontoNecesario.insets = new Insets(0, 0, 5, 5);
+        	gbc_entMontoNecesario.gridx = 1;
+        	gbc_entMontoNecesario.gridy = 2;
+        	this.panelDatos.add(this.entMontoNecesario, gbc_entMontoNecesario);
+        	entMontoNecesario.setValue(montoNecesario);
+        	entMontoNecesario.setColumns(10);
+        	
+        	lblFechaEspectculo = new JLabel("Fecha espectáculo");
+        	GridBagConstraints gbc_lblFechaEspectculo = new GridBagConstraints();
+        	gbc_lblFechaEspectculo.anchor = GridBagConstraints.EAST;
+        	gbc_lblFechaEspectculo.insets = new Insets(0, 0, 5, 5);
+        	gbc_lblFechaEspectculo.gridx = 0;
+        	gbc_lblFechaEspectculo.gridy = 3;
+        	this.panelDatos.add(this.lblFechaEspectculo, gbc_lblFechaEspectculo);
+        	
+        	entFechaEspectaculo = new JDateChooser();
+        	GridBagConstraints gbc_entFechaEspectaculo = new GridBagConstraints();
+        	gbc_entFechaEspectaculo.anchor = GridBagConstraints.WEST;
+        	gbc_entFechaEspectaculo.insets = new Insets(0, 0, 5, 5);
+        	gbc_entFechaEspectaculo.gridx = 1;
+        	gbc_entFechaEspectaculo.gridy = 3;
+        	this.panelDatos.add(this.entFechaEspectaculo, gbc_entFechaEspectaculo);
+        	
+        	lblLugar = new JLabel("Lugar");
+        	GridBagConstraints gbc_lblLugar = new GridBagConstraints();
+        	gbc_lblLugar.anchor = GridBagConstraints.EAST;
+        	gbc_lblLugar.insets = new Insets(0, 0, 5, 5);
+        	gbc_lblLugar.gridx = 0;
+        	gbc_lblLugar.gridy = 4;
+        	this.panelDatos.add(this.lblLugar, gbc_lblLugar);
+        	
+        	entLugar = new JTextField();
+        	GridBagConstraints gbc_entLugar = new GridBagConstraints();
+        	gbc_entLugar.anchor = GridBagConstraints.WEST;
+        	gbc_entLugar.insets = new Insets(0, 0, 5, 5);
+        	gbc_entLugar.gridx = 1;
+        	gbc_entLugar.gridy = 4;
+        	this.panelDatos.add(this.entLugar, gbc_entLugar);
+        	entLugar.setColumns(10);
+        	
+        	lblPrecioEntrada = new JLabel("Precio entrada");
+        	GridBagConstraints gbc_lblPrecioEntrada = new GridBagConstraints();
+        	gbc_lblPrecioEntrada.anchor = GridBagConstraints.EAST;
+        	gbc_lblPrecioEntrada.insets = new Insets(0, 0, 5, 5);
+        	gbc_lblPrecioEntrada.gridx = 0;
+        	gbc_lblPrecioEntrada.gridy = 5;
+        	this.panelDatos.add(this.lblPrecioEntrada, gbc_lblPrecioEntrada);
+        	
+        	entPrecioEntrada = new JFormattedTextField(DecimalFormat.getInstance());
+        	GridBagConstraints gbc_entPrecioEntrada = new GridBagConstraints();
+        	gbc_entPrecioEntrada.anchor = GridBagConstraints.WEST;
+        	gbc_entPrecioEntrada.insets = new Insets(0, 0, 5, 5);
+        	gbc_entPrecioEntrada.gridx = 1;
+        	gbc_entPrecioEntrada.gridy = 5;
+        	this.panelDatos.add(this.entPrecioEntrada, gbc_entPrecioEntrada);
+        	entPrecioEntrada.setValue(precioEntrada);
+        	entPrecioEntrada.setColumns(10);
+        }
         
-        lblDescripcion = new JLabel("Descripción");
-        lblDescripcion.setBounds(12, 70, 79, 15);
-        getContentPane().add(lblDescripcion);
+        this.panelProponente = new JPanel();
+        this.panelProponente.setBorder(new TitledBorder(null, "Publicado por", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        this.panelProponente.setBounds(10, 8, 298, 234);
+        getContentPane().add(this.panelProponente);
+        GridBagLayout gbl_panelProponente = new GridBagLayout();
+        gbl_panelProponente.columnWidths = new int[]{0, 0, 0, 0};
+        gbl_panelProponente.rowHeights = new int[]{0, 0};
+        gbl_panelProponente.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_panelProponente.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        this.panelProponente.setLayout(gbl_panelProponente);
         
-        entDescripcion = new JTextField();
-        entDescripcion.setColumns(10);
-        entDescripcion.setBounds(143, 68, 239, 19);
-        getContentPane().add(entDescripcion);
+        lblProponente = new JLabel("Proponente");
+        GridBagConstraints gbc_lblProponente = new GridBagConstraints();
+        gbc_lblProponente.insets = new Insets(0, 0, 0, 5);
+        gbc_lblProponente.gridx = 0;
+        gbc_lblProponente.gridy = 0;
+        this.panelProponente.add(this.lblProponente, gbc_lblProponente);
         
+        entProponente = new JComboBox<>();      
+        GridBagConstraints gbc_entProponente = new GridBagConstraints();
+        gbc_entProponente.fill = GridBagConstraints.HORIZONTAL;
+        gbc_entProponente.gridwidth = 5;
+        gbc_entProponente.gridx = 2;
+        gbc_entProponente.gridy = 0;
+        this.panelProponente.add(this.entProponente, gbc_entProponente);
+        
+        this.panelImagen = new JPanel();
+        this.panelImagen.setBorder(new TitledBorder(null, "Imagen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        this.panelImagen.setBounds(10, 253, 298, 278);
+        getContentPane().add(this.panelImagen);
+        GridBagLayout gbl_panelImagen = new GridBagLayout();
+        gbl_panelImagen.columnWidths = new int[]{0, 0, 0, 0};
+        gbl_panelImagen.rowHeights = new int[]{0, 0, 0};
+        gbl_panelImagen.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_panelImagen.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        this.panelImagen.setLayout(gbl_panelImagen);
+		
 		btnSeleecionarImagen = new JButton("Selecionar Imagen");
+		GridBagConstraints gbc_btnSeleecionarImagen = new GridBagConstraints();
+		gbc_btnSeleecionarImagen.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSeleecionarImagen.gridx = 2;
+		gbc_btnSeleecionarImagen.gridy = 0;
+		this.panelImagen.add(this.btnSeleecionarImagen, gbc_btnSeleecionarImagen);
 		btnSeleecionarImagen.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		this.lblNewLabel = new JLabel("New label");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 1;
+		this.panelImagen.add(this.lblNewLabel, gbc_lblNewLabel);
+		
+		this.panel = new JPanel();
+		this.panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Categoria y tipo retorno", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		this.panel.setBounds(318, 253, 345, 93);
+		getContentPane().add(this.panel);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		this.panel.setLayout(gbl_panel);
+		
+		lblCategora = new JLabel("Categoría");
+		GridBagConstraints gbc_lblCategora = new GridBagConstraints();
+		gbc_lblCategora.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCategora.anchor = GridBagConstraints.EAST;
+		gbc_lblCategora.gridx = 0;
+		gbc_lblCategora.gridy = 0;
+		this.panel.add(this.lblCategora, gbc_lblCategora);
+		
+		entCategoria = new JComboBox<>();
+		GridBagConstraints gbc_entCategoria = new GridBagConstraints();
+		gbc_entCategoria.insets = new Insets(0, 0, 5, 0);
+		gbc_entCategoria.fill = GridBagConstraints.HORIZONTAL;
+		gbc_entCategoria.gridx = 2;
+		gbc_entCategoria.gridy = 0;
+		this.panel.add(this.entCategoria, gbc_entCategoria);
+		
+		lblTipoRetorno = new JLabel("Tipo retorno");
+		GridBagConstraints gbc_lblTipoRetorno = new GridBagConstraints();
+		gbc_lblTipoRetorno.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTipoRetorno.gridx = 0;
+		gbc_lblTipoRetorno.gridy = 1;
+		this.panel.add(this.lblTipoRetorno, gbc_lblTipoRetorno);
+		
+		entTipoRetorno = new JComboBox<>();
+		GridBagConstraints gbc_entTipoRetorno = new GridBagConstraints();
+		gbc_entTipoRetorno.gridx = 2;
+		gbc_entTipoRetorno.gridy = 1;
+		this.panel.add(this.entTipoRetorno, gbc_entTipoRetorno);
+		entTipoRetorno.setModel(new DefaultComboBoxModel<>(TipoRetorno.values()));
 		btnSeleecionarImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int retorno = fileChooser.showOpenDialog(getContentPane());
@@ -146,106 +365,10 @@ public class AltaPropuesta extends JInternalFrame {
                 }
 			}
 		});
-		btnSeleecionarImagen.setBounds(389, 226, 133, 20);
-		getContentPane().add(btnSeleecionarImagen);
-        
-        entImagen = new JTextField();
-        entImagen.setColumns(10);
-        entImagen.setBounds(143, 97, 239, 19);
-        getContentPane().add(entImagen);
-        
-        lblMontoNecesario = new JLabel("Monto necesario");
-        lblMontoNecesario.setBounds(12, 128, 131, 15);
-        getContentPane().add(lblMontoNecesario);
-        
-        entMontoNecesario = new JFormattedTextField(DecimalFormat.getInstance());
-        entMontoNecesario.setValue(montoNecesario);
-        entMontoNecesario.setColumns(10);
-        entMontoNecesario.setBounds(143, 126, 239, 19);
-        getContentPane().add(entMontoNecesario);
-        
-        lblFechaPublicacin = new JLabel("Fecha publicación");
-        lblFechaPublicacin.setBounds(12, 157, 131, 15);
-        getContentPane().add(lblFechaPublicacin);
-        
-        entFechaPublicacion = new JDateChooser();
-        entFechaPublicacion.setBounds(143, 155, 239, 20);
-        getContentPane().add(entFechaPublicacion);
-        
-        lblFechaEspectculo = new JLabel("Fecha espectáculo");
-        lblFechaEspectculo.setBounds(12, 186, 131, 15);
-        getContentPane().add(lblFechaEspectculo);
-        
-        entFechaEspectaculo = new JDateChooser();
-        entFechaEspectaculo.setBounds(143, 184, 239, 20);
-        getContentPane().add(entFechaEspectaculo);
-        
-        lblLugar = new JLabel("Lugar");
-        lblLugar.setBounds(12, 215, 131, 15);
-        getContentPane().add(lblLugar);
-        
-        entLugar = new JTextField();
-        entLugar.setColumns(10);
-        entLugar.setBounds(143, 213, 239, 19);
-        getContentPane().add(entLugar);
-        
-        lblPrecioEntrada = new JLabel("Precio entrada");
-        lblPrecioEntrada.setBounds(12, 244, 131, 15);
-        getContentPane().add(lblPrecioEntrada);
-        
-        entPrecioEntrada = new JFormattedTextField(DecimalFormat.getInstance());
-        entPrecioEntrada.setValue(precioEntrada);
-        entPrecioEntrada.setColumns(10);
-        entPrecioEntrada.setBounds(143, 242, 239, 19);
-        getContentPane().add(entPrecioEntrada);
-        
-        lblTipoRetorno = new JLabel("Tipo retorno");
-        lblTipoRetorno.setBounds(12, 278, 131, 15);
-        getContentPane().add(lblTipoRetorno);
-        
-        entTipoRetorno = new JComboBox<>();
-        entTipoRetorno.setModel(new DefaultComboBoxModel<>(TipoRetorno.values()));
-        entTipoRetorno.setBounds(143, 273, 239, 24);
-        getContentPane().add(entTipoRetorno);
-        
-        lblProponente = new JLabel("Proponente");
-        lblProponente.setBounds(12, 13, 131, 15);
-        getContentPane().add(lblProponente);
-        
-        entProponente = new JComboBox<>();      
-        setListaDeProponentes();
-        entProponente.setBounds(143, 8, 239, 24);
-        getContentPane().add(entProponente);
-        
-        lblCategora = new JLabel("Categoría");
-        lblCategora.setBounds(12, 309, 131, 15);
-        getContentPane().add(lblCategora);
-        
-        entCategoria = new JComboBox<>();
-        setListaDeCategorias();
-        entCategoria.setBounds(143, 304, 239, 24);
-        getContentPane().add(entCategoria);
-        
-        btnCancelar = new JButton("Cancelar");
-        btnCancelar.addActionListener(new ActionListener() {
-    	    public void actionPerformed(ActionEvent e) {
-                limpiarFormulario();
-                setVisible(false);
-            }
-        });
-        btnCancelar.setBounds(237, 357, 114, 25);
-        getContentPane().add(btnCancelar);
-        
-        btnAceptar = new JButton("Confirmar");
-        btnAceptar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        		registrarPropuesta(arg0);
-        		limpiarFormulario();
-        	}
-        });
-        btnAceptar.setBounds(53, 357, 114, 25);
-        getContentPane().add(btnAceptar);
 		
+		// Una vez cargado el panel, levanto los proponentes y las categorias.
+		setListaDeProponentes();
+        setListaDeCategorias();
 	}
 	
 	private void registrarPropuesta(ActionEvent arg0) {
@@ -275,8 +398,6 @@ public class AltaPropuesta extends JInternalFrame {
 		precioEntrada = Float.valueOf(entPrecioEntrada.getText());
 		fechaPublicacion = new GregorianCalendar();
 		fechaEspecatulo = new GregorianCalendar();
-		if (entFechaPublicacion.getDate()!=null)
-			fechaPublicacion.setTime(entFechaPublicacion.getDate());
 		if (entFechaEspectaculo.getDate() != null)
 			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());
 		lugar = entLugar.getText();
@@ -286,18 +407,16 @@ public class AltaPropuesta extends JInternalFrame {
 		categoria = entCategoria.getSelectedItem().toString();
 		
 		// acá hay que poner las validaciones del caso de uso
-		return (!(entProponente.getSelectedItem().toString().isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || entFechaPublicacion.getDate() == null || 
+		return (!(entProponente.getSelectedItem().toString().isEmpty() || titulo.isEmpty() || descripcion.isEmpty() || 
 				entFechaEspectaculo.getDate() == null || lugar.isEmpty() || tipo == null || categoria == null));
 	}
 	
 	private void limpiarFormulario() {
 		entTitulo.setText("");
-		entDescripcion.setText("");;
-		entImagen.setText("");
+		entDescripcion.setText("");
 		entMontoNecesario.setValue(0);
 		entLugar.setText("");
 		entPrecioEntrada.setValue(0);
-		entFechaPublicacion.setDate(null);
 		entFechaEspectaculo.setDate(null);
 	}
 	
