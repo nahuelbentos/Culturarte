@@ -12,6 +12,7 @@ import javax.swing.table.TableModel;
 
 import datatype.DtPerfilProponente;
 import datatype.DtPropuesta;
+import datatype.DtPropuestaColaborada;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import excepciones.PropuestaNoExisteException;
@@ -27,6 +28,7 @@ import javax.swing.JOptionPane;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -50,13 +52,22 @@ public class VerPerfilProponente extends JPanel {
 	private JLabel lblBiografia;
 	private JTextField txtLinkWeb;
 	private JLabel lblLinkweb;
-	private JTable tablePropuestaPublicada;
+	
+	
 	
 	private Object[][] data;
 	
 	private final Object[] columnNames = { 
 	                              "Titulo:",
 	                              "Por:"};	
+	
+	private JTable tablePropuestaPublicada;
+	private JTable tablePropuestaCancelada;
+	private JTable tablePropuestaEnFinanciacion;
+	private JTable tablePropuestaFinanciada;
+	private JTable tablePropuestaNoFinanciada;
+	private JLabel lblFinanciada;
+	private JLabel lblNoFinanciada;
 	/**
 	 * Create the panel.
 	 * @throws UsuarioNoExisteElUsuarioException 
@@ -163,8 +174,44 @@ public class VerPerfilProponente extends JPanel {
 		iUsuController = IUC;
 
 		tablePropuestaPublicada = new JTable();
-		tablePropuestaPublicada.setBounds(137, 284, 168, 100);
+		tablePropuestaPublicada.setBounds(12, 330, 90, 100);
 		add(tablePropuestaPublicada);
+		
+		tablePropuestaCancelada = new JTable();
+		tablePropuestaCancelada.setBounds(123, 330, 84, 100);
+		add(tablePropuestaCancelada);
+		
+		tablePropuestaEnFinanciacion = new JTable();
+		tablePropuestaEnFinanciacion.setBounds(217, 330, 84, 100);
+		add(tablePropuestaEnFinanciacion);
+		
+		tablePropuestaFinanciada = new JTable();
+		tablePropuestaFinanciada.setBounds(319, 330, 84, 100);
+		add(tablePropuestaFinanciada);
+		
+		tablePropuestaNoFinanciada = new JTable();
+		tablePropuestaNoFinanciada.setBounds(434, 330, 84, 100);
+		add(tablePropuestaNoFinanciada);
+		
+		JLabel lblPublicadas = new JLabel("Publicadas");
+		lblPublicadas.setBounds(12, 305, 66, 14);
+		add(lblPublicadas);
+		
+		JLabel lblCanceladas = new JLabel("Canceladas");
+		lblCanceladas.setBounds(136, 305, 55, 14);
+		add(lblCanceladas);
+		
+		JLabel lblEnFinanciacion = new JLabel("En financiacion");
+		lblEnFinanciacion.setBounds(218, 305, 83, 14);
+		add(lblEnFinanciacion);
+		
+		lblFinanciada = new JLabel("Financiada");
+		lblFinanciada.setBounds(319, 305, 66, 14);
+		add(lblFinanciada);
+		
+		lblNoFinanciada = new JLabel("No financiada");
+		lblNoFinanciada.setBounds(434, 305, 84, 14);
+		add(lblNoFinanciada);
 		
 //		DtPerfilProponente dtp = iUsuController.verPerfilProponente(nickname);
 		modelTitulos = new DefaultListModel<String>();
@@ -193,36 +240,166 @@ public class VerPerfilProponente extends JPanel {
 		txtLinkWeb.setText(dtp2.getSitioWeb());	
 		
 		
-		ArrayList<DtPropuesta> prPublicadas = dtp2.getPrPublicadas();
-		ArrayList<DtPropuesta> prCanceladas = dtp2.getPrCanceladas();
-		ArrayList<DtPropuesta> prEnFinanciacion = dtp2.getPrEnFinanciacion();
-		ArrayList<DtPropuesta> prFinanciadas= dtp2.getPrFinanciadas();
-		ArrayList<DtPropuesta> prNoFinanciadas = dtp2.getPrNoFinanciadas();
-		data = new Object[prPublicadas.size()][columnNames.length];
-		System.out.println("armo la table prPublicadas.size: " + prPublicadas.size() +  " \n");
-		System.out.println("armo la table prCanceladas.size: " + prCanceladas.size() +  " \n");
-		System.out.println("armo la table prEnFinanciacion.size: " + prEnFinanciacion.size() +  " \n");
-		System.out.println("armo la table prFinanciadas.size: " + prFinanciadas.size() +  " \n");
-		System.out.println("armo la table prNoFinanciadas.size: " + prNoFinanciadas.size() +  " \n");
-		for (int i = 0; i < prPublicadas.size(); i++) {
-			for (int j = 0; j < columnNames.length; j++) {
-				switch (j) {
-				case 0:
-					data[i][j] = prPublicadas.get(i).getTitulo();
-					System.out.println("Titulo " + i + " " + prPublicadas.get(i).getTitulo() + "\n");
-					break;
-				case 1:
-					data[i][j] = prPublicadas.get(i).getDescripcion();
-					System.out.println("Titulo " + i + " " + prPublicadas.get(i).getTitulo() + "\n");
-					break;
-				}
-			}
-			
-		}
 		
-		tablePropuestaPublicada = new JTable(data, columnNames);
-				
+		System.out.println("armo la table prPublicadas.size: " + dtp2.getPrPublicadas().size() +  " \n");
+		System.out.println("armo la table prCanceladas.size: " + dtp2.getPrCanceladas().size() +  " \n");
+		System.out.println("armo la table prEnFinanciacion.size: " + dtp2.getPrEnFinanciacion().size() +  " \n");
+		System.out.println("armo la table prFinanciadas.size: " + dtp2.getPrFinanciadas().size() +  " \n");
+		System.out.println("armo la table prNoFinanciadas.size: " + dtp2.getPrNoFinanciadas().size() +  " \n");
+		
+					
 		
 		System.out.println("Termino setListaDeProponentes \n");
+		
+		if(dtp2.getPrPublicadas().size() >0)
+			agregarDatosTablePublicadas(dtp2.getPrPublicadas());
+		if(dtp2.getPrCanceladas().size() >0)
+			agregarDatosTableCanceladas(dtp2.getPrCanceladas());
+		if(dtp2.getPrEnFinanciacion().size() >0)
+			agregarDatosTableEnFinanciacion(dtp2.getPrEnFinanciacion());
+		if(dtp2.getPrFinanciadas().size() >0)
+			agregarDatosTableEnFinanciacion(dtp2.getPrFinanciadas());
+		if(dtp2.getPrNoFinanciadas().size() >0)
+			agregarDatosTableEnFinanciacion(dtp2.getPrNoFinanciadas());
+	}
+	
+	public void agregarDatosTablePublicadas(ArrayList<DtPropuesta> prPublicadas) {
+		System.out.println("agregar datos table - Publicadas");
+		tablePropuestaPublicada.removeAll();
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		System.out.println("dm.getRowCount(): " + dm.getRowCount());
+		while (dm.getRowCount()>0)
+        {
+			dm.removeRow(0);
+        }
+		
+	    String header[] = new String[] { "Titulo", "Descripcion"};
+	    dm.setColumnIdentifiers(header);
+	    dm.addRow(header);
+	    tablePropuestaPublicada.setModel(dm);
+	    tablePropuestaPublicada.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    System.out.println("Publicadas.size(): " + prPublicadas.size() + "\n"); 
+	    for (DtPropuesta dtp : prPublicadas) {
+		
+	        Vector<Object> data = new Vector<Object>();
+	        data.add(dtp.getTitulo());
+	        data.add(dtp.getDescripcion());
+	        
+	        System.out.println("Titulo :- " + dtp.getTitulo());
+	        dm.addRow(data);
+
+	    }
+	}
+	
+	public void agregarDatosTableCanceladas(ArrayList<DtPropuesta> prCanceladas) {
+		System.out.println("agregar datos table - Canceladas");
+		tablePropuestaCancelada.removeAll();
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		System.out.println("dm.getRowCount(): " + dm.getRowCount());
+		while (dm.getRowCount()>0)
+        {
+			dm.removeRow(0);
+        }
+		
+	    String header[] = new String[] { "Titulo", "Descripcion"};
+	    dm.setColumnIdentifiers(header);
+	    dm.addRow(header);
+	    tablePropuestaCancelada.setModel(dm);
+	    tablePropuestaCancelada.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    System.out.println("Publicadas.size(): " + prCanceladas.size() + "\n"); 
+	    for (DtPropuesta dtp : prCanceladas) {
+		
+	        Vector<Object> data = new Vector<Object>();
+	        data.add(dtp.getTitulo());
+	        data.add(dtp.getDescripcion());
+	        
+	        System.out.println("Titulo :- " + dtp.getTitulo());
+	        dm.addRow(data);
+
+	    }
+	}
+	
+	public void agregarDatosTableEnFinanciacion(ArrayList<DtPropuesta> prEnFinanciacion) {
+		System.out.println("agregar datos table - EnFinanciacion");
+		tablePropuestaEnFinanciacion.removeAll();
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		System.out.println("dm.getRowCount(): " + dm.getRowCount());
+		while (dm.getRowCount()>0)
+        {
+			dm.removeRow(0);
+        }
+		
+	    String header[] = new String[] { "Titulo", "Descripcion"};
+	    dm.setColumnIdentifiers(header);
+	    dm.addRow(header);
+	    tablePropuestaEnFinanciacion.setModel(dm);
+	    tablePropuestaEnFinanciacion.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    System.out.println("EnFinanciacion.size(): " + prEnFinanciacion.size() + "\n"); 
+	    for (DtPropuesta dtp : prEnFinanciacion) {
+		
+	        Vector<Object> data = new Vector<Object>();
+	        data.add(dtp.getTitulo());
+	        data.add(dtp.getDescripcion());
+	        
+	        System.out.println("Titulo :- " + dtp.getTitulo());
+	        dm.addRow(data);
+
+	    }
+	}
+	
+	public void agregarDatosTableFinanciadas(ArrayList<DtPropuesta> prFinanciadas) {
+		System.out.println("agregar datos table");
+		tablePropuestaFinanciada.removeAll();
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		System.out.println("dm.getRowCount(): " + dm.getRowCount());
+		while (dm.getRowCount()>0)
+        {
+			dm.removeRow(0);
+        }
+		
+	    String header[] = new String[] { "Titulo", "Descripcion"};
+	    dm.setColumnIdentifiers(header);
+	    dm.addRow(header);
+	    tablePropuestaFinanciada.setModel(dm);
+	    tablePropuestaFinanciada.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    System.out.println("Publicadas.size(): " + prFinanciadas.size() + "\n"); 
+	    for (DtPropuesta dtp : prFinanciadas) {
+		
+	        Vector<Object> data = new Vector<Object>();
+	        data.add(dtp.getTitulo());
+	        data.add(dtp.getDescripcion());
+	        
+	        System.out.println("Titulo :- " + dtp.getTitulo());
+	        dm.addRow(data);
+
+	    }
+	}
+	
+	public void agregarDatosTableNoFinanciadas(ArrayList<DtPropuesta> prNoFinanciadas) {
+		System.out.println("agregar datos table");
+		tablePropuestaNoFinanciada.removeAll();
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		System.out.println("dm.getRowCount(): " + dm.getRowCount());
+		while (dm.getRowCount()>0)
+        {
+			dm.removeRow(0);
+        }
+		
+	    String header[] = new String[] { "Titulo", "Descripcion"};
+	    dm.setColumnIdentifiers(header);
+	    dm.addRow(header);
+	    tablePropuestaNoFinanciada.setModel(dm);
+	    tablePropuestaNoFinanciada.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    System.out.println("Publicadas.size(): " + prNoFinanciadas.size() + "\n"); 
+	    for (DtPropuesta dtp : prNoFinanciadas) {
+		
+	        Vector<Object> data = new Vector<Object>();
+	        data.add(dtp.getTitulo());
+	        data.add(dtp.getDescripcion());
+	        
+	        System.out.println("Titulo :- " + dtp.getTitulo());
+	        dm.addRow(data);
+
+	    }
 	}
 }
