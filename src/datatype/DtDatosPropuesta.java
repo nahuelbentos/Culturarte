@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 public class DtDatosPropuesta {
    private String titulo;
    private String descripcion;
-   private String imagen;
+   private byte[] imagen;
    private double montoNecesario;
    private GregorianCalendar fechaPublicacion;
    private GregorianCalendar fechaEspecatulo;
@@ -20,7 +20,7 @@ public class DtDatosPropuesta {
    
 	   
 	
-	public DtDatosPropuesta(String titulo, String descripcion, String imagen, double montoNecesario,
+	public DtDatosPropuesta(String titulo, String descripcion, byte[] imagen, double montoNecesario,
 			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
 			TipoRetorno tipo, double recaudado, ArrayList<String> colaboradores) {
 		super();
@@ -48,7 +48,7 @@ public class DtDatosPropuesta {
 		return descripcion;
 	}
 	
-	public String getImagen() {
+	public byte[] getImagen() {
 		return imagen;
 	}
 	

@@ -205,8 +205,8 @@ public class ConsultarPropuesta extends JPanel {
 		listPropuestas = new JList<>(modelTitulos);
 		
 
-		
-		setTable(IPC, titulo);
+		if(titulo!=null)
+			setTable(IPC, titulo);
 	}
 	
 	public void setTable(IPropuestaController IPC,String t) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
@@ -220,7 +220,7 @@ public class ConsultarPropuesta extends JPanel {
 				System.out.println(" \n  Entra en adentro: " + dtp2.getTitulo());
 				txtTitulo.setText(dtp2.getTitulo());
 				txtDescripcion.setText(dtp2.getDescripcion());
-				txtImagen.setText(dtp2.getImagen());
+//				txtImagen.setText(dtp2.getImagen());
 				txtMontoNecesario.setText(Double.toString(dtp2.getMontoNecesario()));
 				if(dtp2.getFechaEspecatulo()!=null)
 					txtFechaEspectaculo.setText(sdf.format(dtp2.getFechaEspecatulo().getTime()));
@@ -232,8 +232,8 @@ public class ConsultarPropuesta extends JPanel {
 				txtTipo.setText(dtp2.getTitulo());
 				txtMontoRecaudado.setText(Double.toString(dtp2.getRecaudado()));
 				
-				
-				agregarDatosTable(dtp2.getColaboradores());
+				if(dtp2.getColaboradores() != null)
+					agregarDatosTable(dtp2.getColaboradores());
 			}
 		}
 		

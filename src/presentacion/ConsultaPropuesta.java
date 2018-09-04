@@ -83,7 +83,7 @@ public class ConsultaPropuesta extends JInternalFrame {
         if(listarPropuestas.getPropuestaTituloSeleccionada() != null)
         	consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPropuestaTituloSeleccionada());
 		else 
-			if(listarPropuestas.getPrimerTitulo()!=null)
+			if(!(listarPropuestas.getPrimerTitulo().isEmpty()))
 				consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPrimerTitulo());
 		
 

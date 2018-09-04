@@ -84,7 +84,7 @@ public class ListarPropuestas extends JPanel {
 	
 	public String getPropuestaTituloSeleccionada() {
 		int filaSeleccionada = table.getSelectedRow();
-		
+		String s = "";
 		System.out.println(filaSeleccionada);
 		if (filaSeleccionada>=0) {
 			DtPropuestaMinificado[] colProp;
@@ -94,10 +94,10 @@ public class ListarPropuestas extends JPanel {
 				return colProp[filaSeleccionada].getTitulo();
 			} catch (PropuestaNoExisteException e) {
 				e.printStackTrace();
-				return null;
+				return s;
 			}
 		}else {
-			return null;
+			return s;
 		}
 		
 	}
