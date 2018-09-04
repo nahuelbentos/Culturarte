@@ -17,6 +17,7 @@ import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
+import excepciones.ColaboracionExistenteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -97,7 +98,7 @@ public class PropuestaController implements IPropuestaController {
 	}
 	
 	@Override
-	public void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException{
+	public void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException{
 		//Configuramos el EMF a trav�s de la unidad de persistencia
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		//Generamos un EntityManager
@@ -110,49 +111,61 @@ public class PropuestaController implements IPropuestaController {
 			Propuesta p = em.find(Propuesta.class, colaboracion.getTituloPropuesta());
 			
 			if (p != null) {
-				Colaboracion beanCol = new Colaboracion(colaboracion.getMonto(),colaboracion.getFechaAporte(),colaboracion.getTipo());
-				beanCol.setColaborador(c);
-				beanCol.setPropuestaColaborada(p);
+				/* Verifico que no exista una colaboracion del colaborador para la propuesta */
+				ColaboracionID claveColaboracion = new ColaboracionID();
+				claveColaboracion.setIdColaborador(colaboracion.getColaborador());
+				claveColaboracion.setIdPropuesta(colaboracion.getTituloPropuesta());
+				Colaboracion auxC = em.find(Colaboracion.class, claveColaboracion);
 				
-				em.persist(beanCol);
-				
-				/* Una vez registrada la colaboracion actualizo el estado de la propuesta. */
-				
-				EstadoPropuesta estadoActual = null;
-				boolean actualizo = true;
-				
-				// Actualizo el estado de la propuesta.
-				/* Busco las colaboraciones que tenga la propuesta, 		 *
-				 * calculo el recaudado y cambio el estado segun corresponda */
-				@SuppressWarnings("unchecked")
-				List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE propuestaColaborada = :propuesta").setParameter("propuesta", p).getResultList();
-				if (colaboraciones != null) {
-					double recaudado = 0;
+				if (auxC != null) {
+					em.getTransaction().rollback();
+					em.close();
+					throw new ColaboracionExistenteException("Ya Existe Colaboracion para el colaborador");
+				}else {
+					Colaboracion beanCol = new Colaboracion(colaboracion.getMonto(),colaboracion.getFechaAporte(),colaboracion.getTipo());
+					beanCol.setColaborador(c);
+					beanCol.setPropuestaColaborada(p);
 					
-					for (Colaboracion auxCol : colaboraciones)
-						recaudado += auxCol.getMonto();
+					em.persist(beanCol);
 					
-					if (recaudado >= p.getMontoNecesario())
-						estadoActual = EstadoPropuesta.financiada;
-					else 
-						actualizo = false; // no debo actualizar estado
+					/* Una vez registrada la colaboracion actualizo el estado de la propuesta. */
 					
-				} else {
-					estadoActual = EstadoPropuesta.enFinanciacion;
+					EstadoPropuesta estadoActual = null;
+					boolean actualizo = true;
+					
+					// Actualizo el estado de la propuesta.
+					/* Busco las colaboraciones que tenga la propuesta, 		 *
+					 * calculo el recaudado y cambio el estado segun corresponda */
+					@SuppressWarnings("unchecked")
+					List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE propuestaColaborada = :propuesta").setParameter("propuesta", p).getResultList();
+					if (colaboraciones != null) {
+						double recaudado = 0;
+						
+						for (Colaboracion auxCol : colaboraciones)
+							recaudado += auxCol.getMonto();
+						
+						if (recaudado >= p.getMontoNecesario())
+							estadoActual = EstadoPropuesta.financiada;
+						else 
+							actualizo = false; // no debo actualizar estado
+						
+					} else {
+						estadoActual = EstadoPropuesta.enFinanciacion;
+					}
+					
+					if (actualizo) {
+						// Actualizo estado Actual de la propuesta
+						em.createQuery("UPDATE Propuesta SET estadoActual = :estado").setParameter("estado", estadoActual).executeUpdate();
+						
+						// Actualizo historial del estado de la propuesta
+						Estado e = new Estado(estadoActual, p, new GregorianCalendar());
+						em.persist(e);
+					}
+					
+					em.getTransaction().commit();
+					em.close();
 				}
-				
-				if (actualizo) {
-					// Actualizo estado Actual de la propuesta
-					em.createQuery("UPDATE Propuesta SET estadoActual = :estado").setParameter("estado", estadoActual).executeUpdate();
-					
-					// Actualizo historial del estado de la propuesta
-					Estado e = new Estado(estadoActual, p, new GregorianCalendar());
-					em.persist(e);
-				}
-				
-				em.getTransaction().commit();
-				em.close();
-				
+								
 			}else {
 				em.getTransaction().rollback();
 				em.close();

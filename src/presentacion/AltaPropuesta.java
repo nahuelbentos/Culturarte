@@ -57,7 +57,6 @@ public class AltaPropuesta extends JInternalFrame {
 	private ICategoriaController iCategoriaController;
 	private IPropuestaController iPropuestaController;
 	private JLabel lblNombre;
-	private JLabel lblImagen;
 	private JLabel lblDescripcion;
 	private JLabel lblFechaEspectculo;
 	private JLabel lblLugar;
@@ -79,6 +78,7 @@ public class AltaPropuesta extends JInternalFrame {
 	private ImageIcon imagenPropuesta;
 	private JButton btnSeleecionarImagen;
 	private JFileChooser fileChooser = new JFileChooser();
+	private JLabel lblImagen;
 	
 	private String titulo;
 	private String descripcion;
@@ -96,7 +96,8 @@ public class AltaPropuesta extends JInternalFrame {
 	private JTextPane entDescripcion;
 	private JPanel panelImagen;
 	private JPanel panel;
-	private JLabel lblNewLabel;
+	private JPanel panelContenedorImg;
+	
 	
 	/**
 	 * Create the frame.
@@ -287,24 +288,48 @@ public class AltaPropuesta extends JInternalFrame {
         GridBagLayout gbl_panelImagen = new GridBagLayout();
         gbl_panelImagen.columnWidths = new int[]{0, 0, 0, 0};
         gbl_panelImagen.rowHeights = new int[]{0, 0, 0};
-        gbl_panelImagen.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_panelImagen.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        gbl_panelImagen.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+        gbl_panelImagen.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
         this.panelImagen.setLayout(gbl_panelImagen);
 		
 		btnSeleecionarImagen = new JButton("Selecionar Imagen");
 		GridBagConstraints gbc_btnSeleecionarImagen = new GridBagConstraints();
-		gbc_btnSeleecionarImagen.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSeleecionarImagen.gridx = 2;
+		gbc_btnSeleecionarImagen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSeleecionarImagen.gridx = 1;
 		gbc_btnSeleecionarImagen.gridy = 0;
 		this.panelImagen.add(this.btnSeleecionarImagen, gbc_btnSeleecionarImagen);
 		btnSeleecionarImagen.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		this.lblNewLabel = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 1;
-		this.panelImagen.add(this.lblNewLabel, gbc_lblNewLabel);
+		panelContenedorImg = new JPanel();
+		GridBagConstraints gbc_panelContenedorImg = new GridBagConstraints();
+		gbc_panelContenedorImg.insets = new Insets(0, 0, 0, 5);
+		gbc_panelContenedorImg.fill = GridBagConstraints.BOTH;
+		gbc_panelContenedorImg.gridx = 1;
+		gbc_panelContenedorImg.gridy = 1;
+		panelImagen.add(panelContenedorImg, gbc_panelContenedorImg);
+		{
+			lblImagen = new JLabel("");
+			panelContenedorImg.add(lblImagen);
+		}
+		btnSeleecionarImagen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int retorno = fileChooser.showOpenDialog(getContentPane());
+                if (retorno == JFileChooser.APPROVE_OPTION) {
+                    String pathName = fileChooser.getSelectedFile().getPath();
+                    JOptionPane.showMessageDialog(null, pathName);
+                    imagenPropuesta = new ImageIcon(pathName);
+                    Image imagenPrevia = imagenPropuesta.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                    imagenPropuesta = new ImageIcon(imagenPrevia, pathName);
+                    lblImagen.setIcon(imagenPropuesta);
+                    try {
+                    	imagen = levantarImagen(pathName);
+                    	imagen = scale(imagen, 200, 200);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+                }
+			}
+		});
 		
 		this.panel = new JPanel();
 		this.panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Categoria y tipo retorno", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -346,25 +371,6 @@ public class AltaPropuesta extends JInternalFrame {
 		gbc_entTipoRetorno.gridy = 1;
 		this.panel.add(this.entTipoRetorno, gbc_entTipoRetorno);
 		entTipoRetorno.setModel(new DefaultComboBoxModel<>(TipoRetorno.values()));
-		btnSeleecionarImagen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int retorno = fileChooser.showOpenDialog(getContentPane());
-                if (retorno == JFileChooser.APPROVE_OPTION) {
-                    String pathName = fileChooser.getSelectedFile().getPath();
-                    JOptionPane.showMessageDialog(null, pathName);
-                    imagenPropuesta = new ImageIcon(pathName);
-                    Image imagenPrevia = imagenPropuesta.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-                    imagenPropuesta = new ImageIcon(imagenPrevia, pathName);
-                    lblImagen.setIcon(imagenPropuesta);
-                    try {
-                    	imagen = levantarImagen(pathName);
-                    	imagen = scale(imagen, 150, 150);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-                }
-			}
-		});
 		
 		// Una vez cargado el panel, levanto los proponentes y las categorias.
 		setListaDeProponentes();

@@ -4,156 +4,210 @@ import javax.swing.JPanel;
 
 import datatype.DtPropuesta;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import java.awt.Font;
-
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
+import javax.swing.border.TitledBorder;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.text.SimpleDateFormat;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class PropuestaSeleccionada extends JPanel {
-	private JLabel lblCargoTitulo;
+	private JPanel panelImagen;
+	private JLabel lblImagen;
 	private JLabel lblTitulo;
+	private JTextField entTitulo;
 	private JLabel lblDescripcin;
+	private JTextField entDescripcion;
+	private JLabel lblPublicadoPor;
+	private JTextField entProponente;
 	private JLabel lblFecha;
-	private JLabel lblPublicada;
-	private JLabel lblLugar;
-	private JLabel lblARecaudar;
-	private JLabel lblValorEntrada;
-	private JLabel lblProponente;
-	private JLabel lblCargoDescripcion;
-	private JLabel lblCargoFecha;
-	private JLabel lblCargoFechapublicada;
-	private JLabel lblCargoLugar;
-	private JLabel lblCargoArecaudar;
-	private JLabel lblCargoValorEntrada;
-	private JLabel lblCargoProponente;
-	private JLabel lblDatosDeLa;
+	private JTextField entFechaEspectaculo;
+	private JLabel lblMontoARecaudar;
+	private JLabel lblRecaudado;
+	private JTextField entMontoNecesario;
+	private JTextField entRecaudado;
 
 	/**
 	 * Create the panel.
 	 */
 	public PropuestaSeleccionada() {
-		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, new Color(51, 102, 102)));
-		setLayout(null);
+		setBorder(new TitledBorder(null, "Datos de la propuesta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{89, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{30, 14, 47, 14, 15, 0, 14, 107, 33, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		setLayout(gridBagLayout);
 		{
-			lblTitulo = new JLabel("Titulo: ");
-			lblTitulo.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblTitulo.setBounds(10, 77, 142, 14);
-			add(lblTitulo);
+			lblTitulo = new JLabel("Titulo:");
+			GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
+			gbc_lblTitulo.anchor = GridBagConstraints.EAST;
+			gbc_lblTitulo.insets = new Insets(0, 0, 5, 5);
+			gbc_lblTitulo.gridx = 2;
+			gbc_lblTitulo.gridy = 1;
+			add(lblTitulo, gbc_lblTitulo);
 		}
 		{
-			lblCargoTitulo = new JLabel("New label");
-			lblCargoTitulo.setFont(new Font("Georgia", Font.PLAIN, 11));
-			lblCargoTitulo.setBounds(210, 77, 173, 14);
-			lblCargoTitulo.setText("cargo titulo");
-			add(lblCargoTitulo);
+			entTitulo = new JTextField();
+			entTitulo.setEditable(false);
+			entTitulo.setEnabled(false);
+			entTitulo.setDisabledTextColor(Color.DARK_GRAY);
+			GridBagConstraints gbc_entTitulo = new GridBagConstraints();
+			gbc_entTitulo.gridwidth = 2;
+			gbc_entTitulo.insets = new Insets(0, 0, 5, 5);
+			gbc_entTitulo.fill = GridBagConstraints.HORIZONTAL;
+			gbc_entTitulo.gridx = 3;
+			gbc_entTitulo.gridy = 1;
+			add(entTitulo, gbc_entTitulo);
+			entTitulo.setColumns(10);
 		}
 		{
-			lblDescripcin = new JLabel("Descripci\u00F3n: ");
-			lblDescripcin.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblDescripcin.setBounds(10, 102, 142, 14);
-			add(lblDescripcin);
+			lblDescripcin = new JLabel("Descripci\u00F3n:");
+			GridBagConstraints gbc_lblDescripcin = new GridBagConstraints();
+			gbc_lblDescripcin.anchor = GridBagConstraints.NORTHEAST;
+			gbc_lblDescripcin.insets = new Insets(0, 0, 5, 5);
+			gbc_lblDescripcin.gridx = 2;
+			gbc_lblDescripcin.gridy = 2;
+			add(lblDescripcin, gbc_lblDescripcin);
 		}
 		{
-			lblFecha = new JLabel("Fecha: ");
-			lblFecha.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblFecha.setBounds(10, 127, 142, 14);
-			add(lblFecha);
+			entDescripcion = new JTextField();
+			entDescripcion.setEnabled(false);
+			entDescripcion.setEditable(false);
+			entDescripcion.setDisabledTextColor(Color.DARK_GRAY);
+			GridBagConstraints gbc_entDescripcion = new GridBagConstraints();
+			gbc_entDescripcion.gridwidth = 2;
+			gbc_entDescripcion.insets = new Insets(0, 0, 5, 5);
+			gbc_entDescripcion.fill = GridBagConstraints.BOTH;
+			gbc_entDescripcion.gridx = 3;
+			gbc_entDescripcion.gridy = 2;
+			add(entDescripcion, gbc_entDescripcion);
+			entDescripcion.setColumns(10);
 		}
 		{
-			lblPublicada = new JLabel("Publicada: ");
-			lblPublicada.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblPublicada.setBounds(10, 152, 142, 14);
-			add(lblPublicada);
+			lblFecha = new JLabel("Fecha:");
+			GridBagConstraints gbc_lblFecha = new GridBagConstraints();
+			gbc_lblFecha.anchor = GridBagConstraints.EAST;
+			gbc_lblFecha.insets = new Insets(0, 0, 5, 5);
+			gbc_lblFecha.gridx = 0;
+			gbc_lblFecha.gridy = 4;
+			add(lblFecha, gbc_lblFecha);
 		}
 		{
-			lblLugar = new JLabel("Lugar: ");
-			lblLugar.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblLugar.setBounds(10, 177, 142, 14);
-			add(lblLugar);
+			entFechaEspectaculo = new JTextField();
+			entFechaEspectaculo.setEnabled(false);
+			entFechaEspectaculo.setEditable(false);
+			entFechaEspectaculo.setDisabledTextColor(Color.DARK_GRAY);
+			GridBagConstraints gbc_entFechaEspectaculo = new GridBagConstraints();
+			gbc_entFechaEspectaculo.gridwidth = 3;
+			gbc_entFechaEspectaculo.insets = new Insets(0, 0, 5, 5);
+			gbc_entFechaEspectaculo.fill = GridBagConstraints.HORIZONTAL;
+			gbc_entFechaEspectaculo.gridx = 1;
+			gbc_entFechaEspectaculo.gridy = 4;
+			add(entFechaEspectaculo, gbc_entFechaEspectaculo);
+			entFechaEspectaculo.setColumns(10);
 		}
 		{
-			lblARecaudar = new JLabel("A recaudar:");
-			lblARecaudar.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblARecaudar.setBounds(10, 202, 142, 14);
-			add(lblARecaudar);
+			lblMontoARecaudar = new JLabel("Monto a recaudar:");
+			GridBagConstraints gbc_lblMontoARecaudar = new GridBagConstraints();
+			gbc_lblMontoARecaudar.anchor = GridBagConstraints.EAST;
+			gbc_lblMontoARecaudar.insets = new Insets(0, 0, 5, 5);
+			gbc_lblMontoARecaudar.gridx = 4;
+			gbc_lblMontoARecaudar.gridy = 4;
+			add(lblMontoARecaudar, gbc_lblMontoARecaudar);
 		}
 		{
-			lblValorEntrada = new JLabel("Valor entrada?");
-			lblValorEntrada.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblValorEntrada.setBounds(10, 227, 142, 14);
-			add(lblValorEntrada);
+			entMontoNecesario = new JTextField();
+			entMontoNecesario.setEnabled(false);
+			entMontoNecesario.setEditable(false);
+			entMontoNecesario.setDisabledTextColor(Color.DARK_GRAY);
+			GridBagConstraints gbc_entMontoNecesario = new GridBagConstraints();
+			gbc_entMontoNecesario.gridwidth = 2;
+			gbc_entMontoNecesario.insets = new Insets(0, 0, 5, 0);
+			gbc_entMontoNecesario.fill = GridBagConstraints.HORIZONTAL;
+			gbc_entMontoNecesario.gridx = 5;
+			gbc_entMontoNecesario.gridy = 4;
+			add(entMontoNecesario, gbc_entMontoNecesario);
+			entMontoNecesario.setColumns(10);
 		}
 		{
-			lblProponente = new JLabel("De: ");
-			lblProponente.setFont(new Font("Dialog", Font.BOLD, 12));
-			lblProponente.setBounds(219, 275, 46, 14);
-			add(lblProponente);
+			lblRecaudado = new JLabel("Recaudado:");
+			GridBagConstraints gbc_lblRecaudado = new GridBagConstraints();
+			gbc_lblRecaudado.anchor = GridBagConstraints.EAST;
+			gbc_lblRecaudado.insets = new Insets(0, 0, 5, 5);
+			gbc_lblRecaudado.gridx = 4;
+			gbc_lblRecaudado.gridy = 5;
+			add(lblRecaudado, gbc_lblRecaudado);
 		}
 		{
-			lblCargoDescripcion = new JLabel("cargo descripcion");
-			lblCargoDescripcion.setFont(new Font("Georgia", Font.PLAIN, 11));
-			lblCargoDescripcion.setBounds(210, 103, 142, 14);
-			add(lblCargoDescripcion);
+			entRecaudado = new JTextField();
+			entRecaudado.setEnabled(false);
+			entRecaudado.setEditable(false);
+			entRecaudado.setDisabledTextColor(Color.DARK_GRAY);
+			GridBagConstraints gbc_entRecaudado = new GridBagConstraints();
+			gbc_entRecaudado.gridwidth = 2;
+			gbc_entRecaudado.insets = new Insets(0, 0, 5, 0);
+			gbc_entRecaudado.fill = GridBagConstraints.HORIZONTAL;
+			gbc_entRecaudado.gridx = 5;
+			gbc_entRecaudado.gridy = 5;
+			add(entRecaudado, gbc_entRecaudado);
+			entRecaudado.setColumns(10);
 		}
 		{
-			lblCargoFecha = new JLabel("cargo fecha");
-			lblCargoFecha.setFont(new Font("Georgia", Font.PLAIN, 11));
-			lblCargoFecha.setBounds(210, 127, 173, 14);
-			add(lblCargoFecha);
+			panelImagen = new JPanel();
+			GridBagConstraints gbc_panelImagen = new GridBagConstraints();
+			gbc_panelImagen.insets = new Insets(0, 0, 5, 0);
+			gbc_panelImagen.gridwidth = 7;
+			gbc_panelImagen.fill = GridBagConstraints.BOTH;
+			gbc_panelImagen.gridx = 0;
+			gbc_panelImagen.gridy = 7;
+			add(panelImagen, gbc_panelImagen);
+			{
+				lblImagen = new JLabel("");
+				panelImagen.add(lblImagen);
+			}
 		}
 		{
-			lblCargoFechapublicada = new JLabel("cargo fecha_publicada");
-			lblCargoFechapublicada.setFont(new Font("Georgia", Font.PLAIN, 11));
-			lblCargoFechapublicada.setBounds(210, 151, 148, 14);
-			add(lblCargoFechapublicada);
+			lblPublicadoPor = new JLabel("Publicado por: ");
+			GridBagConstraints gbc_lblPublicadoPor = new GridBagConstraints();
+			gbc_lblPublicadoPor.anchor = GridBagConstraints.EAST;
+			gbc_lblPublicadoPor.insets = new Insets(0, 0, 0, 5);
+			gbc_lblPublicadoPor.gridx = 4;
+			gbc_lblPublicadoPor.gridy = 8;
+			add(lblPublicadoPor, gbc_lblPublicadoPor);
 		}
 		{
-			lblCargoLugar = new JLabel("cargo lugar");
-			lblCargoLugar.setFont(new Font("Georgia", Font.PLAIN, 11));
-			lblCargoLugar.setBounds(210, 177, 173, 14);
-			add(lblCargoLugar);
-		}
-		{
-			lblCargoArecaudar = new JLabel("cargo a_recaudar");
-			lblCargoArecaudar.setFont(new Font("Georgia", Font.PLAIN, 11));
-			lblCargoArecaudar.setBounds(210, 201, 142, 14);
-			add(lblCargoArecaudar);
-		}
-		{
-			lblCargoValorEntrada = new JLabel("cargo valor entrada");
-			lblCargoValorEntrada.setFont(new Font("Georgia", Font.PLAIN, 11));
-			lblCargoValorEntrada.setBounds(210, 226, 127, 14);
-			add(lblCargoValorEntrada);
-		}
-		{
-			lblCargoProponente = new JLabel("cargo proponente");
-			lblCargoProponente.setFont(new Font("Georgia", Font.BOLD, 12));
-			lblCargoProponente.setBounds(256, 274, 184, 14);
-			add(lblCargoProponente);
-		}
-		{
-			lblDatosDeLa = new JLabel("Datos de la propuesta");
-			lblDatosDeLa.setForeground(new Color(51, 102, 102));
-			lblDatosDeLa.setFont(new Font("Tahoma", Font.BOLD, 14));
-			lblDatosDeLa.setBounds(10, 11, 255, 28);
-			add(lblDatosDeLa);
+			entProponente = new JTextField();
+			entProponente.setDisabledTextColor(Color.DARK_GRAY);
+			GridBagConstraints gbc_entProponente = new GridBagConstraints();
+			gbc_entProponente.gridwidth = 2;
+			gbc_entProponente.fill = GridBagConstraints.HORIZONTAL;
+			gbc_entProponente.gridx = 5;
+			gbc_entProponente.gridy = 8;
+			add(entProponente, gbc_entProponente);
+			entProponente.setColumns(10);
 		}
 		
 	}
 	
 	public void setPropuesta(DtPropuesta prop) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
 		try {
-			lblCargoTitulo.setText(prop.getTitulo());
-			lblCargoDescripcion.setText(prop.getDescripcion());
-			lblCargoFechapublicada.setText(prop.getFechaPublicacion().toString());
-			lblCargoLugar.setText(prop.getLugar());
-			lblCargoProponente.setText(prop.getProponenteACargo().getNickname());
-			lblCargoValorEntrada.setText(Double.toString(prop.getPrecioEntrada()));
-			lblCargoArecaudar.setText(Double.toString(prop.getMontoNecesario()));
-			lblCargoFecha.setText(prop.getFechaEspecatulo().toString());
+			entTitulo.setText(prop.getTitulo());
+			entDescripcion.setText(prop.getDescripcion());
+			entProponente.setText(prop.getProponenteACargo().getNickname());
+			entFechaEspectaculo.setText(sdf.format(prop.getFechaEspecatulo().getTime()));
+			entMontoNecesario.setText(Double.toString(prop.getMontoNecesario()));
+			entRecaudado.setText(Double.toString(prop.getRecaudado()));
+			if(prop.getImagen() != null) {
+				ImageIcon imageIcon = new ImageIcon(prop.getImagen());
+				lblImagen.setIcon(imageIcon);
+			}
+			
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
