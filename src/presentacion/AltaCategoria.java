@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import logica.CategoriaController;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
@@ -27,6 +29,7 @@ public class AltaCategoria extends JInternalFrame {
 
 	private ICategoriaController iCategoriaController;
 	private DefaultMutableTreeNode categorias;
+	private DefaultTreeModel model;
 	private JTree treeCategorias;
 	private JTextField entCategoria;
 	private String categoria;
@@ -51,8 +54,6 @@ public class AltaCategoria extends JInternalFrame {
 		JLabel lblListaDeCategorias = new JLabel("Lista de categorías existentes");
 		lblListaDeCategorias.setBounds(65, 11, 250, 14);
 		getContentPane().add(lblListaDeCategorias);
-		
-		listarCategorias();
 		
 		entCategoria = new JTextField();
 		entCategoria.setBounds(155, 246, 233, 19);
@@ -86,14 +87,15 @@ public class AltaCategoria extends JInternalFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 37, 376, 199);
 		getContentPane().add(scrollPane);
-		treeCategorias = new JTree(categorias);
+		
+		treeCategorias = new JTree();
+		listarCategorias();
 		scrollPane.setViewportView(treeCategorias);
 		treeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
 	}
 	
 	public void listarCategorias() {
 		DtCategoria dtC[] = null;
-//		treeCategorias.removeAll();
 		dtC = iCategoriaController.listarCategorias();
 		
 		if (dtC != null) {
@@ -102,7 +104,10 @@ public class AltaCategoria extends JInternalFrame {
 			}
 		}else
 			categorias = new DefaultMutableTreeNode("Categorías");
-//		treeCategorias.repaint();
+		
+
+		model = new DefaultTreeModel(categorias);
+		treeCategorias.setModel(model);
 	}
 	
 	private DefaultMutableTreeNode hermosaRecursion(DtCategoria raiz) {
@@ -154,8 +159,8 @@ public class AltaCategoria extends JInternalFrame {
 	}
 	
 	private void limpiarFormulario() {
-		entCategoria.setText("");
 		listarCategorias();
+		entCategoria.setText("");
 		// habría que refrescar el arbol de categorías
 	}
 }

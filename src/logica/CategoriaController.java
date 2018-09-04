@@ -26,7 +26,7 @@ public class CategoriaController implements ICategoriaController {
 		em.getTransaction().begin();
 		
 		DtCategoria[] dtC = null;
-//        List<Categoria> cats = em.createQuery("FROM Categoria").getResultList();
+		// Me traigo la categoría base "Categorías", la cual me traera todas por ser sus hijas
 		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE='Categorías'").getResultList();
 		
         if (cats != null) {
@@ -35,7 +35,6 @@ public class CategoriaController implements ICategoriaController {
 
             for (int i = 0; i < cats.size(); i++) {
                 categ = cats.get(i).getDtCategoriaFull();
-                System.out.println(categ.getNombre());
                 dtC[i] = new DtCategoria(categ.getNombre(), categ.getSuperCategorias(), categ.getSubCategorias());
             }
         }
@@ -76,14 +75,12 @@ public class CategoriaController implements ICategoriaController {
 			categoria = new Categoria(dtC.getNombre());
 			em.persist(categoria);
 			
-//			ArrayList<Categoria> hijos = new ArrayList<>();
 			if (!dtC.getSuperCategorias().isEmpty()) {
 				for (DtCategoria p : dtC.getSuperCategorias()) {
 					Categoria padre = em.find(Categoria.class, p.getNombre());
 					if (padre != null) {
 						padre.addHijo(categoria);
 						em.persist(padre);
-//						padres.add(padre);
 					} else {
 						em.getTransaction().rollback();
 						em.close();
@@ -95,7 +92,6 @@ public class CategoriaController implements ICategoriaController {
 				if (padre != null) {
 					padre.addHijo(categoria);
 					em.persist(padre);
-//					padres.add(padre);
 				} else {
 					em.getTransaction().rollback();
 					em.close();
@@ -103,7 +99,6 @@ public class CategoriaController implements ICategoriaController {
 				}
 			}
 			
-//			em.persist(categoria);
 			em.getTransaction().commit();
 			em.close();
 		}
