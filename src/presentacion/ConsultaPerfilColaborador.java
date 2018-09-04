@@ -36,7 +36,7 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 
 //		setNormalBounds(new Rectangle(0, 0, 0, 50));
 		//setBounds(100, 100, 673, 425);
-		setBounds(10, 10, 883, 681);
+		setBounds(10, 10, 1045, 905);
         setResizable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -55,7 +55,7 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 
 
         JPanel panelVerPerfilColaborador= new JPanel();
-        panelVerPerfilColaborador.setBounds(0, 255, 900, 500);
+        panelVerPerfilColaborador.setBounds(0, 255, 965, 600);
         
         
 		if(listarColaboradores.getColaboradorSeleccionado() != null)
@@ -64,7 +64,7 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 			listarColaboradores.listColaboradores.setSelectedIndex(0);
 			verPerfilColaborador = new VerPerfilColaborador(IUC, listarColaboradores.getColaboradorSeleccionado());
 		}	
-        verPerfilColaborador.setBounds(0, 25, 500, 355);
+        verPerfilColaborador.setBounds(0, 25, 900, 550);
         panelVerPerfilColaborador.add(verPerfilColaborador);
         getContentPane().add(panelVerPerfilColaborador);
         panelVerPerfilColaborador.setLayout(null);
