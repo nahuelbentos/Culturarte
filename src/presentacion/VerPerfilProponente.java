@@ -171,8 +171,10 @@ public class VerPerfilProponente extends JPanel {
 		listPropuestas = new JList<>(modelTitulos);
 		
 
+		if (nickname != null) {
+			setTable(IUC, nickname);			
+		}
 		
-		setTable(IUC, nickname);
 	}
 	
 	public void setTable(IUsuarioController IUC,String n) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
@@ -185,7 +187,7 @@ public class VerPerfilProponente extends JPanel {
 		txtApellido.setText(dtp2.getApellido());
 		txtEmail.setText(dtp2.getEmail());
 		//txtFechaDeNacimiento.setText(dtp2.getFechaNacimiento().getCalendarType());
-		txtImagen.setText(dtp2.getImagen());
+		//txtImagen.setText(dtp2.getImagen());
 		txtDireccion.setText(dtp2.getDireccion());
 		txtBiografia.setText(dtp2.getBiografia());
 		txtLinkWeb.setText(dtp2.getSitioWeb());	

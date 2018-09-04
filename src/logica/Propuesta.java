@@ -5,7 +5,6 @@ import java.util.GregorianCalendar;
 
 import datatype.DtDatosPropuesta;
 import datatype.DtEstado;
-import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.EstadoPropuesta;
@@ -44,9 +43,10 @@ public class Propuesta {
 	@Column(name="LUGAR")
 	private String lugar;
 	@Column(name="TIPO_RETORNO")
+	@Enumerated(EnumType.STRING)
 	private TipoRetorno tipo;
 	@Column(name="ESTADO_ACTUAL")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private EstadoPropuesta estadoActual;
 	
 	

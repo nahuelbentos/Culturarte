@@ -308,11 +308,11 @@ public class UsuarioController implements IUsuarioController {
 	    				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
         	}else
         		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", null,
-            			"pruebaController","pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
+            			null,"pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
 
         }else {
         	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", null,
-        			"pruebaController","pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
+        			null,"pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
         }
 
 
@@ -354,10 +354,10 @@ public class UsuarioController implements IUsuarioController {
 						perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
         	}else
         		return  new  DtPerfilColaborador("Fallo_perfil.getNickname()", "fallo_perfil.getNombre()", "Fallo_perfil.getApellido()",
-        				"falo_perfil.getCorreoElectronico()", null,"fallo_perfil.getImagen()",null);
+        				"falo_perfil.getCorreoElectronico()", null,null,null);
         }else
         	return  new  DtPerfilColaborador("Fallo2_perfil.getNickname()", "Fallo2_perfil.getNombre()", "Fallo2_perfil.getApellido()",
-    				"Fallo2_perfil.getCorreoElectronico()", null,"Fallo2_perfil.getImagen()",null);
+    				"Fallo2_perfil.getCorreoElectronico()", null,null,null);
         
 
 	}
