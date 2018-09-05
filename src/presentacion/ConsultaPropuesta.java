@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.awt.event.ActionEvent;
+import javax.swing.border.TitledBorder;
 
 public class ConsultaPropuesta extends JInternalFrame {
 
@@ -35,25 +36,29 @@ public class ConsultaPropuesta extends JInternalFrame {
 		setResizable(true);
 		setMaximizable(true);
 		setClosable(true);
-		setBounds(100, 100, 768, 733);
+		setBounds(100, 100, 946, 468);
 		getContentPane().setLayout(null);
 		
 		JPanel panelListarPropuesta = new JPanel();
-		panelListarPropuesta.setBounds(0, 0, 300, 150);
+		panelListarPropuesta.setBorder(new TitledBorder(null, "Propuestas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelListarPropuesta.setBounds(10, 11, 312, 261);
 		getContentPane().add(panelListarPropuesta);		
 		panelListarPropuesta.setLayout(null);
         
         listarPropuestas = new ListarPropuestas(IPU);
         listarPropuestas.actualizarPropuestas();
-        listarPropuestas.setBounds(0, 0, 400, 250);
+        listarPropuestas.setBounds(10, 26, 290, 224);
         panelListarPropuesta.add(listarPropuestas);
         
+        JButton btnVerPropuesta = new JButton("Ver Propuesta");
+        btnVerPropuesta.setBounds(183, 284, 139, 25);
+        getContentPane().add(btnVerPropuesta);
+        
         JPanel panelConsultarPropuesta = new JPanel();
-        panelConsultarPropuesta.setBounds(10, 162, 713, 478);
+        panelConsultarPropuesta.setBorder(new TitledBorder(null, "Propuesta seleccionada", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panelConsultarPropuesta.setBounds(331, 11, 589, 417);
         getContentPane().add(panelConsultarPropuesta);
         panelConsultarPropuesta.setLayout(null);
-        
-        JButton btnVerPropuesta = new JButton("Ver Propuesta");
         btnVerPropuesta.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		try {
@@ -67,17 +72,13 @@ public class ConsultaPropuesta extends JInternalFrame {
 			        panelConsultarPropuesta.setLayout(null);
 		        
         		} catch (UsuarioNoExisteElUsuarioException e) {
-        			// TODO Auto-generated catch block
         			e.printStackTrace();
         		} catch (PropuestaNoExisteException e) {
-        			// TODO Auto-generated catch block
         			e.printStackTrace();
         		}
 
         	}
         });
-        btnVerPropuesta.setBounds(312, 125, 139, 25);
-        getContentPane().add(btnVerPropuesta);
         
         
         if(listarPropuestas.getPropuestaTituloSeleccionada() != null)

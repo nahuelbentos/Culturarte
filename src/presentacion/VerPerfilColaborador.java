@@ -70,8 +70,6 @@ public class VerPerfilColaborador extends JPanel {
 	public VerPerfilColaborador(IUsuarioController IUC,String nickname) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		setLayout(null);
 		
-		
-		
 		txtNickname = new JTextField();
 		txtNickname.setEnabled(false);
 		txtNickname.setBounds(164, 27, 124, 19);
@@ -164,42 +162,17 @@ public class VerPerfilColaborador extends JPanel {
 		//txtFechaDeNacimiento.setText(dtp2.getFechaNacimiento().getCalendarType());
 		//txtImagen.setText(dtp2.getImagen());
 		
-		
-//		ArrayList<DtPropuestaColaborada> ColaboracionesHechas = dtp2.getColaboracionesHechas();
-		
-		/*
-		data = new Object[ColaboracionesHechas.size()][columnNames.length];
-		System.out.println("armo la table ColaboracionesHechas.size: " + ColaboracionesHechas.size() +  " \n");
-		for (int i = 0; i < ColaboracionesHechas.size(); i++) {
-			for (int j = 0; j < columnNames.length; j++) {
-				switch (j) {
-				case 0:
-					data[i][j] = ColaboracionesHechas.get(i).getTitulo();
-					System.out.println("Titulo " + i + " " + ColaboracionesHechas.get(i).getTitulo() + "\n");
-					break;
-				case 1:
-					data[i][j] = ColaboracionesHechas.get(i).getDescripcion();
-					System.out.println("Titulo " + i + " " + ColaboracionesHechas.get(i).getTitulo() + "\n");
-					break;
-				}
-			}
-			
-		}
-		
-		tablePropuestaPublicada = new JTable(data, columnNames);
-				*/
 		agregarDatosTable(dtp2.getColaboracionesHechas());
 		
 		System.out.println("Termino setListaDeProponentes \n");
 	}
 	
 	public void agregarDatosTable(ArrayList<DtPropuestaColaborada> ColaboracionesHechas) {
-		System.out.println("agregar datos table");
+		
 		tableColaboracionesHechas.removeAll();
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-		System.out.println("dm.getRowCount(): " + dm.getRowCount());
-		while (dm.getRowCount()>0)
-        {
+		
+		while (dm.getRowCount()>0) {
 			dm.removeRow(0);
         }
 		

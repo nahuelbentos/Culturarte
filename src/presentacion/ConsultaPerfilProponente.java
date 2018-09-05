@@ -35,12 +35,8 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 	public ConsultaPerfilProponente(IUsuarioController IUC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException{
 		setClosable(true);
 		
-
-//		setNormalBounds(new Rectangle(0, 0, 0, 50));
-		//setBounds(100, 100, 673, 425);
-		setBounds(0, 0, 1366, 768);
+		setBounds(0, 0, 1247, 584);
         setResizable(true);
-        setIconifiable(true);
         setMaximizable(true);
         getContentPane().setLayout(null);
         
@@ -55,7 +51,7 @@ public class ConsultaPerfilProponente extends JInternalFrame {
         
         panelVerPerfilProponente = new JPanel();
         panelVerPerfilProponente.setBorder(new TitledBorder(null, "Perfil proponente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panelVerPerfilProponente.setBounds(224, 11, 1116, 535);
+        panelVerPerfilProponente.setBounds(224, 11, 1004, 535);
         
 		if(listarProponentes.getColaboradorSeleccionado() != null)
         	verPerfilProponente = new VerPerfilProponente(IUC, listarProponentes.getColaboradorSeleccionado());
@@ -76,20 +72,14 @@ public class ConsultaPerfilProponente extends JInternalFrame {
         btnVerPerfil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		try {
-        			System.out.println("01");
         			verPerfilProponente.removeAll();
-        			System.out.println("01");
+        			
         			verPerfilProponente = new VerPerfilProponente(IUC, listarProponentes.getColaboradorSeleccionado());
-        			System.out.println("02");
-					verPerfilProponente.setBounds(0, 25, 500, 355);
-					System.out.println("03");
-			        panelVerPerfilProponente.add(verPerfilProponente);
-			        System.out.println("04");
+        			verPerfilProponente.setBounds(0, 25, 500, 355);
+					panelVerPerfilProponente.add(verPerfilProponente);
 			        
 			        getContentPane().add(panelVerPerfilProponente);
-			        System.out.println("05");
 			        panelVerPerfilProponente.setLayout(null);
-			        System.out.println("06");
 			        
 				} catch (UsuarioNoExisteElUsuarioException e) {
 					e.printStackTrace();

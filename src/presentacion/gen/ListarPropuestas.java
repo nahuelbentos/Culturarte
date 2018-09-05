@@ -133,12 +133,24 @@ public class ListarPropuestas extends JPanel {
 				}
 				
 			}
+			
+			this.table = new JTable(data,columnNames) {
+				public boolean isCellEditable(int rowIndex, int vColIndex) {
+		            return false;
+				}
+			};
+			// borro la grilla que estaba.
+			this.remove(grilla);
+			
+			grilla = new JScrollPane(table);
+	        this.add(grilla);
+			
 		} catch (PropuestaNoExisteException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage(),"Grilla propuestas", JOptionPane.ERROR_MESSAGE);
 		}
 		
-//		this.table = new JTable(data,columnNames);
+
 	}
 	
 	

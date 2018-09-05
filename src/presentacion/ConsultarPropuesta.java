@@ -45,6 +45,10 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
+import javax.swing.border.TitledBorder;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class ConsultarPropuesta extends JPanel {
 	private JTable tableDatos;
@@ -71,8 +75,8 @@ public class ConsultarPropuesta extends JPanel {
 	private JTextField txtPrecioEntrada;
 	private JTextField txtTipo;
 	private JTextField txtMontoRecaudado;
-	
-	private JLabel lblColaboradores;
+	private JPanel panelDatos;
+	private JPanel panelColaboraciones;
 	/**
 	 * Create the panel.
 	 * @throws UsuarioNoExisteElUsuarioException 
@@ -80,122 +84,215 @@ public class ConsultarPropuesta extends JPanel {
 	 */
 	public ConsultarPropuesta(IPropuestaController IPC,String titulo) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		setLayout(null);
+		{
+			panelDatos = new JPanel();
+			panelDatos.setBorder(new TitledBorder(null, "Datos b\u00E1sicos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panelDatos.setBounds(10, 11, 359, 271);
+			add(panelDatos);
+			GridBagLayout gbl_panelDatos = new GridBagLayout();
+			gbl_panelDatos.columnWidths = new int[]{122, 0, 175, 0};
+			gbl_panelDatos.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+			gbl_panelDatos.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+			gbl_panelDatos.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+			panelDatos.setLayout(gbl_panelDatos);
+			
+			JLabel lblTitulo = new JLabel("Titulo:");
+			GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
+			gbc_lblTitulo.anchor = GridBagConstraints.EAST;
+			gbc_lblTitulo.insets = new Insets(0, 0, 5, 5);
+			gbc_lblTitulo.gridx = 0;
+			gbc_lblTitulo.gridy = 0;
+			panelDatos.add(lblTitulo, gbc_lblTitulo);
+			
+			
+			
+			txtTitulo = new JTextField();
+			GridBagConstraints gbc_txtTitulo = new GridBagConstraints();
+			gbc_txtTitulo.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtTitulo.insets = new Insets(0, 0, 5, 0);
+			gbc_txtTitulo.gridx = 2;
+			gbc_txtTitulo.gridy = 0;
+			panelDatos.add(txtTitulo, gbc_txtTitulo);
+			txtTitulo.setEnabled(false);
+			txtTitulo.setColumns(10);
+			
+			JLabel lblDescripcion = new JLabel("Descripcion:");
+			GridBagConstraints gbc_lblDescripcion = new GridBagConstraints();
+			gbc_lblDescripcion.anchor = GridBagConstraints.EAST;
+			gbc_lblDescripcion.insets = new Insets(0, 0, 5, 5);
+			gbc_lblDescripcion.gridx = 0;
+			gbc_lblDescripcion.gridy = 1;
+			panelDatos.add(lblDescripcion, gbc_lblDescripcion);
+			
+			txtDescripcion = new JTextField();
+			GridBagConstraints gbc_txtDescripcion = new GridBagConstraints();
+			gbc_txtDescripcion.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtDescripcion.insets = new Insets(0, 0, 5, 0);
+			gbc_txtDescripcion.gridx = 2;
+			gbc_txtDescripcion.gridy = 1;
+			panelDatos.add(txtDescripcion, gbc_txtDescripcion);
+			txtDescripcion.setEnabled(false);
+			txtDescripcion.setEditable(true);
+			txtDescripcion.setText("");
+			txtDescripcion.setColumns(10);
+			
+			JLabel lblMontoNecesario = new JLabel("Monto Necesario:");
+			GridBagConstraints gbc_lblMontoNecesario = new GridBagConstraints();
+			gbc_lblMontoNecesario.anchor = GridBagConstraints.EAST;
+			gbc_lblMontoNecesario.insets = new Insets(0, 0, 5, 5);
+			gbc_lblMontoNecesario.gridx = 0;
+			gbc_lblMontoNecesario.gridy = 2;
+			panelDatos.add(lblMontoNecesario, gbc_lblMontoNecesario);
+			
+			txtMontoNecesario = new JTextField();
+			GridBagConstraints gbc_txtMontoNecesario = new GridBagConstraints();
+			gbc_txtMontoNecesario.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtMontoNecesario.insets = new Insets(0, 0, 5, 0);
+			gbc_txtMontoNecesario.gridx = 2;
+			gbc_txtMontoNecesario.gridy = 2;
+			panelDatos.add(txtMontoNecesario, gbc_txtMontoNecesario);
+			txtMontoNecesario.setEnabled(false);
+			txtMontoNecesario.setColumns(10);
+			
+			JLabel lblFechaEspectaculo = new JLabel("Fecha espectaculo:");
+			GridBagConstraints gbc_lblFechaEspectaculo = new GridBagConstraints();
+			gbc_lblFechaEspectaculo.anchor = GridBagConstraints.EAST;
+			gbc_lblFechaEspectaculo.insets = new Insets(0, 0, 5, 5);
+			gbc_lblFechaEspectaculo.gridx = 0;
+			gbc_lblFechaEspectaculo.gridy = 3;
+			panelDatos.add(lblFechaEspectaculo, gbc_lblFechaEspectaculo);
+			
+			txtFechaEspectaculo = new JTextField();
+			GridBagConstraints gbc_txtFechaEspectaculo = new GridBagConstraints();
+			gbc_txtFechaEspectaculo.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtFechaEspectaculo.insets = new Insets(0, 0, 5, 0);
+			gbc_txtFechaEspectaculo.gridx = 2;
+			gbc_txtFechaEspectaculo.gridy = 3;
+			panelDatos.add(txtFechaEspectaculo, gbc_txtFechaEspectaculo);
+			txtFechaEspectaculo.setEnabled(false);
+			txtFechaEspectaculo.setColumns(10);
+			
+			JLabel lblFechaPublicacion = new JLabel("Fecha de publicacion:");
+			GridBagConstraints gbc_lblFechaPublicacion = new GridBagConstraints();
+			gbc_lblFechaPublicacion.anchor = GridBagConstraints.EAST;
+			gbc_lblFechaPublicacion.insets = new Insets(0, 0, 5, 5);
+			gbc_lblFechaPublicacion.gridx = 0;
+			gbc_lblFechaPublicacion.gridy = 4;
+			panelDatos.add(lblFechaPublicacion, gbc_lblFechaPublicacion);
+			
+			txtFechaPublicacion = new JTextField();
+			GridBagConstraints gbc_txtFechaPublicacion = new GridBagConstraints();
+			gbc_txtFechaPublicacion.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtFechaPublicacion.insets = new Insets(0, 0, 5, 0);
+			gbc_txtFechaPublicacion.gridx = 2;
+			gbc_txtFechaPublicacion.gridy = 4;
+			panelDatos.add(txtFechaPublicacion, gbc_txtFechaPublicacion);
+			txtFechaPublicacion.setEnabled(false);
+			txtFechaPublicacion.setColumns(10);
+			
+			JLabel lblImagen = new JLabel("Imagen:");
+			GridBagConstraints gbc_lblImagen = new GridBagConstraints();
+			gbc_lblImagen.anchor = GridBagConstraints.EAST;
+			gbc_lblImagen.insets = new Insets(0, 0, 5, 5);
+			gbc_lblImagen.gridx = 0;
+			gbc_lblImagen.gridy = 5;
+			panelDatos.add(lblImagen, gbc_lblImagen);
+			
+			txtImagen = new JTextField();
+			GridBagConstraints gbc_txtImagen = new GridBagConstraints();
+			gbc_txtImagen.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtImagen.insets = new Insets(0, 0, 5, 0);
+			gbc_txtImagen.gridx = 2;
+			gbc_txtImagen.gridy = 5;
+			panelDatos.add(txtImagen, gbc_txtImagen);
+			txtImagen.setEnabled(false);
+			txtImagen.setColumns(10);
+			
+			JLabel lblLugar = new JLabel("Lugar:");
+			GridBagConstraints gbc_lblLugar = new GridBagConstraints();
+			gbc_lblLugar.anchor = GridBagConstraints.EAST;
+			gbc_lblLugar.insets = new Insets(0, 0, 5, 5);
+			gbc_lblLugar.gridx = 0;
+			gbc_lblLugar.gridy = 6;
+			panelDatos.add(lblLugar, gbc_lblLugar);
+			
+			txtLugar = new JTextField();
+			GridBagConstraints gbc_txtLugar = new GridBagConstraints();
+			gbc_txtLugar.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtLugar.insets = new Insets(0, 0, 5, 0);
+			gbc_txtLugar.gridx = 2;
+			gbc_txtLugar.gridy = 6;
+			panelDatos.add(txtLugar, gbc_txtLugar);
+			txtLugar.setText((String) null);
+			txtLugar.setEnabled(false);
+			txtLugar.setColumns(10);
+			
+			JLabel lblPrecioEntrada = new JLabel("Precio entrada:");
+			GridBagConstraints gbc_lblPrecioEntrada = new GridBagConstraints();
+			gbc_lblPrecioEntrada.anchor = GridBagConstraints.EAST;
+			gbc_lblPrecioEntrada.insets = new Insets(0, 0, 5, 5);
+			gbc_lblPrecioEntrada.gridx = 0;
+			gbc_lblPrecioEntrada.gridy = 7;
+			panelDatos.add(lblPrecioEntrada, gbc_lblPrecioEntrada);
+			
+			txtPrecioEntrada = new JTextField();
+			GridBagConstraints gbc_txtPrecioEntrada = new GridBagConstraints();
+			gbc_txtPrecioEntrada.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtPrecioEntrada.insets = new Insets(0, 0, 5, 0);
+			gbc_txtPrecioEntrada.gridx = 2;
+			gbc_txtPrecioEntrada.gridy = 7;
+			panelDatos.add(txtPrecioEntrada, gbc_txtPrecioEntrada);
+			txtPrecioEntrada.setText((String) null);
+			txtPrecioEntrada.setEnabled(false);
+			txtPrecioEntrada.setColumns(10);
+			
+			JLabel lblTipo = new JLabel("Tipo:");
+			GridBagConstraints gbc_lblTipo = new GridBagConstraints();
+			gbc_lblTipo.anchor = GridBagConstraints.EAST;
+			gbc_lblTipo.insets = new Insets(0, 0, 5, 5);
+			gbc_lblTipo.gridx = 0;
+			gbc_lblTipo.gridy = 8;
+			panelDatos.add(lblTipo, gbc_lblTipo);
+			
+			txtTipo = new JTextField();
+			GridBagConstraints gbc_txtTipo = new GridBagConstraints();
+			gbc_txtTipo.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtTipo.insets = new Insets(0, 0, 5, 0);
+			gbc_txtTipo.gridx = 2;
+			gbc_txtTipo.gridy = 8;
+			panelDatos.add(txtTipo, gbc_txtTipo);
+			txtTipo.setText((String) null);
+			txtTipo.setEnabled(false);
+			txtTipo.setColumns(10);
+			
+			JLabel lblMontoRecaudado = new JLabel("Monto recaudado:");
+			GridBagConstraints gbc_lblMontoRecaudado = new GridBagConstraints();
+			gbc_lblMontoRecaudado.anchor = GridBagConstraints.EAST;
+			gbc_lblMontoRecaudado.insets = new Insets(0, 0, 0, 5);
+			gbc_lblMontoRecaudado.gridx = 0;
+			gbc_lblMontoRecaudado.gridy = 9;
+			panelDatos.add(lblMontoRecaudado, gbc_lblMontoRecaudado);
+			
+			txtMontoRecaudado = new JTextField();
+			GridBagConstraints gbc_txtMontoRecaudado = new GridBagConstraints();
+			gbc_txtMontoRecaudado.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtMontoRecaudado.gridx = 2;
+			gbc_txtMontoRecaudado.gridy = 9;
+			panelDatos.add(txtMontoRecaudado, gbc_txtMontoRecaudado);
+			txtMontoRecaudado.setText((String) null);
+			txtMontoRecaudado.setEnabled(false);
+			txtMontoRecaudado.setColumns(10);
+		}
 		
-		
-		
-		txtTitulo = new JTextField();
-		txtTitulo.setEnabled(false);
-		txtTitulo.setBounds(164, 27, 124, 19);
-		add(txtTitulo);
-		txtTitulo.setColumns(10);
-		
-		JLabel lblTitulo = new JLabel("Titulo:");
-		lblTitulo.setBounds(12, 27, 101, 15);
-		add(lblTitulo);
-		
-		JLabel lblDescripcion = new JLabel("Descripcion:");
-		lblDescripcion.setBounds(12, 56, 101, 15);
-		add(lblDescripcion);
-		
-		txtDescripcion = new JTextField();
-		txtDescripcion.setEnabled(false);
-		txtDescripcion.setEditable(true);
-		txtDescripcion.setText("");
-		txtDescripcion.setBounds(164, 56, 124, 19);
-		add(txtDescripcion);
-		txtDescripcion.setColumns(10);
-		
-		JLabel lblMontoNecesario = new JLabel("Monto Necesario:");
-		lblMontoNecesario.setBounds(12, 83, 134, 15);
-		add(lblMontoNecesario);
-		
-		txtMontoNecesario = new JTextField();
-		txtMontoNecesario.setEnabled(false);
-		txtMontoNecesario.setBounds(164, 87, 124, 19);
-		add(txtMontoNecesario);
-		txtMontoNecesario.setColumns(10);
-		
-		JLabel lblFechaEspectaculo = new JLabel("Fecha espectaculo:");
-		lblFechaEspectaculo.setBounds(12, 114, 145, 15);
-		add(lblFechaEspectaculo);
-		
-		txtFechaEspectaculo = new JTextField();
-		txtFechaEspectaculo.setEnabled(false);
-		txtFechaEspectaculo.setBounds(164, 114, 124, 19);
-		add(txtFechaEspectaculo);
-		txtFechaEspectaculo.setColumns(10);
-		
-		JLabel lblFechaPublicacion = new JLabel("Fecha de publicacion:");
-		lblFechaPublicacion.setBounds(12, 137, 159, 15);
-		add(lblFechaPublicacion);
-		
-		txtFechaPublicacion = new JTextField();
-		txtFechaPublicacion.setEnabled(false);
-		txtFechaPublicacion.setBounds(164, 139, 124, 19);
-		add(txtFechaPublicacion);
-		txtFechaPublicacion.setColumns(10);
-		
-		txtImagen = new JTextField();
-		txtImagen.setEnabled(false);
-		txtImagen.setBounds(164, 168, 124, 19);
-		add(txtImagen);
-		txtImagen.setColumns(10);
-		
-		JLabel lblImagen = new JLabel("Imagen:");
-		lblImagen.setBounds(12, 166, 66, 15);
-		add(lblImagen);
+		panelColaboraciones = new JPanel();
+		panelColaboraciones.setBorder(new TitledBorder(null, "Colaboraciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelColaboraciones.setBounds(10, 305, 594, 271);
+		add(panelColaboraciones);
+		panelColaboraciones.setLayout(null);
 		
 		tableColaboradores = new JTable();
-		tableColaboradores.setBounds(319, 97, 203, 117);
-		add(tableColaboradores);
-		
-		txtLugar = new JTextField();
-		txtLugar.setText((String) null);
-		txtLugar.setEnabled(false);
-		txtLugar.setColumns(10);
-		txtLugar.setBounds(164, 195, 124, 19);
-		add(txtLugar);
-		
-		JLabel lblLugar = new JLabel("Lugar:");
-		lblLugar.setBounds(12, 193, 66, 15);
-		add(lblLugar);
-		
-		JLabel lblPrecioEntrada = new JLabel("Precio entrada:");
-		lblPrecioEntrada.setBounds(12, 220, 145, 15);
-		add(lblPrecioEntrada);
-		
-		txtPrecioEntrada = new JTextField();
-		txtPrecioEntrada.setText((String) null);
-		txtPrecioEntrada.setEnabled(false);
-		txtPrecioEntrada.setColumns(10);
-		txtPrecioEntrada.setBounds(164, 222, 124, 19);
-		add(txtPrecioEntrada);
-		
-		JLabel lblTipo = new JLabel("Tipo:");
-		lblTipo.setBounds(12, 247, 66, 15);
-		add(lblTipo);
-		
-		txtTipo = new JTextField();
-		txtTipo.setText((String) null);
-		txtTipo.setEnabled(false);
-		txtTipo.setColumns(10);
-		txtTipo.setBounds(164, 249, 124, 19);
-		add(txtTipo);
-		
-		JLabel lblMontoRecaudado = new JLabel("Monto recaudado:");
-		lblMontoRecaudado.setBounds(12, 274, 145, 15);
-		add(lblMontoRecaudado);
-		
-		txtMontoRecaudado = new JTextField();
-		txtMontoRecaudado.setText((String) null);
-		txtMontoRecaudado.setEnabled(false);
-		txtMontoRecaudado.setColumns(10);
-		txtMontoRecaudado.setBounds(164, 276, 124, 19);
-		add(txtMontoRecaudado);
-		
-		lblColaboradores = new JLabel("Colaboradores:");
-		lblColaboradores.setBounds(356, 70, 117, 15);
-		add(lblColaboradores);
+		tableColaboradores.setBounds(10, 24, 519, 198);
+		panelColaboraciones.add(tableColaboradores);
 		
 		
 		iPropController = IPC;

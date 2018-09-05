@@ -316,15 +316,11 @@ public class VerPerfilProponente extends JPanel {
 		txtBiografia.setText(dtp2.getBiografia());
 		txtLinkWeb.setText(dtp2.getSitioWeb());	
 		
-		
-		
 		System.out.println("armo la table prPublicadas.size: " + dtp2.getPrPublicadas().size() +  " \n");
 		System.out.println("armo la table prCanceladas.size: " + dtp2.getPrCanceladas().size() +  " \n");
 		System.out.println("armo la table prEnFinanciacion.size: " + dtp2.getPrEnFinanciacion().size() +  " \n");
 		System.out.println("armo la table prFinanciadas.size: " + dtp2.getPrFinanciadas().size() +  " \n");
 		System.out.println("armo la table prNoFinanciadas.size: " + dtp2.getPrNoFinanciadas().size() +  " \n");
-		
-					
 		
 		System.out.println("Termino setListaDeProponentes \n");
 		
@@ -338,6 +334,18 @@ public class VerPerfilProponente extends JPanel {
 			agregarDatosTableEnFinanciacion(dtp2.getPrFinanciadas());
 		if(dtp2.getPrNoFinanciadas().size() >0)
 			agregarDatosTableEnFinanciacion(dtp2.getPrNoFinanciadas());
+		
+		// una vez cargada las tablas armo los tabs de nuevo
+		propsTab.removeAll();
+		
+		propsTab = new JTabbedPane(JTabbedPane.TOP);
+		propsTab.setBounds(10, 21, 335, 228);
+		panelPropuestas.add(propsTab);
+		propsTab.addTab("Publicadas", tablePropuestaPublicada);
+		propsTab.addTab("En financiación", tablePropuestaEnFinanciacion);
+		propsTab.addTab("Financiadas", tablePropuestaFinanciada);
+		propsTab.addTab("Sin financiar", tablePropuestaNoFinanciada);
+		propsTab.addTab("Canceladas", tablePropuestaCancelada);
 	}
 	
 	public void agregarDatosTablePublicadas(ArrayList<DtPropuesta> prPublicadas) {
@@ -355,6 +363,7 @@ public class VerPerfilProponente extends JPanel {
 	    dm.addRow(header);
 	    tablePropuestaPublicada.setModel(dm);
 	    tablePropuestaPublicada.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    
 	    System.out.println("Publicadas.size(): " + prPublicadas.size() + "\n"); 
 	    for (DtPropuesta dtp : prPublicadas) {
 		
