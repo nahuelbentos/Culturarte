@@ -34,6 +34,7 @@ import com.toedter.calendar.JDateChooser;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtUsuario;
+import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.IUsuarioController;
 
@@ -310,7 +311,7 @@ public class AltaPerfil extends JInternalFrame {
     			iUsuarioController.agregarUsuario(dtUsuario);
             	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con éxito", "Registrar Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
-            } catch (UsuarioYaExisteElUsuarioException e) {
+            } catch (UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
             }
             limpiarFormulario();

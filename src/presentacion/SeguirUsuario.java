@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -340,7 +341,8 @@ public class SeguirUsuario extends JInternalFrame {
 			txtNombreUno.setText(dtProponente.getNombre());
 			txtApellidoUno.setText(dtProponente.getApellido());
 			txtEmailUno.setText(dtProponente.getEmail());
-			txtFechaDeNacimientoUno.setText(dtProponente.getFechaNacimiento().toString());
+			txtFechaDeNacimientoUno.setText(dtProponente.getFechaNacimiento().toZonedDateTime()
+				       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 			txtRolUno.setText("Proponente");
 			if(dtProponente.getImagen() != null) {
 				ImageIcon imageIcon = new ImageIcon(dtProponente.getImagen());
@@ -352,7 +354,8 @@ public class SeguirUsuario extends JInternalFrame {
 			txtNombreUno.setText(dtColaborador.getNombre());
 			txtApellidoUno.setText(dtColaborador.getApellido());
 			txtEmailUno.setText(dtColaborador.getEmail());
-			txtFechaDeNacimientoUno.setText(dtColaborador.getFechaNacimiento().toString());
+			txtFechaDeNacimientoUno.setText(dtColaborador.getFechaNacimiento().toZonedDateTime()
+				       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 			txtRolUno.setText("Colaborador");
 			if(dtColaborador.getImagen() != null) {
 				ImageIcon imageIcon = new ImageIcon(dtColaborador.getImagen());
@@ -369,7 +372,8 @@ public class SeguirUsuario extends JInternalFrame {
 			txtNombreDos.setText(dtProponente.getNombre());
 			txtApellidoDos.setText(dtProponente.getApellido());
 			txtEmailDos.setText(dtProponente.getEmail());
-			txtFechaDeNacimientoDos.setText(dtProponente.getFechaNacimiento().toString());
+			txtFechaDeNacimientoDos.setText(dtProponente.getFechaNacimiento().toZonedDateTime()
+				       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 			txtRolDos.setText("Proponente");
 			if(dtProponente.getImagen() != null) {
 				ImageIcon imageIcon = new ImageIcon(dtProponente.getImagen());
@@ -381,7 +385,8 @@ public class SeguirUsuario extends JInternalFrame {
 			txtNombreDos.setText(dtColaborador.getNombre());
 			txtApellidoDos.setText(dtColaborador.getApellido());
 			txtEmailDos.setText(dtColaborador.getEmail());
-			txtFechaDeNacimientoDos.setText(dtColaborador.getFechaNacimiento().toString());
+			txtFechaDeNacimientoDos.setText(dtColaborador.getFechaNacimiento().toZonedDateTime()
+				       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 			txtRolDos.setText("Colaborador");
 			if(dtColaborador.getImagen() != null) {
 				ImageIcon imageIcon = new ImageIcon(dtColaborador.getImagen());
