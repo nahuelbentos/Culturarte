@@ -3,22 +3,40 @@ package presentacion;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyVetoException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
+import datatype.DtColaborador;
+import datatype.DtProponente;
+import datatype.DtUsuario;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.Factory;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
 
 public class Principal {
-
+	
 	private JFrame frmPaginaPrincipal;
 	private AltaPerfil altaPerfil;
 	private AltaPropuesta altaPropuesta;
@@ -108,6 +126,7 @@ public class Principal {
 		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
+		
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
 		frmPaginaPrincipal.getContentPane().add(modificarPropuesta);
@@ -186,30 +205,50 @@ public class Principal {
 			}
 		});
 		mnCategra.add(mntmAltaDeCategrpia);
+		
+				JMenu mnColaboraciones = new JMenu("Colaboraciones");
+				mnNewMenu.add(mnColaboraciones);
+				
+						JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
+						mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								registrarColaboracion.refreshFrame();
+								registrarColaboracion.setVisible(true);
+							}
+						});
+						mnColaboraciones.add(mntmRegistrarColaboracinA);
+						
+								JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");
+								mnColaboraciones.add(mntmCancelarColaboracinA);
+								
+										JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
+										mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent e) {
+												consColProp.setListarColaboradores();
+												consColProp.setVisible(true);
+											}
+										});
+										mnColaboraciones.add(mntmConsultaDeColaboracin);
+		
+		JMenu mnNewMenu_1 = new JMenu("Datos");
+		mnNewMenu.add(mnNewMenu_1);
+		
+		JMenuItem mntmAgregarDatos = new JMenuItem("Cargar datos");
+		mntmAgregarDatos.addActionListener(new ActionListener() {
 
-		JMenu mnColaboraciones = new JMenu("Colaboraciones");
-		mnNewMenu.add(mnColaboraciones);
-
-		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
-		mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				registrarColaboracion.refreshFrame();
-				registrarColaboracion.setVisible(true);
+				try {
+					agregarUsuarios(e);
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
-		mnColaboraciones.add(mntmRegistrarColaboracinA);
-
-		JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");
-		mnColaboraciones.add(mntmCancelarColaboracinA);
-
-		JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
-		mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				consColProp.setListarColaboradores();
-				consColProp.setVisible(true);
-			}
-		});
-		mnColaboraciones.add(mntmConsultaDeColaboracin);
+		mnNewMenu_1.add(mntmAgregarDatos);
+		
+		JMenuItem mntmBorrarDatos = new JMenuItem("Borrar datos");
+		mnNewMenu_1.add(mntmBorrarDatos);
 
 		JMenu mnUsuarios = new JMenu("Usuarios");
 		menuBar.add(mnUsuarios);
@@ -231,7 +270,7 @@ public class Principal {
 		JMenuItem mntmConsultaDeProponente = new JMenuItem("Consulta de Perfil de proponente");
 		mntmConsultaDeProponente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				consultaPerfilProponente.setVisible(true);
+				//consultaPerfilProponente.setVisible(true);
 				
 			}
 		});
@@ -240,7 +279,7 @@ public class Principal {
 		JMenuItem mntmConsultaDePerfilColaborador = new JMenuItem("Consulta de Perfil de colaborador");
 		mntmConsultaDePerfilColaborador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				consultaPerfilColaborador.setVisible(true);
+				//consultaPerfilColaborador.setVisible(true);
 			}
 		});
 		mnPerfiles.add(mntmConsultaDePerfilColaborador);
@@ -266,5 +305,70 @@ public class Principal {
 			}
 		});
 		mnUsuarios.add(mntmDejarDeSe);
+	}
+	
+	private void agregarUsuarios(ActionEvent e) throws ParseException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("usuarios.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosUsuario = line.split(cvsSplitBy);
+            	String nickname = datosUsuario[0];
+            	String email = datosUsuario[1];
+            	String nombre = datosUsuario[2];
+            	String apellido = datosUsuario[3];
+            	GregorianCalendar fechaNacimiento = parsearFecha(datosUsuario[4]);
+            	String tipoUsuario = datosUsuario[5];
+            	byte[] imagen = null;
+            	if (!"null".equals(datosUsuario[6])) {
+            		imagen = obtenerImagen(datosUsuario[6]);
+            	}
+            	DtUsuario dtUsuario = null;
+            	if ("P".equals(tipoUsuario)) {
+                	String direccion = datosUsuario[7];
+                	String sitioWeb = null;
+                	if (!"null".equals(datosUsuario[8])) {
+                		sitioWeb = datosUsuario[8];
+                	}
+                	String biografia = null;
+                	if (!"null".equals(datosUsuario[9])) {
+                		biografia = datosUsuario[9];
+                	}
+            		dtUsuario = new DtProponente(nickname, nombre, apellido, email, 
+            				fechaNacimiento, imagen, direccion, biografia, sitioWeb);
+            		IUC.agregarUsuario(dtUsuario);
+            	} else if ("C".equals(tipoUsuario)) {  
+            		dtUsuario = new DtColaborador(nickname, nombre, apellido, 
+            				email, fechaNacimiento, imagen);
+            		IUC.agregarUsuario(dtUsuario);
+            	}
+            }
+        	JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (UsuarioYaExisteElUsuarioException | IOException | URISyntaxException e1) {
+        	JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private GregorianCalendar parsearFecha(String fecha) throws ParseException {
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = df.parse(fecha);
+		GregorianCalendar fechaRetorno = new GregorianCalendar();
+		fechaRetorno.setTime(date);
+		return fechaRetorno;
+	}
+	
+	private byte[] obtenerImagen(String pathName) throws IOException, URISyntaxException {
+		URL resource = Principal.class.getResource("/" + pathName + ".jpg");
+    	File file = Paths.get(resource.toURI()).toFile();
+    	byte[] picInBytes = new byte[(int) file.length()];
+    	FileInputStream fileInputStream = new FileInputStream(file);
+    	fileInputStream.read(picInBytes);
+    	fileInputStream.close();
+		return picInBytes;
 	}
 }
