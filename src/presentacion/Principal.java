@@ -30,6 +30,7 @@ import datatype.DtProponente;
 import datatype.DtUsuario;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.Factory;
 import logica.ICategoriaController;
@@ -350,7 +351,7 @@ public class Principal {
             }
         	JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
                     JOptionPane.INFORMATION_MESSAGE);
-        } catch (UsuarioYaExisteElUsuarioException | IOException | URISyntaxException e1) {
+        } catch (UsuarioYaExisteElUsuarioException | IOException | URISyntaxException | UsuarioYaExisteElEmailException e1) {
         	JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
 		}
 	}

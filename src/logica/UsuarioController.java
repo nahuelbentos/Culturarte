@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 import datatype.DtColaboracion;
@@ -19,6 +20,7 @@ import datatype.TipoRetorno;
 import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.handler.ColaboracionHandler;
@@ -32,14 +34,22 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException {
+	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
 		emf = Persistence.createEntityManagerFactory("Conexion");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
 		Usuario usuario = em.find(Usuario.class, dtUsuario.getNickname());
+		Usuario usuarioDos = null;
+		try {
+			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico")
+					.setParameter("correoElectronico", dtUsuario.getEmail()).getSingleResult();
+		} catch (NoResultException nre){}
 		if (usuario != null) {
 			throw new UsuarioYaExisteElUsuarioException("El usuario " + dtUsuario.getNickname() + " ya esta registrado");
+		} else if (usuarioDos != null) {
+			throw new UsuarioYaExisteElEmailException("El email " + dtUsuario.getEmail() + " ya esta registrado");
+			
 		} else {
 			if (dtUsuario instanceof DtProponente) {
 				DtProponente dtProponente = (DtProponente) dtUsuario;
