@@ -94,7 +94,7 @@ public class AltaCategoria extends JInternalFrame {
 	
 	public void listarCategorias() {
 		DtCategoria dtC[] = null;
-		dtC = iCategoriaController.listarCategorias();
+		dtC = iCategoriaController.listarCategoriasJTree();
 		
 		if (dtC != null) {
 			for (DtCategoria i : dtC) {

@@ -26,6 +26,33 @@ public class CategoriaController implements ICategoriaController {
 		DtCategoria[] dtC = null;
 		// Me traigo la categoría base "Categorías", la cual me traera todas por ser sus hijas
 		@SuppressWarnings("unchecked")
+		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE<>'Categorías'").getResultList();
+		
+        if (cats != null) {
+            dtC = new DtCategoria[cats.size()];
+            DtCategoria categ=null;
+
+            for (int i = 0; i < cats.size(); i++) {
+                categ = cats.get(i).getDtCategoriaFull();
+                dtC[i] = new DtCategoria(categ.getNombre(), categ.getSuperCategorias(), categ.getSubCategorias());
+            }
+        }
+        em.close();
+        return dtC;
+	}
+	
+	@Override
+	public DtCategoria[] listarCategoriasJTree(){
+		
+		inicializarTablaVacia();	//	Si la tabla no tiene registros, crea el nodo base "Categorías"
+		
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtCategoria[] dtC = null;
+		// Me traigo la categoría base "Categorías", la cual me traera todas por ser sus hijas
+		@SuppressWarnings("unchecked")
 		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE='Categorías'").getResultList();
 		
         if (cats != null) {
