@@ -282,7 +282,7 @@ public class Principal {
 		JMenuItem mntmConsultaDeProponente = new JMenuItem("Consulta de Perfil de proponente");
 		mntmConsultaDeProponente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//consultaPerfilProponente.setVisible(true);
+				consultaPerfilProponente.setVisible(true);
 				
 			}
 		});
@@ -291,7 +291,7 @@ public class Principal {
 		JMenuItem mntmConsultaDePerfilColaborador = new JMenuItem("Consulta de Perfil de colaborador");
 		mntmConsultaDePerfilColaborador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//consultaPerfilColaborador.setVisible(true);
+				consultaPerfilColaborador.setVisible(true);
 			}
 		});
 		mnPerfiles.add(mntmConsultaDePerfilColaborador);
@@ -375,27 +375,6 @@ public class Principal {
             	String usuarioUno = datosUsuario[0];
             	String usuarioDos = datosUsuario[1];
             	IUC.seguirUsuario(usuarioUno, usuarioDos);
-            }
-        }
-	}
-	
-	private void agregarCategorias(ActionEvent e) throws ParseException, UnsupportedEncodingException, IOException, CategoriaYaExisteException, CategoriaNoExisteException {
-        String line = "";
-        String cvsSplitBy = "\\|";
-        
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream("categorias.csv");
-        
-        DtCategoria[] dt = ICC.listarCategorias();
-        
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
-            while ((line = br.readLine()) != null) {
-            	String[] datosCategoria = line.split(cvsSplitBy);
-            	String nombreCategoria = datosCategoria[0];
-            	ArrayList<DtCategoria> padres = new ArrayList<>();
-            	padres.add(new DtCategoria(datosCategoria[1]));
-            	DtCategoria dtCategoria = new DtCategoria(nombreCategoria, padres, null);
-            	ICC.agregarCategoria(dtCategoria);
             }
         }
 	}
