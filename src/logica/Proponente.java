@@ -16,7 +16,7 @@ public class Proponente extends Usuario{
 	
 	@Column(name="DIRECCION")
     private String direccion;
-	@Column(name="BIOGRAFIA")
+	@Column(name="BIOGRAFIA", length=900)
     private String biografia;
 	@Column(name="LINK_WEB")
     private String linkWeb;
