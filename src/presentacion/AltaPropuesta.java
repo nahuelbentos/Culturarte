@@ -83,11 +83,11 @@ public class AltaPropuesta extends JInternalFrame {
 	private String titulo;
 	private String descripcion;
 	private byte[] imagen;
-	private float montoNecesario;
+	private double montoNecesario;
 	private GregorianCalendar fechaPublicacion;
 	private GregorianCalendar fechaEspecatulo;
 	private String lugar;
-	private float precioEntrada;
+	private double precioEntrada;
 	private TipoRetorno tipo;
 	private String nicknameProponente;
 	private String categoria;
@@ -381,7 +381,7 @@ public class AltaPropuesta extends JInternalFrame {
 		if (formularioOk()) {
 			DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, null, "", "", "");
 			DtCategoria dtCat = new DtCategoria(categoria);
-			DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat, null);
+			DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, new GregorianCalendar(), fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat, null);
 			try {
 				iPropuestaController.altaPropuesta(dtPropuesta);
 				JOptionPane.showMessageDialog(this, "La propuesta se ha creado con éxito", "Alta de propuesta", JOptionPane.INFORMATION_MESSAGE);
@@ -400,8 +400,8 @@ public class AltaPropuesta extends JInternalFrame {
 		titulo = entTitulo.getText();
 		descripcion = entDescripcion.getText();
 		
-		montoNecesario = Float.valueOf(entMontoNecesario.getText());
-		precioEntrada = Float.valueOf(entPrecioEntrada.getText());
+		montoNecesario = Double.valueOf(entMontoNecesario.getText());
+		precioEntrada = Double.valueOf(entPrecioEntrada.getText());
 		fechaPublicacion = new GregorianCalendar();
 		fechaEspecatulo = new GregorianCalendar();
 		if (entFechaEspectaculo.getDate() != null)

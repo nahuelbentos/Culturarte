@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
 public class ListarProponentes extends JPanel {
@@ -34,6 +35,7 @@ public class ListarProponentes extends JPanel {
 	 * Create the panel.
 	 */
 	public ListarProponentes(IUsuarioController IUC) {
+		setBorder(new TitledBorder(null, "Proponentes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(null);
 		iUsuController = IUC;
 		
@@ -49,13 +51,8 @@ public class ListarProponentes extends JPanel {
 		
 		listProponentes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listProponentes.setBorder(new LineBorder(Color.DARK_GRAY, 1, true));
-		listProponentes.setBounds(27, 52, 375, 94);
+		listProponentes.setBounds(10, 29, 155, 204);
 		add(listProponentes);
-		
-		JLabel lblSeleccioneUnColaborador = new JLabel("Seleccione un proponente");
-		lblSeleccioneUnColaborador.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
-		lblSeleccioneUnColaborador.setBounds(12, 12, 308, 15);
-		add(lblSeleccioneUnColaborador);
 				
 	}
 	

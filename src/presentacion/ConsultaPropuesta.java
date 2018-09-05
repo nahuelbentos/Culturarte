@@ -54,38 +54,38 @@ public class ConsultaPropuesta extends JInternalFrame {
         panelConsultarPropuesta.setLayout(null);
         
         JButton btnVerPropuesta = new JButton("Ver Propuesta");
-//        btnVerPropuesta.addActionListener(new ActionListener() {
-//        	public void actionPerformed(ActionEvent arg0) {
-//        		try {
-//        			consultarPropuesta.removeAll();
-//        			System.out.println("Propuesta titulo seleccionada: "  + listarPropuestas.getPropuestaTituloSeleccionada());
-//        			consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPropuestaTituloSeleccionada());
-//					consultarPropuesta.setBounds(0, 25, 500, 355);
-//			        panelConsultarPropuesta.add(consultarPropuesta);
-//			        
-//			        getContentPane().add(panelConsultarPropuesta);
-//			        panelConsultarPropuesta.setLayout(null);
-//			        
-//				} catch (UsuarioNoExisteElUsuarioException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (PropuestaNoExisteException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//        		
-////        	}
-//        });
+        btnVerPropuesta.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		try {
+	    			consultarPropuesta.removeAll();
+	    			System.out.println("Propuesta titulo seleccionada: "  + listarPropuestas.getPropuestaTituloSeleccionada());
+	    			consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPropuestaTituloSeleccionada());
+					consultarPropuesta.setBounds(0, 25, 500, 355);
+			        panelConsultarPropuesta.add(consultarPropuesta);
+			        
+			        getContentPane().add(panelConsultarPropuesta);
+			        panelConsultarPropuesta.setLayout(null);
+		        
+        		} catch (UsuarioNoExisteElUsuarioException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (PropuestaNoExisteException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+
+        	}
+        });
         btnVerPropuesta.setBounds(312, 125, 139, 25);
         getContentPane().add(btnVerPropuesta);
         
         
-//        if(listarPropuestas.getPropuestaTituloSeleccionada() != null)
-//        	consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPropuestaTituloSeleccionada());
-//		else 
-//			if(!(listarPropuestas.getPrimerTitulo().isEmpty()))
-//				consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPrimerTitulo());
-//		
+        if(listarPropuestas.getPropuestaTituloSeleccionada() != null)
+        	consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPropuestaTituloSeleccionada());
+		else 
+			if(!(listarPropuestas.getPrimerTitulo().isEmpty()))
+				consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPrimerTitulo());
+		
 
 	}
 }
