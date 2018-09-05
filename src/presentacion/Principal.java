@@ -49,8 +49,9 @@ public class Principal {
 
 	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 
-//	private ConsultaPerfilProponente consultaPerfilProponente;
-//	private ConsultaPerfilColaborador consultaPerfilColaborador;
+	private ConsultaPerfilProponente consultaPerfilProponente;
+	private ConsultaPerfilColaborador consultaPerfilColaborador;
+	private ConsultaPropuesta consultaPropuesta;
 
 	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	
@@ -79,9 +80,10 @@ public class Principal {
 	 * Create the frame.
 	 * @throws UsuarioNoExisteElUsuarioException 
 	 * @throws PropuestaNoExisteException 
+	 * @throws PropertyVetoException 
 	 */
 
-	public Principal() throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
+	public Principal() throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException {
 		initialize();
  
         Factory factory = Factory.getInstance();
@@ -114,10 +116,12 @@ public class Principal {
 		registrarColaboracion.setVisible(false);
 		
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
-//		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
-//		consultaPerfilProponente.setVisible(false);
-//		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC);
-//		consultaPerfilColaborador.setVisible(false);
+		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
+		consultaPerfilProponente.setVisible(false);
+		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC);
+		consultaPerfilColaborador.setVisible(false);
+		consultaPropuesta = new ConsultaPropuesta(IPC);
+		consultaPropuesta.setVisible(false);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
@@ -133,8 +137,9 @@ public class Principal {
 
 
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
-//		frmPaginaPrincipal.getContentPane().add(consultaPerfilProponente);
-//		frmPaginaPrincipal.getContentPane().add(consultaPerfilColaborador);
+		frmPaginaPrincipal.getContentPane().add(consultaPerfilProponente);
+		frmPaginaPrincipal.getContentPane().add(consultaPerfilColaborador);
+		frmPaginaPrincipal.getContentPane().add(consultaPropuesta);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	}
 
@@ -177,6 +182,11 @@ public class Principal {
 		mnPropuesta.add(mntmModificarDatosDe);
 
 		JMenuItem mntmConsultaDePropuesta = new JMenuItem("Consulta de Propuesta");
+		mntmConsultaDePropuesta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				consultaPropuesta.setVisible(true);
+			}
+		});
 		mnPropuesta.add(mntmConsultaDePropuesta);
 
 		JMenuItem mntmConsultaDePropuestas = new JMenuItem("Consulta de Propuestas por estado");
@@ -190,6 +200,7 @@ public class Principal {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				altaCategoria.listarCategorias();
 				altaCategoria.setVisible(true);
 			}
 		});

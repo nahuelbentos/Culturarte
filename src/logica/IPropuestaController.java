@@ -6,6 +6,7 @@ import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
+import excepciones.ColaboracionExistenteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -44,7 +45,7 @@ public interface IPropuestaController {
 	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
 	
 	
-	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException;
+	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException;
 	
 }
 

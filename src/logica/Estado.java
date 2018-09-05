@@ -22,7 +22,7 @@ public class Estado {
 	
 	@Id
 	@Column(name="ESTADO")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private EstadoPropuesta estado;
 	
 	@Id

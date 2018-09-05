@@ -1,21 +1,33 @@
 package presentacion;
 
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -65,11 +77,13 @@ public class ModificarPropuesta extends JInternalFrame {
 	private JComboBox<String> entCategoria;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
-	private JComboBox<String> cmbPropuesta;
+	private ImageIcon imagenPropuesta;
+	private JButton btnSeleecionarImagen;
+	private JFileChooser fileChooser = new JFileChooser();
 	
 	private String titulo;
 	private String descripcion;
-	private String imagen;
+	private byte[] imagen;
 	private float montoNecesario;
 	private GregorianCalendar fechaPublicacion;
 	private GregorianCalendar fechaEspecatulo;
@@ -78,7 +92,7 @@ public class ModificarPropuesta extends JInternalFrame {
 	private TipoRetorno tipo;
 	private String nicknameProponente;
 	private String categoria;
-
+	private JComboBox<String> cmbPropuesta;
 	/**
 	 * Create the frame.
 	 */
@@ -116,10 +130,30 @@ public class ModificarPropuesta extends JInternalFrame {
         entDescripcion.setBounds(141, 113, 239, 19);
         getContentPane().add(entDescripcion);
         
-        lblImagen = new JLabel("Imagen");
-        lblImagen.setBounds(10, 144, 66, 15);
-        getContentPane().add(lblImagen);
-        
+		btnSeleecionarImagen = new JButton("Selecionar Imagen");
+		btnSeleecionarImagen.setHorizontalAlignment(SwingConstants.LEFT);
+		btnSeleecionarImagen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int retorno = fileChooser.showOpenDialog(getContentPane());
+                if (retorno == JFileChooser.APPROVE_OPTION) {
+                    String pathName = fileChooser.getSelectedFile().getPath();
+                    JOptionPane.showMessageDialog(null, pathName);
+                    imagenPropuesta = new ImageIcon(pathName);
+                    Image imagenPrevia = imagenPropuesta.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                    imagenPropuesta = new ImageIcon(imagenPrevia, pathName);
+                    lblImagen.setIcon(imagenPropuesta);
+                    try {
+                    	imagen = levantarImagen(pathName);
+                    	imagen = scale(imagen, 150, 150);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+                }
+			}
+		});
+		btnSeleecionarImagen.setBounds(389, 226, 133, 20);
+		getContentPane().add(btnSeleecionarImagen);
+		
         entImagen = new JTextField();
         entImagen.setColumns(10);
         entImagen.setBounds(141, 142, 239, 19);
@@ -249,7 +283,7 @@ public class ModificarPropuesta extends JInternalFrame {
 	private void modificarPropuesta(ActionEvent arg0) {
 		if (!cmbPropuesta.getSelectedItem().equals(TEXTO_COMBO_PROPUESTA)) {
 			if (formularioOk()) {
-				DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, "", "", "", "");
+				DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, null, "", "", "");
 				DtCategoria dtCat = new DtCategoria(categoria);
 				DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat, null);
 				iPropuestaController.modificarPropuesta(dtPropuesta);
@@ -352,7 +386,7 @@ public class ModificarPropuesta extends JInternalFrame {
 			entProponente.setSelectedItem(dtPropuesta.getProponenteACargo().getNickname());
 			entTitulo.setText(dtPropuesta.getTitulo());
 			entDescripcion.setText(dtPropuesta.getDescripcion());
-			entImagen.setText(dtPropuesta.getImagen());
+			//entImagen.setText(dtPropuesta.getImagen());
 			entMontoNecesario.setText(String.valueOf(dtPropuesta.getMontoNecesario()));
 			entLugar.setText(dtPropuesta.getLugar());
 			entPrecioEntrada.setText(String.valueOf(dtPropuesta.getPrecioEntrada()));
@@ -391,4 +425,30 @@ public class ModificarPropuesta extends JInternalFrame {
 		entFechaEspectaculo.setEnabled(false);
 		entFechaPublicacion.setEnabled(false);
 	}
+	
+    private byte[] levantarImagen(String pathName) throws IOException {
+    	File file = new File(pathName);
+    	byte[] picInBytes = new byte[(int) file.length()];
+    	FileInputStream fileInputStream = new FileInputStream(file);
+    	fileInputStream.read(picInBytes);
+    	fileInputStream.close();
+		return picInBytes;
+    }
+    
+    public byte[] scale(byte[] fileData, int width, int height) throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream(fileData);
+        BufferedImage img = ImageIO.read(in);
+        if(height == 0) {
+            height = (width * img.getHeight())/ img.getWidth(); 
+        }
+        if(width == 0) {
+            width = (height * img.getWidth())/ img.getHeight();
+        }
+        Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0,0,0), null);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        ImageIO.write(imageBuff, "jpg", buffer);
+        return buffer.toByteArray();
+    }
 }

@@ -43,6 +43,8 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 
 public class ConsultarPropuesta extends JPanel {
 	private JTable tableDatos;
@@ -69,6 +71,8 @@ public class ConsultarPropuesta extends JPanel {
 	private JTextField txtPrecioEntrada;
 	private JTextField txtTipo;
 	private JTextField txtMontoRecaudado;
+	
+	private JLabel lblColaboradores;
 	/**
 	 * Create the panel.
 	 * @throws UsuarioNoExisteElUsuarioException 
@@ -142,7 +146,7 @@ public class ConsultarPropuesta extends JPanel {
 		add(lblImagen);
 		
 		tableColaboradores = new JTable();
-		tableColaboradores.setBounds(321, 170, 326, 117);
+		tableColaboradores.setBounds(319, 97, 203, 117);
 		add(tableColaboradores);
 		
 		txtLugar = new JTextField();
@@ -189,6 +193,10 @@ public class ConsultarPropuesta extends JPanel {
 		txtMontoRecaudado.setBounds(164, 276, 124, 19);
 		add(txtMontoRecaudado);
 		
+		lblColaboradores = new JLabel("Colaboradores:");
+		lblColaboradores.setBounds(356, 70, 117, 15);
+		add(lblColaboradores);
+		
 		
 		iPropController = IPC;
 		
@@ -197,89 +205,77 @@ public class ConsultarPropuesta extends JPanel {
 		listPropuestas = new JList<>(modelTitulos);
 		
 
-		
-		setTable(IPC, titulo);
+		if(titulo!=null)
+			setTable(IPC, titulo);
 	}
 	
 	public void setTable(IPropuestaController IPC,String t) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		System.out.println("Entro en setTableString \n");
-		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-		DtDatosPropuesta dtp2 =  IPC.consultarPropuesta(t);
-		System.out.println(" a ver si vos funcionas la concha de tu madre: " + dtp2.getTitulo());
-		txtTitulo.setText(dtp2.getTitulo());
-		txtDescripcion.setText(dtp2.getDescripcion());
-		txtImagen.setText(dtp2.getImagen());
-		txtMontoNecesario.setText(Double.toString(dtp2.getMontoNecesario()));
-		txtFechaEspectaculo.setText(sdf.format(dtp2.getFechaEspecatulo().getTime()));
-		txtFechaPublicacion.setText(sdf.format(dtp2.getFechaPublicacion()));
-		txtLugar.setText(dtp2.getLugar());
-		txtPrecioEntrada.setText(Double.toString(dtp2.getPrecioEntrada()));
-		//txtFechaDeNacimiento.setText(dtp2.getFechaNacimiento().getCalendarType());
-		txtTipo.setText(dtp2.getTitulo());
-		txtMontoRecaudado.setText(Double.toString(dtp2.getRecaudado()));
-		
-		
-//		ArrayList<DtPropuestaColaborada> ColaboracionesHechas = dtp2.getColaboracionesHechas();
-		
-		/*
-		data = new Object[ColaboracionesHechas.size()][columnNames.length];
-		System.out.println("armo la table ColaboracionesHechas.size: " + ColaboracionesHechas.size() +  " \n");
-		for (int i = 0; i < ColaboracionesHechas.size(); i++) {
-			for (int j = 0; j < columnNames.length; j++) {
-				switch (j) {
-				case 0:
-					data[i][j] = ColaboracionesHechas.get(i).getTitulo();
-					System.out.println("Titulo " + i + " " + ColaboracionesHechas.get(i).getTitulo() + "\n");
-					break;
-				case 1:
-					data[i][j] = ColaboracionesHechas.get(i).getDescripcion();
-					System.out.println("Titulo " + i + " " + ColaboracionesHechas.get(i).getTitulo() + "\n");
-					break;
-				}
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+		System.out.println("\n Titulo: " + t);
+		if(t!=null) {
+			DtDatosPropuesta dtp2 =  IPC.consultarPropuesta(t);
+			System.out.println("\n dtp2: " + dtp2.getTitulo());
+			if(dtp2!=null) {
+				System.out.println(" \n  Entra en adentro: " + dtp2.getTitulo());
+				txtTitulo.setText(dtp2.getTitulo());
+				txtDescripcion.setText(dtp2.getDescripcion());
+//				txtImagen.setText(dtp2.getImagen());
+				txtMontoNecesario.setText(Double.toString(dtp2.getMontoNecesario()));
+				if(dtp2.getFechaEspecatulo()!=null)
+					txtFechaEspectaculo.setText(sdf.format(dtp2.getFechaEspecatulo().getTime()));
+				if(dtp2.getFechaPublicacion()!=null)
+					txtFechaPublicacion.setText(sdf.format(dtp2.getFechaPublicacion().getTime()));
+				txtLugar.setText(dtp2.getLugar());
+				txtPrecioEntrada.setText(Double.toString(dtp2.getPrecioEntrada()));
+				//txtFechaDeNacimiento.setText(dtp2.getFechaNacimiento().getCalendarType());
+				txtTipo.setText(dtp2.getTitulo());
+				txtMontoRecaudado.setText(Double.toString(dtp2.getRecaudado()));
+				
+				if(dtp2.getColaboradores() != null)
+					agregarDatosTable(dtp2.getColaboradores());
 			}
-			
 		}
 		
-		tablePropuestaPublicada = new JTable(data, columnNames);
-				*/
-//		agregarDatosTable(dtp2.getColaboracionesHechas());
+//		
 		
 		System.out.println("Termino setListaDeProponentes \n");
 	}
 	
-	public void agregarDatosTable(ArrayList<DtPropuestaColaborada> ColaboracionesHechas) {
-		System.out.println("agregar datos table");
-		tableColaboradores.removeAll();
-		DefaultTableModel dm = new DefaultTableModel(0, 0);
-		System.out.println("dm.getRowCount(): " + dm.getRowCount());
-		while (dm.getRowCount()>0)
-        {
-			dm.removeRow(0);
-        }
-		
-	    String header[] = new String[] { "Titulo", "Descripcion", "Imagen",
-	            "Prop. Nickname", "Prop. Nombre", "Prop. Apellido", "Prop. Email", "Monto aportado", "Estado" };
-	    dm.setColumnIdentifiers(header);
-	    dm.addRow(header);
-	    tableColaboradores.setModel(dm);
-	    tableColaboradores.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-	    System.out.println("ColaboracionesHechas.size(): " + ColaboracionesHechas.size() + "\n"); 
-	    for (DtPropuestaColaborada dtp : ColaboracionesHechas) {
-		
-	        Vector<Object> data = new Vector<Object>();
-	        data.add(dtp.getTitulo());
-	        data.add(dtp.getDescripcion());
-	        data.add(dtp.getImagen());
-	        data.add(dtp.getProponenteACargo().getNickname());
-	        data.add(dtp.getProponenteACargo().getNombre());
-	        data.add(dtp.getProponenteACargo().getApellido());
-	        data.add(dtp.getProponenteACargo().getEmail());
-	        data.add(dtp.getMontoAportado());
-	        data.add(dtp.getEstadoActual());
-	        
-	        System.out.println("Titulo :- " + dtp.getTitulo());
-	        dm.addRow(data);
-
-	    }
+	public void agregarDatosTable(ArrayList<String> colaboradores) {
+		if(colaboradores.size()!=0) {
+//			tableColaboradores.setVisible(true);
+//			lblColaboradores.setText("Colaboradores:");
+			System.out.println("agregar datos table");
+			tableColaboradores.removeAll();
+			DefaultTableModel dm = new DefaultTableModel(0, 0);
+			System.out.println("dm.getRowCount(): " + dm.getRowCount());
+			while (dm.getRowCount()>0)        {
+				dm.removeRow(0);
+	        }
+			
+		    String header[] = new String[] { "NICKNAME:" }; //, "Descripcion", "Imagen","Prop. Nickname", "Prop. Nombre", "Prop. Apellido", "Prop. Email", "Monto aportado", "Estado" };
+		    dm.setColumnIdentifiers(header);
+		    dm.addRow(header);
+		    
+		    tableColaboradores.setModel(dm);
+		    tableColaboradores.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		    System.out.println("colaboradores.size(): " + colaboradores.size() + "\n"); 
+		    for (String col: colaboradores) {
+			
+		        Vector<Object> data = new Vector<Object>();
+		        data.add(col);
+		        
+		        System.out.println("Colaborador :- " + col);
+		        dm.addRow(data);
+	
+		    }
+		}else {
+//			System.out.println("No tiene colaboradores. \n");
+//			tableColaboradores.setVisible(false);
+//			lblColaboradores.setText("La propuesta no tiene colaboradores.");
+		}
+			
+	   
 	}
 }

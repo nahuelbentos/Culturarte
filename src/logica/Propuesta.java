@@ -3,9 +3,9 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import datatype.DtColaborador;
 import datatype.DtDatosPropuesta;
 import datatype.DtEstado;
-import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.EstadoPropuesta;
@@ -17,6 +17,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -31,8 +32,9 @@ public class Propuesta {
 	
 	@Column(name="DESCRIPCION")
 	private String descripcion;
+	@Lob
 	@Column(name="IMAGEN")
-	private String imagen;
+	private byte[] imagen;
 	@Column(name="MONTO_NECESARIO")
 	private double montoNecesario;
 	@Column(name="FECHA_PUBLICACION")
@@ -44,9 +46,10 @@ public class Propuesta {
 	@Column(name="LUGAR")
 	private String lugar;
 	@Column(name="TIPO_RETORNO")
+	@Enumerated(EnumType.STRING)
 	private TipoRetorno tipo;
 	@Column(name="ESTADO_ACTUAL")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private EstadoPropuesta estadoActual;
 	
 	
@@ -63,7 +66,7 @@ public class Propuesta {
 		super();
 	}
    
-   public Propuesta(String titulo, String descripcion, String imagen, 
+   public Propuesta(String titulo, String descripcion, byte[] imagen, 
 			double d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
 			double e, String lugar, TipoRetorno tipo) {
 	    this.titulo = titulo;
@@ -104,7 +107,7 @@ public class Propuesta {
         return fechaPublicacion;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
@@ -156,7 +159,7 @@ public class Propuesta {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
@@ -255,15 +258,16 @@ public class Propuesta {
 		/*
 		 * 
 		 * // CAMBIO EL METODO PARA PROBAR PERSISTENCIA
+		
 		 
-		ArrayList<DtColaborador> colaboradores = new ArrayList<DtColaborador>();
-				
-    	return new DtDatosPropuesta(titulo, descripcion, imagen, 
-				montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,
-				tipo, 0, colaboradores);
-    	*/
-
     	return null; //dtp;
+    	*/
+		
+		ArrayList<String> colaboradores = new ArrayList<String>();
+				
+    	return new DtDatosPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,tipo, 0, colaboradores);
+
+
     	
     }
 

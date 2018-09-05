@@ -4,7 +4,8 @@ import java.util.GregorianCalendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -36,6 +37,7 @@ public class Colaboracion {
 	@Column(name="FECHA_APORTADO")
 	private GregorianCalendar fechaAporte;
 	@Column(name="TIPO_RETORNO")
+	@Enumerated(EnumType.STRING)
 	private TipoRetorno tipo;
 	
 	public Colaboracion() {

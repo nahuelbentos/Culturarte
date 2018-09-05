@@ -6,9 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import logica.CategoriaController;
 import logica.ICategoriaController;
 import datatype.DtCategoria;
 import excepciones.CategoriaNoExisteException;
@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 
 @SuppressWarnings("serial")
@@ -26,6 +27,7 @@ public class AltaCategoria extends JInternalFrame {
 
 	private ICategoriaController iCategoriaController;
 	private DefaultMutableTreeNode categorias;
+	private DefaultTreeModel model;
 	private JTree treeCategorias;
 	private JTextField entCategoria;
 	private String categoria;
@@ -51,14 +53,8 @@ public class AltaCategoria extends JInternalFrame {
 		lblListaDeCategorias.setBounds(65, 11, 250, 14);
 		getContentPane().add(lblListaDeCategorias);
 		
-		listarCategorias();
-		treeCategorias = new JTree(categorias);
-		treeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
-		treeCategorias.setBounds(12, 37, 376, 184);
-		getContentPane().add(treeCategorias);
-		
 		entCategoria = new JTextField();
-		entCategoria.setBounds(155, 233, 233, 19);
+		entCategoria.setBounds(155, 246, 233, 19);
 		getContentPane().add(entCategoria);
 		entCategoria.setColumns(10);
 		
@@ -69,7 +65,7 @@ public class AltaCategoria extends JInternalFrame {
 				setVisible(false);
 			}
 		});
-		btnCancelar.setBounds(239, 305, 114, 25);
+		btnCancelar.setBounds(239, 312, 114, 25);
 		getContentPane().add(btnCancelar);
 		
 		JButton btnAceptar = new JButton("Confirmar");
@@ -79,41 +75,68 @@ public class AltaCategoria extends JInternalFrame {
 				limpiarFormulario();
 			}
 		});
-		btnAceptar.setBounds(45, 305, 114, 25);
+		btnAceptar.setBounds(45, 312, 114, 25);
 		getContentPane().add(btnAceptar);
 		
 		JLabel lblNuevaCategoria = new JLabel("Nueva categoria");
-		lblNuevaCategoria.setBounds(12, 235, 125, 15);
+		lblNuevaCategoria.setBounds(12, 248, 125, 15);
 		getContentPane().add(lblNuevaCategoria);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(12, 37, 376, 199);
+		getContentPane().add(scrollPane);
+		
+		treeCategorias = new JTree();
+		listarCategorias();
+		scrollPane.setViewportView(treeCategorias);
+		treeCategorias.setToolTipText("Seleccione mas de una manteniendo presionada la tecla Ctrl");
 	}
 	
 	public void listarCategorias() {
 		DtCategoria dtC[] = null;
-		//treeCategorias.removeAll();
-		categorias = new DefaultMutableTreeNode("Categorías");
 		dtC = iCategoriaController.listarCategorias();
+		
 		if (dtC != null) {
-			for(int i = 0; i < dtC.length; i++) {
-				DefaultMutableTreeNode categoria;
-				categoria = new DefaultMutableTreeNode(dtC[i].getNombre());
-				categorias.add(categoria);
+			for (DtCategoria i : dtC) {
+				categorias = hermosaRecursion(i);
 			}
+		}else
+			categorias = new DefaultMutableTreeNode("Categorías");
+		
+
+		model = new DefaultTreeModel(categorias);
+		treeCategorias.setModel(model);
+	}
+	
+	private DefaultMutableTreeNode hermosaRecursion(DtCategoria raiz) {
+		if (raiz==null) {
+			return null;
+		}else {
+			DefaultMutableTreeNode categoria = new DefaultMutableTreeNode(raiz.getNombre());
+			if (raiz.getSubCategorias()!=null) {
+				for (DtCategoria d : raiz.getSubCategorias()) {
+					DefaultMutableTreeNode local = new DefaultMutableTreeNode(d.getNombre());
+					local = hermosaRecursion(d);
+					if (local != null)
+						categoria.add(local);
+				}
+			}
+			return categoria;
 		}
 	}
 	
+	
 	private void altaDeCategoria() {
 		if (formularioOk()) {
-			
-			// FALTA AGREGAR QUE SE SUBAN LOS PADRES. El DtCategoria está mal hecho, ya que el ArrayList de padres es del tipo Categoria
 			ArrayList<DtCategoria> padres = new ArrayList<>();
 			if (treeCategorias.getSelectionPaths() != null) {
-			TreePath[] tpCol = treeCategorias.getSelectionPaths();
+				TreePath[] tpCol = treeCategorias.getSelectionPaths();
 				for (TreePath tp : tpCol) {
 					padres.add(new DtCategoria(tp.getLastPathComponent().toString()));
 				}
 			}
 			
-			DtCategoria dtC = new DtCategoria(categoria, padres);
+			DtCategoria dtC = new DtCategoria(categoria, padres, null);
 			try {
 				iCategoriaController.agregarCategoria(dtC);
 				JOptionPane.showMessageDialog(this, "La categoría se ha creado con éxito", "Alta de categoría", JOptionPane.INFORMATION_MESSAGE);
@@ -133,8 +156,7 @@ public class AltaCategoria extends JInternalFrame {
 	}
 	
 	private void limpiarFormulario() {
-		entCategoria.setText("");
 		listarCategorias();
-		// habría que refrescar el arbol de categorías
+		entCategoria.setText("");
 	}
 }
