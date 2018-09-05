@@ -9,12 +9,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.beans.PropertyVetoException;
@@ -25,13 +27,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import datatype.DtCategoria;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtUsuario;
+import excepciones.CategoriaNoExisteException;
+import excepciones.CategoriaYaExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
+import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.Factory;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
@@ -242,8 +248,12 @@ public class Principal {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					agregarUsuarios(e);
-				} catch (ParseException e1) {
-					e1.printStackTrace();
+					seguirUsuarios(e);
+					//agregarCategorias(e);
+					JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
+		                    JOptionPane.INFORMATION_MESSAGE);
+				} catch (ParseException | IOException | UsuarioYaSigueAlUsuarioException | URISyntaxException | UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException e1) {
+					JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -309,7 +319,7 @@ public class Principal {
 		mnUsuarios.add(mntmDejarDeSe);
 	}
 	
-	private void agregarUsuarios(ActionEvent e) throws ParseException {
+	private void agregarUsuarios(ActionEvent e) throws ParseException, UnsupportedEncodingException, IOException, URISyntaxException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
         String line = "";
         String cvsSplitBy = "\\|";
         
@@ -349,11 +359,45 @@ public class Principal {
             		IUC.agregarUsuario(dtUsuario);
             	}
             }
-        	JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
-                    JOptionPane.INFORMATION_MESSAGE);
-        } catch (UsuarioYaExisteElUsuarioException | IOException | URISyntaxException | UsuarioYaExisteElEmailException e1) {
-        	JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
-		}
+        }
+	}
+	
+	private void seguirUsuarios(ActionEvent e) throws ParseException, UsuarioYaSigueAlUsuarioException, IOException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("usuarioSigue.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosUsuario = line.split(cvsSplitBy);
+            	String usuarioUno = datosUsuario[0];
+            	String usuarioDos = datosUsuario[1];
+            	IUC.seguirUsuario(usuarioUno, usuarioDos);
+            }
+        }
+	}
+	
+	private void agregarCategorias(ActionEvent e) throws ParseException, UnsupportedEncodingException, IOException, CategoriaYaExisteException, CategoriaNoExisteException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("categorias.csv");
+        
+        DtCategoria[] dt = ICC.listarCategorias();
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosCategoria = line.split(cvsSplitBy);
+            	String nombreCategoria = datosCategoria[0];
+            	ArrayList<DtCategoria> padres = new ArrayList<>();
+            	padres.add(new DtCategoria(datosCategoria[1]));
+            	DtCategoria dtCategoria = new DtCategoria(nombreCategoria, padres, null);
+            	ICC.agregarCategoria(dtCategoria);
+            }
+        }
 	}
 	
 	private GregorianCalendar parsearFecha(String fecha) throws ParseException {
