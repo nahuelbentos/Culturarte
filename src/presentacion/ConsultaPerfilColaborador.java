@@ -28,18 +28,16 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 	 * @throws UsuarioNoExisteElUsuarioException 
 	 */
 	private VerPerfilColaborador verPerfilColaborador;
+	public ListarColaboradores listarColaboradores;
 	
-	public ConsultaPerfilColaborador(IUsuarioController IUC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException{
-		setNormalBounds(new Rectangle(0, 0, 800, 800));
+	public ConsultaPerfilColaborador(IUsuarioController IUC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException{
 		setClosable(true);
 		
 
 //		setNormalBounds(new Rectangle(0, 0, 0, 50));
 		//setBounds(100, 100, 673, 425);
 		setBounds(10, 10, 1045, 905);
-        setResizable(true);
         setIconifiable(true);
-        setMaximizable(true);
         getContentPane().setLayout(null);
         
         JPanel panelListarColaboradores = new JPanel();
@@ -47,7 +45,7 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
         getContentPane().add(panelListarColaboradores);
         panelListarColaboradores.setLayout(null);
         
-        ListarColaboradores listarColaboradores = new ListarColaboradores(IUC);
+        listarColaboradores = new ListarColaboradores(IUC);
         listarColaboradores.actualizarColaboradores();
         listarColaboradores.setBounds(0, 0, 400, 250);
         panelListarColaboradores.add(listarColaboradores);
@@ -56,6 +54,8 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 
         JPanel panelVerPerfilColaborador= new JPanel();
         panelVerPerfilColaborador.setBounds(0, 255, 965, 600);
+        getContentPane().add(panelVerPerfilColaborador);
+        panelVerPerfilColaborador.setLayout(null);
         
         
 		if(listarColaboradores.getColaboradorSeleccionado() != null)
@@ -65,9 +65,8 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 			verPerfilColaborador = new VerPerfilColaborador(IUC, listarColaboradores.getColaboradorSeleccionado());
 		}	
         verPerfilColaborador.setBounds(0, 25, 900, 550);
+        
         panelVerPerfilColaborador.add(verPerfilColaborador);
-        getContentPane().add(panelVerPerfilColaborador);
-        panelVerPerfilColaborador.setLayout(null);
         
         JButton btnVerPerfil = new JButton("Ver Perfil");
         btnVerPerfil.addActionListener(new ActionListener() {
