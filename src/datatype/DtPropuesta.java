@@ -10,11 +10,11 @@ public class DtPropuesta {
    private String titulo;
    private String descripcion;
    private byte[] imagen;
-   private double montoNecesario;
+   private float montoNecesario;
    private GregorianCalendar fechaPublicacion;
    private GregorianCalendar fechaEspecatulo;
    private String lugar;
-   private double precioEntrada;
+   private float precioEntrada;
    private TipoRetorno tipo;
    private float recaudado;
    private EstadoPropuesta estadoActual;
@@ -25,19 +25,19 @@ public class DtPropuesta {
    private DtCategoria categoria;
    private ArrayList<DtColaboracion> colaboraciones;
    
-   public DtPropuesta(String titulo, String descripcion, byte[] imagen, double montoNecesario,
-		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
+   public DtPropuesta(String titulo, String descripcion, byte[] imagen, float d,
+		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, float e,
 		TipoRetorno tipo, float recaudado, DtProponente proponenteACargo, EstadoPropuesta estadoActual,
 		ArrayList<DtEstado> estadoHistorial, DtCategoria categoria, ArrayList<DtColaboracion> colaboraciones) {
 	super();
 	this.titulo = titulo;
 	this.descripcion = descripcion;
 	this.imagen = imagen;
-	this.montoNecesario = montoNecesario;
+	this.montoNecesario = d;
 	this.fechaPublicacion = fechaPublicacion;
 	this.fechaEspecatulo = fechaEspecatulo;
 	this.lugar = lugar;
-	this.precioEntrada = precioEntrada;
+	this.precioEntrada = e;
 	this.tipo = tipo;
 	this.recaudado = recaudado;
 	this.proponenteACargo = proponenteACargo;
@@ -64,7 +64,7 @@ public class DtPropuesta {
 		return imagen;
 	}
 
-	public double getMontoNecesario() {
+	public float getMontoNecesario() {
 		return montoNecesario;
 	}
 
@@ -80,7 +80,7 @@ public class DtPropuesta {
 		return lugar;
 	}
 
-	public double getPrecioEntrada() {
+	public float getPrecioEntrada() {
 		return precioEntrada;
 	}
 

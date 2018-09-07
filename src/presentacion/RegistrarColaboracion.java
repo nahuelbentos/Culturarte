@@ -86,7 +86,7 @@ public class RegistrarColaboracion extends JInternalFrame {
 		btnSeleccionarPropuesta = new JButton("Seleccionar Propuesta");
 		btnSeleccionarPropuesta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//propuesta = grillaPropuestas.getPropuestaSeleccionada();
+				propuesta = grillaPropuestas.getPropuestaSeleccionada();
 				propSeleccionada.setPropuesta(propuesta);
 				propSeleccionada.setVisible(true);
 				

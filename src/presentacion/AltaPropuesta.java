@@ -66,9 +66,9 @@ public class AltaPropuesta extends JInternalFrame {
 	private JLabel lblProponente;
 	private JLabel lblTipoRetorno;
 	private JTextField entTitulo;
-	private JFormattedTextField entMontoNecesario;
+	private JTextField entMontoNecesario;
 	private JTextField entLugar;
-	private JFormattedTextField entPrecioEntrada;
+	private JTextField entPrecioEntrada;
 	private JDateChooser entFechaEspectaculo;
 	private JComboBox<String> entProponente;
 	private JComboBox<TipoRetorno> entTipoRetorno;
@@ -83,11 +83,11 @@ public class AltaPropuesta extends JInternalFrame {
 	private String titulo;
 	private String descripcion;
 	private byte[] imagen;
-	private double montoNecesario;
+	private float montoNecesario;
 	private GregorianCalendar fechaPublicacion;
 	private GregorianCalendar fechaEspecatulo;
 	private String lugar;
-	private double precioEntrada;
+	private float precioEntrada;
 	private TipoRetorno tipo;
 	private String nicknameProponente;
 	private String categoria;
@@ -186,6 +186,7 @@ public class AltaPropuesta extends JInternalFrame {
         	this.panelDatos.add(this.entDescripcion, gbc_entDescripcion);
         	
         	lblMontoNecesario = new JLabel("Monto necesario");
+        	
         	GridBagConstraints gbc_lblMontoNecesario = new GridBagConstraints();
         	gbc_lblMontoNecesario.anchor = GridBagConstraints.EAST;
         	gbc_lblMontoNecesario.insets = new Insets(0, 0, 5, 5);
@@ -193,15 +194,16 @@ public class AltaPropuesta extends JInternalFrame {
         	gbc_lblMontoNecesario.gridy = 2;
         	this.panelDatos.add(this.lblMontoNecesario, gbc_lblMontoNecesario);
         	
-        	entMontoNecesario = new JFormattedTextField(DecimalFormat.getInstance());
+        	entMontoNecesario = new JTextField();
         	GridBagConstraints gbc_entMontoNecesario = new GridBagConstraints();
         	gbc_entMontoNecesario.anchor = GridBagConstraints.WEST;
         	gbc_entMontoNecesario.insets = new Insets(0, 0, 5, 5);
         	gbc_entMontoNecesario.gridx = 1;
         	gbc_entMontoNecesario.gridy = 2;
         	this.panelDatos.add(this.entMontoNecesario, gbc_entMontoNecesario);
-        	entMontoNecesario.setValue(montoNecesario);
+//        	entMontoNecesario.setValue(montoNecesario);
         	entMontoNecesario.setColumns(10);
+        	
         	
         	lblFechaEspectculo = new JLabel("Fecha espectáculo");
         	GridBagConstraints gbc_lblFechaEspectculo = new GridBagConstraints();
@@ -244,14 +246,14 @@ public class AltaPropuesta extends JInternalFrame {
         	gbc_lblPrecioEntrada.gridy = 5;
         	this.panelDatos.add(this.lblPrecioEntrada, gbc_lblPrecioEntrada);
         	
-        	entPrecioEntrada = new JFormattedTextField(DecimalFormat.getInstance());
+        	entPrecioEntrada = new JTextField();
         	GridBagConstraints gbc_entPrecioEntrada = new GridBagConstraints();
         	gbc_entPrecioEntrada.anchor = GridBagConstraints.WEST;
         	gbc_entPrecioEntrada.insets = new Insets(0, 0, 5, 5);
         	gbc_entPrecioEntrada.gridx = 1;
         	gbc_entPrecioEntrada.gridy = 5;
         	this.panelDatos.add(this.entPrecioEntrada, gbc_entPrecioEntrada);
-        	entPrecioEntrada.setValue(precioEntrada);
+//        	entPrecioEntrada.setValue(precioEntrada);
         	entPrecioEntrada.setColumns(10);
         }
         
@@ -400,8 +402,8 @@ public class AltaPropuesta extends JInternalFrame {
 		titulo = entTitulo.getText();
 		descripcion = entDescripcion.getText();
 		
-		montoNecesario = Double.valueOf(entMontoNecesario.getText());
-		precioEntrada = Double.valueOf(entPrecioEntrada.getText());
+		montoNecesario = Float.parseFloat(entMontoNecesario.getText());
+		precioEntrada = Float.parseFloat(entPrecioEntrada.getText());
 		fechaPublicacion = new GregorianCalendar();
 		fechaEspecatulo = new GregorianCalendar();
 		if (entFechaEspectaculo.getDate() != null)
@@ -420,9 +422,9 @@ public class AltaPropuesta extends JInternalFrame {
 	private void limpiarFormulario() {
 		entTitulo.setText("");
 		entDescripcion.setText("");
-		entMontoNecesario.setValue(0);
+		entMontoNecesario.setText("");;
 		entLugar.setText("");
-		entPrecioEntrada.setValue(0);
+		entPrecioEntrada.setText("");;
 		entFechaEspectaculo.setDate(null);
 	}
 	

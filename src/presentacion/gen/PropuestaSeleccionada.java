@@ -196,7 +196,7 @@ public class PropuestaSeleccionada extends JPanel {
 	
 	public void setPropuesta(DtPropuesta prop) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-		try {
+		
 			entTitulo.setText(prop.getTitulo());
 			entDescripcion.setText(prop.getDescripcion());
 			entProponente.setText(prop.getProponenteACargo().getNickname());
@@ -207,11 +207,6 @@ public class PropuestaSeleccionada extends JPanel {
 				ImageIcon imageIcon = new ImageIcon(prop.getImagen());
 				lblImagen.setIcon(imageIcon);
 			}
-			
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
 		
 	}
 }

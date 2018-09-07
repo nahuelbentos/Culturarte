@@ -63,6 +63,8 @@ public class Principal {
 
 	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	
+	private ConsultaPropuestaPorEstado consultaPropuestaPorEstado;
+	
 	private IUsuarioController IUC;
 	private ICategoriaController ICC;
 	private IPropuestaController IPC;
@@ -132,6 +134,10 @@ public class Principal {
 		consultaPropuesta.setVisible(false);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		
+		consultaPropuestaPorEstado = new ConsultaPropuestaPorEstado(IPC);
+		consultaPropuestaPorEstado.setVisible(false);
+		
+		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		
@@ -149,6 +155,8 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(consultaPerfilColaborador);
 		frmPaginaPrincipal.getContentPane().add(consultaPropuesta);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
+		
+		frmPaginaPrincipal.getContentPane().add(consultaPropuestaPorEstado);
 	}
 
 	public void initialize() {
@@ -197,8 +205,13 @@ public class Principal {
 		});
 		mnPropuesta.add(mntmConsultaDePropuesta);
 
-		JMenuItem mntmConsultaDePropuestas = new JMenuItem("Consulta de Propuestas por estado");
-		mnPropuesta.add(mntmConsultaDePropuestas);
+		JMenuItem mntmConsultaDePropuestasPorEstado = new JMenuItem("Consulta de Propuestas por estado");
+		mntmConsultaDePropuestasPorEstado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				consultaPropuestaPorEstado.setVisible(true);
+			}
+		});
+		mnPropuesta.add(mntmConsultaDePropuestasPorEstado);
 
 		JMenu mnCategra = new JMenu("Categor\u00EDas");
 		mnNewMenu.add(mnCategra);
