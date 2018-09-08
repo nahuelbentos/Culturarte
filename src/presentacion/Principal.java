@@ -227,29 +227,29 @@ public class Principal {
 		});
 		mnCategra.add(mntmAltaDeCategrpia);
 		
-				JMenu mnColaboraciones = new JMenu("Colaboraciones");
-				mnNewMenu.add(mnColaboraciones);
+		JMenu mnColaboraciones = new JMenu("Colaboraciones");
+		mnNewMenu.add(mnColaboraciones);
 				
-						JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
-						mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								registrarColaboracion.refreshFrame();
-								registrarColaboracion.setVisible(true);
-							}
-						});
-						mnColaboraciones.add(mntmRegistrarColaboracinA);
-						
-								JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");
-								mnColaboraciones.add(mntmCancelarColaboracinA);
-								
-										JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
-										mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
-											public void actionPerformed(ActionEvent e) {
-												consColProp.setListarColaboradores();
-												consColProp.setVisible(true);
-											}
-										});
-										mnColaboraciones.add(mntmConsultaDeColaboracin);
+		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
+		mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				registrarColaboracion.refreshFrame();
+				registrarColaboracion.setVisible(true);
+			}
+		});
+		mnColaboraciones.add(mntmRegistrarColaboracinA);
+
+		JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");
+		mnColaboraciones.add(mntmCancelarColaboracinA);
+		
+		JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
+		mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				consColProp.setListarColaboradores();
+				consColProp.setVisible(true);
+			}
+		});
+		mnColaboraciones.add(mntmConsultaDeColaboracin);
 		
 		JMenu mnNewMenu_1 = new JMenu("Datos");
 		mnNewMenu.add(mnNewMenu_1);
@@ -296,7 +296,6 @@ public class Principal {
 		mntmConsultaDeProponente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				consultaPerfilProponente.setVisible(true);
-				
 			}
 		});
 		mnPerfiles.add(mntmConsultaDeProponente);

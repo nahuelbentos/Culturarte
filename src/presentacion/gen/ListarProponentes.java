@@ -1,26 +1,15 @@
-package presentacion;
+package presentacion.gen;
 
 import javax.swing.JPanel;
 
-import datatype.DtColaborador;
 import datatype.DtUsuario;
 import logica.IUsuarioController;
 
-
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.util.ArrayList;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.border.TitledBorder;
