@@ -69,7 +69,7 @@ public class Proponente extends Usuario{
     	
     	DtPerfilProponente dtp = new DtPerfilProponente(this.getNickname(), this.getNombre(), this.getApellido(), this.getCorreoElectronico(), 
     													this.getFechaNacimiento(), this.getImagen(), this.getDireccion(), this.getBiografia(),
-    													this.getLinkWeb(),null, null, null, null, null); //null=Son las colecciones.    	
+    													this.getLinkWeb(),null,null, null, null, null, null); //null=Son las colecciones.    	
 		return dtp;
     	
     }

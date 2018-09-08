@@ -274,34 +274,6 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 		txtCorreo.setText(dtProponente.getEmail());
 		txtDireccion.setText(dtProponente.getDireccion());
 		
-		/*
-		EstadoPropuesta estadoSeleccionado = (EstadoPropuesta)cmbEstado.getSelectedItem();
-		
-		switch (estadoSeleccionado) {
-			case ingresada:
-				cargarPropuestasPerfil(dtProponente.getPrPublicadas());
-				break;
-			case publicada:
-				cargarPropuestasPerfil(dtProponente.getPrPublicadas());
-				break;
-			case enFinanciacion:
-				cargarPropuestasPerfil(dtProponente.getPrEnFinanciacion());
-				break;
-			case financiada:
-				cargarPropuestasPerfil(dtProponente.getPrFinanciadas());
-				break;
-			case cancelada:
-				cargarPropuestasPerfil(dtProponente.getPrCanceladas());
-				break;
-			case noFinanciada:
-				cargarPropuestasPerfil(dtProponente.getPrNoFinanciadas());
-				break;
-			default:
-				break;
-		}
-		*/
-		
-		
 	}
 	
 	public void cargarPropuestasPerfil(ArrayList<DtPropuesta> propuestas) {
@@ -348,7 +320,7 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 			
 			switch (estadoSeleccionado) {
 				case ingresada:
-					cargarPropuestasPerfil(dtProponente.getPrPublicadas());
+					cargarPropuestasPerfil(dtProponente.getPrIngresadas());
 					break;
 				case publicada:
 					cargarPropuestasPerfil(dtProponente.getPrPublicadas());
@@ -395,7 +367,7 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 		switch (estadoSeleccionado) {
 		 
 			case ingresada:
-				propuestaSel.setPropuesta(dtProponente.getPrPublicadas().get(filaSel));
+				propuestaSel.setPropuesta(dtProponente.getPrIngresadas().get(filaSel));
 				break;
 			case publicada:
 				propuestaSel.setPropuesta(dtProponente.getPrPublicadas().get(filaSel));
@@ -472,7 +444,13 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 		txtApellido.setText("");
 		txtCorreo.setText("");
 		txtDireccion.setText("");
+		
 		initTableGrilla(true, EstadoPropuesta.ingresada);
+		//initPanelPropuestas(true, EstadoPropuesta.ingresada);
+	}
+	
+	public void refreshFrame() {
+		listarProponentes.setListaDeProponentes();
 	}
 	
 }

@@ -295,6 +295,7 @@ public class Principal {
 		JMenuItem mntmConsultaDeProponente = new JMenuItem("Consulta de Perfil de proponente");
 		mntmConsultaDeProponente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				consultaPerfilProponente.refreshFrame();
 				consultaPerfilProponente.setVisible(true);
 			}
 		});
