@@ -272,6 +272,7 @@ public class UsuarioController implements IUsuarioController {
 	    		ArrayList<DtPropuesta> prEnFinanciacion = new ArrayList<DtPropuesta>();
 	    		ArrayList<DtPropuesta> prFinanciadas = new ArrayList<DtPropuesta>();
 	    		ArrayList<DtPropuesta> prNoFinanciadas = new ArrayList<DtPropuesta>();
+	    		ArrayList<DtPropuesta> prIngresadas = new ArrayList<DtPropuesta>();
 
 	    		for(int i = 0; i < propouestas.size(); i++) { //3
 	    			Propuesta prop = propouestas.get(i);
@@ -306,6 +307,9 @@ public class UsuarioController implements IUsuarioController {
 	    					case noFinanciada:
 	    						prNoFinanciadas.add(dataPro);
 	    						break;
+	    					case ingresada:
+	    						prIngresadas.add(dataPro);
+	    						break;
 	    					default:
 	    						break;
 	    				}
@@ -315,14 +319,14 @@ public class UsuarioController implements IUsuarioController {
 	    		return new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
 	    				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
 	    				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
-	    				prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
+	    				prIngresadas, prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
         	}else
         		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", null,
-            			null,"pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
+            			null,"pruebaController", "pruebaController", "pruebaController",null,null, null, null, null, null);
 
         }else {
         	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", null,
-        			null,"pruebaController", "pruebaController", "pruebaController",null, null, null, null, null);
+        			null,"pruebaController", "pruebaController", "pruebaController",null,null, null, null, null, null);
         }
 
 

@@ -63,6 +63,8 @@ public class Principal {
 
 	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	
+	private ConsultaPropuestaPorEstado consultaPropuestaPorEstado;
+	
 	private IUsuarioController IUC;
 	private ICategoriaController ICC;
 	private IPropuestaController IPC;
@@ -132,6 +134,10 @@ public class Principal {
 		consultaPropuesta.setVisible(false);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		
+		consultaPropuestaPorEstado = new ConsultaPropuestaPorEstado(IPC);
+		consultaPropuestaPorEstado.setVisible(false);
+		
+		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
 		
@@ -149,6 +155,8 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(consultaPerfilColaborador);
 		frmPaginaPrincipal.getContentPane().add(consultaPropuesta);
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
+		
+		frmPaginaPrincipal.getContentPane().add(consultaPropuestaPorEstado);
 	}
 
 	public void initialize() {
@@ -197,8 +205,13 @@ public class Principal {
 		});
 		mnPropuesta.add(mntmConsultaDePropuesta);
 
-		JMenuItem mntmConsultaDePropuestas = new JMenuItem("Consulta de Propuestas por estado");
-		mnPropuesta.add(mntmConsultaDePropuestas);
+		JMenuItem mntmConsultaDePropuestasPorEstado = new JMenuItem("Consulta de Propuestas por estado");
+		mntmConsultaDePropuestasPorEstado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				consultaPropuestaPorEstado.setVisible(true);
+			}
+		});
+		mnPropuesta.add(mntmConsultaDePropuestasPorEstado);
 
 		JMenu mnCategra = new JMenu("Categor\u00EDas");
 		mnNewMenu.add(mnCategra);
@@ -214,29 +227,29 @@ public class Principal {
 		});
 		mnCategra.add(mntmAltaDeCategrpia);
 		
-				JMenu mnColaboraciones = new JMenu("Colaboraciones");
-				mnNewMenu.add(mnColaboraciones);
+		JMenu mnColaboraciones = new JMenu("Colaboraciones");
+		mnNewMenu.add(mnColaboraciones);
 				
-						JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
-						mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								registrarColaboracion.refreshFrame();
-								registrarColaboracion.setVisible(true);
-							}
-						});
-						mnColaboraciones.add(mntmRegistrarColaboracinA);
-						
-								JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");
-								mnColaboraciones.add(mntmCancelarColaboracinA);
-								
-										JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
-										mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
-											public void actionPerformed(ActionEvent e) {
-												consColProp.setListarColaboradores();
-												consColProp.setVisible(true);
-											}
-										});
-										mnColaboraciones.add(mntmConsultaDeColaboracin);
+		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
+		mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				registrarColaboracion.refreshFrame();
+				registrarColaboracion.setVisible(true);
+			}
+		});
+		mnColaboraciones.add(mntmRegistrarColaboracinA);
+
+		JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");
+		mnColaboraciones.add(mntmCancelarColaboracinA);
+		
+		JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
+		mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				consColProp.setListarColaboradores();
+				consColProp.setVisible(true);
+			}
+		});
+		mnColaboraciones.add(mntmConsultaDeColaboracin);
 		
 		JMenu mnNewMenu_1 = new JMenu("Datos");
 		mnNewMenu.add(mnNewMenu_1);
@@ -282,8 +295,8 @@ public class Principal {
 		JMenuItem mntmConsultaDeProponente = new JMenuItem("Consulta de Perfil de proponente");
 		mntmConsultaDeProponente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				consultaPerfilProponente.refreshFrame();
 				consultaPerfilProponente.setVisible(true);
-				
 			}
 		});
 		mnPerfiles.add(mntmConsultaDeProponente);

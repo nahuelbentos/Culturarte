@@ -36,13 +36,13 @@ public class Propuesta {
 	@Column(name="IMAGEN")
 	private byte[] imagen;
 	@Column(name="MONTO_NECESARIO")
-	private double montoNecesario;
+	private float montoNecesario;
 	@Column(name="FECHA_PUBLICACION")
 	private GregorianCalendar fechaPublicacion;
 	@Column(name="FECHA_ESPECTACULO")
 	private GregorianCalendar fechaEspecatulo;
 	@Column(name="PRECIO_ENTRADA")
-	private double precioEntrada;
+	private float precioEntrada;
 	@Column(name="LUGAR")
 	private String lugar;
 	@Column(name="TIPO_RETORNO")
@@ -67,8 +67,8 @@ public class Propuesta {
 	}
    
    public Propuesta(String titulo, String descripcion, byte[] imagen, 
-			double d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
-			double e, String lugar, TipoRetorno tipo) {
+			float d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
+			float e, String lugar, TipoRetorno tipo) {
 	    this.titulo = titulo;
 	    this.descripcion = descripcion;
 	    this.imagen = imagen;
@@ -115,11 +115,11 @@ public class Propuesta {
         return lugar;
     }
 
-    public double getMontoNecesario() {
+    public float getMontoNecesario() {
         return montoNecesario;
     }
 
-    public double getPrecioEntrada() {
+    public float getPrecioEntrada() {
         return precioEntrada;
     }
 
