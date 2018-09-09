@@ -54,7 +54,9 @@ public class Principal {
 	private DejarDeSeguirUsuario dejarDeSeguirUsuario;
 	private ConsultaColaboracionPropuesta consColProp;
 	private RegistrarColaboracion registrarColaboracion;
-
+	private EvaluarPropuestas evaluarPropuestas;
+	
+	
 	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 
 	private ConsultaPerfilProponente consultaPerfilProponente;
@@ -68,6 +70,7 @@ public class Principal {
 	private IUsuarioController IUC;
 	private ICategoriaController ICC;
 	private IPropuestaController IPC;
+	private JMenuItem mntmEvaluarPropuesta;
 	
 	/**
 	 * Launch the application.
@@ -112,6 +115,9 @@ public class Principal {
 		
 		modificarPropuesta = new ModificarPropuesta(IUC, ICC, IPC);
 		modificarPropuesta.setVisible(false);
+		
+		evaluarPropuestas = new EvaluarPropuestas(IPC);
+		evaluarPropuestas.setVisible(false);
 
 		seguirUsuario = new SeguirUsuario(IUC);
 		seguirUsuario.setVisible(false);
@@ -144,6 +150,7 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
 		frmPaginaPrincipal.getContentPane().add(modificarPropuesta);
+		frmPaginaPrincipal.getContentPane().add(evaluarPropuestas);
 		frmPaginaPrincipal.getContentPane().add(seguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(consColProp);
@@ -195,6 +202,16 @@ public class Principal {
 				modificarPropuesta.setVisible(true);
 			}
 		});
+		{
+			mntmEvaluarPropuesta = new JMenuItem("Evaluar Propuestas");
+			mntmEvaluarPropuesta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					evaluarPropuestas.refreshFrame();
+					evaluarPropuestas.setVisible(true);
+				}
+			});
+			mnPropuesta.add(mntmEvaluarPropuesta);
+		}
 		mnPropuesta.add(mntmModificarDatosDe);
 
 		JMenuItem mntmConsultaDePropuesta = new JMenuItem("Consulta de Propuesta");

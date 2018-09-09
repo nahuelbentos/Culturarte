@@ -23,7 +23,7 @@ import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
-import logica.handler.ColaboracionHandler;
+
 public class UsuarioController implements IUsuarioController {
 
 	private static EntityManager em;

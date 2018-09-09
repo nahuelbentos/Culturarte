@@ -3,18 +3,15 @@ package logica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import datatype.DtColaboracion;
-import datatype.DtColaborador;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
-import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
@@ -22,8 +19,6 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
-import logica.handler.ColaboracionHandler;
-
 public class PropuestaController implements IPropuestaController {
 
 	private static EntityManager em;
@@ -317,19 +312,6 @@ public class PropuestaController implements IPropuestaController {
 					}
 				}
 				
-		
-//				System.out.println("\n Titulo: " + datapro.getTitulo());
-//				System.out.println("\n Descripcion: " + datapro.getDescripcion());
-//				System.out.println("\n Imagen: " + datapro.getImagen());
-//				System.out.println("\n Monto Necesario: " + datapro.getMontoNecesario());
-//				System.out.println("\n Fecha Publicacion: " + datapro.getFechaPublicacion());
-//				System.out.println("\n Fecha Especatulo: " + datapro.getFechaEspecatulo());
-//				System.out.println("\n Lugar: " + datapro.getLugar());
-//				System.out.println("\n Precio Entrada: " + datapro.getPrecioEntrada());
-//				System.out.println("\n Tipo: " + datapro.getTipo());
-//				System.out.println("\n montoTotal: " + montoTotal);
-//				System.out.println("\n colaboradores: " + colaboradores);
-				
 				return  new DtDatosPropuesta(datapro.getTitulo(), datapro.getDescripcion(), datapro.getImagen(),
 				datapro.getMontoNecesario(), datapro.getFechaPublicacion(), datapro.getFechaEspecatulo(), datapro.getLugar(),
 				datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores);
@@ -340,4 +322,59 @@ public class PropuestaController implements IPropuestaController {
 		
 	}
 
+	@Override
+	public void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException {
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		
+		em.createQuery("UPDATE Propuesta SET estado_actual = :estado WHERE titulo = :titulo")
+		.setParameter("estado",estado.toString())
+		.setParameter("titulo", titulo)
+		.executeUpdate();
+		
+		Propuesta p = em.find(Propuesta.class, titulo);
+		if (p != null) {
+			/* ** Agrego estado al historial de la propuesta ** */
+			// Actualizo historial del estado de la propuesta
+			Estado e = new Estado(estado, p, new GregorianCalendar());
+			em.persist(e);
+			
+			em.getTransaction().commit();
+			em.close();
+		}else {
+			em.getTransaction().rollback();
+			em.close();
+			throw new PropuestaNoExisteException("No existe la propuesta " + titulo + " en el sistema.");
+		}
+
+		
+	}
+
+	@Override
+	public DtPropuestaMinificado[] listadoPropuestasIngresadas() throws PropuestaNoExisteException {
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada'").getResultList();
+        em.close();
+        
+        if (propuestas != null) {
+			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
+			Propuesta pro;
+			for (int i = 0; i < propsMin.length; i++) {
+				pro = propuestas.get(i);
+				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
+			}
+			
+			
+			return propsMin;
+		}else {
+			
+			throw new PropuestaNoExisteException("No quedan propuestas por evaluar");
+		}
+	}
 }

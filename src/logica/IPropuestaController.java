@@ -44,8 +44,12 @@ public interface IPropuestaController {
 	// Revisar si est�n bien los par�metros que recibe
 	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
 	
-	
 	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException;
+	
+	public abstract DtPropuestaMinificado[] listadoPropuestasIngresadas() throws PropuestaNoExisteException;;
+
+	public abstract void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException;
+	
 	
 }
 

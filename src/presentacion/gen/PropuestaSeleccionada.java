@@ -38,7 +38,7 @@ public class PropuestaSeleccionada extends JPanel {
 		setBorder(new TitledBorder(null, "Datos de la propuesta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{89, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{30, 14, 47, 14, 15, 0, 14, 107, 33, 0};
+		gridBagLayout.rowHeights = new int[]{30, 14, 47, 14, 15, 0, 14, 184, 33, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
@@ -182,6 +182,8 @@ public class PropuestaSeleccionada extends JPanel {
 		}
 		{
 			entProponente = new JTextField();
+			entProponente.setEnabled(false);
+			entProponente.setEditable(false);
 			entProponente.setDisabledTextColor(Color.DARK_GRAY);
 			GridBagConstraints gbc_entProponente = new GridBagConstraints();
 			gbc_entProponente.gridwidth = 2;
@@ -197,16 +199,16 @@ public class PropuestaSeleccionada extends JPanel {
 	public void setPropuesta(DtPropuesta prop) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
 		
-			entTitulo.setText(prop.getTitulo());
-			entDescripcion.setText(prop.getDescripcion());
-			entProponente.setText(prop.getProponenteACargo().getNickname());
-			entFechaEspectaculo.setText(sdf.format(prop.getFechaEspecatulo().getTime()));
-			entMontoNecesario.setText(Double.toString(prop.getMontoNecesario()));
-			entRecaudado.setText(Double.toString(prop.getRecaudado()));
-			if(prop.getImagen() != null) {
-				ImageIcon imageIcon = new ImageIcon(prop.getImagen());
-				lblImagen.setIcon(imageIcon);
-			}
+		entTitulo.setText(prop.getTitulo());
+		entDescripcion.setText(prop.getDescripcion());
+		entProponente.setText(prop.getProponenteACargo().getNickname());
+		entFechaEspectaculo.setText(sdf.format(prop.getFechaEspecatulo().getTime()));
+		entMontoNecesario.setText(Double.toString(prop.getMontoNecesario()));
+		entRecaudado.setText(Double.toString(prop.getRecaudado()));
+		if(prop.getImagen() != null) {
+			ImageIcon imageIcon = new ImageIcon(prop.getImagen());
+			lblImagen.setIcon(imageIcon);
+		}
 		
 	}
 }
