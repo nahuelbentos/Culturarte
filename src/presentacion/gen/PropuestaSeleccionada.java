@@ -201,6 +201,7 @@ public class PropuestaSeleccionada extends JPanel {
 			entDescripcion.setText(prop.getDescripcion());
 			entProponente.setText(prop.getProponenteACargo().getNickname());
 			entFechaEspectaculo.setText(sdf.format(prop.getFechaEspecatulo().getTime()));
+			System.out.println("Monto necesario: " + Double.toString(prop.getMontoNecesario()) );
 			entMontoNecesario.setText(Double.toString(prop.getMontoNecesario()));
 			entRecaudado.setText(Double.toString(prop.getRecaudado()));
 			if(prop.getImagen() != null) {

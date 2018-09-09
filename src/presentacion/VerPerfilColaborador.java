@@ -20,6 +20,7 @@ import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
+import datatype.EstadoPropuesta;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.IUsuarioController;
@@ -38,8 +39,13 @@ import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import java.awt.GridBagLayout;
+import javax.swing.border.TitledBorder;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class VerPerfilColaborador extends JPanel {
 	private JTable tableDatos;
@@ -53,7 +59,6 @@ public class VerPerfilColaborador extends JPanel {
 	private JTextField txtApellido;
 	private JTextField txtEmail;
 	private JTextField txtFechaDeNacimiento;
-	private JTextField txtImagen;
 	private JTable tablePropuestaPublicada;
 	
 	private Object[][] data;
@@ -62,6 +67,9 @@ public class VerPerfilColaborador extends JPanel {
 	                              "Titulo:",
 	                              "Por:"};	
 	private JTable tableColaboracionesHechas;
+	private JPanel perfilCompleto;
+	private JLabel lblImagen;
+	private JPanel panel;
 	/**
 	 * Create the panel.
 	 * @throws UsuarioNoExisteElUsuarioException 
@@ -70,71 +78,109 @@ public class VerPerfilColaborador extends JPanel {
 	public VerPerfilColaborador(IUsuarioController IUC,String nickname) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		setLayout(null);
 		
-		txtNickname = new JTextField();
-		txtNickname.setEnabled(false);
-		txtNickname.setBounds(164, 27, 124, 19);
-		add(txtNickname);
-		txtNickname.setColumns(10);
-		
-		JLabel lblNickname = new JLabel("Nickname:");
-		lblNickname.setBounds(12, 27, 101, 15);
-		add(lblNickname);
-		
-		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(12, 56, 66, 15);
-		add(lblNombre);
-		
-		txtNombre = new JTextField();
-		txtNombre.setEnabled(false);
-		txtNombre.setEditable(true);
-		txtNombre.setText("");
-		txtNombre.setBounds(164, 56, 124, 19);
-		add(txtNombre);
-		txtNombre.setColumns(10);
-		
-		JLabel lblApellido = new JLabel("Apellido:");
-		lblApellido.setBounds(12, 83, 66, 15);
-		add(lblApellido);
-		
-		txtApellido = new JTextField();
-		txtApellido.setEnabled(false);
-		txtApellido.setBounds(164, 87, 124, 19);
-		add(txtApellido);
-		txtApellido.setColumns(10);
-		
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setBounds(12, 114, 66, 15);
-		add(lblEmail);
-		
-		txtEmail = new JTextField();
-		txtEmail.setEnabled(false);
-		txtEmail.setBounds(164, 114, 124, 19);
-		add(txtEmail);
-		txtEmail.setColumns(10);
-		
-		JLabel lblFechaDeNacimiento = new JLabel("Fecha de nacimiento:");
-		lblFechaDeNacimiento.setBounds(12, 137, 159, 15);
-		add(lblFechaDeNacimiento);
-		
-		txtFechaDeNacimiento = new JTextField();
-		txtFechaDeNacimiento.setEnabled(false);
-		txtFechaDeNacimiento.setBounds(164, 139, 124, 19);
-		add(txtFechaDeNacimiento);
-		txtFechaDeNacimiento.setColumns(10);
-		
-		txtImagen = new JTextField();
-		txtImagen.setEnabled(false);
-		txtImagen.setBounds(164, 168, 124, 19);
-		add(txtImagen);
-		txtImagen.setColumns(10);
-		
 		JLabel lblImagen = new JLabel("Imagen:");
-		lblImagen.setBounds(12, 166, 66, 15);
+		lblImagen.setBounds(70, 27, 66, 15);
 		add(lblImagen);
 		
 		tableColaboracionesHechas = new JTable();
 		tableColaboracionesHechas.setBounds(12, 231, 850, 172);
 		add(tableColaboracionesHechas);
+		
+		perfilCompleto = new JPanel();
+		perfilCompleto.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Perfil", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		perfilCompleto.setBounds(362, 12, 270, 207);
+		add(perfilCompleto);
+		GridBagLayout gbl_perfilCompleto = new GridBagLayout();
+		gbl_perfilCompleto.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_perfilCompleto.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_perfilCompleto.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_perfilCompleto.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		perfilCompleto.setLayout(gbl_perfilCompleto);
+		
+		JLabel lblNickname = new JLabel("Nickname:");
+		GridBagConstraints gbc_lblNickname = new GridBagConstraints();
+		gbc_lblNickname.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNickname.gridx = 1;
+		gbc_lblNickname.gridy = 0;
+		perfilCompleto.add(lblNickname, gbc_lblNickname);
+		
+		txtNickname = new JTextField();
+		txtNickname.setEnabled(false);
+		GridBagConstraints gbc_txtNickname = new GridBagConstraints();
+		gbc_txtNickname.insets = new Insets(0, 0, 5, 0);
+		gbc_txtNickname.gridx = 2;
+		gbc_txtNickname.gridy = 0;
+		perfilCompleto.add(txtNickname, gbc_txtNickname);
+		txtNickname.setColumns(10);
+		
+		JLabel lblNombre = new JLabel("Nombre:");
+		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
+		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNombre.gridx = 1;
+		gbc_lblNombre.gridy = 1;
+		perfilCompleto.add(lblNombre, gbc_lblNombre);
+		
+		txtNombre = new JTextField();
+		GridBagConstraints gbc_txtNombre = new GridBagConstraints();
+		gbc_txtNombre.insets = new Insets(0, 0, 5, 0);
+		gbc_txtNombre.gridx = 2;
+		gbc_txtNombre.gridy = 1;
+		perfilCompleto.add(txtNombre, gbc_txtNombre);
+		txtNombre.setEnabled(false);
+		txtNombre.setEditable(true);
+		txtNombre.setText("");
+		txtNombre.setColumns(10);
+		
+		JLabel lblApellido = new JLabel("Apellido:");
+		GridBagConstraints gbc_lblApellido = new GridBagConstraints();
+		gbc_lblApellido.insets = new Insets(0, 0, 5, 5);
+		gbc_lblApellido.gridx = 1;
+		gbc_lblApellido.gridy = 2;
+		perfilCompleto.add(lblApellido, gbc_lblApellido);
+		
+		txtApellido = new JTextField();
+		GridBagConstraints gbc_txtApellido = new GridBagConstraints();
+		gbc_txtApellido.insets = new Insets(0, 0, 5, 0);
+		gbc_txtApellido.gridx = 2;
+		gbc_txtApellido.gridy = 2;
+		perfilCompleto.add(txtApellido, gbc_txtApellido);
+		txtApellido.setEnabled(false);
+		txtApellido.setColumns(10);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
+		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
+		gbc_lblEmail.gridx = 1;
+		gbc_lblEmail.gridy = 3;
+		perfilCompleto.add(lblEmail, gbc_lblEmail);
+		
+		txtEmail = new JTextField();
+		GridBagConstraints gbc_txtEmail = new GridBagConstraints();
+		gbc_txtEmail.insets = new Insets(0, 0, 5, 0);
+		gbc_txtEmail.gridx = 2;
+		gbc_txtEmail.gridy = 3;
+		perfilCompleto.add(txtEmail, gbc_txtEmail);
+		txtEmail.setEnabled(false);
+		txtEmail.setColumns(10);
+		
+		JLabel lblFechaDeNacimiento = new JLabel("F. Nacimiento:");
+		GridBagConstraints gbc_lblFechaDeNacimiento = new GridBagConstraints();
+		gbc_lblFechaDeNacimiento.insets = new Insets(0, 0, 0, 5);
+		gbc_lblFechaDeNacimiento.gridx = 1;
+		gbc_lblFechaDeNacimiento.gridy = 4;
+		perfilCompleto.add(lblFechaDeNacimiento, gbc_lblFechaDeNacimiento);
+		
+		txtFechaDeNacimiento = new JTextField();
+		GridBagConstraints gbc_txtFechaDeNacimiento = new GridBagConstraints();
+		gbc_txtFechaDeNacimiento.gridx = 2;
+		gbc_txtFechaDeNacimiento.gridy = 4;
+		perfilCompleto.add(txtFechaDeNacimiento, gbc_txtFechaDeNacimiento);
+		txtFechaDeNacimiento.setEnabled(false);
+		txtFechaDeNacimiento.setColumns(10);
+		
+		panel = new JPanel();
+		panel.setBounds(335, 278, 198, 92);
+		add(panel);
 		
 		
 		iUsuController = IUC;
@@ -200,5 +246,30 @@ public class VerPerfilColaborador extends JPanel {
 	        dm.addRow(data);
 
 	    }
+	}
+
+	private void cargarPerfil(String nickname) {
+		limpiarPanel();
+		DtPerfilColaborador dtc =  iUsuController.verPerfilColaborador(nickname);
+		if(dtc.getImagen() != null) {
+			ImageIcon imageIcon = new ImageIcon(dtc.getImagen());
+			lblImagen.setIcon(imageIcon);
+		}
+		txtNickname.setText(dtc.getNickname());
+		txtNombre.setText(dtc.getNombre());
+		txtApellido.setText(dtc.getApellido());
+		txtEmail.setText(dtc.getEmail());
+		
+	}
+	
+	private void limpiarPanel() {
+		lblImagen.setIcon(null);
+		txtNickname.setText("");
+		txtNombre.setText("");
+		txtApellido.setText("");
+		txtEmail.setText("");
+		
+//		initTableGrilla(true, EstadoPropuesta.ingresada);
+		//initPanelPropuestas(true, EstadoPropuesta.ingresada);
 	}
 }
