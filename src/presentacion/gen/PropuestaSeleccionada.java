@@ -209,6 +209,5 @@ public class PropuestaSeleccionada extends JPanel {
 			ImageIcon imageIcon = new ImageIcon(prop.getImagen());
 			lblImagen.setIcon(imageIcon);
 		}
-		
 	}
 }

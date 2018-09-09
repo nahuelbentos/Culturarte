@@ -11,10 +11,10 @@
 		<class>logica.Propuesta</class>
 		<class>logica.Categoria</class>
 		<class>logica.Colaboracion</class>
-		
+
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
- 
+
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/db_culturarte" />
             <property name="javax.persistence.jdbc.user" value="postgres" />
             <property name="javax.persistence.jdbc.password" value="postgres" />

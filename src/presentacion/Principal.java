@@ -321,7 +321,14 @@ public class Principal {
 		JMenuItem mntmConsultaDePerfilColaborador = new JMenuItem("Consulta de Perfil de colaborador");
 		mntmConsultaDePerfilColaborador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				consultaPerfilColaborador.listarColaboradores.actualizarColaboradores();
 				consultaPerfilColaborador.setVisible(true);
+				try {
+					consultaPerfilColaborador.setMaximum(true);
+				} catch (PropertyVetoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		mnPerfiles.add(mntmConsultaDePerfilColaborador);

@@ -57,5 +57,10 @@ public class ListarColaboradores extends JPanel {
 	public String getColaboradorSeleccionado() {
 		return listColaboradores.getSelectedValue();
 	}
+	
+	public String getPrimerColaborador() {
+		listColaboradores.setSelectedIndex(0);
+		return listColaboradores.getSelectedValue();
+	}
 }
 
