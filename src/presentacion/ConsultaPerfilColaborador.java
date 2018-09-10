@@ -201,7 +201,7 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 		if(listarColaboradores.getColaboradorSeleccionado() != null)
 			cargarPerfil(listarColaboradores.getColaboradorSeleccionado());
 		else {
-			cargarPerfil(listarColaboradores.getPrimerColaborador());
+			//cargarPerfil(listarColaboradores.getPrimerColaborador());
 		}	
         
         JButton btnVerPerfil = new JButton("Ver Perfil");

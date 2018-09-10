@@ -89,4 +89,8 @@ public class ConsultaPropuesta extends JInternalFrame {
 		}else
 			JOptionPane.showMessageDialog(this, "Debe seleccionar una propuesta", "Consulta propuesta", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	public void refreshFrame() {
+		listarPropuestas.actualizarPropuestas();
+	}
 }

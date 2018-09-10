@@ -29,7 +29,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
-public class ConsultaDePropuesta extends JInternalFrame {
+public class ConsultaDePropuesta extends JPanel {
 	private JTextField entTitulo;
 	private JTextField entDescripcion;
 	private JTextField entMontoNecesario;
@@ -57,12 +57,13 @@ public class ConsultaDePropuesta extends JInternalFrame {
 	 */
 	public ConsultaDePropuesta() {
 		setBounds(100, 100, 730, 546);
-		getContentPane().setLayout(null);
+		this.setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Datos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(12, 12, 687, 270);
-		getContentPane().add(panel);
+		this.add(panel);
+		
 		panel.setLayout(null);
 		
 		entTitulo = new JTextField();
@@ -160,7 +161,7 @@ public class ConsultaDePropuesta extends JInternalFrame {
 		JPanel panelColaboraciones = new JPanel();
 		panelColaboraciones.setBorder(new TitledBorder(null, "Colaboraciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelColaboraciones.setBounds(12, 294, 687, 200);
-		getContentPane().add(panelColaboraciones);
+		this.add(panelColaboraciones);
 		panelColaboraciones.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
