@@ -28,7 +28,7 @@ public interface IPropuestaController {
 	
 	public abstract boolean modificarPropuesta(DtPropuesta dtPropuesta);
 	
-	public abstract DtColaboracion[] listarColaboraciones();
+	public abstract DtColaboracion[] listarColaboraciones(String titulo);
 	
 	// Falta crear el DtEstadoPropuesta
 	//public abstract DtEstadoPropuesta[] listarEstadosDePropuestas();
