@@ -279,9 +279,29 @@ public class PropuestaController implements IPropuestaController {
 	}
 	
 	@Override
-	public DtPropuesta[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) {
-		// TODO Auto-generated method stub
-		return null;
+	public DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException {
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "'").getResultList();
+        
+        if (propuestas != null) {
+			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
+			Propuesta pro;
+			for (int i = 0; i < propsMin.length; i++) {
+				pro = propuestas.get(i);
+				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
+			}
+			
+			em.close();
+			return propsMin;
+		}else {
+			
+			em.close();
+			throw new PropuestaNoExisteException("No existen propuestas en el sistema con estado " + estadoPropuesta + ".");
+		}
 	}
 
 	@Override

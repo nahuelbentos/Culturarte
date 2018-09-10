@@ -1,6 +1,5 @@
 package presentacion;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -13,19 +12,13 @@ import datatype.TipoRetorno;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
-import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -169,7 +162,11 @@ public class ConsultaDePropuesta extends JPanel {
 		scrollPane.setBounds(12, 30, 663, 150);
 		panelColaboraciones.add(scrollPane);
 		
-		tablaPropuestas = new JTable();
+		tablaPropuestas = new JTable() {
+			public boolean isCellEditable(int rowIndex, int vColIndex) {
+	            return false;
+			}
+		};
 		tablaPropuestas.setModel(new DefaultTableModel(
 			new Object[][] {
 			},

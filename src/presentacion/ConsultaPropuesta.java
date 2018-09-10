@@ -16,7 +16,6 @@ import javax.swing.border.TitledBorder;
 
 import datatype.DtColaboracion;
 import datatype.DtPropuesta;
-import javax.swing.JScrollPane;
 
 
 @SuppressWarnings("serial")

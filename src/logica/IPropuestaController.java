@@ -37,7 +37,7 @@ public interface IPropuestaController {
 	// Falta crear el DtDatosPropuesta
 	public DtDatosPropuesta consultarPropuesta(String titulo);
 	
-	public abstract DtPropuesta[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta);
+	public abstract DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException;
 	
 	public abstract boolean altaColaboracion(DtColaboracion dtColaboracion);
 	
