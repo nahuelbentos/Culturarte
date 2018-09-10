@@ -428,7 +428,12 @@ public class AltaPropuesta extends JInternalFrame {
 		entFechaEspectaculo.setDate(null);
 	}
 	
-	public void setListaDeProponentes() {
+	public void refreshFrame() {
+		setListaDeProponentes();
+		setListaDeCategorias();
+	}
+	
+	private void setListaDeProponentes() {
 		entProponente.removeAllItems();
         DtUsuario[] proponentes = iUsuarioController.listarProponentes();
         if (proponentes != null) {
@@ -440,7 +445,7 @@ public class AltaPropuesta extends JInternalFrame {
         }
 	}
 	
-	public void setListaDeCategorias() {
+	private void setListaDeCategorias() {
 		entCategoria.removeAllItems();
 		DtCategoria[] categorias = iCategoriaController.listarCategorias();
         if (categorias != null) {

@@ -185,7 +185,7 @@ public class Principal {
 		JMenuItem mntmAltaDeProp = new JMenuItem("Alta de Propuesta");
 		mntmAltaDeProp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				altaPropuesta.setListaDeProponentes();
+				altaPropuesta.refreshFrame();
 				altaPropuesta.setVisible(true);
 			}
 		});
