@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import datatype.DtCategoria;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
@@ -231,9 +232,26 @@ public class PropuestaController implements IPropuestaController {
 	}
 
 	@Override
-	public DtColaboracion[] listarColaboraciones() {
-		// TODO Auto-generated method stub
-		return null;
+	public DtColaboracion[] listarColaboraciones(String titulo) {
+		emf = Persistence.createEntityManagerFactory("Conexion");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		DtColaboracion[] dtC = null;
+		@SuppressWarnings("unchecked")
+		List<Colaboracion> cols = em.createQuery("FROM Colaboracion WHERE PROPUESTA='" + titulo + "'").getResultList();
+		
+        if (cols != null) {
+            dtC = new DtColaboracion[cols.size()];
+            DtColaboracion colab=null;
+
+            for (int i = 0; i < cols.size(); i++) {
+                colab = cols.get(i).getDataColaboracion();
+                dtC[i] = new DtColaboracion(colab.getTituloPropuesta(), colab.getColaborador(), colab.getMonto(), colab.getFechaAporte(), colab.getTipo());
+            }
+        }
+        em.close();
+        return dtC;
 	}
 
 	@Override

@@ -42,6 +42,7 @@ import logica.Factory;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
+import presentacion.gen.ListarPropuestas;
 
 public class Principal {
 	
@@ -57,13 +58,11 @@ public class Principal {
 	private EvaluarPropuestas evaluarPropuestas;
 	
 	
-	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
-
 	private ConsultaPerfilProponente consultaPerfilProponente;
 	private ConsultaPerfilColaborador consultaPerfilColaborador;
+	private ListarPropuestas listarProp;
 	private ConsultaPropuesta consultaPropuesta;
 
-	/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 	
 	private ConsultaPropuestaPorEstado consultaPropuestaPorEstado;
 	
@@ -103,6 +102,8 @@ public class Principal {
         IUC = factory.getIUsuarioController();
         ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
+        
+        listarProp = new ListarPropuestas(IPC);
         
         altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
@@ -217,6 +218,7 @@ public class Principal {
 		JMenuItem mntmConsultaDePropuesta = new JMenuItem("Consulta de Propuesta");
 		mntmConsultaDePropuesta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				listarProp.actualizarPropuestas();
 				consultaPropuesta.setVisible(true);
 			}
 		});

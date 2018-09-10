@@ -1,15 +1,12 @@
 package presentacion;
 
-import java.awt.EventQueue;
-
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import datatype.DtPropuesta;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.IPropuestaController;
-import presentacion.gen.ListarColaboradores;
 import presentacion.gen.ListarPropuestas;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -17,14 +14,21 @@ import java.beans.PropertyVetoException;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 
+import datatype.DtColaboracion;
+import datatype.DtPropuesta;
+import javax.swing.JScrollPane;
+
+
+@SuppressWarnings("serial")
 public class ConsultaPropuesta extends JInternalFrame {
 
 	/**
 	 * Launch the application.
 	 */
-	private IPropuestaController iPropCon;
 	private ListarPropuestas listarPropuestas;
-	private ConsultarPropuesta consultarPropuesta;
+	private ConsultaDePropuesta panelConsultaDePropuesta;
+	private JPanel panelConsultarPropuesta = new JPanel();
+	
 	
 	/**
 	 * Create the frame.
@@ -36,57 +40,53 @@ public class ConsultaPropuesta extends JInternalFrame {
 		setResizable(true);
 		setMaximizable(true);
 		setClosable(true);
-		setBounds(100, 100, 946, 468);
+		setBounds(100, 100, 1100, 650);
 		getContentPane().setLayout(null);
 		
 		JPanel panelListarPropuesta = new JPanel();
 		panelListarPropuesta.setBorder(new TitledBorder(null, "Propuestas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelListarPropuesta.setBounds(10, 11, 312, 261);
+		panelListarPropuesta.setBounds(10, 11, 312, 552);
 		getContentPane().add(panelListarPropuesta);		
 		panelListarPropuesta.setLayout(null);
         
         listarPropuestas = new ListarPropuestas(IPU);
         listarPropuestas.actualizarPropuestas();
-        listarPropuestas.setBounds(10, 26, 290, 224);
+        listarPropuestas.setBounds(10, 26, 290, 514);
         panelListarPropuesta.add(listarPropuestas);
         
         JButton btnVerPropuesta = new JButton("Ver Propuesta");
-        btnVerPropuesta.setBounds(183, 284, 139, 25);
+        btnVerPropuesta.setBounds(183, 575, 139, 25);
         getContentPane().add(btnVerPropuesta);
         
-        JPanel panelConsultarPropuesta = new JPanel();
+        
         panelConsultarPropuesta.setBorder(new TitledBorder(null, "Propuesta seleccionada", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panelConsultarPropuesta.setBounds(331, 11, 589, 417);
+        panelConsultarPropuesta.setBounds(331, 11, 749, 589);
         getContentPane().add(panelConsultarPropuesta);
         panelConsultarPropuesta.setLayout(null);
+        /* Cargo el panel ConsultaDePropuesta*/
+        panelConsultaDePropuesta = new ConsultaDePropuesta();
+        panelConsultaDePropuesta.setSize(721, 550);
+        panelConsultaDePropuesta.setLocation(12, 22);
+        panelConsultarPropuesta.add(panelConsultaDePropuesta);
+        
+        
         btnVerPropuesta.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		try {
-	    			consultarPropuesta.removeAll();
-	    			System.out.println("Propuesta titulo seleccionada: "  + listarPropuestas.getPropuestaTituloSeleccionada());
-	    			consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPropuestaTituloSeleccionada());
-					consultarPropuesta.setBounds(0, 25, 500, 355);
-			        panelConsultarPropuesta.add(consultarPropuesta);
-			        
-			        getContentPane().add(panelConsultarPropuesta);
-			        panelConsultarPropuesta.setLayout(null);
-		        
-        		} catch (UsuarioNoExisteElUsuarioException e) {
-        			e.printStackTrace();
-        		} catch (PropuestaNoExisteException e) {
-        			e.printStackTrace();
-        		}
+        		cargarPropuestaSeleccionada(IPU);
 
         	}
         });
-        
-        
-        if(listarPropuestas.getPropuestaTituloSeleccionada() != null)
-        	consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPropuestaTituloSeleccionada());
-		else 
-			if(!(listarPropuestas.getPrimerTitulo().isEmpty()))
-				consultarPropuesta = new ConsultarPropuesta(IPU, listarPropuestas.getPrimerTitulo());
-		
-
+	}
+	
+	public void cargarPropuestaSeleccionada(IPropuestaController IPU) {
+		System.out.println("cargarPropuestaSeleccionada");
+		if (listarPropuestas.getPropuestaSeleccionada() != null) {
+			DtPropuesta dtP = listarPropuestas.getPropuestaSeleccionada();
+			DtColaboracion[] colabs = IPU.listarColaboraciones(dtP.getTitulo());
+			panelConsultaDePropuesta.setPropuesta(dtP, colabs);
+			panelConsultaDePropuesta.setVisible(true);
+			panelConsultarPropuesta.setVisible(true);
+		}else
+			JOptionPane.showMessageDialog(this, "Debe seleccionar una propuesta", "Consulta propuesta", JOptionPane.INFORMATION_MESSAGE);
 	}
 }
