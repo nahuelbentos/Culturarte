@@ -224,6 +224,7 @@ public class Principal {
 		JMenuItem mntmConsultaDePropuestasPorEstado = new JMenuItem("Consulta de Propuestas por estado");
 		mntmConsultaDePropuestasPorEstado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				consultaPropuestaPorEstado.refreshFrame();
 				consultaPropuestaPorEstado.setVisible(true);
 			}
 		});

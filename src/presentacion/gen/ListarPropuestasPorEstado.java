@@ -65,11 +65,12 @@ public class ListarPropuestasPorEstado extends JPanel {
 	
 	public DtPropuesta getPropuestaSeleccionada() {
 		int filaSeleccionada = table.getSelectedRow();
+		// Creo que sería mejor obtener el título acá para hacer menos consultas
+//		String titulo = table.getValueAt(table.getSelectedRow(),0).toString();
 		
-		System.out.println(filaSeleccionada);
 		DtPropuestaMinificado[] colProp;
 		try {
-			colProp = iPC.listarPropuestas();
+			colProp = iPC.listarPropuestasPorEstado((EstadoPropuesta) comboBox.getSelectedItem());
 			
 			DtPropuesta propuestaCompleto = iPC.seleccionarPropuesta(colProp[filaSeleccionada].getTitulo());
 			
@@ -87,7 +88,7 @@ public class ListarPropuestasPorEstado extends JPanel {
 		if (filaSeleccionada>=0) {
 			DtPropuestaMinificado[] colProp;
 			try {
-				colProp = iPC.listarPropuestas();
+				colProp = iPC.listarPropuestasPorEstado((EstadoPropuesta) comboBox.getSelectedItem());
 							
 				return colProp[filaSeleccionada].getTitulo();
 			} catch (PropuestaNoExisteException e) {
@@ -103,7 +104,7 @@ public class ListarPropuestasPorEstado extends JPanel {
 	public String getPrimerTitulo() {
 		DtPropuestaMinificado[] colProp;
 		try {
-			colProp = iPC.listarPropuestas();
+			colProp = iPC.listarPropuestasPorEstado((EstadoPropuesta) comboBox.getSelectedItem());
 			
 			return colProp[0].getTitulo();
 		} catch (PropuestaNoExisteException e) {
