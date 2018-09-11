@@ -189,8 +189,21 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 
 //		data = new Object[1][columnNames.length];
 //		tableColaboracionesHechas = new JTable(data,columnNames);
-        tableColaboracionesHechas = new JTable();
-     
+        
+        tableColaboracionesHechas = new JTable() {
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int rowIndex, int vColIndex) {
+	            return false;
+			}
+		};
+		tableColaboracionesHechas.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Titulo:", "Por:"
+				}
+			));
         tableColaboracionesHechas.setBounds(12, 37, 850, 172);
 	    tableColaboracionesHechas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         panelColaboraciones.add(tableColaboracionesHechas);
@@ -219,40 +232,34 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 	}
 	
 public void agregarDatosTable(ArrayList<DtPropuestaColaborada> ColaboracionesHechas) {
-		
+	
 		tableColaboracionesHechas.removeAll();
-		DefaultTableModel dm = new DefaultTableModel();
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.addColumn("Titulo");
+		tableModel.addColumn("Descripcion");
+		tableModel.addColumn("Por");
+		tableModel.addColumn("Nombre");
+		tableModel.addColumn("Apellido");
+		tableModel.addColumn("Correo");
+		tableModel.addColumn("Monto aportado");
+		tableModel.addColumn("Estado de la propuesta");
 		
-		while (dm.getRowCount()>0) {
-			dm.removeRow(0);
-        }
+		for (DtPropuestaColaborada dtPropuestaColaborada : ColaboracionesHechas) {
+			tableModel.addRow(new String[] {dtPropuestaColaborada.getTitulo(), 
+					dtPropuestaColaborada.getDescripcion(),
+					dtPropuestaColaborada.getProponenteACargo().getNickname(),
+					dtPropuestaColaborada.getProponenteACargo().getNombre(),
+					dtPropuestaColaborada.getProponenteACargo().getApellido(),
+					dtPropuestaColaborada.getProponenteACargo().getEmail(),
+					Double.toString(dtPropuestaColaborada.getMontoAportado()),
+					dtPropuestaColaborada.getEstadoActual().toString()});
+		}
 		
-	    String header[] = new String[] { "Titulo", "Descripcion", //"Imagen",
-	            "Prop. Nickname", "Prop. Nombre", "Prop. Apellido", "Prop. Email", "M. Aportado", "Estado" };
-	    dm.setColumnIdentifiers(header);
-	    
-	    dm.addRow(header);
-	    
-	    tableColaboracionesHechas.setModel(dm);
+		tableColaboracionesHechas.setModel(tableModel);
+		
 	    tableColaboracionesHechas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 	    System.out.println("ColaboracionesHechas.size(): " + ColaboracionesHechas.size() + "\n"); 
-	    for (DtPropuestaColaborada dtp : ColaboracionesHechas) {
-		
-	        Vector<Object> data = new Vector<Object>();
-	        data.add(dtp.getTitulo());
-	        data.add(dtp.getDescripcion());
-//	        data.add(dtp.getImagen());
-	        data.add(dtp.getProponenteACargo().getNickname());
-	        data.add(dtp.getProponenteACargo().getNombre());
-	        data.add(dtp.getProponenteACargo().getApellido());
-	        data.add(dtp.getProponenteACargo().getEmail());
-	        data.add(dtp.getMontoAportado());
-	        data.add(dtp.getEstadoActual());
-	        
-	        System.out.println("Titulo :- " + dtp.getTitulo());
-	        dm.addRow(data);
 
-	    }
 	}
 
 private void cargarPerfil(String nickname) {

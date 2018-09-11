@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
@@ -16,15 +17,11 @@ import java.awt.GridLayout;
 
 @SuppressWarnings("serial")
 public class ListarPropuestas extends JPanel {
-
-	private Object[][] data;
-	
-	private final Object[] columnNames = { 
-	                              "Titulo:",
-	                              "Por:"};		    
+   
 	private JScrollPane grilla;
 	private JTable table;
 	
+	private DtPropuestaMinificado[] props;
 	private IPropuestaController iPC;
 	
 	public ListarPropuestas(IPropuestaController IPU) {
@@ -32,54 +29,27 @@ public class ListarPropuestas extends JPanel {
 		
 		iPC = IPU;
 		
-		try {
-			
-			DtPropuestaMinificado[] props = iPC.listarPropuestas();
-			data = new Object[props.length][columnNames.length];
-			
-			for (int i = 0; i < props.length; i++) {
-				for (int j = 0; j < columnNames.length; j++) {
-					switch (j) {
-					case 0:
-						data[i][j] = props[i].getTitulo();
-						break;
-					case 1:
-						data[i][j] = props[i].getProponente();
-						break;
-					}
-				}
-				
-			}
-		} catch (PropuestaNoExisteException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, e.getMessage(),"Grilla propuestas", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		this.table = new JTable(data,columnNames) {
+		table = new JTable() {
 			public boolean isCellEditable(int rowIndex, int vColIndex) {
 	            return false;
 			}
 		};
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Titulo:", "Por:"
+			}
+		));
 			
-		this.grilla = new JScrollPane(table);
-        this.add(grilla);
+		grilla = new JScrollPane(table);
+        add(grilla);
     }
 	
 	public DtPropuesta getPropuestaSeleccionada() {
-		int filaSeleccionada = table.getSelectedRow();
+		DtPropuesta propuestaCompleto = iPC.seleccionarPropuesta(props[table.getSelectedRow()].getTitulo());
 		
-		System.out.println(filaSeleccionada);
-		DtPropuestaMinificado[] colProp;
-		try {
-			colProp = iPC.listarPropuestas();
-			
-			DtPropuesta propuestaCompleto = iPC.seleccionarPropuesta(colProp[filaSeleccionada].getTitulo());
-			
-			return propuestaCompleto;
-		} catch (PropuestaNoExisteException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return propuestaCompleto;
 	}
 	
 	public String getPropuestaTituloSeleccionada() {
@@ -117,28 +87,16 @@ public class ListarPropuestas extends JPanel {
 	public void actualizarPropuestas() {
 		try {
 			
-			DtPropuestaMinificado[] props = iPC.listarPropuestas();
-			data = new Object[props.length][columnNames.length];
+			props = iPC.listarPropuestas();
 			
-			for (int i = 0; i < props.length; i++) {
-				for (int j = 0; j < columnNames.length; j++) {
-					switch (j) {
-					case 0:
-						data[i][j] = props[i].getTitulo();
-						break;
-					case 1:
-						data[i][j] = props[i].getProponente();
-						break;
-					}
-				}
-				
+			DefaultTableModel tableModel = new DefaultTableModel();
+			tableModel.addColumn("Titulo:");
+			tableModel.addColumn("Por:");
+			for(DtPropuestaMinificado prop : props) {
+				tableModel.addRow(new String[] {prop.getTitulo(), prop.getProponente()});
 			}
+			table.setModel(tableModel);
 			
-			this.table = new JTable(data,columnNames) {
-				public boolean isCellEditable(int rowIndex, int vColIndex) {
-		            return false;
-				}
-			};
 			// borro la grilla que estaba.
 			this.remove(grilla);
 			

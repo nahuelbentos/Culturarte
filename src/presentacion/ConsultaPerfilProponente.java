@@ -12,6 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import datatype.DtPerfilProponente;
 import datatype.DtPropuesta;
@@ -70,10 +71,6 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 	// grilla de propuestas.
 	private JScrollPane scrollPanePropuestas;
 	private JTable tablePropuestas;
-	private final Object[] columnNames = { 
-            "Titulo:",
-            "Monto necesario"};
-	private Object[][] data;
 	private JButton btnVerInformacin;
 	//
 	
@@ -278,44 +275,38 @@ public class ConsultaPerfilProponente extends JInternalFrame {
 	
 	public void cargarPropuestasPerfil(ArrayList<DtPropuesta> propuestas) {
 		
-		data = new Object[propuestas.size()][columnNames.length];
-		
-		for (int i = 0; i < propuestas.size(); i++) {
-			for (int j = 0; j < columnNames.length; j++) {
-				switch (j) {
-				case 0:
-					data[i][j] = propuestas.get(i).getTitulo();
-					break;
-				case 1:
-					data[i][j] = propuestas.get(i).getMontoNecesario();
-					break;
-				}
-			}
-			
-		}
 		// borro la grilla que estaba.
 		panelPropuestas.remove(scrollPanePropuestas);
 		scrollPanePropuestas.removeAll();
 		tablePropuestas.removeAll();
 		
-		// inicilizo la grilla para refrescar los datos
-		tablePropuestas = new JTable(data,columnNames) {
-			public boolean isCellEditable(int rowIndex, int vColIndex) {
-	            return false;
-			}
-		};
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.addColumn("Titulo:");
+		tableModel.addColumn("Monto necesario");
+		for (DtPropuesta dtPropuesta : propuestas) {
+			tableModel.addRow(new String[] {dtPropuesta.getTitulo(), Float.toString(dtPropuesta.getMontoNecesario())});
+		}
+		tablePropuestas.setModel(tableModel);
+		
 		
 	}
 	
 	private void initTableGrilla(boolean primeraVez, EstadoPropuesta estadoSeleccionado) {
 		
 		if (primeraVez) {
-			data = new Object[1][columnNames.length];
-			tablePropuestas = new JTable(data,columnNames) {
+			
+			tablePropuestas = new JTable() {
 				public boolean isCellEditable(int rowIndex, int vColIndex) {
 		            return false;
 				}
 			};
+			tablePropuestas.setModel(new DefaultTableModel(
+					new Object[][] {
+					},
+					new String[] {
+						"Titulo:", "Por:"
+					}
+				));
 		}else {
 			
 			switch (estadoSeleccionado) {
