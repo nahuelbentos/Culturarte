@@ -1,6 +1,5 @@
 package logica;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import javax.persistence.Column;
@@ -20,9 +19,6 @@ public class Proponente extends Usuario{
     private String biografia;
 	@Column(name="LINK_WEB")
     private String linkWeb;
-    
-    // PseudoAtributos
-    private ArrayList<Propuesta> propuestas = new ArrayList<Propuesta>();;
     
     public Proponente() {
     	super();
@@ -59,10 +55,6 @@ public class Proponente extends Usuario{
 
     public void setLinkWeb(String linkWeb) {
         this.linkWeb = linkWeb;
-    }
-    
-    public void addPropuesta(Propuesta p) {
-    	this.propuestas.add(p);
     }
     
     public DtPerfilProponente getDatosBasicos() {
