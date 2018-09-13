@@ -7,8 +7,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import datatype.DtCategoria;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
@@ -261,7 +259,8 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
 		DtPropuesta[] dtPropuesta = null;
-        List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
         if (propuestas  != null) {
             dtPropuesta = new DtPropuesta[propuestas.size()];
             Propuesta propuesta;
@@ -328,7 +327,8 @@ public class PropuestaController implements IPropuestaController {
 		
 		Propuesta p = em.find(Propuesta.class, titulo); //1
 		
-        List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
 
 		em.close();
 		DtDatosPropuesta dtp = new DtDatosPropuesta();
@@ -414,5 +414,10 @@ public class PropuestaController implements IPropuestaController {
 			
 			throw new PropuestaNoExisteException("No quedan propuestas por evaluar");
 		}
+	}
+	
+	@Override
+	public DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws ProponenteNoExisteException{
+		return null;
 	}
 }

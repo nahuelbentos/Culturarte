@@ -50,6 +50,7 @@ public interface IPropuestaController {
 
 	public abstract void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException;
 	
+	public abstract DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws ProponenteNoExisteException;
 	
 }
 
