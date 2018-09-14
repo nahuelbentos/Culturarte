@@ -3,23 +3,28 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import datatype.DtCategoria;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
+import persistencia.ConexionPostgresHibernate;
 
 public class CategoriaController implements ICategoriaController {
 	
-	private static EntityManager em;
+	private static ConexionPostgresHibernate cph;
 	private static EntityManagerFactory emf;
+	private static EntityManager em;
 
 	@Override
 	public DtCategoria[] listarCategorias(){
 		
 		inicializarTablaVacia();	//	Si la tabla no tiene registros, crea el nodo base "Categorías"
 		
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		//emf = Persistence.createEntityManagerFactory("Conexion");
+		//em = emf.createEntityManager();
+		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -46,7 +51,8 @@ public class CategoriaController implements ICategoriaController {
 		
 		inicializarTablaVacia();	//	Si la tabla no tiene registros, crea el nodo base "Categorías"
 		
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -69,7 +75,8 @@ public class CategoriaController implements ICategoriaController {
 	}
 	
 	private void inicializarTablaVacia() {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -87,7 +94,8 @@ public class CategoriaController implements ICategoriaController {
 	@Override
 	public void agregarCategoria(DtCategoria dtC) throws CategoriaYaExisteException, CategoriaNoExisteException {
 		
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 

@@ -6,9 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-import datatype.DtCategoria;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
@@ -20,14 +18,17 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import persistencia.ConexionPostgresHibernate;
 public class PropuestaController implements IPropuestaController {
 
-	private static EntityManager em;
+	private static ConexionPostgresHibernate cph;
 	private static EntityManagerFactory emf;
+	private static EntityManager em;
 	
 	@Override
 	public void altaPropuesta(DtPropuesta dtPropuesta) throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException{
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -69,7 +70,8 @@ public class PropuestaController implements IPropuestaController {
 	@Override
 	public DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException {
 		
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -95,11 +97,9 @@ public class PropuestaController implements IPropuestaController {
 	
 	@Override
 	public void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException{
-		//Configuramos el EMF a trav�s de la unidad de persistencia
-		emf = Persistence.createEntityManagerFactory("Conexion");
-		//Generamos un EntityManager
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		
 		em.getTransaction().begin();
 		
 		Colaborador c = em.find(Colaborador.class, colaboracion.getColaborador());
@@ -176,7 +176,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtPropuesta seleccionarPropuesta(String titulo) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -193,7 +194,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public boolean modificarPropuesta(DtPropuesta dtPropuesta) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -232,7 +234,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtColaboracion[] listarColaboraciones(String titulo) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -255,12 +258,14 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasExistentes() {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		DtPropuesta[] dtPropuesta = null;
-        List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
         if (propuestas  != null) {
             dtPropuesta = new DtPropuesta[propuestas.size()];
             Propuesta propuesta;
@@ -279,7 +284,8 @@ public class PropuestaController implements IPropuestaController {
 	
 	@Override
 	public DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -307,15 +313,16 @@ public class PropuestaController implements IPropuestaController {
 	public DtDatosPropuesta consultarPropuesta(String titulo) {
 		// la comento, hay que revisar si se puede usar otro Dt.
 
-		System.out.println("Consultar Propuesta \n");
-		emf = Persistence.createEntityManagerFactory("Conexion");
-		em = emf.createEntityManager();
 		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		Propuesta p = em.find(Propuesta.class, titulo); //1
 		
-        List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
 
 		em.close();
 		DtDatosPropuesta dtp = new DtDatosPropuesta();
@@ -349,7 +356,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -379,7 +387,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtPropuestaMinificado[] listadoPropuestasIngresadas() throws PropuestaNoExisteException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
