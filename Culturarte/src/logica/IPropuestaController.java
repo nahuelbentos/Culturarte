@@ -39,11 +39,6 @@ public interface IPropuestaController {
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException;
 	
-	public abstract boolean altaColaboracion(DtColaboracion dtColaboracion);
-	
-	// Revisar si est�n bien los par�metros que recibe
-	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
-	
 	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException;
 	
 	public abstract DtPropuestaMinificado[] listadoPropuestasIngresadas() throws PropuestaNoExisteException;;

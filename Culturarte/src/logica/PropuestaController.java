@@ -174,7 +174,6 @@ public class PropuestaController implements IPropuestaController {
 		}
 	}
 
-
 	@Override
 	public DtPropuesta seleccionarPropuesta(String titulo) {
 		emf = Persistence.createEntityManagerFactory("Conexion");
@@ -302,18 +301,6 @@ public class PropuestaController implements IPropuestaController {
 			em.close();
 			throw new PropuestaNoExisteException("No existen propuestas en el sistema con estado " + estadoPropuesta + ".");
 		}
-	}
-
-	@Override
-	public boolean altaColaboracion(DtColaboracion dtColaboracion) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean eliminarColaboraciones(String titulo, String nickname) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
