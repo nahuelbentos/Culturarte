@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 
 import datatype.DtColaborador;
 import datatype.DtProponente;
+import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
@@ -73,10 +74,8 @@ public class Principal {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
 					Principal window = new Principal();
 					window.frmPaginaPrincipal.setVisible(true);
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

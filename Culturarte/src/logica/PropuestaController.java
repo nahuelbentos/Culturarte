@@ -45,6 +45,7 @@ public class PropuestaController implements IPropuestaController {
 	}
 	
 	public PropuestaController() {
+		super();
 		usuarioLogueado = null;
 	}
 	

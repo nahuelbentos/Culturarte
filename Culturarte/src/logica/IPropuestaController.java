@@ -49,5 +49,6 @@ public interface IPropuestaController {
 	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
 	
 	public abstract void agregarFavorita(String titulo) throws UsuarioSinLoguearseException;
+	
 }
 
