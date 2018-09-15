@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.beans.PropertyVetoException;
@@ -27,12 +26,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import datatype.DtCategoria;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtUsuario;
-import excepciones.CategoriaNoExisteException;
-import excepciones.CategoriaYaExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElEmailException;
@@ -42,7 +38,6 @@ import logica.Factory;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
-import presentacion.gen.ListarPropuestas;
 
 public class Principal {
 	
@@ -78,8 +73,10 @@ public class Principal {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					Principal window = new Principal();
 					window.frmPaginaPrincipal.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

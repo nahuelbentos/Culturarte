@@ -2,10 +2,9 @@ package logica;
 
 public class Factory {
 
-    private static Factory instancia;
+    private static Factory instancia = null;
 
-    private Factory() {
-    };
+    private Factory() {};
 
     public static Factory getInstance() {
         if (instancia == null) {
@@ -24,6 +23,17 @@ public class Factory {
     
     public IUsuarioController getIUsuarioController() {
         return new UsuarioController();
+    }
+    
+    
+	/**
+	 * Metodo consumir desde los servlets, datoSesion puede ser el nickname o el correo del proponente.
+	 *  
+	 * @param datoSesion
+	 * @return PropuestaController
+	 */
+    public IPropuestaController getIPropuestaControllerFromSession(String datoSesion) {
+        return new PropuestaController(datoSesion);
     }
 	
 }

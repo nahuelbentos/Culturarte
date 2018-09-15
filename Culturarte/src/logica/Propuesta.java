@@ -2,8 +2,8 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
-import datatype.DtColaborador;
 import datatype.DtDatosPropuesta;
 import datatype.DtEstado;
 import datatype.DtPropuesta;
@@ -18,6 +18,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -61,6 +62,9 @@ public class Propuesta {
 	@OneToOne
 	@JoinColumn(name="ID_CATEGORIA")
 	private Categoria categoria;
+	
+	@ManyToMany(mappedBy="propuestasFavoritas")
+	private List<Usuario> usuariosFollowers = new ArrayList<>();
 	
 	public Propuesta() {
 		super();

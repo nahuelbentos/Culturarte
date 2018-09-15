@@ -11,6 +11,7 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.UsuarioSinLoguearseException;
 
 public interface IPropuestaController {
 
@@ -45,6 +46,8 @@ public interface IPropuestaController {
 
 	public abstract void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException;
 	
+	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
 	
+	public abstract void agregarFavorita(String titulo) throws UsuarioSinLoguearseException;
 }
 
