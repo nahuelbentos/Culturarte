@@ -27,7 +27,7 @@ public class Factory {
     
     
 	/**
-	 * Metodo consumir desde los servlets, datoSesion puede ser el nickname o el correo del proponente.
+	 * Metodo consumir desde los servlets, datoSesion puede ser el nickname o el correo del usuario.
 	 *  
 	 * @param datoSesion
 	 * @return PropuestaController
