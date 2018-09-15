@@ -38,7 +38,9 @@ public class Colaboracion {
 	private GregorianCalendar fechaAporte;
 	@Column(name="TIPO_RETORNO")
 	@Enumerated(EnumType.STRING)
-	private TipoRetorno tipo;
+	private TipoRetorno tipo;	
+	@Column(name="COMENTARIO")
+	private String comentario;
 	
 	public Colaboracion() {
 		super();
@@ -99,11 +101,17 @@ public class Colaboracion {
 		this.propuestaColaborada = propuestaColaborada;
 	}
 	
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
 	public DtColaboracion getDataColaboracion() {
 		return new DtColaboracion(propuestaColaborada.getTitulo(), colaborador.getNickname(),
 				monto, fechaAporte, tipo);
-		
-//		return null;
 	}
 	
 		

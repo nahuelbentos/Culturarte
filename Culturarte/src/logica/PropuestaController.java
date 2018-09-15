@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
@@ -18,14 +17,41 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.UsuarioSinLoguearseException;
+import persistencia.ConexionPostgresHibernate;
+
 public class PropuestaController implements IPropuestaController {
 
-	private static EntityManager em;
+	private static ConexionPostgresHibernate cph;
 	private static EntityManagerFactory emf;
+	private static EntityManager em;
+	
+	private Usuario usuarioLogueado;
+	
+	public PropuestaController(String datoSesion) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		usuarioLogueado = em.find(Usuario.class, datoSesion);
+		/*
+		if (usuarioLogueado == null) {
+			usuarioLogueado = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
+		}
+		*/
+		em.close();
+	}
+	
+	public PropuestaController() {
+		super();
+		usuarioLogueado = null;
+	}
 	
 	@Override
 	public void altaPropuesta(DtPropuesta dtPropuesta) throws PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException{
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -67,13 +93,14 @@ public class PropuestaController implements IPropuestaController {
 	@Override
 	public DtPropuestaMinificado[] listarPropuestas() throws PropuestaNoExisteException {
 		
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
-        
+        em.close();
         if (propuestas != null) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
 			Propuesta pro;
@@ -82,22 +109,19 @@ public class PropuestaController implements IPropuestaController {
 				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
 			}
 			
-			em.close();
+			
 			return propsMin;
 		}else {
 			
-			em.close();
 			throw new PropuestaNoExisteException("No existen propuestas en el sistema.");
 		}
 	}
 	
 	@Override
 	public void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException{
-		//Configuramos el EMF a trav�s de la unidad de persistencia
-		emf = Persistence.createEntityManagerFactory("Conexion");
-		//Generamos un EntityManager
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		
 		em.getTransaction().begin();
 		
 		Colaborador c = em.find(Colaborador.class, colaboracion.getColaborador());
@@ -172,10 +196,10 @@ public class PropuestaController implements IPropuestaController {
 		}
 	}
 
-
 	@Override
 	public DtPropuesta seleccionarPropuesta(String titulo) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -192,7 +216,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public boolean modificarPropuesta(DtPropuesta dtPropuesta) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -231,14 +256,15 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtColaboracion[] listarColaboraciones(String titulo) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		DtColaboracion[] dtC = null;
 		@SuppressWarnings("unchecked")
 		List<Colaboracion> cols = em.createQuery("FROM Colaboracion WHERE PROPUESTA='" + titulo + "'").getResultList();
-		
+		em.close();
         if (cols != null) {
             dtC = new DtColaboracion[cols.size()];
             DtColaboracion colab=null;
@@ -248,19 +274,21 @@ public class PropuestaController implements IPropuestaController {
                 dtC[i] = new DtColaboracion(colab.getTituloPropuesta(), colab.getColaborador(), colab.getMonto(), colab.getFechaAporte(), colab.getTipo());
             }
         }
-        em.close();
+        
         return dtC;
 	}
 
 	@Override
 	public DtPropuesta[] listarPropuestasExistentes() {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		DtPropuesta[] dtPropuesta = null;
         @SuppressWarnings("unchecked")
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        em.close();
         if (propuestas  != null) {
             dtPropuesta = new DtPropuesta[propuestas.size()];
             Propuesta propuesta;
@@ -273,19 +301,19 @@ public class PropuestaController implements IPropuestaController {
                 		propuesta.getCategoria().getDtCategoriaSimple(), null); 
             }
         }
-        em.close();
         return dtPropuesta;
 	}
 	
 	@Override
 	public DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "'").getResultList();
-        
+        em.close();
         if (propuestas != null) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
 			Propuesta pro;
@@ -294,35 +322,21 @@ public class PropuestaController implements IPropuestaController {
 				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
 			}
 			
-			em.close();
 			return propsMin;
 		}else {
 			
-			em.close();
 			throw new PropuestaNoExisteException("No existen propuestas en el sistema con estado " + estadoPropuesta + ".");
 		}
-	}
-
-	@Override
-	public boolean altaColaboracion(DtColaboracion dtColaboracion) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean eliminarColaboraciones(String titulo, String nickname) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
 	public DtDatosPropuesta consultarPropuesta(String titulo) {
 		// la comento, hay que revisar si se puede usar otro Dt.
 
-		System.out.println("Consultar Propuesta \n");
-		emf = Persistence.createEntityManagerFactory("Conexion");
-		em = emf.createEntityManager();
 		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		Propuesta p = em.find(Propuesta.class, titulo); //1
@@ -362,7 +376,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -392,7 +407,8 @@ public class PropuestaController implements IPropuestaController {
 
 	@Override
 	public DtPropuestaMinificado[] listadoPropuestasIngresadas() throws PropuestaNoExisteException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -419,5 +435,67 @@ public class PropuestaController implements IPropuestaController {
 	@Override
 	public DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws ProponenteNoExisteException{
 		return null;
+	}
+
+	@Override
+	public DtPropuestaMinificado[] listarPropuestasActivas() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual <> 'ingresada'").getResultList();
+        em.close();
+        
+        if (ps != null) {
+			DtPropuestaMinificado[] props = new DtPropuestaMinificado[ps.size()];
+			Propuesta pro;
+			
+			for (int i = 0; i < props.length; i++) {
+				pro = ps.get(i);
+				
+				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname());
+			}
+			
+			return props;
+		}else {
+			
+			return null;
+		}
+        
+	}
+
+	@Override
+	public void agregarFavorita(String titulo) throws UsuarioSinLoguearseException{
+		/** Controlo que el usuario este logueado, en caso que no este logueado lanzo exception **/
+		if (usuarioLogueado != null) {
+			
+			System.out.println(usuarioLogueado.getNickname());
+			
+			cph = ConexionPostgresHibernate.getInstancia();
+			emf = cph.getEntityManager();
+			em = emf.createEntityManager();
+			em.getTransaction().begin();
+			
+			Propuesta p = em.find(Propuesta.class, titulo);
+			
+			if (p != null) {
+				System.out.println(p.getTitulo());
+				usuarioLogueado.addFavorita(p);
+				
+				em.merge(usuarioLogueado);
+				
+				em.getTransaction().commit();
+				em.close();
+			}else {
+				em.getTransaction().rollback();
+				em.close();
+			}
+			
+		}else {
+			throw new UsuarioSinLoguearseException("Debe iniciar sesion para agregar Propuestas a sus favoritos");
+		}
+		
 	}
 }

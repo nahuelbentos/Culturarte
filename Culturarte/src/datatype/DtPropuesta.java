@@ -25,19 +25,19 @@ public class DtPropuesta {
    private DtCategoria categoria;
    private ArrayList<DtColaboracion> colaboraciones;
    
-   public DtPropuesta(String titulo, String descripcion, byte[] imagen, float d,
-		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, float e,
+   public DtPropuesta(String titulo, String descripcion, byte[] imagen, float montoNecesario,
+		GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, float precioEntrada,
 		TipoRetorno tipo, float recaudado, DtProponente proponenteACargo, EstadoPropuesta estadoActual,
 		ArrayList<DtEstado> estadoHistorial, DtCategoria categoria, ArrayList<DtColaboracion> colaboraciones) {
 	super();
 	this.titulo = titulo;
 	this.descripcion = descripcion;
 	this.imagen = imagen;
-	this.montoNecesario = d;
+	this.montoNecesario = montoNecesario;
 	this.fechaPublicacion = fechaPublicacion;
 	this.fechaEspecatulo = fechaEspecatulo;
 	this.lugar = lugar;
-	this.precioEntrada = e;
+	this.precioEntrada = precioEntrada;
 	this.tipo = tipo;
 	this.recaudado = recaudado;
 	this.proponenteACargo = proponenteACargo;

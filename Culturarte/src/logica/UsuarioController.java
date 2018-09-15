@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 
 import datatype.DtColaboracion;
 import datatype.DtColaborador;
@@ -16,26 +15,51 @@ import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.DtUsuario;
+import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
+import persistencia.ConexionPostgresHibernate;
 
 public class UsuarioController implements IUsuarioController {
 
-	private static EntityManager em;
+	private static ConexionPostgresHibernate cph;
 	private static EntityManagerFactory emf;
+	private static EntityManager em;
 
+	private Usuario usuarioLogueado;
+	
+	public UsuarioController(String datoSesion) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		usuarioLogueado = em.find(Usuario.class, datoSesion);
+		/*
+		if (usuarioLogueado == null) {
+			usuarioLogueado = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
+		}
+		*/
+		em.close();
+	}
+	
 	public UsuarioController() {
 		super();
+		usuarioLogueado = null;
 	}
+	
+	
 
 	@Override
 	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -71,7 +95,8 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtColaboracion listarColaboracion(String titulo, String nickname) throws ColaboracionNoExisteException{
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -90,12 +115,14 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public  DtUsuario[] listarProponentes() {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		DtUsuario[] dtUsuario = null;
-        List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -111,7 +138,8 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -135,7 +163,8 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public void dejarDeSeguirUsuario(String nicknameUno, String nicknameDos) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -154,12 +183,14 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario[] listarUsuarios() {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
 		DtUsuario[] dtUsuario = null;
-        List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -175,7 +206,8 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario verPerfilUsuario(String nickname) throws UsuarioNoExisteElUsuarioException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -203,12 +235,13 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario[] listarUsuariosQueSigue(String nickname) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		DtUsuario[] dtUsuario = null;
-        List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
 		if (usuarios != null) {
 	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.size()];
 	        Usuario usuarioDos;
@@ -224,12 +257,14 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario[] listarColaboradores() throws ColaboradorNoExisteException {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
 		DtUsuario[] dtUsuario = null;
-        List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -249,12 +284,15 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-        List<Propuesta> propouestas = em.createQuery("FROM Propuesta").getResultList();
-        List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propouestas = em.createQuery("FROM Propuesta").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
     	Usuario usuario = em.find(Usuario.class, nickname);
 
     	em.close();
@@ -334,13 +372,15 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPerfilColaborador verPerfilColaborador(String nickname) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 
 		Usuario usuario = em.find(Usuario.class, nickname); //1y2
 
-        List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
+        @SuppressWarnings("unchecked")
+		List<Colaboracion> colabs = em.createQuery("FROM Colaboracion").getResultList();
 
 		ArrayList<DtPropuestaColaborada> colaboracionesHechas = new ArrayList<DtPropuestaColaborada>();
 
@@ -378,7 +418,8 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasDeUnColaborador(String nickname) {
-		emf = Persistence.createEntityManagerFactory("Conexion");
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
@@ -402,6 +443,80 @@ public class UsuarioController implements IUsuarioController {
 			}
 		}
 		return dtp;
+	}
+
+	@Override
+	public DtPropuesta[] listarPropuestasColaborador() throws UsuarioSinLoguearseException {
+		
+		if (usuarioLogueado != null) {
+			/** Obtengo las colaboraciones del colaborador "usuarioLogueado" que no haya comentado y esten financiadas **/
+			if (usuarioLogueado instanceof Colaborador) {
+				
+				cph = ConexionPostgresHibernate.getInstancia();
+				emf = cph.getEntityManager();
+				em = emf.createEntityManager();
+				em.getTransaction().begin();
+				
+				DtPropuesta[] dtp = null;
+				
+				@SuppressWarnings("unchecked")
+				List<Colaboracion> colaboraciones = em.createQuery("SELECT c FROM Colaboracion c, Propuesta p WHERE c.propuestaColaborada=p.titulo AND c.colaborador = :colaborador AND p.estadoActual = :estado AND c.comentario IS NULL")
+						.setParameter("colaborador", usuarioLogueado)
+						.setParameter("estado", EstadoPropuesta.financiada)
+						.getResultList();
+				em.close();
+				if (colaboraciones != null) {
+					dtp = new DtPropuesta[colaboraciones.size()];
+					int i = 0;
+					for (Colaboracion colaboracion : colaboraciones) {
+						DtPropuesta itemDtp = colaboracion.obtPropuesta();
+						dtp[i] = itemDtp;
+						
+						i++;
+					}
+				}
+				return dtp;
+				
+				
+				
+			}else{
+				throw new UsuarioSinLoguearseException("Debes ser colaborador para ver tus colaboraciones.");
+			}
+		}else {
+			throw new UsuarioSinLoguearseException("Debes iniciar sesion para agregar Propuestas a sus favoritos");
+		}
+	}
+
+	@Override
+	public void agregarComentarioAPropuesta(String comentario, String titulo) throws UsuarioSinLoguearseException{
+		
+		if (usuarioLogueado != null) {
+			// obtengo las colaboraciones del usuario logueado
+			if (usuarioLogueado instanceof Colaborador) {
+				cph = ConexionPostgresHibernate.getInstancia();
+				emf = cph.getEntityManager();
+				em = emf.createEntityManager();
+				em.getTransaction().begin();
+				
+				/*Defino la clave en colaboracion a buscar, recibida por parametro.*/
+				ColaboracionID claveColaboracion = new ColaboracionID();
+				claveColaboracion.setIdColaborador(usuarioLogueado.getNickname());
+				claveColaboracion.setIdPropuesta(titulo);
+				
+				Colaboracion c = em.find(Colaboracion.class, claveColaboracion);
+				
+				c.setComentario(comentario);
+				em.merge(c);
+				em.getTransaction().commit();
+				em.close();
+				
+			}else{
+				throw new UsuarioSinLoguearseException("Debes ser colaborador para ver tus colaboraciones.");
+			}
+		}else {
+			throw new UsuarioSinLoguearseException("Debes iniciar sesion para agregar Propuestas a sus favoritos");
+		}
+		
 	}
 
 }

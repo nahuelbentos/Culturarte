@@ -11,7 +11,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,6 +40,12 @@ public abstract class Usuario {
 	
 	@OneToMany(mappedBy="usuarioDos", cascade = CascadeType.ALL,orphanRemoval=true)
 	private List<UsuarioSigue> usuariosQueSigue = new ArrayList<>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="USU_PROPUESTASFAV",
+				joinColumns=@JoinColumn(name="USU_ID"),
+				inverseJoinColumns=@JoinColumn(name="PROP_ID"))
+	private List<Propuesta> propuestasFavoritas = new ArrayList<>();
 
     public Usuario() {
     	super();
@@ -113,5 +122,9 @@ public abstract class Usuario {
 	public void dejarDeSeguirUsuario(Usuario usuarioADejarDeSeguir) {
 		UsuarioSigue u = new UsuarioSigue(this, usuarioADejarDeSeguir);
 		usuariosQueSigue.remove(u);
+	}
+	
+	public void addFavorita(Propuesta p) {
+		this.propuestasFavoritas.add(p);
 	}
 }

@@ -11,6 +11,7 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.UsuarioSinLoguearseException;
 
 public interface IPropuestaController {
 
@@ -39,11 +40,6 @@ public interface IPropuestaController {
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException;
 	
-	public abstract boolean altaColaboracion(DtColaboracion dtColaboracion);
-	
-	// Revisar si est�n bien los par�metros que recibe
-	public abstract boolean eliminarColaboraciones(String titulo, String nickname);
-	
 	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException;
 	
 	public abstract DtPropuestaMinificado[] listadoPropuestasIngresadas() throws PropuestaNoExisteException;;
@@ -51,6 +47,10 @@ public interface IPropuestaController {
 	public abstract void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException;
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws ProponenteNoExisteException;
+
+	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
+	
+	public abstract void agregarFavorita(String titulo) throws UsuarioSinLoguearseException;
 	
 }
 
