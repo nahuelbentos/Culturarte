@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
@@ -432,6 +431,65 @@ public class PropuestaController implements IPropuestaController {
 			throw new PropuestaNoExisteException("No quedan propuestas por evaluar");
 		}
 	}
+	
+	@Override
+	public DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws PropuestaNoExisteException{
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		GregorianCalendar now = new GregorianCalendar();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion <= :now")
+											.setParameter("estado", estado)
+											.setParameter("nicknameProponente", nicknameProponente)
+											.setParameter("now", now)
+											.getResultList();
+        em.close();
+        
+        if (ps != null) {
+			DtPropuestaMinificado[] props = new DtPropuestaMinificado[ps.size()];
+			Propuesta pro;
+			
+			for (int i = 0; i < props.length; i++) {
+				pro = ps.get(i);
+				
+				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname());
+			}
+			
+			return props;
+		}else {
+			throw new PropuestaNoExisteException("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
+		}
+	}
+	
+	@Override
+	public void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException{
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		GregorianCalendar fechaFinalizacion = (GregorianCalendar) GregorianCalendar.getInstance();
+		fechaFinalizacion.add(GregorianCalendar.DAY_OF_MONTH, 30);	//	agrego 30 días a la caducidad
+		
+		Propuesta propuesta = em.find(Propuesta.class, tituloPropuesta);
+		
+		if (propuesta!=null) {
+			// guardo la nueva fecha de finalización
+			propuesta.setFechaFinalizacion(fechaFinalizacion);
+			em.persist(propuesta);
+		}else {
+			em.getTransaction().rollback();
+			em.close();
+			throw new PropuestaNoExisteException("No se encontró la propuesta " + tituloPropuesta);
+		}
+		
+		em.getTransaction().commit();
+		em.close();
+	}
 
 	@Override
 	public DtPropuestaMinificado[] listarPropuestasActivas() {
@@ -494,6 +552,4 @@ public class PropuestaController implements IPropuestaController {
 		}
 		
 	}
-	
-	
 }
