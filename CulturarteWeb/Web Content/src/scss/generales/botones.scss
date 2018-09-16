@@ -1,0 +1,32 @@
+@import 'colores';
+
+.btn-outline-success{
+  color: $brand-naranja;
+  background-color: transparent;
+  background-image: none;
+  border-color: $brand-naranja;
+}
+
+.btn-outline-success:hover {
+  color: $brand-blanco;
+  background-color: $brand-naranja;
+  border-color: $brand-naranja;
+}
+
+.btn-login,.btn-registrarse,.btn-icon {
+  background-color: transparent;
+}
+
+.icon{
+  padding: 6px;
+}
+.tooltip{
+  .arrow::before {
+    border-bottom-color: $brand-rosado;
+  }
+  .tooltip-inner{
+    color: $brand-blanco;
+    background-color: $brand-rosado;
+    font-family: 'Raleway', sans-serif;
+  }
+}

@@ -1,12 +1,123 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>¡HOLA MUNDO!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Culturarte</title>
+
+  <link rel="stylesheet" href="src/css/bootstrap.css">
+  <link rel="stylesheet" href="src/css/font-awesome.min.css">
+  <link rel="stylesheet" href="src/css/main.css">
 </head>
 <body>
-<div>
-LA WEB LEVANTA
-</div>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-color-brand-violeta">
+      <a class="navbar-brand" href="#">
+        <img src="src/images/logo_culturarte_header.png" height="35" alt="">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Quiero proponer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Quiero colaborar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Explorar</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Título, descripción, lugar" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        </form>
+        <button type="button" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Iniciar Sesion">
+          <a href="#" class="icon"><i class="fa fa-lg fa-sign-in" aria-hidden="true"></i></a>
+        </button>
+        <button type="button" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Registrarse">
+          <a href="#" class="icon"><i class="fa fa-lg fa-user" aria-hidden="true"></i></a>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <section class=" container-fluid">
+    <div class="row justify-contend-md-center">
+      <div class="col-sm">
+        <div class="imagen-propuesta" style="background-image: url('http://i.stack.imgur.com/2OrtT.jpg');">
+
+          <button type="button" class="btn btn-icon rosado-tooltip fav-propuesta" data-toggle="tooltip" data-placement="bottom" title="Agregar a favoritas">
+            <a href="#" class="icon icon-fav"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+          </button>
+
+          <h3 class="titulo"><a href="#">Y UNO GRANDE, ACA VA EL TITULO</a></h3>
+
+        </div>
+
+        <h5><small>por: </small><a href="#">Juan proponente</a></h5>
+      </div>
+
+      <div class="col-sm">
+        <div class="imagen-propuesta" style="background-image: url('http://i.stack.imgur.com/2OrtT.jpg');">
+
+          <button type="button" class="btn btn-icon rosado-tooltip fav-propuesta" data-toggle="tooltip" data-placement="bottom" title="Agregar a favoritas">
+            <a href="#" class="icon icon-fav"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+          </button>
+
+          <h3 class="titulo"><a href="#">Y UNO GRANDE, ACA VA EL TITULO</a></h3>
+
+        </div>
+
+        <h5><small>por: </small><a href="#">Juan proponente</a></h5>
+      </div>
+      <div class="col-sm">
+        <div class="imagen-propuesta" style="background-image: url('http://i.stack.imgur.com/2OrtT.jpg');">
+
+          <button type="button" class="btn btn-icon rosado-tooltip fav-propuesta" data-toggle="tooltip" data-placement="bottom" title="Agregar a favoritas">
+            <a href="#" class="icon icon-fav"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+          </button>
+
+          <h3 class="titulo"><a href="#">Y UNO GRANDE, ACA VA EL TITULO</a></h3>
+
+        </div>
+
+        <h5><small>por: </small><a href="#">Juan proponente</a></h5>
+      </div>
+      <div class="col-sm">
+        <div class="imagen-propuesta" style="background-image: url('http://i.stack.imgur.com/2OrtT.jpg');">
+
+          <button type="button" class="btn btn-icon rosado-tooltip fav-propuesta" data-toggle="tooltip" data-placement="bottom" title="Eliminar de favoritas">
+            <a href="#" class="icon icon-fav"><i class="fa fa-heart" aria-hidden="true"></i></a>
+          </button>
+
+          <h3 class="titulo"><a href="#">ESTA ES FAVORITA</a></h3>
+
+        </div>
+
+        <h5><small>por: </small><a href="#">Juan proponente</a></h5>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+
+  </footer>
+
+  <script src="src/js/jquery.min.js" charset="utf-8"></script>
+  <script src="src/js/popper.min.js" charset="utf-8"></script>
+  <script src="src/js/bootstrap.min.js" charset="utf-8"></script>
+
+  <script>
+    /* inicializo tooltips */
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+  </script>
 </body>
 </html>

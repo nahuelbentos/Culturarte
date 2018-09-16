@@ -10,7 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
 import javax.imageio.ImageIO;
@@ -19,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -40,13 +38,11 @@ import excepciones.PropuestaRepetidaException;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
-import logica.PropuestaController;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.BorderLayout;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 
@@ -84,7 +80,6 @@ public class AltaPropuesta extends JInternalFrame {
 	private String descripcion;
 	private byte[] imagen;
 	private float montoNecesario;
-	private GregorianCalendar fechaPublicacion;
 	private GregorianCalendar fechaEspecatulo;
 	private String lugar;
 	private float precioEntrada;
@@ -404,7 +399,6 @@ public class AltaPropuesta extends JInternalFrame {
 		
 		montoNecesario = Float.parseFloat(entMontoNecesario.getText());
 		precioEntrada = Float.parseFloat(entPrecioEntrada.getText());
-		fechaPublicacion = new GregorianCalendar();
 		fechaEspecatulo = new GregorianCalendar();
 		if (entFechaEspectaculo.getDate() != null)
 			fechaEspecatulo.setTime(entFechaEspectaculo.getDate());

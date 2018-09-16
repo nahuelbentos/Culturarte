@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 
 import datatype.DtColaborador;
 import datatype.DtProponente;
-import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;

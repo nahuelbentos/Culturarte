@@ -10,7 +10,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
@@ -19,11 +18,9 @@ import datatype.DtPropuesta;
 import excepciones.ColaboracionNoExisteException;
 
 import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.ListSelectionModel;
 import java.awt.GridBagLayout;

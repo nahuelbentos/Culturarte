@@ -1,1 +1,5 @@
 /build/
+/Web Content/node_modules/
+/Web Content/src/css
+/Web Content/src/fonts
+/Web Content/src/js
