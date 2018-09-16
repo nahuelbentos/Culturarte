@@ -23,6 +23,7 @@ import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
+import excepciones.UsuarioYaLogueado;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import persistencia.ConexionPostgresHibernate;
 
@@ -53,8 +54,6 @@ public class UsuarioController implements IUsuarioController {
 		super();
 		usuarioLogueado = null;
 	}
-	
-	
 
 	@Override
 	public void agregarUsuario(DtUsuario dtUsuario) throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
@@ -524,6 +523,40 @@ public class UsuarioController implements IUsuarioController {
 			throw new UsuarioSinLoguearseException("Debes iniciar sesion para agregar Propuestas a sus favoritos");
 		}
 		
+	}
+
+	@Override
+	public void iniciarSesion(String datoSesion, String password) throws UsuarioNoExisteElUsuarioException, UsuarioYaLogueado {
+		if (usuarioLogueado != null) {
+			throw new UsuarioYaLogueado("Ya hay una sesión activa.");
+		} else {
+			cph = ConexionPostgresHibernate.getInstancia();
+			emf = cph.getEntityManager();
+			em = emf.createEntityManager();
+			em.getTransaction().begin();
+			
+			usuarioLogueado = em.find(Usuario.class, datoSesion);
+			
+			if (usuarioLogueado == null) {
+				usuarioLogueado = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
+			}
+			
+			em.close();
+			
+			if (usuarioLogueado == null) {
+				throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
+			}
+		}
+
+	}
+
+	@Override
+	public void cerrarSesion() throws UsuarioSinLoguearseException {
+		if (usuarioLogueado == null) {
+			throw new UsuarioSinLoguearseException("No hay ninguna sesión activa.");
+		} else {
+			usuarioLogueado = null;
+		}
 	}
 
 }
