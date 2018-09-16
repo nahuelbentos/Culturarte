@@ -79,12 +79,14 @@ public class UsuarioController implements IUsuarioController {
 				DtProponente dtProponente = (DtProponente) dtUsuario;
 				usuario = new Proponente(dtProponente.getDireccion(), dtProponente.getBiografia(),
 						dtProponente.getSitioWeb(), dtProponente.getNickname(), dtProponente.getNombre(),
-						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getApellido(), dtProponente.getImagen());
+						dtProponente.getFechaNacimiento(), dtProponente.getEmail(), dtProponente.getPassword(), 
+						dtProponente.getApellido(), dtProponente.getImagen());
 
 			} else if (dtUsuario instanceof DtColaborador) {
 				DtColaborador dtColaborador = (DtColaborador) dtUsuario;
 				usuario = new Colaborador(dtColaborador.getNickname(), dtColaborador.getNombre(),
-						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getApellido(), dtColaborador.getImagen());
+						dtColaborador.getFechaNacimiento(), dtColaborador.getEmail(), dtColaborador.getPassword(), 
+						dtColaborador.getApellido(), dtColaborador.getImagen());
 			}
 
 			em.persist(usuario);
@@ -129,7 +131,8 @@ public class UsuarioController implements IUsuarioController {
             for (int i = 0; i < usuarios.size(); i++) {
                 usuario = usuarios.get(i);
                 dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
-                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
+                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword(), 
+                		usuario.getFechaNacimiento(), usuario.getImagen());
             }
         }
         em.close();
@@ -197,7 +200,8 @@ public class UsuarioController implements IUsuarioController {
             for (int i = 0; i < usuarios.size(); i++) {
                 usuario = usuarios.get(i);
                 dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
-                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
+                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword() ,
+                		usuario.getFechaNacimiento(), usuario.getImagen());
             }
         }
         em.close();
@@ -217,12 +221,12 @@ public class UsuarioController implements IUsuarioController {
         	if (usuario instanceof Proponente) {
 				Proponente proponente = (Proponente) usuario;
 				dtUsuario = new DtProponente(proponente.getNickname(), proponente.getNombre(), proponente.getApellido(),
-						proponente.getCorreoElectronico(), proponente.getFechaNacimiento(), proponente.getImagen(),
+						proponente.getCorreoElectronico(), proponente.getPassword(), proponente.getFechaNacimiento(), proponente.getImagen(),
 						proponente.getDireccion(), proponente.getBiografia(), proponente.getLinkWeb());
 			} else if (usuario instanceof Colaborador) {
 				Colaborador colaborador = (Colaborador) usuario;
 				dtUsuario = new DtColaborador(colaborador.getNickname(), colaborador.getNombre(), colaborador.getApellido(),
-						colaborador.getCorreoElectronico(), colaborador.getFechaNacimiento(), colaborador.getImagen());
+						colaborador.getCorreoElectronico(), colaborador.getPassword(), colaborador.getFechaNacimiento(), colaborador.getImagen());
 			}
         } else {
             throw new UsuarioNoExisteElUsuarioException("El usuario " + nickname + " no existe");
@@ -248,7 +252,8 @@ public class UsuarioController implements IUsuarioController {
 	        for (int i = 0; i < usuarios.size(); i++) {
 	        	usuarioDos = usuarios.get(i);
 	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
-	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
+	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getPassword(), 
+	        			usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
 	        }
 	        return listaDeUsuarios;
 		}
@@ -271,7 +276,8 @@ public class UsuarioController implements IUsuarioController {
             for (int i = 0; i < usuarios.size(); i++) {
                 usuario = usuarios.get(i);
                 dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
-                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getFechaNacimiento(), usuario.getImagen());
+                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword(), 
+                		usuario.getFechaNacimiento(), usuario.getImagen());
             }
             em.close();
             return dtUsuario;
@@ -355,15 +361,16 @@ public class UsuarioController implements IUsuarioController {
 	    		}
 
 	    		return new DtPerfilProponente(auxUsuProponente.getNickname(), auxUsuProponente.getNombre(),
-	    				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
+	    				auxUsuProponente.getApellido(),auxUsuProponente.getEmail(), auxUsuProponente.getPassword(), 
+	    				auxUsuProponente.getFechaNacimiento(), auxUsuProponente.getImagen(),
 	    				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
 	    				prIngresadas, prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
         	}else
-        		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", null,
+        		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", "", null,
             			null,"pruebaController", "pruebaController", "pruebaController",null,null, null, null, null, null);
 
         }else {
-        	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", null,
+        	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", "", null,
         			null,"pruebaController", "pruebaController", "pruebaController",null,null, null, null, null, null);
         }
 
@@ -404,14 +411,14 @@ public class UsuarioController implements IUsuarioController {
 						 
 					}
 				}
-				return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), perfil.getCorreoElectronico(),
-						perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
+				return new DtPerfilColaborador(perfil.getNickname(), perfil.getNombre(), perfil.getApellido(), 
+						perfil.getCorreoElectronico(), perfil.getPassword(), perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
         	}else
         		return  new  DtPerfilColaborador("Fallo_perfil.getNickname()", "fallo_perfil.getNombre()", "Fallo_perfil.getApellido()",
-        				"falo_perfil.getCorreoElectronico()", null,null,null);
+        				"falo_perfil.getCorreoElectronico()", "", null,null,null);
         }else
         	return  new  DtPerfilColaborador("Fallo2_perfil.getNickname()", "Fallo2_perfil.getNombre()", "Fallo2_perfil.getApellido()",
-    				"Fallo2_perfil.getCorreoElectronico()", null,null,null);
+    				"Fallo2_perfil.getCorreoElectronico()", "", null,null,null);
         
 
 	}

@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -37,6 +38,7 @@ import datatype.DtUsuario;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.IUsuarioController;
+import javax.swing.JPasswordField;
 
 @SuppressWarnings("serial")
 public class AltaPerfil extends JInternalFrame {
@@ -72,6 +74,8 @@ public class AltaPerfil extends JInternalFrame {
 	private JLabel lblRol;
 	private ImageIcon imagenUsuario;
 	private byte[] imagenUsuarioByte;
+	private JPasswordField txtPassword;
+	private JPasswordField txtPasswordConfirmar;
 
 	/**
 	 * Create the frame.
@@ -86,7 +90,7 @@ public class AltaPerfil extends JInternalFrame {
         setClosable(true);
         getContentPane().setLayout(null);
         setTitle("Registrar un Usuario");
-        setBounds(10, 10, 563, 520);
+        setBounds(10, 10, 563, 600);
 		
         getContentPane().setLayout(null);
 		
@@ -113,40 +117,40 @@ public class AltaPerfil extends JInternalFrame {
 		txtNickname.setColumns(10);
 		
 		lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(65, 97, 80, 14);
+		lblNombre.setBounds(65, 164, 80, 14);
 		getContentPane().add(lblNombre);
 		
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(155, 94, 174, 20);
+		txtNombre.setBounds(155, 161, 174, 20);
 		getContentPane().add(txtNombre);
 		
 		lblApellido = new JLabel("Apellido:");
-		lblApellido.setBounds(65, 127, 80, 14);
+		lblApellido.setBounds(65, 194, 80, 14);
 		getContentPane().add(lblApellido);
 		
 		txtApellido = new JTextField();
 		txtApellido.setColumns(10);
-		txtApellido.setBounds(155, 124, 174, 20);
+		txtApellido.setBounds(155, 191, 174, 20);
 		getContentPane().add(txtApellido);
 		
 		lblEmail = new JLabel("E-mail:");
-		lblEmail.setBounds(65, 155, 80, 14);
+		lblEmail.setBounds(65, 222, 80, 14);
 		getContentPane().add(lblEmail);
 		
 		txtEmail = new JTextField();
 		txtEmail.setColumns(10);
-		txtEmail.setBounds(155, 152, 174, 20);
+		txtEmail.setBounds(155, 222, 174, 20);
 		getContentPane().add(txtEmail);
 		
 		rdbtnProponente = new JRadioButton("Proponente");
 		buttonGroup.add(rdbtnProponente);
-		rdbtnProponente.setBounds(157, 226, 91, 23);
+		rdbtnProponente.setBounds(157, 293, 91, 23);
 		getContentPane().add(rdbtnProponente);
 		
 		rdbtnColaborador = new JRadioButton("Colaborador");
 		buttonGroup.add(rdbtnColaborador);
-		rdbtnColaborador.setBounds(255, 226, 109, 23);
+		rdbtnColaborador.setBounds(255, 293, 109, 23);
 		getContentPane().add(rdbtnColaborador);
 		btnSeleecionarImagen = new JButton("Selecionar Imagen");
 		btnSeleecionarImagen.setHorizontalAlignment(SwingConstants.LEFT);
@@ -178,11 +182,11 @@ public class AltaPerfil extends JInternalFrame {
 				registrarUsuarioActionPerformed(arg0);
 		    }
 		});
-		btnAceptar.setBounds(155, 428, 99, 23);
+		btnAceptar.setBounds(155, 495, 99, 23);
 		getContentPane().add(btnAceptar);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(316, 428, 99, 23);
+		btnCancelar.setBounds(316, 495, 99, 23);
         btnCancelar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 limpiarFormulario();
@@ -193,47 +197,63 @@ public class AltaPerfil extends JInternalFrame {
 		
 		txtSitioWeb = new JTextField();
 		txtSitioWeb.setColumns(10);
-		txtSitioWeb.setBounds(155, 373, 174, 20);
+		txtSitioWeb.setBounds(155, 440, 174, 20);
 		getContentPane().add(txtSitioWeb);
 		
 		txtDireccion = new JTextField();
 		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(155, 273, 174, 20);
+		txtDireccion.setBounds(155, 340, 174, 20);
 		getContentPane().add(txtDireccion);
 		txtDireccion.setVisible(false);
 		
 		lblFechaDeNacimiento = new JLabel("<html>Fecha de <br/>nacimiento:</html>");
-		lblFechaDeNacimiento.setBounds(65, 183, 62, 28);
+		lblFechaDeNacimiento.setBounds(65, 250, 62, 28);
 		getContentPane().add(lblFechaDeNacimiento);
 		
 		lblDireccion = new JLabel("Direcci\u00F3n:");
-		lblDireccion.setBounds(65, 276, 80, 14);
+		lblDireccion.setBounds(65, 343, 80, 14);
 		getContentPane().add(lblDireccion);
 		lblDireccion.setVisible(false);
 		
 		lblBiografia = new JLabel("Biograf\u00EDa:");
-		lblBiografia.setBounds(65, 307, 80, 14);
+		lblBiografia.setBounds(65, 374, 80, 14);
 		getContentPane().add(lblBiografia);
 		lblBiografia.setVisible(false);
 		
 		lblSitioWeb = new JLabel("Sitio web:");
-		lblSitioWeb.setBounds(65, 376, 80, 14);
+		lblSitioWeb.setBounds(65, 443, 80, 14);
 		getContentPane().add(lblSitioWeb);
 		lblSitioWeb.setVisible(false);
 		txtSitioWeb.setVisible(false);
 		
 		dateChooser = new JDateChooser();
-		dateChooser.setBounds(155, 188, 174, 20);
+		dateChooser.setBounds(155, 255, 174, 20);
 		getContentPane().add(dateChooser);
 		
 		txtBiografia = new JTextArea();
-		txtBiografia.setBounds(155, 304, 174, 58);
+		txtBiografia.setBounds(155, 371, 174, 58);
 		getContentPane().add(txtBiografia);
 		txtBiografia.setVisible(false);
 		
 		lblRol = new JLabel("Rol:");
-		lblRol.setBounds(65, 230, 46, 14);
+		lblRol.setBounds(65, 297, 46, 14);
 		getContentPane().add(lblRol);
+		
+		JLabel lblPassword = new JLabel("Contrase\u00F1a:");
+		lblPassword.setBounds(65, 91, 80, 14);
+		getContentPane().add(lblPassword);
+		
+		JLabel lblConfirmarContrasea = new JLabel("<html>Confirmar <bt/>contrase\u00F1a:</html>");
+		lblConfirmarContrasea.setBounds(65, 116, 80, 36);
+		getContentPane().add(lblConfirmarContrasea);
+		
+		txtPassword = new JPasswordField();
+		txtPassword.setBounds(155, 94, 174, 20);
+		getContentPane().add(txtPassword);
+		
+		txtPasswordConfirmar = new JPasswordField();
+		txtPasswordConfirmar.setBounds(155, 130, 174, 20);
+		getContentPane().add(txtPasswordConfirmar);
 		
 		rdbtnProponente.addItemListener(new ItemListener() {
 			@Override
@@ -267,6 +287,8 @@ public class AltaPerfil extends JInternalFrame {
         dateChooser.setDate(null);
         buttonGroup.clearSelection();
         lblImagen.setIcon(null);
+        txtPassword.setText("");
+        txtPasswordConfirmar.setText("");
     }
     
     private void habilitarProponente() {
@@ -292,6 +314,7 @@ public class AltaPerfil extends JInternalFrame {
         String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
         String email = txtEmail.getText();
+        String password = txtPassword.getPassword().toString();
         GregorianCalendar fechaNacimiento = new GregorianCalendar();
         if (dateChooser.getDate() != null) {
         	fechaNacimiento.setTime(dateChooser.getDate());
@@ -302,9 +325,9 @@ public class AltaPerfil extends JInternalFrame {
         DtUsuario dtUsuario = null;
         if (checkFormulario()) {
     		if (rdbtnColaborador.isSelected()) {
-    			dtUsuario = new DtColaborador(nickname, nombre, apellido, email, fechaNacimiento, imagenUsuarioByte);
+    			dtUsuario = new DtColaborador(nickname, nombre, apellido, email, password, fechaNacimiento, imagenUsuarioByte);
     		} else if (rdbtnProponente.isSelected()) {
-    			dtUsuario = new DtProponente(nickname, nombre, apellido, email, fechaNacimiento, imagenUsuarioByte, 
+    			dtUsuario = new DtProponente(nickname, nombre, apellido, email, password, fechaNacimiento, imagenUsuarioByte, 
     					direccion, biografia, sitioWeb);
     		}
     		try{
@@ -329,7 +352,11 @@ public class AltaPerfil extends JInternalFrame {
         if (dateChooser.getDate() != null) {
         	fechaNacimiento.setTime(dateChooser.getDate());
         }
-    	if (rdbtnColaborador.isSelected()) {
+        if (!Arrays.equals(txtPassword.getPassword(), txtPasswordConfirmar.getPassword())) {
+	        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Registrar Usuario Proponente",
+	                JOptionPane.ERROR_MESSAGE);
+	        return false;
+        } else if (rdbtnColaborador.isSelected()) {
             if (nickname.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || dateChooser.getDate() == null) {
                 JOptionPane.showMessageDialog(this, "Los campos Nickname, Nombre, Apellido, Email "
                 		+ "y Fecha de Nacimiento son requeridos.", "Registrar Usuario Colaborador",

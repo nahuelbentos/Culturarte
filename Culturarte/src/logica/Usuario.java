@@ -32,6 +32,8 @@ public abstract class Usuario {
     private GregorianCalendar fechaNacimiento;
 	@Column(name="EMAIL")
     private String correoElectronico;
+	@Column(name="PASSWORD")
+    private String password;
 	@Column(name="APELLIDO")
     private String apellido;
 	@Lob
@@ -52,12 +54,13 @@ public abstract class Usuario {
     }
     
     public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento,
-    		String correoElectronico, String apellido, byte[] imagen) {
+    		String correoElectronico, String password, String apellido, byte[] imagen) {
     	super();
         this.nickname = nickname;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.correoElectronico = correoElectronico;
+        this.password = password;
         this.apellido = apellido;
         this.imagen = imagen;
     }
@@ -70,6 +73,10 @@ public abstract class Usuario {
 
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
@@ -96,6 +103,10 @@ public abstract class Usuario {
 
     public String getCorreoElectronico() {
         return correoElectronico;
+    }
+    
+    public String getPassword() {
+        return password;
     }
 
     public GregorianCalendar getFechaNacimiento() {

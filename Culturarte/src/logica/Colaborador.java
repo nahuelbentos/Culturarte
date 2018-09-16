@@ -15,12 +15,12 @@ public class Colaborador extends Usuario {
 	}
 
 	public Colaborador(String nickname, String nombre, GregorianCalendar fechaNacimiento, String correoElectronico,
-			String apellido, byte[] imagen) {
-		super(nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
+			String password, String apellido, byte[] imagen) {
+		super(nickname, nombre, fechaNacimiento, correoElectronico, password, apellido, imagen);
 	}
 	public DtColaborador getDtColaborador() {
 		DtColaborador dtc = new DtColaborador(getNickname(), getNombre(), getApellido(),
-				getCorreoElectronico(),getFechaNacimiento(), getImagen());
+				getCorreoElectronico(), getPassword(),getFechaNacimiento(), getImagen());
 		return dtc;
 
 	}
