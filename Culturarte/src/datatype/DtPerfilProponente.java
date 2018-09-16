@@ -12,11 +12,11 @@ public class DtPerfilProponente extends DtProponente{
 	private ArrayList<DtPropuesta> prNoFinanciadas;
 	private ArrayList<DtPropuesta> prIngresadas;
 
-	public DtPerfilProponente(String nickname, String nombre, String apellido, String email,
+	public DtPerfilProponente(String nickname, String nombre, String apellido, String email, String password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb,
 			ArrayList<DtPropuesta> prIngresadas,ArrayList<DtPropuesta> prPublicadas,ArrayList<DtPropuesta> prCanceladas,
 			ArrayList<DtPropuesta> prEnFinanciacion,ArrayList<DtPropuesta> prFinanciadas,ArrayList<DtPropuesta> prNoFinanciadas) {
-		super(nickname, nombre, apellido, email, fechaNacimiento, imagen, direccion, biografia, sitioWeb);
+		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen, direccion, biografia, sitioWeb);
 		// TODO Auto-generated constructor stub
 		this.prPublicadas = prPublicadas;
 		this.prCanceladas = prCanceladas;

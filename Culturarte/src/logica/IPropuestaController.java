@@ -46,9 +46,13 @@ public interface IPropuestaController {
 
 	public abstract void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException;
 	
+	public abstract DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws PropuestaNoExisteException;
+
 	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
 	
 	public abstract void agregarFavorita(String titulo) throws UsuarioSinLoguearseException;
+
+	public abstract void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException;
 	
 }
 
