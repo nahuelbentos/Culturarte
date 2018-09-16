@@ -21,7 +21,9 @@ public class DtUsuario {
 		this.fechaNacimiento = fechaNacimiento;
 		this.imagen = imagen;
 	}
-
+	public DtUsuario() {
+		super();		
+	}
 	public String getNickname() {
 		return nickname;
 	}

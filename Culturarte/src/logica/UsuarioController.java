@@ -301,8 +301,8 @@ public class UsuarioController implements IUsuarioController {
     	if (usuario != null) {
         	if (usuario instanceof Proponente) {
 				Proponente p = (Proponente) usuario;
-	        	System.out.println("parm nickname: " + nickname + " \n");
-	        	System.out.println("Usuario nombre: " + p.getNombre() + " \n");
+//	        	System.out.println("parm nickname: " + nickname + " \n");
+//	        	System.out.println("Usuario nombre: " + p.getNombre() + " \n");
 
 	        	DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
 
@@ -329,7 +329,7 @@ public class UsuarioController implements IUsuarioController {
 	    				 prop.getProponenteACargo().getDtProponente(), prop.getEstadoActual(), prop.getDtEstadoHistorial(),
 	    				 prop.getCategoria().getDtCategoriaSimple(), colaboraciones);
 	    				
-	    				System.out.println("dataPro.Estadoactual: " + dataPro.getEstadoActual() + " \n");
+//	    				System.out.println("dataPro.Estadoactual: " + dataPro.getEstadoActual() + " \n");
 	    				switch (dataPro.getEstadoActual()){
 	    					case publicada:
 	    						prPublicadas.add(dataPro);
@@ -395,10 +395,9 @@ public class UsuarioController implements IUsuarioController {
 						 double montoAportado = c.getMonto(); //3*
 						 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*
 						 if (p != null) {
-							 System.out.println("p.titulo: " + p.getTitulo());
-						 DtPropuestaColaborada colaboracion = new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
+							 DtPropuestaColaborada colaboracion = new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
 								 p.getProponenteACargo(), p.getEstadoActual()); //3.2*
-						 colaboracionesHechas.add(colaboracion);
+							 colaboracionesHechas.add(colaboracion);
 						 }else {
 							 // revisar
 						 }
@@ -522,16 +521,110 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPerfilUsuario obtenerPerfilUsuario(String nickname) {
-//		cph = ConexionPostgresHibernate.getInstancia();
-//		emf = cph.getEntityManager();
-//		em = emf.createEntityManager();
-//		em.getTransaction().begin();
-//
-//        @SuppressWarnings("unchecked")
-//		List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
-//        
-		// TODO Auto-generated method stub
-		return null;
-	}
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
 
+		Usuario u = em.find(Usuario.class, nickname);
+        @SuppressWarnings("unchecked")
+        List<Usuario> seguidores = em.createQuery("select u.usuarioUno FROM UsuarioSigue u WHERE u.usuarioDos = :nickname")
+        		.setParameter("nickname", u)
+        		.getResultList();
+        @SuppressWarnings("unchecked")
+        List<Usuario> seguidos = em.createQuery("select u.usuarioDos FROM UsuarioSigue u WHERE u.usuarioUno = :nickname")
+        		.setParameter("nickname", u)
+        		.getResultList();
+		
+        List<Propuesta> propuestasFavoritas = new ArrayList<>();
+        ArrayList<DtPropuesta> dtPropuestasFavoritas = new ArrayList<>();
+        ArrayList<DtProponente> seguidosProponentes = new ArrayList<>();
+        ArrayList<DtColaborador> seguidosColaboradores = new ArrayList<>();
+        ArrayList<DtProponente> seguidoresProponentes = new ArrayList<>();
+        ArrayList<DtColaborador> seguidoresColaboradores = new ArrayList<>();
+    	ArrayList<DtPropuesta> propuestasPublicadas = new ArrayList<>();
+    	ArrayList<DtPropuesta> propuestasCreadas = new ArrayList<>();
+    	ArrayList<DtPropuestaColaborada> propuestasColaboradas = new ArrayList<>();
+    	ArrayList<DtColaboracion> colaboracionesHechas = new ArrayList<>();
+    	DtPerfilUsuario perfil = new DtPerfilUsuario();
+        
+        for (Usuario seguido : seguidos) {
+        	if (seguido instanceof Colaborador)
+        		seguidosColaboradores.add(((Colaborador) seguido).getDtColaborador());
+        	if(seguido instanceof Proponente)
+        		seguidosProponentes.add(((Proponente) seguido).getDtProponente());
+		}        
+        
+        for (Usuario seguidor : seguidores) {
+        	if (seguidor instanceof Colaborador)
+        		seguidoresColaboradores.add(((Colaborador) seguidor).getDtColaborador());
+        	if (seguidor instanceof Proponente)
+        		seguidoresProponentes.add(((Proponente) seguidor).getDtProponente());
+		}
+       
+    	if (u != null) {
+    		propuestasFavoritas = u.getPropuestasFavoritas();
+//        	if(propuestasFavoritas != null) {
+    	        for (Propuesta propuesta : propuestasFavoritas) {
+    				dtPropuestasFavoritas.add(propuesta.getDtPropuesta());
+    			}
+//        	}
+	    	if (u instanceof Colaborador) {
+	            @SuppressWarnings("unchecked")
+	            List<Colaboracion> colabs = em.createQuery("FROM Colaboracion WHERE colaborador = :colaborador")
+	            	.setParameter("colaborador", u)
+	            	.getResultList();
+	            for (Colaboracion c : colabs) {
+					if(c.tieneColaborador(nickname)) {
+						double montoAportado = c.getMonto(); //3*
+						 DtPropuestaColaborada p = c.getPropuestaFromColaboracion(); //4* y 4.1*
+						 if (p != null) 
+							 propuestasColaboradas.add(new DtPropuestaColaborada(p.getTitulo(), p.getDescripcion(), p.getImagen(), montoAportado,
+									 p.getProponenteACargo(), p.getEstadoActual()));
+						if(usuarioLogueado!= null && usuarioLogueado.getNickname().equals(nickname)) {
+							DtColaboracion ch = c.getDataColaboracion();
+							if(ch != null)
+								colaboracionesHechas.add(ch);
+						}
+					}
+					
+				}
+//	    		em.close();
+	    	}
+	    	
+	    	/*
+	    	 
+	    	 */
+	    	if (u instanceof Proponente) {
+	            @SuppressWarnings("unchecked")
+	            List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE proponenteACargo = :proponente")
+	            	.setParameter("proponente", u)
+	            	.getResultList();
+	            for (Propuesta prop : propuestas) {
+	            	if(prop.isProponenteACargo(nickname) && !prop.getEstadoActual().equals(EstadoPropuesta.ingresada)) {
+	            		DtPropuesta dtp = prop.getInfoPropuesta();
+	            		if(dtp!=null)
+	            			propuestasPublicadas.add(dtp);
+	            		
+	            	}
+	            	if(prop.isProponenteACargo(nickname) &&
+	            			prop.getEstadoActual().equals(EstadoPropuesta.ingresada) &&
+	            			usuarioLogueado!= null && 
+	            			u.getNickname().equals(usuarioLogueado.getNickname())) {
+	            				DtPropuesta auxdtp = prop.getInfoPropuesta();
+	            				if(auxdtp!=null)
+	            					propuestasCreadas.add(auxdtp);
+	            			}
+				}
+	    	}
+			perfil = new DtPerfilUsuario(u.getNickname(), u.getNombre(), u.getApellido(), u.getCorreoElectronico(),
+	        		u.getFechaNacimiento(), u.getImagen(), seguidoresProponentes, seguidoresColaboradores, seguidosProponentes, seguidosColaboradores,
+	        		dtPropuestasFavoritas, propuestasPublicadas, propuestasCreadas, propuestasColaboradas,colaboracionesHechas);
+
+    	}
+		// TODO Auto-generated method stub
+		em.close();
+		return perfil;
+	}
+	
 }

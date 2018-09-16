@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TIPOUSUARIO")
@@ -127,4 +128,9 @@ public abstract class Usuario {
 	public void addFavorita(Propuesta p) {
 		this.propuestasFavoritas.add(p);
 	}
+
+	public List<Propuesta> getPropuestasFavoritas() {
+		return propuestasFavoritas;
+	}
+	
 }

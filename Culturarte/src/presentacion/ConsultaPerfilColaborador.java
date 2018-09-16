@@ -31,7 +31,12 @@ import java.awt.Rectangle;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
+import datatype.DtColaborador;
 import datatype.DtPerfilColaborador;
+import datatype.DtPerfilUsuario;
+import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.EstadoPropuesta;
@@ -225,10 +230,26 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
         JButton btnVerPerfil = new JButton("Ver Perfil");
         btnVerPerfil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		ArrayList<DtPropuesta> dtps= ipc.listarPropuestasPorCategoria("pepe");
-        		for (DtPropuesta dtp : dtps) {
-					System.out.println(dtp.getTitulo());
+        		DtPerfilUsuario dtpu = iUsuController.obtenerPerfilUsuario("bastian");
+        		
+        		System.out.println(dtpu.getNombre() + " - " + dtpu.getNickname() + " \n");
+
+        		System.out.println("Sigue a: \n" );
+        		for (DtColaborador dtc : dtpu.getSeguidosColaboradores()) {
+        			System.out.println(dtc.getNickname() + "\n");	
 				}
+        		for (DtProponente dtp : dtpu.getSeguidosProponentes()) {
+        			System.out.println(dtp.getNickname() + "\n");	
+				}
+
+        		System.out.println("Es seguido por: \n" );
+        		for (DtColaborador dtc : dtpu.getSeguidoresColaboradores()) {
+        			System.out.println(dtc.getNickname() + "\n");	
+				}
+        		for (DtProponente dtp : dtpu.getSeguidoresProponentes()) {
+        			System.out.println(dtp.getNickname() + "\n");	
+				}
+				
         		if (listarColaboradores.getColaboradorSeleccionado() != null) 
 					cargarPerfil(listarColaboradores.getColaboradorSeleccionado());
         	}
