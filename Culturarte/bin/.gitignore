@@ -1,3 +1,8 @@
-/main/
-/src/
-/resources/
+/datatype/
+/excepciones/
+/libs/
+/logica/
+/persistence.xml
+/persistencia/
+/presentacion/
+/META-INF/
