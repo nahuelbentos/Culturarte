@@ -433,8 +433,66 @@ public class PropuestaController implements IPropuestaController {
 	}
 	
 	@Override
-	public DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws ProponenteNoExisteException{
-		return null;
+	public DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws PropuestaNoExisteException{
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		GregorianCalendar now = new GregorianCalendar();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion <= :now")
+											.setParameter("estado", estado)
+											.setParameter("nicknameProponente", nicknameProponente)
+											.setParameter("now", now)
+											.getResultList();
+        em.close();
+        
+        if (ps != null) {
+			DtPropuestaMinificado[] props = new DtPropuestaMinificado[ps.size()];
+			Propuesta pro;
+			
+			for (int i = 0; i < props.length; i++) {
+				pro = ps.get(i);
+				
+				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname());
+			}
+			
+			return props;
+		}else {
+			throw new PropuestaNoExisteException("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
+		}
+	}
+	
+	@Override
+	public void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException{
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		GregorianCalendar fechaFinalizacion = new GregorianCalendar();
+		fechaFinalizacion.add(2, 30);	//	agrego 30 días a la caducidad
+		
+		Propuesta propuesta = em.find(Propuesta.class, tituloPropuesta);
+		
+		if (propuesta!=null) {
+			// guardo la nueva fecha de finalización
+			propuesta.setFechaFinalizacion(fechaFinalizacion);
+			em.persist(propuesta);
+			
+			// creo un nuevo estado en el historial de la propuesta para documentar el cambio
+			Estado e = new Estado(propuesta.getEstadoActual(), propuesta, new GregorianCalendar());
+			em.persist(e);
+		}else {
+			em.getTransaction().rollback();
+			em.close();
+			throw new PropuestaNoExisteException("No se encontró la propuesta " + tituloPropuesta);
+		}
+		
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override

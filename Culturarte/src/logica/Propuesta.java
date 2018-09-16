@@ -46,6 +46,8 @@ public class Propuesta {
 	private float precioEntrada;
 	@Column(name="LUGAR")
 	private String lugar;
+	@Column(name="FECHA_FINALIZACION")
+	private GregorianCalendar fechaFinalizacion;
 	@Column(name="TIPO_RETORNO")
 	@Enumerated(EnumType.STRING)
 	private TipoRetorno tipo;
@@ -81,6 +83,8 @@ public class Propuesta {
 	    this.fechaEspecatulo = fechaEspecatulo;
 	    this.precioEntrada = e;
 	    this.lugar = lugar;
+	    this.fechaFinalizacion = fechaPublicacion;
+	    this.fechaFinalizacion.add(2,30);	//	30 días después de la publicación, la búsqueda de financiación caduca
 	    this.tipo = tipo;
 	    this.estadoActual = EstadoPropuesta.ingresada;
 	}
@@ -94,6 +98,8 @@ public class Propuesta {
 	    this.fechaEspecatulo = dtP.getFechaEspecatulo();
 	    this.precioEntrada = dtP.getPrecioEntrada();
 	    this.lugar = dtP.getLugar();
+	    this.fechaFinalizacion = fechaPublicacion;
+	    this.fechaFinalizacion.add(2,30);	//	30 días después de la publicación, la búsqueda de financiación caduca
 	    this.tipo = dtP.getTipo();
 	    this.estadoActual = EstadoPropuesta.ingresada;
 	    //this.estadoHistorial = null; // Ya hay que setear el ingresada o al historial pasa al momento del cambio?
@@ -117,6 +123,10 @@ public class Propuesta {
 
     public String getLugar() {
         return lugar;
+    }
+    
+    public GregorianCalendar getFechaFinalizacion() {
+        return fechaFinalizacion;
     }
 
     public float getMontoNecesario() {
@@ -169,6 +179,10 @@ public class Propuesta {
 
     public void setLugar(String lugar) {
         this.lugar = lugar;
+    }
+    
+    public void setFechaFinalizacion(GregorianCalendar fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
     }
 
     public void setMontoNecesario(float montoNecesario) {
