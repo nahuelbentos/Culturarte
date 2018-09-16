@@ -26,8 +26,8 @@ public class Proponente extends Usuario{
     
     public Proponente(String direccion, String biografia, String linkWeb, 
     		String nickname, String nombre, GregorianCalendar fechaNacimiento, 
-    		String correoElectronico, String apellido, byte[] imagen) {
-        super(nickname, nombre, fechaNacimiento, correoElectronico, apellido, imagen);
+    		String correoElectronico, String password, String apellido, byte[] imagen) {
+        super(nickname, nombre, fechaNacimiento, correoElectronico, password, apellido, imagen);
         this.direccion = direccion;
         this.biografia = biografia;
         this.linkWeb = linkWeb;
@@ -60,15 +60,15 @@ public class Proponente extends Usuario{
     public DtPerfilProponente getDatosBasicos() {
     	
     	DtPerfilProponente dtp = new DtPerfilProponente(this.getNickname(), this.getNombre(), this.getApellido(), this.getCorreoElectronico(), 
-    													this.getFechaNacimiento(), this.getImagen(), this.getDireccion(), this.getBiografia(),
+    													this.getPassword(), this.getFechaNacimiento(), this.getImagen(), this.getDireccion(), this.getBiografia(),
     													this.getLinkWeb(),null,null, null, null, null, null); //null=Son las colecciones.    	
 		return dtp;
     	
     }
     public DtProponente getDtProponente() {
     	return new DtProponente(super.getNickname(), super.getNombre(), super.getApellido(),
-    			super.getCorreoElectronico(), super.getFechaNacimiento(), super.getImagen(), this.direccion, 
-    			this.biografia, this.linkWeb);
+    			super.getCorreoElectronico(), super.getPassword(), super.getFechaNacimiento(), 
+    			super.getImagen(), this.direccion, this.biografia, this.linkWeb);
     	
     }
 }

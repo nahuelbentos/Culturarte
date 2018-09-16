@@ -368,6 +368,7 @@ public class Principal {
             	String apellido = datosUsuario[3];
             	GregorianCalendar fechaNacimiento = parsearFecha(datosUsuario[4]);
             	String tipoUsuario = datosUsuario[5];
+            	String password = datosUsuario[10];
             	byte[] imagen = null;
             	if (!"null".equals(datosUsuario[6])) {
             		imagen = obtenerImagen(datosUsuario[6]);
@@ -383,12 +384,12 @@ public class Principal {
                 	if (!"null".equals(datosUsuario[9])) {
                 		biografia = datosUsuario[9];
                 	}
-            		dtUsuario = new DtProponente(nickname, nombre, apellido, email, 
+            		dtUsuario = new DtProponente(nickname, nombre, apellido, email, password,
             				fechaNacimiento, imagen, direccion, biografia, sitioWeb);
             		IUC.agregarUsuario(dtUsuario);
             	} else if ("C".equals(tipoUsuario)) {  
             		dtUsuario = new DtColaborador(nickname, nombre, apellido, 
-            				email, fechaNacimiento, imagen);
+            				email, password, fechaNacimiento, imagen);
             		IUC.agregarUsuario(dtUsuario);
             	}
             }

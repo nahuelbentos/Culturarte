@@ -4,9 +4,9 @@ import java.util.GregorianCalendar;
 
 public class DtColaborador extends DtUsuario {
 
-	public DtColaborador(String nickname, String nombre, String apellido, String email, GregorianCalendar fechaNacimiento,
-			byte[] imagen) {
-		super(nickname, nombre, apellido, email, fechaNacimiento, imagen);
+	public DtColaborador(String nickname, String nombre, String apellido, String email, String password, 
+			GregorianCalendar fechaNacimiento, byte[] imagen) {
+		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
 	}
 
 }
