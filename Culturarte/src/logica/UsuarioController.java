@@ -11,6 +11,7 @@ import datatype.DtColaboracion;
 import datatype.DtColaborador;
 import datatype.DtPerfilColaborador;
 import datatype.DtPerfilProponente;
+import datatype.DtPerfilUsuario;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
@@ -517,6 +518,20 @@ public class UsuarioController implements IUsuarioController {
 			throw new UsuarioSinLoguearseException("Debes iniciar sesion para agregar Propuestas a sus favoritos");
 		}
 		
+	}
+
+	@Override
+	public DtPerfilUsuario obtenerPerfilUsuario(String nickname) {
+//		cph = ConexionPostgresHibernate.getInstancia();
+//		emf = cph.getEntityManager();
+//		em = emf.createEntityManager();
+//		em.getTransaction().begin();
+//
+//        @SuppressWarnings("unchecked")
+//		List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+//        
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -40,5 +40,6 @@ public interface IUsuarioController {
 	public abstract DtPropuesta[] listarPropuestasColaborador() throws UsuarioSinLoguearseException;
 	
 	public abstract void agregarComentarioAPropuesta(String comentario, String titulo) throws UsuarioSinLoguearseException;
+	public abstract DtPerfilUsuario obtenerPerfilUsuario(String nickname);
 
 }

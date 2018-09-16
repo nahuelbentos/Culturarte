@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.ArrayList;
+
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
@@ -49,6 +51,8 @@ public interface IPropuestaController {
 	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
 	
 	public abstract void agregarFavorita(String titulo) throws UsuarioSinLoguearseException;
+	
+	public abstract ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat);
 	
 }
 

@@ -288,4 +288,8 @@ public class Propuesta {
     	return dte;
     }
     
+    public boolean tieneCategoria(String nomCat) {
+    	return categoria.getNombre().equals(nomCat);
+    }
+    
 }   

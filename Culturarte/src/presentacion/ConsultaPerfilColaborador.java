@@ -7,6 +7,8 @@ import javax.swing.JTextField;
 
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import logica.ICategoriaController;
+import logica.IPropuestaController;
 import logica.IUsuarioController;
 import presentacion.gen.ListarColaboradores;
 
@@ -60,13 +62,16 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 	private Object[][] data;
 	private JLabel lblImagen;
 	private IUsuarioController iUsuController;
+	private IPropuestaController ipc;
 	private DtPerfilColaborador dtc;
 	private JPanel panelColaboraciones;
 	
-	public ConsultaPerfilColaborador(IUsuarioController IUC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException{
+	public ConsultaPerfilColaborador(IUsuarioController IUC,IPropuestaController PIPC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException{
 		setClosable(true);
 		iUsuController=IUC;
-
+		ipc = PIPC;
+		
+		
 //		setNormalBounds(new Rectangle(0, 0, 0, 50));
 		//setBounds(100, 100, 673, 425);
 		setBounds(10, 10, 1045, 905);
@@ -220,6 +225,10 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
         JButton btnVerPerfil = new JButton("Ver Perfil");
         btnVerPerfil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
+        		ArrayList<DtPropuesta> dtps= ipc.listarPropuestasPorCategoria("pepe");
+        		for (DtPropuesta dtp : dtps) {
+					System.out.println(dtp.getTitulo());
+				}
         		if (listarColaboradores.getColaboradorSeleccionado() != null) 
 					cargarPerfil(listarColaboradores.getColaboradorSeleccionado());
         	}
