@@ -84,7 +84,12 @@ public class Propuesta {
 	    this.precioEntrada = e;
 	    this.lugar = lugar;
 	    this.fechaFinalizacion = fechaPublicacion;
-	    this.fechaFinalizacion.add(2,30);	//	30 días después de la publicación, la búsqueda de financiación caduca
+	    
+	    // Calculo la fecha de finalizacion con respecto al día de hoy
+	    GregorianCalendar fechaFinalizacion = (GregorianCalendar) GregorianCalendar.getInstance();
+		fechaFinalizacion.add(GregorianCalendar.DAY_OF_MONTH, 30);	//	agrego 30 días a la caducidad
+	    this.fechaFinalizacion = fechaFinalizacion;
+	    
 	    this.tipo = tipo;
 	    this.estadoActual = EstadoPropuesta.ingresada;
 	}
@@ -99,7 +104,12 @@ public class Propuesta {
 	    this.precioEntrada = dtP.getPrecioEntrada();
 	    this.lugar = dtP.getLugar();
 	    this.fechaFinalizacion = fechaPublicacion;
-	    this.fechaFinalizacion.add(2,30);	//	30 días después de la publicación, la búsqueda de financiación caduca
+	    
+	    // Calculo la fecha de finalizacion con respecto al día de hoy
+	    GregorianCalendar fechaFinalizacion = (GregorianCalendar) GregorianCalendar.getInstance();
+		fechaFinalizacion.add(GregorianCalendar.DAY_OF_MONTH, 30);	//	agrego 30 días a la caducidad
+	    this.fechaFinalizacion = fechaFinalizacion;
+	    
 	    this.tipo = dtP.getTipo();
 	    this.estadoActual = EstadoPropuesta.ingresada;
 	    //this.estadoHistorial = null; // Ya hay que setear el ingresada o al historial pasa al momento del cambio?

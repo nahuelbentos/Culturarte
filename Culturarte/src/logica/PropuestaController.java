@@ -472,8 +472,8 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		GregorianCalendar fechaFinalizacion = new GregorianCalendar();
-		fechaFinalizacion.add(2, 30);	//	agrego 30 días a la caducidad
+		GregorianCalendar fechaFinalizacion = (GregorianCalendar) GregorianCalendar.getInstance();
+		fechaFinalizacion.add(GregorianCalendar.DAY_OF_MONTH, 30);	//	agrego 30 días a la caducidad
 		
 		Propuesta propuesta = em.find(Propuesta.class, tituloPropuesta);
 		
@@ -481,10 +481,6 @@ public class PropuestaController implements IPropuestaController {
 			// guardo la nueva fecha de finalización
 			propuesta.setFechaFinalizacion(fechaFinalizacion);
 			em.persist(propuesta);
-			
-			// creo un nuevo estado en el historial de la propuesta para documentar el cambio
-			Estado e = new Estado(propuesta.getEstadoActual(), propuesta, new GregorianCalendar());
-			em.persist(e);
 		}else {
 			em.getTransaction().rollback();
 			em.close();
