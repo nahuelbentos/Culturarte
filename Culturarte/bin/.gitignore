@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-=======
+/META-INF/
 /datatype/
 /excepciones/
 /libs/
 /logica/
-/persistence.xml
 /persistencia/
 /presentacion/
->>>>>>> refs/heads/ExtenderFinanciacion
-/META-INF/
+/main/
