@@ -439,7 +439,7 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		GregorianCalendar now = new GregorianCalendar();
+		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
 		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion <= :now")
@@ -481,6 +481,33 @@ public class PropuestaController implements IPropuestaController {
 			// guardo la nueva fecha de finalización
 			propuesta.setFechaFinalizacion(fechaFinalizacion);
 			em.persist(propuesta);
+		}else {
+			em.getTransaction().rollback();
+			em.close();
+			throw new PropuestaNoExisteException("No se encontró la propuesta " + tituloPropuesta);
+		}
+		
+		em.getTransaction().commit();
+		em.close();
+	}
+	
+	@Override
+	public void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException{
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Propuesta propuesta = em.find(Propuesta.class, tituloPropuesta);
+		
+		if (propuesta!=null) {
+			// guardo la nueva fecha de finalización
+			propuesta.setEstadoActual(EstadoPropuesta.cancelada);
+			em.persist(propuesta);
+			
+			GregorianCalendar fechaCancelacion = (GregorianCalendar) GregorianCalendar.getInstance();
+			Estado hist = new Estado(EstadoPropuesta.cancelada, propuesta, fechaCancelacion);
+			em.persist(hist);
 		}else {
 			em.getTransaction().rollback();
 			em.close();

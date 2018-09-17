@@ -53,6 +53,8 @@ public interface IPropuestaController {
 	public abstract void agregarFavorita(String titulo) throws UsuarioSinLoguearseException;
 
 	public abstract void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException;
+
+	void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException;
 	
 }
 
