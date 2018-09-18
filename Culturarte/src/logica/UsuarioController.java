@@ -559,4 +559,16 @@ public class UsuarioController implements IUsuarioController {
 		}
 	}
 
+	@Override
+	public void borrarUsuarios() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.createQuery("delete from UsuarioSigue").executeUpdate();
+		em.createQuery("delete from Usuario").executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
+
 }

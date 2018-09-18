@@ -11,4 +11,6 @@ public interface ICategoriaController {
 	public abstract void agregarCategoria(DtCategoria dtCategoria) throws CategoriaYaExisteException, CategoriaNoExisteException;
 
 	public abstract DtCategoria[] listarCategoriasJTree();
+	
+	public abstract void borrarCategorias();
 }

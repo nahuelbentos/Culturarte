@@ -44,4 +44,5 @@ public interface IUsuarioController {
 	
 	public abstract void agregarComentarioAPropuesta(String comentario, String titulo) throws UsuarioSinLoguearseException;
 
+	public abstract void borrarUsuarios();
 }

@@ -31,7 +31,7 @@ public class Propuesta {
 	@Column(name="TITULO")
 	private String titulo;
 	
-	@Column(name="DESCRIPCION")
+	@Column(name="DESCRIPCION", length=900)
 	private String descripcion;
 	@Lob
 	@Column(name="IMAGEN")

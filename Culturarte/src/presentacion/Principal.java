@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.beans.PropertyVetoException;
@@ -26,10 +27,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import datatype.DtCategoria;
 import datatype.DtColaborador;
 import datatype.DtProponente;
+import datatype.DtPropuesta;
 import datatype.DtUsuario;
+import datatype.TipoRetorno;
+import excepciones.CategoriaNoExisteException;
+import excepciones.CategoriaYaExisteException;
+import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
+import excepciones.PropuestaRepetidaException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
@@ -274,10 +282,11 @@ public class Principal {
 				try {
 					agregarUsuarios(e);
 					seguirUsuarios(e);
-					//agregarCategorias(e);
+					agregarCategorias(e);
+					agregarPropuestas(e);
 					JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
 		                    JOptionPane.INFORMATION_MESSAGE);
-				} catch (ParseException | IOException | UsuarioYaSigueAlUsuarioException | URISyntaxException | UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException e1) {
+				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | URISyntaxException | PropuestaRepetidaException | ProponenteNoExisteException | UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | UsuarioYaSigueAlUsuarioException e1) {
 					JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -285,6 +294,17 @@ public class Principal {
 		mnNewMenu_1.add(mntmAgregarDatos);
 		
 		JMenuItem mntmBorrarDatos = new JMenuItem("Borrar datos");
+		mntmBorrarDatos.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				IPC.borrarPropuestas();
+				IUC.borrarUsuarios();
+				ICC.borrarCategorias();
+				JOptionPane.showMessageDialog(null, "Los datos se borraron con exito", 
+						"Borrar Datos", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 		mnNewMenu_1.add(mntmBorrarDatos);
 
 		JMenu mnUsuarios = new JMenu("Usuarios");
@@ -356,7 +376,7 @@ public class Principal {
         String cvsSplitBy = "\\|";
         
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream("usuarios.csv");
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\usuarios.csv");
         
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
             while ((line = br.readLine()) != null) {
@@ -400,7 +420,7 @@ public class Principal {
         String cvsSplitBy = "\\|";
         
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream("usuarioSigue.csv");
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\usuarioSigue.csv");
         
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
             while ((line = br.readLine()) != null) {
@@ -408,6 +428,58 @@ public class Principal {
             	String usuarioUno = datosUsuario[0];
             	String usuarioDos = datosUsuario[1];
             	IUC.seguirUsuario(usuarioUno, usuarioDos);
+            }
+        }
+	}
+	
+	private void agregarCategorias(ActionEvent e) throws ParseException, IOException, CategoriaYaExisteException, CategoriaNoExisteException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\categorias.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosCategoria = line.split(cvsSplitBy);
+            	ArrayList<DtCategoria> padres = new ArrayList<>();
+            	String categoria = datosCategoria[0];
+            	String categoriaPadre = datosCategoria[1];
+            	if (!"null".equals(categoriaPadre)) {
+            		padres.add(new DtCategoria(categoriaPadre));
+            	}
+            	DtCategoria dtCategoria = new DtCategoria(categoria, padres, null);
+            	ICC.agregarCategoria(dtCategoria);
+            }
+        }
+	}
+	
+	private void agregarPropuestas(ActionEvent e) throws ParseException, IOException, URISyntaxException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\propuestas.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosPropuesta = line.split(cvsSplitBy);
+            	DtProponente dtProponente = new DtProponente(datosPropuesta[0], "", "", "", "", null, null, "", "", "");
+            	String titulo = datosPropuesta[1];
+            	DtCategoria dtCategoria = new DtCategoria(datosPropuesta[2]);
+            	GregorianCalendar fechaEspectaculo = parsearFecha(datosPropuesta[3]);
+            	String lugar = datosPropuesta[4];
+            	float precioEntrada = Float.valueOf(datosPropuesta[5]);
+            	float monto = Float.valueOf(datosPropuesta[6]);
+            	TipoRetorno tipoRetorno = TipoRetorno.valueOf(datosPropuesta[7]);
+            	String descripcion = datosPropuesta[8];
+            	byte[] imagen = null;
+
+            	DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, monto, 
+            			new GregorianCalendar(), fechaEspectaculo, lugar, precioEntrada, 
+            			tipoRetorno, 0, dtProponente, null, null, dtCategoria, null);
+            	IPC.altaPropuesta(dtPropuesta);
+            	
             }
         }
 	}
@@ -421,7 +493,7 @@ public class Principal {
 	}
 	
 	private byte[] obtenerImagen(String pathName) throws IOException, URISyntaxException {
-		URL resource = Principal.class.getResource("/" + pathName + ".jpg");
+		URL resource = Principal.class.getResource("/datosDePrueba/imagenes/" + pathName + ".jpg");
     	File file = Paths.get(resource.toURI()).toFile();
     	byte[] picInBytes = new byte[(int) file.length()];
     	FileInputStream fileInputStream = new FileInputStream(file);
