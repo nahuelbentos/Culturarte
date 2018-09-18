@@ -18,7 +18,7 @@ public class CategoriaController implements ICategoriaController {
 	@Override
 	public DtCategoria[] listarCategorias(){
 		
-		inicializarTablaVacia();	//	Si la tabla no tiene registros, crea el nodo base "Categorías"
+		inicializarTablaVacia();	//	Si la tabla no tiene registros, crea el nodo base "Categorias"
 		
 		//emf = Persistence.createEntityManagerFactory("Conexion");
 		//em = emf.createEntityManager();
@@ -29,9 +29,9 @@ public class CategoriaController implements ICategoriaController {
 		em.getTransaction().begin();
 		
 		DtCategoria[] dtC = null;
-		// Me traigo la categoría base "Categorías", la cual me traera todas por ser sus hijas
+		// Me traigo la categoria base "Categorias", la cual me traera todas por ser sus hijas
 		@SuppressWarnings("unchecked")
-		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE<>'Categorías'").getResultList();
+		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE<>'Categorias'").getResultList();
 		
         if (cats != null) {
             dtC = new DtCategoria[cats.size()];
@@ -49,7 +49,7 @@ public class CategoriaController implements ICategoriaController {
 	@Override
 	public DtCategoria[] listarCategoriasJTree(){
 		
-		inicializarTablaVacia();	//	Si la tabla no tiene registros, crea el nodo base "Categorías"
+		inicializarTablaVacia();	//	Si la tabla no tiene registros, crea el nodo base "Categorias"
 		
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
@@ -57,9 +57,9 @@ public class CategoriaController implements ICategoriaController {
 		em.getTransaction().begin();
 		
 		DtCategoria[] dtC = null;
-		// Me traigo la categoría base "Categorías", la cual me traera todas por ser sus hijas
+		// Me traigo la categoria base "Categorias", la cual me traera todas por ser sus hijas
 		@SuppressWarnings("unchecked")
-		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE='Categorías'").getResultList();
+		List<Categoria> cats = em.createQuery("FROM Categoria WHERE NOMBRE='Categorias'").getResultList();
 		
         if (cats != null) {
             dtC = new DtCategoria[cats.size()];
@@ -84,7 +84,7 @@ public class CategoriaController implements ICategoriaController {
 		List<Categoria> cats = em.createQuery("FROM Categoria").getResultList();
 		
         if (cats.isEmpty()) {
-        	Categoria categoria = new Categoria("Categorías");
+        	Categoria categoria = new Categoria("Categorias");
 			em.persist(categoria);
 			em.getTransaction().commit();
         }
@@ -104,7 +104,7 @@ public class CategoriaController implements ICategoriaController {
 		if (categoria != null) {
 			em.getTransaction().rollback();
 			em.close();
-			throw new CategoriaYaExisteException("Ya existe la categoría " + dtC.getNombre());
+			throw new CategoriaYaExisteException("Ya existe la categoria " + dtC.getNombre());
 		}else {
 			
 			categoria = new Categoria(dtC.getNombre());
@@ -119,24 +119,35 @@ public class CategoriaController implements ICategoriaController {
 					} else {
 						em.getTransaction().rollback();
 						em.close();
-						throw new CategoriaNoExisteException("No existe la categoría padre: " + p.getNombre());
+						throw new CategoriaNoExisteException("No existe la categoria padre: " + p.getNombre());
 					}
 				}
 			}else {
-				Categoria padre = em.find(Categoria.class, "Categorías");
+				Categoria padre = em.find(Categoria.class, "Categorias");
 				if (padre != null) {
 					padre.addHijo(categoria);
 					em.persist(padre);
 				} else {
 					em.getTransaction().rollback();
 					em.close();
-					throw new CategoriaNoExisteException("No existe la categoría padre: Categorías. No se puede crear una categoría.");
+					throw new CategoriaNoExisteException("No existe la categoria padre: Categorias. No se puede crear una categoria.");
 				}
 			}
 			
 			em.getTransaction().commit();
 			em.close();
 		}
+	}
+	
+	@Override
+	public void borrarCategorias() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.createQuery("delete from Categoria").executeUpdate();
+		em.getTransaction().commit();
+		em.close();
 	}
 
 }

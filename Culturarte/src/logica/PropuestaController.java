@@ -579,4 +579,16 @@ public class PropuestaController implements IPropuestaController {
 		}
 		
 	}
+	
+	@Override
+	public void borrarPropuestas() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.createQuery("delete from Estado").executeUpdate();
+		em.createQuery("delete from Propuesta").executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
 }

@@ -56,5 +56,7 @@ public interface IPropuestaController {
 
 	void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException;
 	
+	public abstract void borrarPropuestas();
+	
 }
 

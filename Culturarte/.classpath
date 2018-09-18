@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding="main/resources/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="lib" path="src/libs/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="src/libs/byte-buddy-1.8.17.jar"/>
 	<classpathentry kind="lib" path="src/libs/classmate-1.3.4.jar"/>
