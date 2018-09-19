@@ -30,6 +30,7 @@ public class Estado {
 	@JoinColumn(name="PROPUESTA")
 	private Propuesta propuesta;
 	
+	@Id
 	@Column(name="FECHA_CAMBIO")
 	private GregorianCalendar fechaCambio;
 	

@@ -28,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import datatype.DtCategoria;
+import datatype.DtColaboracion;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
@@ -35,6 +36,8 @@ import datatype.DtUsuario;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
+import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
@@ -284,9 +287,10 @@ public class Principal {
 					seguirUsuarios(e);
 					agregarCategorias(e);
 					agregarPropuestas(e);
+					registrarColaboraciones(e);
 					JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
 		                    JOptionPane.INFORMATION_MESSAGE);
-				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | URISyntaxException | PropuestaRepetidaException | ProponenteNoExisteException | UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | UsuarioYaSigueAlUsuarioException e1) {
+				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | URISyntaxException | PropuestaRepetidaException | ProponenteNoExisteException | UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | UsuarioYaSigueAlUsuarioException | ColaboradorNoExisteException | PropuestaNoExisteException | ColaboracionExistenteException e1) {
 					JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -388,10 +392,7 @@ public class Principal {
             	GregorianCalendar fechaNacimiento = parsearFecha(datosUsuario[4]);
             	String tipoUsuario = datosUsuario[5];
             	String password = datosUsuario[10];
-            	byte[] imagen = null;
-            	if (!"null".equals(datosUsuario[6])) {
-            		imagen = obtenerImagen(datosUsuario[6]);
-            	}
+            	byte[] imagen = obtenerImagen(datosUsuario[6]);
             	DtUsuario dtUsuario = null;
             	if ("P".equals(tipoUsuario)) {
                 	String direccion = datosUsuario[7];
@@ -473,12 +474,36 @@ public class Principal {
             	float monto = Float.valueOf(datosPropuesta[6]);
             	TipoRetorno tipoRetorno = TipoRetorno.valueOf(datosPropuesta[7]);
             	String descripcion = datosPropuesta[8];
-            	byte[] imagen = null;
+            	byte[] imagen = obtenerImagen(datosPropuesta[9]);
 
             	DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, monto, 
             			new GregorianCalendar(), fechaEspectaculo, lugar, precioEntrada, 
             			tipoRetorno, 0, dtProponente, null, null, dtCategoria, null);
             	IPC.altaPropuesta(dtPropuesta);
+            	
+            }
+        }
+	}
+	
+	private void registrarColaboraciones(ActionEvent e) throws ParseException, IOException, URISyntaxException, ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\colaboraciones.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosColaboracion = line.split(cvsSplitBy);
+            	String colaborador = datosColaboracion[0];
+            	String propuesta = datosColaboracion[1];
+            	GregorianCalendar fecha = parsearFecha(datosColaboracion[2]);
+            	String monto = datosColaboracion[3];
+            	TipoRetorno tipoRetorno = TipoRetorno.valueOf(datosColaboracion[4]);
+            	DtColaboracion dtColaboracion = new DtColaboracion(propuesta, colaborador, 
+            			Double.parseDouble(monto), fecha, tipoRetorno);            			
+            	
+            	IPC.generarColaboracion(dtColaboracion);
             	
             }
         }
