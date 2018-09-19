@@ -572,6 +572,7 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.createQuery("delete from Estado").executeUpdate();
+		em.createQuery("delete from Colaboracion").executeUpdate();
 		em.createQuery("delete from Propuesta").executeUpdate();
 		em.getTransaction().commit();
 		em.close();

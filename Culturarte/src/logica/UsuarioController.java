@@ -541,6 +541,7 @@ public class UsuarioController implements IUsuarioController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.createQuery("delete from UsuarioSigue").executeUpdate();
+		em.createQuery("delete from Colaboracion").executeUpdate();
 		em.createQuery("delete from Usuario").executeUpdate();
 		em.getTransaction().commit();
 		em.close();
