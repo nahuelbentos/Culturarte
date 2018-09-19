@@ -32,27 +32,9 @@ public class UsuarioController implements IUsuarioController {
 	private static ConexionPostgresHibernate cph;
 	private static EntityManagerFactory emf;
 	private static EntityManager em;
-
-	private Usuario usuarioLogueado;
-	
-	public UsuarioController(String datoSesion) {
-		cph = ConexionPostgresHibernate.getInstancia();
-		emf = cph.getEntityManager();
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		
-		usuarioLogueado = em.find(Usuario.class, datoSesion);
-		/*
-		if (usuarioLogueado == null) {
-			usuarioLogueado = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
-		}
-		*/
-		em.close();
-	}
 	
 	public UsuarioController() {
 		super();
-		usuarioLogueado = null;
 	}
 
 	@Override
@@ -452,11 +434,11 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public DtPropuesta[] listarPropuestasColaborador() throws UsuarioSinLoguearseException {
+	public DtPropuesta[] listarPropuestasColaborador(DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
 		
 		if (usuarioLogueado != null) {
 			/** Obtengo las colaboraciones del colaborador "usuarioLogueado" que no haya comentado y esten financiadas **/
-			if (usuarioLogueado instanceof Colaborador) {
+			if (usuarioLogueado instanceof DtColaborador) {
 				
 				cph = ConexionPostgresHibernate.getInstancia();
 				emf = cph.getEntityManager();
@@ -494,11 +476,11 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public void agregarComentarioAPropuesta(String comentario, String titulo) throws UsuarioSinLoguearseException{
+	public void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException{
 		
 		if (usuarioLogueado != null) {
 			// obtengo las colaboraciones del usuario logueado
-			if (usuarioLogueado instanceof Colaborador) {
+			if (usuarioLogueado instanceof DtColaborador) {
 				cph = ConexionPostgresHibernate.getInstancia();
 				emf = cph.getEntityManager();
 				em = emf.createEntityManager();
@@ -526,37 +508,31 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public void iniciarSesion(String datoSesion, String password) throws UsuarioNoExisteElUsuarioException, UsuarioYaLogueado {
-		if (usuarioLogueado != null) {
-			throw new UsuarioYaLogueado("Ya hay una sesión activa.");
-		} else {
-			cph = ConexionPostgresHibernate.getInstancia();
-			emf = cph.getEntityManager();
-			em = emf.createEntityManager();
-			em.getTransaction().begin();
+	public DtUsuario iniciarSesion(String datoSesion, String password) throws UsuarioNoExisteElUsuarioException {
+		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Usuario u = em.find(Usuario.class, datoSesion);
+		if (u == null) {
+			u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
 			
-			usuarioLogueado = em.find(Usuario.class, datoSesion);
-			
-			if (usuarioLogueado == null) {
-				usuarioLogueado = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
-			}
-			
-			em.close();
-			
-			if (usuarioLogueado == null) {
+			if (u == null) {
 				throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
 			}
 		}
+		em.close();
+		
+		return u.getDtUsuario();
+		
 
 	}
 
 	@Override
 	public void cerrarSesion() throws UsuarioSinLoguearseException {
-		if (usuarioLogueado == null) {
-			throw new UsuarioSinLoguearseException("No hay ninguna sesión activa.");
-		} else {
-			usuarioLogueado = null;
-		}
+		
 	}
 
 	@Override

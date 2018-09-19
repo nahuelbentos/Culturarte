@@ -10,6 +10,7 @@ import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
+import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
@@ -26,26 +27,8 @@ public class PropuestaController implements IPropuestaController {
 	private static EntityManagerFactory emf;
 	private static EntityManager em;
 	
-	private Usuario usuarioLogueado;
-	
-	public PropuestaController(String datoSesion) {
-		cph = ConexionPostgresHibernate.getInstancia();
-		emf = cph.getEntityManager();
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		
-		usuarioLogueado = em.find(Usuario.class, datoSesion);
-		/*
-		if (usuarioLogueado == null) {
-			usuarioLogueado = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
-		}
-		*/
-		em.close();
-	}
-	
 	public PropuestaController() {
 		super();
-		usuarioLogueado = null;
 	}
 	
 	@Override
@@ -548,7 +531,7 @@ public class PropuestaController implements IPropuestaController {
 	}
 
 	@Override
-	public void agregarFavorita(String titulo) throws UsuarioSinLoguearseException{
+	public void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException{
 		/** Controlo que el usuario este logueado, en caso que no este logueado lanzo exception **/
 		if (usuarioLogueado != null) {
 			
@@ -563,9 +546,11 @@ public class PropuestaController implements IPropuestaController {
 			
 			if (p != null) {
 				System.out.println(p.getTitulo());
-				usuarioLogueado.addFavorita(p);
+				Usuario u = em.find(Usuario.class, usuarioLogueado.getNickname());
 				
-				em.merge(usuarioLogueado);
+				u.addFavorita(p);
+				
+				em.merge(u);
 				
 				em.getTransaction().commit();
 				em.close();

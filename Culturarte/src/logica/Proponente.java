@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 
 import datatype.DtPerfilProponente;
 import datatype.DtProponente;
+import datatype.DtUsuario;
 
 @Entity
 @DiscriminatorValue("P")
@@ -71,4 +72,10 @@ public class Proponente extends Usuario{
     			super.getImagen(), this.direccion, this.biografia, this.linkWeb);
     	
     }
+    
+    @Override
+	public DtUsuario getDtUsuario() {
+		return new DtProponente(super.getNickname(), super.getNombre(), super.getApellido(), super.getCorreoElectronico()
+				, super.getPassword(), super.getFechaNacimiento(), super.getImagen(), this.direccion, this.biografia, this.linkWeb);
+	}
 }

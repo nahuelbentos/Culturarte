@@ -3,6 +3,8 @@ package logica;
 import java.util.GregorianCalendar;
 
 import datatype.DtColaborador;
+import datatype.DtUsuario;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -23,6 +25,12 @@ public class Colaborador extends Usuario {
 				getCorreoElectronico(), getPassword(),getFechaNacimiento(), getImagen());
 		return dtc;
 
+	}
+	
+	@Override
+	public DtUsuario getDtUsuario() {
+		return new DtColaborador(super.getNickname(), super.getNombre(), super.getApellido(), super.getCorreoElectronico(),
+				super.getPassword(), super.getFechaNacimiento(), super.getImagen());
 	}
 
 }

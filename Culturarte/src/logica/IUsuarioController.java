@@ -7,12 +7,11 @@ import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
-import excepciones.UsuarioYaLogueado;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 
 public interface IUsuarioController {
 
-	public abstract void iniciarSesion(String nickname, String password) throws UsuarioNoExisteElUsuarioException, UsuarioYaLogueado;
+	public abstract DtUsuario iniciarSesion(String nickname, String password) throws UsuarioNoExisteElUsuarioException;
 	
 	public abstract void cerrarSesion() throws UsuarioSinLoguearseException;
 	
@@ -40,9 +39,9 @@ public interface IUsuarioController {
 	
 	public abstract DtPropuesta[] listarPropuestasDeUnColaborador(String nickname);
 	
-	public abstract DtPropuesta[] listarPropuestasColaborador() throws UsuarioSinLoguearseException;
+	public abstract DtPropuesta[] listarPropuestasColaborador(DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException;
 	
-	public abstract void agregarComentarioAPropuesta(String comentario, String titulo) throws UsuarioSinLoguearseException;
+	public abstract void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException;
 
 	public abstract void borrarUsuarios();
 }

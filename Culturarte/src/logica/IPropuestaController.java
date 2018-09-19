@@ -4,6 +4,7 @@ import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
+import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
@@ -50,7 +51,7 @@ public interface IPropuestaController {
 
 	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
 	
-	public abstract void agregarFavorita(String titulo) throws UsuarioSinLoguearseException;
+	public abstract void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException;
 
 	public abstract void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException;
 
