@@ -23,7 +23,6 @@ import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
-import excepciones.UsuarioYaLogueado;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import persistencia.ConexionPostgresHibernate;
 
