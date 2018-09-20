@@ -291,6 +291,7 @@ public class Principal {
 					registrarColaboraciones(e);
 					agregarComentario(e);
 					agregarFavorita(e);
+					setearEstadosPropuestas(e);
 					JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
 		                    JOptionPane.INFORMATION_MESSAGE);
 				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | 
@@ -298,7 +299,8 @@ public class Principal {
 						UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | 
 						UsuarioYaSigueAlUsuarioException | ColaboradorNoExisteException | PropuestaNoExisteException | 
 						ColaboracionExistenteException | UsuarioSinLoguearseException e1) {
-					JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Ocurrio un error\nBorrar los datos, reiniciar la aplicacion y volver a cargarlos.", 
+							"Cargar Datos", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -550,6 +552,26 @@ public class Principal {
             	String propuesta = datosPropuestaFavorita[1];
             	IPC.agregarFavorita(propuesta, dtUsuario);
             	
+            }
+        }
+	}
+	
+	private void setearEstadosPropuestas(ActionEvent e) throws ParseException, IOException, URISyntaxException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\estadosPropuestas.csv");
+        
+        IPC.borrarEstadosPropuestas();
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosEstadoPropuesta = line.split(cvsSplitBy);
+            	String propuesta = datosEstadoPropuesta[0];
+            	String estado = datosEstadoPropuesta[1];
+            	String fechaCambio = datosEstadoPropuesta[2];
+            	IPC.setearEstadosPropuests(estado, propuesta, fechaCambio);
             }
         }
 	}
