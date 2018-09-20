@@ -33,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
+import datatype.DtColaboracion;
 import datatype.DtColaborador;
 import datatype.DtPerfilColaborador;
 import datatype.DtPerfilUsuario;
@@ -230,25 +231,49 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
         JButton btnVerPerfil = new JButton("Ver Perfil");
         btnVerPerfil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		DtPerfilUsuario dtpu = iUsuController.obtenerPerfilUsuario("bastian");
-        		
-        		System.out.println(dtpu.getNombre() + " - " + dtpu.getNickname() + " \n");
-
-        		System.out.println("Sigue a: \n" );
-        		for (DtColaborador dtc : dtpu.getSeguidosColaboradores()) {
-        			System.out.println(dtc.getNickname() + "\n");	
-				}
-        		for (DtProponente dtp : dtpu.getSeguidosProponentes()) {
-        			System.out.println(dtp.getNickname() + "\n");	
-				}
-
-        		System.out.println("Es seguido por: \n" );
-        		for (DtColaborador dtc : dtpu.getSeguidoresColaboradores()) {
-        			System.out.println(dtc.getNickname() + "\n");	
-				}
-        		for (DtProponente dtp : dtpu.getSeguidoresProponentes()) {
-        			System.out.println(dtp.getNickname() + "\n");	
-				}
+//        		DtPerfilUsuario dtpu = iUsuController.obtenerPerfilUsuario("bastian");
+//        		
+//        		System.out.println(dtpu.getNickname() + " - " + dtpu.getNombre() + " \n");
+//
+//        		System.out.println("Sigue a: \n" );
+//        		for (DtColaborador dtc : dtpu.getSeguidosColaboradores()) {
+//        			System.out.println(dtc.getNickname() + "\n");	
+//				}
+//        		for (DtProponente dtp : dtpu.getSeguidosProponentes()) {
+//        			System.out.println(dtp.getNickname() + "\n");	
+//				}
+//
+//        		System.out.println("Es seguido por: \n" );
+//        		for (DtColaborador dtc : dtpu.getSeguidoresColaboradores()) {
+//        			System.out.println(dtc.getNickname() + "\n");	
+//				}
+//        		for (DtProponente dtp : dtpu.getSeguidoresProponentes()) {
+//        			System.out.println(dtp.getNickname() + "\n");	
+//				}
+//				System.out.println("Colaboraciones hechas: \n");
+//				for (DtColaboracion dtp : dtpu.getColaboracionesHechas()) {
+//        			System.out.println(dtp.getTituloPropuesta() + "\n");	
+//				}
+//				System.out.println("Colaboradas: \n");
+//				for (DtPropuestaColaborada dtp : dtpu.getPropuestasColaboradas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
+//
+//				System.out.println("Publicadas: \n");
+//				for (DtPropuesta dtp : dtpu.getPropuestasPublicadas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
+//				
+//
+//				System.out.println("Creadas: \n");
+//				for (DtPropuesta dtp : dtpu.getPropuestasCreadas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
+//
+//				System.out.println("Publicadas: \n");
+//				for (DtPropuesta dtp : dtpu.getPropuestasPublicadas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
 				
         		if (listarColaboradores.getColaboradorSeleccionado() != null) 
 					cargarPerfil(listarColaboradores.getColaboradorSeleccionado());
