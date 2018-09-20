@@ -577,4 +577,21 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().commit();
 		em.close();
 	}
+	 
+	public ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat){
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        em.close();
+
+		ArrayList<DtPropuesta> dtps = new ArrayList<DtPropuesta>();
+        for (Propuesta p : propuestas) {
+			if(p.tieneCategoria(nombreCat))
+				dtps.add(p.getDtPropuesta());
+		}
+		return dtps;
+	}
 }

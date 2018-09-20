@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.ArrayList;
+
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtPropuesta;
@@ -58,6 +60,8 @@ public interface IPropuestaController {
 	void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException;
 	
 	public abstract void borrarPropuestas();
+	
+	public abstract ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat);
 	
 }
 

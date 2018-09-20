@@ -138,7 +138,7 @@ public class Principal {
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
 		consultaPerfilProponente.setVisible(false);
-		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC);
+		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC,IPC);
 		consultaPerfilColaborador.setVisible(false);
 		consultaPropuesta = new ConsultaPropuesta(IPC);
 		consultaPropuesta.setVisible(false);
