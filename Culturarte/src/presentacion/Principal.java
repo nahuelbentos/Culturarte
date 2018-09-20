@@ -42,6 +42,7 @@ import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
@@ -288,9 +289,15 @@ public class Principal {
 					agregarCategorias(e);
 					agregarPropuestas(e);
 					registrarColaboraciones(e);
+					agregarComentario(e);
+					agregarFavorita(e);
 					JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
 		                    JOptionPane.INFORMATION_MESSAGE);
-				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | URISyntaxException | PropuestaRepetidaException | ProponenteNoExisteException | UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | UsuarioYaSigueAlUsuarioException | ColaboradorNoExisteException | PropuestaNoExisteException | ColaboracionExistenteException e1) {
+				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | 
+						URISyntaxException | PropuestaRepetidaException | ProponenteNoExisteException | 
+						UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | 
+						UsuarioYaSigueAlUsuarioException | ColaboradorNoExisteException | PropuestaNoExisteException | 
+						ColaboracionExistenteException | UsuarioSinLoguearseException e1) {
 					JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -475,9 +482,10 @@ public class Principal {
             	TipoRetorno tipoRetorno = TipoRetorno.valueOf(datosPropuesta[7]);
             	String descripcion = datosPropuesta[8];
             	byte[] imagen = obtenerImagen(datosPropuesta[9]);
+            	GregorianCalendar fechaIngresada = parsearFecha(datosPropuesta[10]);
 
             	DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, monto, 
-            			new GregorianCalendar(), fechaEspectaculo, lugar, precioEntrada, 
+            			fechaIngresada, fechaEspectaculo, lugar, precioEntrada, 
             			tipoRetorno, 0, dtProponente, null, null, dtCategoria, null);
             	IPC.altaPropuesta(dtPropuesta);
             	
@@ -504,6 +512,43 @@ public class Principal {
             			Double.parseDouble(monto), fecha, tipoRetorno);            			
             	
             	IPC.generarColaboracion(dtColaboracion);
+            	
+            }
+        }
+	}
+	
+	private void agregarComentario(ActionEvent e) throws ParseException, IOException, URISyntaxException, UsuarioSinLoguearseException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\comentarios.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosComentario = line.split(cvsSplitBy);
+            	DtUsuario dtUsuario = new DtColaborador(datosComentario[0], null, null, "", null, null, null);
+            	String propuesta = datosComentario[1];
+            	String comentario = datosComentario[2];
+            	IUC.agregarComentarioAPropuesta(comentario, propuesta, dtUsuario);
+            	
+            }
+        }
+	}
+	
+	private void agregarFavorita(ActionEvent e) throws ParseException, IOException, URISyntaxException, UsuarioSinLoguearseException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\propuestasFavoritas.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosPropuestaFavorita = line.split(cvsSplitBy);
+            	DtUsuario dtUsuario = new DtUsuario(datosPropuestaFavorita[0], null, null, "", null, null, null);
+            	String propuesta = datosPropuestaFavorita[1];
+            	IPC.agregarFavorita(propuesta, dtUsuario);
             	
             }
         }
