@@ -33,6 +33,12 @@ public class DtPerfilUsuario extends DtUsuario{
 		this.propuestasColaboradas = propuestasColaboradas;
 		this.colaboracionesHechas = colaboracionesHechas;
 	}
+	
+	public DtPerfilUsuario() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public ArrayList<DtProponente> getSeguidoresProponentes() {
 		return seguidoresProponentes;
 	}
