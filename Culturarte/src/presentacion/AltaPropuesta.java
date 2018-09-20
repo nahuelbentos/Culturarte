@@ -10,6 +10,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.GregorianCalendar;
 
 import javax.imageio.ImageIO;
@@ -48,6 +51,8 @@ import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
 public class AltaPropuesta extends JInternalFrame {
+	
+	private static final String DEFAULT_IMAGEN_PROPUESTA = "b71c029e-18e4-4216-8703-f94eed67d540";
 	
 	private IUsuarioController iUsuarioController;
 	private ICategoriaController iCategoriaController;
@@ -144,7 +149,7 @@ public class AltaPropuesta extends JInternalFrame {
         	gbl_panelDatos.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         	this.panelDatos.setLayout(gbl_panelDatos);
         	
-        	lblNombre = new JLabel("Título");
+        	lblNombre = new JLabel("Titulo");
         	GridBagConstraints gbc_lblNombre = new GridBagConstraints();
         	gbc_lblNombre.anchor = GridBagConstraints.EAST;
         	gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
@@ -162,7 +167,7 @@ public class AltaPropuesta extends JInternalFrame {
         	this.panelDatos.add(this.entTitulo, gbc_entTitulo);
         	entTitulo.setColumns(10);
         	
-        	lblDescripcion = new JLabel("Descripción");
+        	lblDescripcion = new JLabel("Descripcion");
         	GridBagConstraints gbc_lblDescripcion = new GridBagConstraints();
         	gbc_lblDescripcion.anchor = GridBagConstraints.NORTHEAST;
         	gbc_lblDescripcion.insets = new Insets(0, 0, 5, 5);
@@ -200,7 +205,7 @@ public class AltaPropuesta extends JInternalFrame {
         	entMontoNecesario.setColumns(10);
         	
         	
-        	lblFechaEspectculo = new JLabel("Fecha espectáculo");
+        	lblFechaEspectculo = new JLabel("Fecha espectaculo");
         	GridBagConstraints gbc_lblFechaEspectculo = new GridBagConstraints();
         	gbc_lblFechaEspectculo.anchor = GridBagConstraints.EAST;
         	gbc_lblFechaEspectculo.insets = new Insets(0, 0, 5, 5);
@@ -307,6 +312,7 @@ public class AltaPropuesta extends JInternalFrame {
 		{
 			lblImagen = new JLabel("");
 			panelContenedorImg.add(lblImagen);
+			setearImagenPropuesta();
 		}
 		btnSeleecionarImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -339,7 +345,7 @@ public class AltaPropuesta extends JInternalFrame {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		this.panel.setLayout(gbl_panel);
 		
-		lblCategora = new JLabel("Categoría");
+		lblCategora = new JLabel("Categoria");
 		GridBagConstraints gbc_lblCategora = new GridBagConstraints();
 		gbc_lblCategora.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCategora.anchor = GridBagConstraints.EAST;
@@ -460,7 +466,7 @@ public class AltaPropuesta extends JInternalFrame {
 		return picInBytes;
     }
     
-    public byte[] scale(byte[] fileData, int width, int height) throws IOException {
+    private byte[] scale(byte[] fileData, int width, int height) throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(fileData);
         BufferedImage img = ImageIO.read(in);
         if(height == 0) {
@@ -476,4 +482,27 @@ public class AltaPropuesta extends JInternalFrame {
         ImageIO.write(imageBuff, "jpg", buffer);
         return buffer.toByteArray();
     }
+    
+    private void setearImagenPropuesta() {
+    	try {
+			imagen = obtenerImagen(DEFAULT_IMAGEN_PROPUESTA);
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+		String pathName = Principal.class.getResource("/datosDePrueba/imagenes/" + DEFAULT_IMAGEN_PROPUESTA + ".jpg").getPath();
+        imagenPropuesta = new ImageIcon(pathName);
+        Image imagenPrevia = imagenPropuesta.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        imagenPropuesta = new ImageIcon(imagenPrevia, pathName);
+        lblImagen.setIcon(imagenPropuesta);
+    }
+    
+	private byte[] obtenerImagen(String pathName) throws IOException, URISyntaxException {
+		URL resource = Principal.class.getResource("/datosDePrueba/imagenes/" + pathName + ".jpg");
+    	File file = Paths.get(resource.toURI()).toFile();
+    	byte[] picInBytes = new byte[(int) file.length()];
+    	FileInputStream fileInputStream = new FileInputStream(file);
+    	fileInputStream.read(picInBytes);
+    	fileInputStream.close();
+		return picInBytes;
+	}
 }

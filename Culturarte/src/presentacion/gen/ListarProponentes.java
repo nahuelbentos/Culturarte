@@ -33,7 +33,7 @@ public class ListarProponentes extends JPanel {
 		listProponentes = new JList<>(modelNicknames);
 		listProponentes.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent l) {
-				System.out.println(getColaboradorSeleccionado());
+//				System.ousntln(getColaboradorSeleccionado());
 			}
 		});
 		setListaDeProponentes();
@@ -53,12 +53,12 @@ public class ListarProponentes extends JPanel {
             for (int i = 0; i < proponentes.length; i++) {
             	modelNicknames.addElement(proponentes[i].getNickname());
             	
-        		System.out.println("Proponente [" +i+ "]: " +  proponentes[i].getNickname() + " \n");
+//        		System.out.println("Proponente [" +i+ "]: " +  proponentes[i].getNickname() + " \n");
             }
         } else {
         	modelNicknames.addElement("No hay proponentes registrados en el sistema");
         }
-		System.out.println("Termino setListaDeProponentes \n");
+//		System.out.println("Termino setListaDeProponentes \n");
 	}
 	
 	public String getColaboradorSeleccionado() {

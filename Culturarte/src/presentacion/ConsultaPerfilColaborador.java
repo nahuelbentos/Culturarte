@@ -7,6 +7,8 @@ import javax.swing.JTextField;
 
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import logica.ICategoriaController;
+import logica.IPropuestaController;
 import logica.IUsuarioController;
 import presentacion.gen.ListarColaboradores;
 
@@ -29,7 +31,13 @@ import java.awt.Rectangle;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
+import datatype.DtColaboracion;
+import datatype.DtColaborador;
 import datatype.DtPerfilColaborador;
+import datatype.DtPerfilUsuario;
+import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.EstadoPropuesta;
@@ -60,13 +68,16 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 	private Object[][] data;
 	private JLabel lblImagen;
 	private IUsuarioController iUsuController;
+	private IPropuestaController ipc;
 	private DtPerfilColaborador dtc;
 	private JPanel panelColaboraciones;
 	
-	public ConsultaPerfilColaborador(IUsuarioController IUC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException{
+	public ConsultaPerfilColaborador(IUsuarioController IUC,IPropuestaController PIPC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException{
 		setClosable(true);
 		iUsuController=IUC;
-
+		ipc = PIPC;
+		
+		
 //		setNormalBounds(new Rectangle(0, 0, 0, 50));
 		//setBounds(100, 100, 673, 425);
 		setBounds(10, 10, 1045, 905);
@@ -220,6 +231,50 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
         JButton btnVerPerfil = new JButton("Ver Perfil");
         btnVerPerfil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
+//        		DtPerfilUsuario dtpu = iUsuController.obtenerPerfilUsuario("bastian");
+//        		
+//        		System.out.println(dtpu.getNickname() + " - " + dtpu.getNombre() + " \n");
+//
+//        		System.out.println("Sigue a: \n" );
+//        		for (DtColaborador dtc : dtpu.getSeguidosColaboradores()) {
+//        			System.out.println(dtc.getNickname() + "\n");	
+//				}
+//        		for (DtProponente dtp : dtpu.getSeguidosProponentes()) {
+//        			System.out.println(dtp.getNickname() + "\n");	
+//				}
+//
+//        		System.out.println("Es seguido por: \n" );
+//        		for (DtColaborador dtc : dtpu.getSeguidoresColaboradores()) {
+//        			System.out.println(dtc.getNickname() + "\n");	
+//				}
+//        		for (DtProponente dtp : dtpu.getSeguidoresProponentes()) {
+//        			System.out.println(dtp.getNickname() + "\n");	
+//				}
+//				System.out.println("Colaboraciones hechas: \n");
+//				for (DtColaboracion dtp : dtpu.getColaboracionesHechas()) {
+//        			System.out.println(dtp.getTituloPropuesta() + "\n");	
+//				}
+//				System.out.println("Colaboradas: \n");
+//				for (DtPropuestaColaborada dtp : dtpu.getPropuestasColaboradas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
+//
+//				System.out.println("Publicadas: \n");
+//				for (DtPropuesta dtp : dtpu.getPropuestasPublicadas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
+//				
+//
+//				System.out.println("Creadas: \n");
+//				for (DtPropuesta dtp : dtpu.getPropuestasCreadas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
+//
+//				System.out.println("Publicadas: \n");
+//				for (DtPropuesta dtp : dtpu.getPropuestasPublicadas()) {
+//        			System.out.println(dtp.getTitulo() + "\n");	
+//				}
+				
         		if (listarColaboradores.getColaboradorSeleccionado() != null) 
 					cargarPerfil(listarColaboradores.getColaboradorSeleccionado());
         	}

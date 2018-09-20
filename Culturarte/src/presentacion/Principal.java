@@ -28,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import datatype.DtCategoria;
+import datatype.DtColaboracion;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
@@ -35,10 +36,13 @@ import datatype.DtUsuario;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
+import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
@@ -135,7 +139,7 @@ public class Principal {
 		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
 		consultaPerfilProponente.setVisible(false);
-		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC);
+		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC,IPC);
 		consultaPerfilColaborador.setVisible(false);
 		consultaPropuesta = new ConsultaPropuesta(IPC);
 		consultaPropuesta.setVisible(false);
@@ -284,10 +288,19 @@ public class Principal {
 					seguirUsuarios(e);
 					agregarCategorias(e);
 					agregarPropuestas(e);
+					registrarColaboraciones(e);
+					agregarComentario(e);
+					agregarFavorita(e);
+					setearEstadosPropuestas(e);
 					JOptionPane.showMessageDialog(null, "Los datos se cargaron con exito", "Cargar Datos",
 		                    JOptionPane.INFORMATION_MESSAGE);
-				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | URISyntaxException | PropuestaRepetidaException | ProponenteNoExisteException | UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | UsuarioYaSigueAlUsuarioException e1) {
-					JOptionPane.showMessageDialog(null, "Ocurrio un error", "Cargar Datos", JOptionPane.ERROR_MESSAGE);
+				} catch (ParseException | IOException | CategoriaYaExisteException | CategoriaNoExisteException | 
+						URISyntaxException | PropuestaRepetidaException | ProponenteNoExisteException | 
+						UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException | 
+						UsuarioYaSigueAlUsuarioException | ColaboradorNoExisteException | PropuestaNoExisteException | 
+						ColaboracionExistenteException | UsuarioSinLoguearseException e1) {
+					JOptionPane.showMessageDialog(null, "Ocurrio un error\nBorrar los datos, reiniciar la aplicacion y volver a cargarlos.", 
+							"Cargar Datos", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -388,10 +401,7 @@ public class Principal {
             	GregorianCalendar fechaNacimiento = parsearFecha(datosUsuario[4]);
             	String tipoUsuario = datosUsuario[5];
             	String password = datosUsuario[10];
-            	byte[] imagen = null;
-            	if (!"null".equals(datosUsuario[6])) {
-            		imagen = obtenerImagen(datosUsuario[6]);
-            	}
+            	byte[] imagen = obtenerImagen(datosUsuario[6]);
             	DtUsuario dtUsuario = null;
             	if ("P".equals(tipoUsuario)) {
                 	String direccion = datosUsuario[7];
@@ -473,13 +483,95 @@ public class Principal {
             	float monto = Float.valueOf(datosPropuesta[6]);
             	TipoRetorno tipoRetorno = TipoRetorno.valueOf(datosPropuesta[7]);
             	String descripcion = datosPropuesta[8];
-            	byte[] imagen = null;
+            	byte[] imagen = obtenerImagen(datosPropuesta[9]);
+            	GregorianCalendar fechaIngresada = parsearFecha(datosPropuesta[10]);
 
             	DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, monto, 
-            			new GregorianCalendar(), fechaEspectaculo, lugar, precioEntrada, 
+            			fechaIngresada, fechaEspectaculo, lugar, precioEntrada, 
             			tipoRetorno, 0, dtProponente, null, null, dtCategoria, null);
             	IPC.altaPropuesta(dtPropuesta);
             	
+            }
+        }
+	}
+	
+	private void registrarColaboraciones(ActionEvent e) throws ParseException, IOException, URISyntaxException, ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\colaboraciones.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosColaboracion = line.split(cvsSplitBy);
+            	String colaborador = datosColaboracion[0];
+            	String propuesta = datosColaboracion[1];
+            	GregorianCalendar fecha = parsearFecha(datosColaboracion[2]);
+            	String monto = datosColaboracion[3];
+            	TipoRetorno tipoRetorno = TipoRetorno.valueOf(datosColaboracion[4]);
+            	DtColaboracion dtColaboracion = new DtColaboracion(propuesta, colaborador, 
+            			Double.parseDouble(monto), fecha, tipoRetorno);            			
+            	
+            	IPC.generarColaboracion(dtColaboracion);
+            	
+            }
+        }
+	}
+	
+	private void agregarComentario(ActionEvent e) throws ParseException, IOException, URISyntaxException, UsuarioSinLoguearseException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\comentarios.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosComentario = line.split(cvsSplitBy);
+            	DtUsuario dtUsuario = new DtColaborador(datosComentario[0], null, null, "", null, null, null);
+            	String propuesta = datosComentario[1];
+            	String comentario = datosComentario[2];
+            	IUC.agregarComentarioAPropuesta(comentario, propuesta, dtUsuario);
+            	
+            }
+        }
+	}
+	
+	private void agregarFavorita(ActionEvent e) throws ParseException, IOException, URISyntaxException, UsuarioSinLoguearseException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+        
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\propuestasFavoritas.csv");
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosPropuestaFavorita = line.split(cvsSplitBy);
+            	DtUsuario dtUsuario = new DtUsuario(datosPropuestaFavorita[0], null, null, "", null, null, null);
+            	String propuesta = datosPropuestaFavorita[1];
+            	IPC.agregarFavorita(propuesta, dtUsuario);
+            	
+            }
+        }
+	}
+	
+	private void setearEstadosPropuestas(ActionEvent e) throws ParseException, IOException, URISyntaxException {
+        String line = "";
+        String cvsSplitBy = "\\|";
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("datosDePrueba\\estadosPropuestas.csv");
+        
+        IPC.borrarEstadosPropuestas();
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            while ((line = br.readLine()) != null) {
+            	String[] datosEstadoPropuesta = line.split(cvsSplitBy);
+            	String propuesta = datosEstadoPropuesta[0];
+            	String estado = datosEstadoPropuesta[1];
+            	String fechaCambio = datosEstadoPropuesta[2];
+            	IPC.setearEstadosPropuests(estado, propuesta, fechaCambio);
             }
         }
 	}

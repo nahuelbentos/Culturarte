@@ -143,4 +143,8 @@ public abstract class Usuario {
 	
 	public abstract DtUsuario getDtUsuario();
 	
+	public List<Propuesta> getPropuestasFavoritas() {
+		return propuestasFavoritas;
+	}
+	
 }

@@ -12,6 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import javax.imageio.ImageIO;
@@ -43,6 +46,8 @@ import javax.swing.JPasswordField;
 @SuppressWarnings("serial")
 public class AltaPerfil extends JInternalFrame {
 
+	private static final String DEFAULT_IMAGEN_USUARIO = "979f1e6f-5458-4eb5-a3d2-f64f5bb30c8e";
+	
 	private IUsuarioController iUsuarioController;
 	
 	private JTextField txtNickname;
@@ -110,6 +115,8 @@ public class AltaPerfil extends JInternalFrame {
 		
 		lblImagen = new JLabel("");
 		panelImagen.add(lblImagen);
+		
+		setearImagenUsuario();
 		
 		txtNickname = new JTextField();
 		txtNickname.setBounds(155, 63, 174, 20);
@@ -323,6 +330,7 @@ public class AltaPerfil extends JInternalFrame {
         String biografia = txtBiografia.getText();
         String sitioWeb = txtSitioWeb.getText();
         DtUsuario dtUsuario = null;
+        
         if (checkFormulario()) {
     		if (rdbtnColaborador.isSelected()) {
     			dtUsuario = new DtColaborador(nickname, nombre, apellido, email, password, fechaNacimiento, imagenUsuarioByte);
@@ -357,9 +365,11 @@ public class AltaPerfil extends JInternalFrame {
 	                JOptionPane.ERROR_MESSAGE);
 	        return false;
         } else if (rdbtnColaborador.isSelected()) {
-            if (nickname.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || dateChooser.getDate() == null) {
+            if (nickname.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() 
+            		|| txtPassword.getPassword().length == 0 || txtPasswordConfirmar.getPassword().length == 0 
+            		|| dateChooser.getDate() == null) {
                 JOptionPane.showMessageDialog(this, "Los campos Nickname, Nombre, Apellido, Email "
-                		+ "y Fecha de Nacimiento son requeridos.", "Registrar Usuario Colaborador",
+                		+ "Password, Confirmar Password y Fecha de Nacimiento son requeridos.", "Registrar Usuario Colaborador",
                         JOptionPane.ERROR_MESSAGE);
                 return false;
             } else {
@@ -368,7 +378,7 @@ public class AltaPerfil extends JInternalFrame {
     	} else if (rdbtnProponente.isSelected()) {
             if (nickname.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || direccion.isEmpty() || dateChooser.getDate() == null) {
                 JOptionPane.showMessageDialog(this, "Los campos Nickname, Nombre, Apellido, Email, "
-                		+ "Fecha de Nacimiento y Direcci�n son requeridos.", "Registrar Usuario Proponente",
+                		+ "Fecha de Nacimiento y Direccion son requeridos.", "Registrar Usuario Proponente",
                         JOptionPane.ERROR_MESSAGE);
                 return false;
             } else {
@@ -390,7 +400,17 @@ public class AltaPerfil extends JInternalFrame {
 		return picInBytes;
     }
     
-    public byte[] scale(byte[] fileData, int width, int height) throws IOException {
+	private byte[] obtenerImagen(String pathName) throws IOException, URISyntaxException {
+		URL resource = Principal.class.getResource("/datosDePrueba/imagenes/" + pathName + ".jpg");
+    	File file = Paths.get(resource.toURI()).toFile();
+    	byte[] picInBytes = new byte[(int) file.length()];
+    	FileInputStream fileInputStream = new FileInputStream(file);
+    	fileInputStream.read(picInBytes);
+    	fileInputStream.close();
+		return picInBytes;
+	}
+    
+    private byte[] scale(byte[] fileData, int width, int height) throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(fileData);
         BufferedImage img = ImageIO.read(in);
         if(height == 0) {
@@ -405,5 +425,18 @@ public class AltaPerfil extends JInternalFrame {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         ImageIO.write(imageBuff, "jpg", buffer);
         return buffer.toByteArray();
+    }
+    
+    private void setearImagenUsuario() {
+    	try {
+			imagenUsuarioByte = obtenerImagen(DEFAULT_IMAGEN_USUARIO);
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+		String pathName = Principal.class.getResource("/datosDePrueba/imagenes/" + DEFAULT_IMAGEN_USUARIO + ".jpg").getPath();
+        imagenUsuario = new ImageIcon(pathName);
+        Image imagenPrevia = imagenUsuario.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        imagenUsuario = new ImageIcon(imagenPrevia, pathName);
+        lblImagen.setIcon(imagenUsuario);
     }
 }

@@ -1,6 +1,7 @@
 package logica;
 
 import java.io.Serializable;
+import java.util.GregorianCalendar;
 
 import datatype.EstadoPropuesta;
 
@@ -13,6 +14,7 @@ public class EstadoID implements Serializable {
 	
 	private EstadoPropuesta estado;
 	private String propuesta;
+	private GregorianCalendar fechaCambio;
 	
 	public EstadoID() {
 		super();
@@ -45,32 +47,37 @@ public class EstadoID implements Serializable {
 	public void setPropuesta(String propuesta) {
 		this.propuesta = propuesta;
 	}
+	
+	public GregorianCalendar getFechaCambio() {
+		return fechaCambio;
+	}
 
+	public void setFechaCambio(GregorianCalendar fechaCambio) {
+		this.fechaCambio = fechaCambio;
+	}
+	
 	/**
 	 * @param estado
 	 * @param propuesta
+	 * @param fechaCambio
 	 */
-	public EstadoID(EstadoPropuesta estado, String propuesta) {
+	public EstadoID(EstadoPropuesta estado, String propuesta, GregorianCalendar fechaCambio) {
 		super();
 		this.estado = estado;
 		this.propuesta = propuesta;
+		this.fechaCambio = fechaCambio;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
+		result = prime * result + ((fechaCambio == null) ? 0 : fechaCambio.hashCode());
 		result = prime * result + ((propuesta == null) ? 0 : propuesta.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -81,6 +88,11 @@ public class EstadoID implements Serializable {
 			return false;
 		EstadoID other = (EstadoID) obj;
 		if (estado != other.estado)
+			return false;
+		if (fechaCambio == null) {
+			if (other.fechaCambio != null)
+				return false;
+		} else if (!fechaCambio.equals(other.fechaCambio))
 			return false;
 		if (propuesta == null) {
 			if (other.propuesta != null)

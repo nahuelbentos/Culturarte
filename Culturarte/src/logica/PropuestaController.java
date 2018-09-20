@@ -1,6 +1,9 @@
 package logica;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -572,8 +575,59 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.createQuery("delete from Estado").executeUpdate();
+		em.createQuery("delete from Colaboracion").executeUpdate();
 		em.createQuery("delete from Propuesta").executeUpdate();
 		em.getTransaction().commit();
 		em.close();
 	}
+	
+	@Override
+	public void setearEstadosPropuests(String estado, String propuesta, String fechaCambioString) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date fechaCambio = sdf.parse(fechaCambioString);
+		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		em.createNativeQuery("INSERT INTO estados_propuesta (estado, propuesta, fecha_cambio) "
+				+ "VALUES (:estado, :propuesta, :fechaCambio)")
+		.setParameter("estado", estado)
+		.setParameter("propuesta", propuesta)
+		.setParameter("fechaCambio", fechaCambio)
+		.executeUpdate();
+		
+		em.getTransaction().commit();
+		em.close();
+	}
+	 
+	public ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat){
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+        @SuppressWarnings("unchecked")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        em.close();
+
+		ArrayList<DtPropuesta> dtps = new ArrayList<DtPropuesta>();
+        for (Propuesta p : propuestas) {
+			if(p.tieneCategoria(nombreCat))
+				dtps.add(p.getDtPropuesta());
+		}
+		return dtps;
+	}
+
+	@Override
+	public void borrarEstadosPropuestas() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.createQuery("delete from Estado").executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
+	
 }
