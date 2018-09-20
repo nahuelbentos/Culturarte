@@ -1,6 +1,9 @@
 package logica;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -577,6 +580,27 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().commit();
 		em.close();
 	}
+	
+	@Override
+	public void setearEstadosPropuests(String estado, String propuesta, String fechaCambioString) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date fechaCambio = sdf.parse(fechaCambioString);
+		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		em.createNativeQuery("INSERT INTO estados_propuesta (estado, propuesta, fecha_cambio) "
+				+ "VALUES (:estado, :propuesta, :fechaCambio)")
+		.setParameter("estado", estado)
+		.setParameter("propuesta", propuesta)
+		.setParameter("fechaCambio", fechaCambio)
+		.executeUpdate();
+		
+		em.getTransaction().commit();
+		em.close();
+	}
 	 
 	public ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat){
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -594,4 +618,16 @@ public class PropuestaController implements IPropuestaController {
 		}
 		return dtps;
 	}
+
+	@Override
+	public void borrarEstadosPropuestas() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.createQuery("delete from Estado").executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
+	
 }

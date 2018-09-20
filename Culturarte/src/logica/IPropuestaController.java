@@ -1,5 +1,6 @@
 package logica;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import datatype.DtColaboracion;
@@ -59,7 +60,11 @@ public interface IPropuestaController {
 
 	void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException;
 	
-	public abstract void borrarPropuestas();
+	public abstract void borrarPropuestas(); // Para la carga de datos.
+
+	public abstract void setearEstadosPropuests(String estado, String propuesta, String fechaCambio) throws ParseException; // Para la carga de datos.
+	
+	public abstract void borrarEstadosPropuestas(); // Para la carga de datos.
 	
 	public abstract ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat);
 	
