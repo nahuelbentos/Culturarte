@@ -8,9 +8,12 @@
 	<persistence-unit name="Conexion">
 
 		<class>logica.Usuario</class>
+		<class>logica.Proponente</class>
+		<class>logica.Colaborador</class>
 		<class>logica.Propuesta</class>
 		<class>logica.Categoria</class>
 		<class>logica.Colaboracion</class>
+		<class>logica.Estado</class>
 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />

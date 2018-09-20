@@ -22,6 +22,7 @@ public class Proponente extends Usuario{
     private String linkWeb;
     
     public Proponente() {
+    	
     	super();
     }
     
