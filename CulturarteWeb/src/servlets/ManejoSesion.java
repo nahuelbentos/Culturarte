@@ -57,15 +57,20 @@ public class ManejoSesion extends HttpServlet {
 			try {
 				DtUsuario usuarioLogueado = iUsuCon.iniciarSesion(usuario, password);
 
-				HttpSession session = request.getSession();
-				session.setAttribute("usuarioLogueado", usuarioLogueado);
-				
-				RequestDispatcher rd;
-				rd = request.getRequestDispatcher("/index.jsp");
-				rd.forward(request, response);
-				
+				if (usuarioLogueado.getPassword().equals(password)) {
+					HttpSession session = request.getSession();
+					session.setAttribute("usuarioLogueado", usuarioLogueado);
+					
+					RequestDispatcher rd;
+					rd = request.getRequestDispatcher("/index.jsp");
+					rd.forward(request, response);
+				} else {
+					request.setAttribute("mensaje", "Password incorrecta");
+					request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
+				}
 			} catch (UsuarioNoExisteElUsuarioException u) {
-				// TODO: handle exception
+				request.setAttribute("mensaje", "No existe el usuario");
+				request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
 			}
 		}else {
 			System.out.println("Cerrar sesion.");
