@@ -514,19 +514,22 @@ public class UsuarioController implements IUsuarioController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		Usuario u = em.find(Usuario.class, datoSesion);
-		if (u == null) {
-			u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
-			
+		Usuario u = null;
+		
+		try {
+			u = em.find(Usuario.class, datoSesion);
 			if (u == null) {
-				throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
+				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
+			} else {
+				return u.getDtUsuario();
 			}
+		} catch (NoResultException nre){
+			throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
 		}
+		
 		em.close();
 		
-		return u.getDtUsuario();
-		
-
+		return null;
 	}
 
 	@Override
