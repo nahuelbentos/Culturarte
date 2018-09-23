@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 /META-INF/
-=======
->>>>>>> refs/heads/Consulta_Propuesta_Por_Categoria
 /datatype/
-<<<<<<< HEAD
 /datosDePrueba/
-=======
->>>>>>> refs/heads/Consulta_Propuesta_Por_Categoria
 /excepciones/
+/libs/
 /logica/
+/main/
 /persistencia/
 /presentacion/

@@ -13,7 +13,7 @@
   <jsp:include page="partials/navLogueado.jsp"></jsp:include>
  <% } %>
   <section class=" container-fluid">
-
+	<a href="otro.jsp">Ir a otro jsp</a>
   </section>
 
 <jsp:include page="partials/footer.jsp" />

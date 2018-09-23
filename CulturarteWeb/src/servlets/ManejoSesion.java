@@ -1,9 +1,20 @@
 package servlets;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.GregorianCalendar;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 //import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,12 +23,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.ImageIcon;
 
 import datatype.DtProponente;
 import datatype.DtUsuario;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.Factory;
 import logica.IUsuarioController;
+import presentacion.Principal;
 
 /**
  * Servlet implementation class IniciarSesion
@@ -78,5 +91,5 @@ public class ManejoSesion extends HttpServlet {
 		}
 
 	}
-
+	
 }

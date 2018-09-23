@@ -18,5 +18,3 @@
 		
 		<button type="submit" class="btn btn-primary" name="manejoSesion" value="iniciar">Iniciar Sesion</button>
 	</form>
-
-<jsp:include page="partials/footer.jsp" />
