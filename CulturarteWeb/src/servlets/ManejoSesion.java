@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import datatype.DtUsuario;
 import excepciones.UsuarioNoExisteElUsuarioException;
@@ -56,8 +59,19 @@ public class ManejoSesion extends HttpServlet {
 					HttpSession session = request.getSession();
 					session.setAttribute("usuarioLogueado", usuarioLogueado);
 					
+					/* Para mostrar la imagen del usuario, se setea un atributo y desde jsp se levanta con
+					 * 
+					 * <img alt="img" src="data:image/jpeg;base64,${imagenPerfil}"/>
+					 * 
+					 */
+					if (usuarioLogueado.getImagen() != null) {
+			            byte[] encodeBase64 = Base64.encodeBase64(usuarioLogueado.getImagen());
+			            String base64Encoded = new String(encodeBase64, "UTF-8");
+			            request.setAttribute("imagenPerfil", base64Encoded);
+					}
+					
 					RequestDispatcher rd;
-					rd = request.getRequestDispatcher("/index.jsp");
+					rd = request.getRequestDispatcher("/estaLogueado.jsp");
 					rd.forward(request, response);
 				} else {
 					request.setAttribute("mensaje", "Password incorrecta");
