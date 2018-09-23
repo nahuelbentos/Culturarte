@@ -1,12 +1,7 @@
 <%@page import="datatype.DtUsuario"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>SOS UN PELEADOR</title>
-</head>
+<jsp:include page="partials/header.jsp"></jsp:include>
+<jsp:include page="partials/navVisitante.jsp"></jsp:include>
+
 <body>
 	<% DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");  %>
 	
@@ -16,6 +11,7 @@
             <td>NOMBRE: </td><td> <input type="text" value="<%=user.getNombre()%>" /> </td> 
         </tr>
     </table>
+    <img alt="img" src="data:image/jpeg;base64,${imagenPerfil}"/>
      <a href="otro.jsp">ir</a>
-</body>
-</html>
+
+<jsp:include page="partials/footer.jsp"></jsp:include>
