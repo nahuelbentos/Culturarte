@@ -28,7 +28,7 @@
           <a href="#" class="icon" data-toggle="tooltip" data-placement="bottom" title="Iniciar Sesion"><i class="fa fa-lg fa-sign-in" aria-hidden="true"></i></a>
         </button>
         <button type="button" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Registrarse">
-          <a href="#" class="icon"><i class="fa fa-lg fa-user" aria-hidden="true"></i></a>
+          <a href="registrarseForm.jsp" class="icon"><i class="fa fa-lg fa-user" aria-hidden="true"></i></a>
         </button>
       </div>
     </nav>

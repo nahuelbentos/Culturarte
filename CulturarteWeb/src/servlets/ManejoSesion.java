@@ -1,36 +1,21 @@
 package servlets;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.GregorianCalendar;
 
-import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
-//import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.ImageIcon;
 
-import datatype.DtProponente;
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import datatype.DtUsuario;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.Factory;
 import logica.IUsuarioController;
-import presentacion.Principal;
 
 /**
  * Servlet implementation class IniciarSesion
@@ -70,15 +55,31 @@ public class ManejoSesion extends HttpServlet {
 			try {
 				DtUsuario usuarioLogueado = iUsuCon.iniciarSesion(usuario, password);
 
-				HttpSession session = request.getSession();
-				session.setAttribute("usuarioLogueado", usuarioLogueado);
-				
-				RequestDispatcher rd;
-				rd = request.getRequestDispatcher("/index.jsp");
-				rd.forward(request, response);
-				
+				if (usuarioLogueado.getPassword().equals(password)) {
+					HttpSession session = request.getSession();
+					session.setAttribute("usuarioLogueado", usuarioLogueado);
+					
+					/* Para mostrar la imagen del usuario, se setea un atributo y desde jsp se levanta con
+					 * 
+					 * <img alt="img" src="data:image/jpeg;base64,${imagenPerfil}"/>
+					 * 
+					 */
+					if (usuarioLogueado.getImagen() != null) {
+			            byte[] encodeBase64 = Base64.encodeBase64(usuarioLogueado.getImagen());
+			            String base64Encoded = new String(encodeBase64, "UTF-8");
+			            request.setAttribute("imagenPerfil", base64Encoded);
+					}
+					
+					RequestDispatcher rd;
+					rd = request.getRequestDispatcher("/estaLogueado.jsp");
+					rd.forward(request, response);
+				} else {
+					request.setAttribute("mensaje", "Password incorrecta");
+					request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
+				}
 			} catch (UsuarioNoExisteElUsuarioException u) {
-				// TODO: handle exception
+				request.setAttribute("mensaje", "No existe el usuario");
+				request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
 			}
 		}else {
 			System.out.println("Cerrar sesion.");

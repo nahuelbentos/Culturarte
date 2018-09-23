@@ -1,4 +1,5 @@
 <jsp:include page="partials/header.jsp"></jsp:include>
+<jsp:include page="partials/navVisitante.jsp"></jsp:include>
 
 <body>
 
@@ -10,11 +11,13 @@
 				aria-describedby="emailHelp" placeholder="Ingrese nickname / correo del usuario">
 		</div>
 		<div class="form-group">
-			<label for="exampleInputPassword1">Contraseña:</label> 
+			<label for="exampleInputPassword1">Contraseña:</label>
 			<input type="password" name="password"
 				class="form-control" id="passwordId"
 				placeholder="Contraseña">
 		</div>
-		
+		<div class="form-group">
+			<h6><font color="red">${mensaje}</font></h6>
+		</div>
 		<button type="submit" class="btn btn-primary" name="manejoSesion" value="iniciar">Iniciar Sesion</button>
 	</form>
