@@ -40,6 +40,5 @@ function readURL(input) {
     }
 }
 </script>
-
 </body>
 </html>

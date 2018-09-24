@@ -24,8 +24,8 @@
           <input class="form-control mr-sm-2" type="search" placeholder="Título, descripción, lugar" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
-        <button type="button" class="btn btn-login orange-tooltip" data-toggle="modal" data-target="#exampleModal">
-          <a href="#" class="icon" data-toggle="tooltip" data-placement="bottom" title="Iniciar Sesion"><i class="fa fa-lg fa-sign-in" aria-hidden="true"></i></a>
+        <button type="button" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Iniciar Sesion">
+          <a href="iniciarSesionForm.jsp" class="icon"><i class="fa fa-lg fa-sign-in" aria-hidden="true"></i></a>
         </button>
         <button type="button" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Registrarse">
           <a href="registrarseForm.jsp" class="icon"><i class="fa fa-lg fa-user" aria-hidden="true"></i></a>
@@ -33,21 +33,3 @@
       </div>
     </nav>
   </header>
-  
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Iniciar Sesion</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <jsp:include page="../iniciarSesionForm.jsp"></jsp:include>
-      </div>
-
-    </div>
-  </div>
-</div>

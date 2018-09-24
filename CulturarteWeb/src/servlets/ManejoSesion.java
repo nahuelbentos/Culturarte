@@ -77,6 +77,7 @@ public class ManejoSesion extends HttpServlet {
 					request.setAttribute("mensaje", "Password incorrecta");
 					request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
 				}
+				
 			} catch (UsuarioNoExisteElUsuarioException u) {
 				request.setAttribute("mensaje", "No existe el usuario");
 				request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
