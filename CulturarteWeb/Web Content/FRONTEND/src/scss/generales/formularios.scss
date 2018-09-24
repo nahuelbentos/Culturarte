@@ -1,0 +1,18 @@
+@import "colores";
+
+.form-culturarte{
+  border: 2px solid $brand-violeta;
+  padding: 35px;
+  border-radius: 13px;
+
+  .btn-primary{
+    color: $brand-blanco;
+    background-color: $brand-violeta;
+    border-color: $brand-violeta;
+  }
+  .btn-primary:hover{
+    color: $brand-violeta;
+    background-color: $brand-rosado;
+    border-color: $brand-rosado;
+  }
+}
