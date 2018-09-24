@@ -1,11 +1,17 @@
-package servlets;
+ package servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import datatype.DtUsuario;
+import logica.Factory;
+import logica.IUsuarioController;
 
 /**
  * Servlet implementation class ExplorarUsuarios
@@ -18,7 +24,7 @@ public class ExplorarUsuarios extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public ExplorarUsuarios() {
-        super();
+    	super();
         // TODO Auto-generated constructor stub
     }
 
@@ -28,8 +34,15 @@ public class ExplorarUsuarios extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		response.sendRedirect("Usuario/navegarUsuarios.jsp");
+    	Factory factory = Factory.getInstance();
+    	IUsuarioController iUsuCont = factory.getIUsuarioController();
+    	
+    	DtUsuario[] listadoUsuarios = iUsuCont.listarUsuarios();
+    	request.setAttribute("listaUsuarios", listadoUsuarios);
+    	
+		RequestDispatcher rd;
+		rd = request.getRequestDispatcher("/Usuario/navegarUsuarios.jsp");
+		rd.forward(request, response);
 	}
 
 	/**
