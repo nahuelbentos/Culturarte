@@ -30,6 +30,8 @@ public class ExplorarUsuarios extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		response.sendRedirect("Usuario/navegarUsuarios.jsp");
+		
+		
 	}
 
 	/**
