@@ -29,3 +29,14 @@ section{
 @import 'generales/botones';
 @import 'generales/propuestas';
 @import 'generales/formularios';
+
+.dropdown-menu-culturarte{
+  background: $brand-violeta;
+  border: 1px solid rgba(255,255,255,0.2);
+  font-size: 12px;
+  .dropdown-item:hover, .dropdown-item:focus{
+    color: $brand-naranja;
+    text-decoration: none;
+    background: $brand-violeta;
+  }
+}

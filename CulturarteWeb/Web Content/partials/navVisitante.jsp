@@ -16,8 +16,12 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Quiero colaborar</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Explorar</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Explorar</a>
+            <div class="dropdown-menu dropdown-menu-culturarte" aria-labelledby="navbarDropdownMenuLink">
+	          <a class="dropdown-item" href="#">Propuestas</a>
+	          <a class="dropdown-item" href="ExplorarUsuarios">Usuarios</a>
+	        </div>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">

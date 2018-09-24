@@ -17,4 +17,3 @@
   </section>
 
 <jsp:include page="partials/footer.jsp" />
-
