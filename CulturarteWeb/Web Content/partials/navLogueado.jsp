@@ -1,3 +1,5 @@
+<%@page import="datatype.DtUsuario"%>
+<% DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado"); %>
 <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-color-brand-violeta">
@@ -10,11 +12,15 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Explorar</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Explorar</a>
+            <div class="dropdown-menu dropdown-menu-culturarte" aria-labelledby="navbarDropdownMenuLink">
+	          <a class="dropdown-item" href="#">Propuestas</a>
+	          <a class="dropdown-item" href="ExplorarUsuarios">Usuarios</a>
+	        </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fa fa-user" aria-hidden="true"></i> Mi perfil</a>
+            <a class="nav-link" href="VerPerfil?nickname=<%=user.getNickname()%>"><i class="fa fa-user" aria-hidden="true"></i> Mi perfil</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">

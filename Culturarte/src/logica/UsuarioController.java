@@ -180,9 +180,7 @@ public class UsuarioController implements IUsuarioController {
             Usuario usuario;
             for (int i = 0; i < usuarios.size(); i++) {
                 usuario = usuarios.get(i);
-                dtUsuario[i] = new DtUsuario(usuario.getNickname(), usuario.getNombre(),
-                		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword() ,
-                		usuario.getFechaNacimiento(), usuario.getImagen());
+                dtUsuario[i] = usuario.getDtUsuario();
             }
         }
         em.close();

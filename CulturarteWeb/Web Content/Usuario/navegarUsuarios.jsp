@@ -1,3 +1,6 @@
+<%@page import="datatypeJee.DtProponenteWeb"%>
+<%@page import="datatypeJee.DtColaboradorWeb"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="datatype.DtColaborador"%>
 <%@page import="datatype.DtUsuario"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
@@ -5,9 +8,9 @@
  <% 
  
  // Obtengo del request los parametros
- DtUsuario[] listaUsuarios = (DtUsuario[]) request.getAttribute("listaUsuarios");
-	
- 
+ ArrayList<DtColaboradorWeb> listaColraboradores = (ArrayList<DtColaboradorWeb>) request.getAttribute("listaColaboradores");
+ ArrayList<DtProponenteWeb> listaProponentes = (ArrayList<DtProponenteWeb>) request.getAttribute("listaProponentes");
+
  
  DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");  
  
@@ -20,15 +23,16 @@
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
  <% } %>
   <section class=" container-fluid">
-	<h2>ESTAMO ACA PARCE</h2>
+	<h3>Colaboradores</h3>
 	
-		<table class="table table-striped">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th scope="col">#</th>
+				<th scope="col"></th>
 				<th scope="col">NickName</th>
 				<th scope="col">Nombre</th>
-				<th scope="col">Tipo</th>
+				<th scope="col">Nombre</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -36,19 +40,58 @@
 			
 			
 				int i = 1;
-					for (DtUsuario dtu : listaUsuarios) {
+					for (DtColaboradorWeb dtu : listaColraboradores) {
 			%>
 			<tr>
 				<th scope="row"><%=i%></th>
+				<td>
+					<div class="img-grid">
+						<img alt="img" src="data:image/jpeg;base64,<%=dtu.getImagenAsBase64()%>"/>
+					</div>
+				</td>
 				<td><%=dtu.getNickname()%></td>
 				<td><%=dtu.getNombre()%></td>
-				<% if(dtu instanceof DtColaborador) {%>
-					<td>Colaborador</td>
-				<% } else { %>
-					<td>Proponente</td>
-				<% } %>
+				<td><a href="VerPerfil?nickname=<%=dtu.getNickname()%>"> Ver Perfil</a></td>
 			</tr>
 			<%
+					i += 1; 
+				}
+			%>
+		</tbody>
+	</table>
+	
+	<h3>Proponentes</h3>
+	
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col"></th>
+				<th scope="col">NickName</th>
+				<th scope="col">Nombre</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<%
+			
+			
+				int j = 1;
+					for (DtProponenteWeb dtu : listaProponentes) {
+			%>
+			<tr>
+				<th scope="row"><%=j%></th>
+				<td>
+					<div class="img-grid">
+						<img alt="img" src="data:image/jpeg;base64,<%=dtu.getImagenAsBase64()%>"/>
+					</div>
+				</td>
+				<td><%=dtu.getNickname()%></td>
+				<td><%=dtu.getNombre()%></td>
+				<td><a href="VerPerfil?nickname=<%=dtu.getNickname()%>"> Ver Perfil</a></td>
+			</tr>
+			<%
+					j += 1; 
 				}
 			%>
 		</tbody>
