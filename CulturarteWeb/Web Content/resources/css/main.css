@@ -3,18 +3,34 @@
 .img-grid{
 	width: 70px;
     height: 70px;
+}
+.img-perfil{
+	width: 180px;
+    height: 180px;
+}
+.img-grid, .img-perfil{
     overflow: hidden;
     margin: 10px;
     position: relative;
     border-radius: 50%;
 }
-.img-grid img{
+.img-grid img, .img-perfil img{
 	position:absolute;
     left: -100%;
     right: -100%;
     top: -100%;
     bottom: -100%;
     margin: auto;
-    /*min-height: 100%;
-    min-width: 100%;*/
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.datos-perfil label{
+	font-weight:300;
+	text-transform: uppercase;
+}
+
+.datos-perfil input{
+	font-weight:800;
+	font-size: 1.2rem;
 }
