@@ -1,3 +1,4 @@
+<%@page import="datatype.DtPropuestaColaborada"%>
 <%@page import="datatype.DtProponente"%>
 <%@page import="datatype.DtPropuesta"%>
 <%@page import="datatype.DtColaborador"%>
@@ -38,6 +39,23 @@
 				  </li>
 				</ul>
 			  </li>
+				<%
+				if (user != null && perfil.getNickname().equals(user.getNickname())){ // entonces esta logueado
+					%>
+					<li class="nav-item">
+						<% if (perfil.getTipoUsuario().equals(TipoUsuario.proponente)){ %>
+							<a class="nav-link" href="#" data-toggle="modal" data-target="#misPropuestasModal"><i class="fa fa-music" aria-hidden="true"></i> Mis Propuestas</a>
+						<% } else { %>
+							<a class="nav-link" href="#" data-toggle="modal" data-target="#misColaboracionesModal"><i class="fa fa-money" aria-hidden="true"></i> Mis Colaboraciones</a>
+						<% } %>
+					</li>
+					<% 
+				}
+				%>
+			  
+				
+			  
+			  
 			  <li class="nav-item">
 				<a class="nav-link" href="#" data-toggle="modal" data-target="#favoritasModal"><i class="fa fa-heart" aria-hidden="true"></i> Propuestas Favoritas</a>
 			  </li>
@@ -68,6 +86,12 @@
 				    </div>
 				  </div>
 				  <div class="form-group row">
+				    <label for="staticFechaNac" class="col-sm-2 col-form-label">Fecha Nacimiento</label>
+				    <div class="col-sm-6">
+				      <input type="text" readonly class="form-control-plaintext" id="staticFechaNac" value="<%=perfil.getFechaNacimientoAsString()%>">
+				    </div>
+				  </div>
+				  <div class="form-group row">
 				    <label for="staticCorreo" class="col-sm-2 col-form-label">Correo Electrónico</label>
 				    <div class="col-sm-6">
 				      <input type="text" readonly class="form-control-plaintext" id="staticCorreo" value="<%=perfil.getEmail()%>">
@@ -83,12 +107,39 @@
 				  <%if(perfil.getTipoUsuario().equals(TipoUsuario.proponente)){
 					%>
 					  <div class="form-group row">
-					    <label for="staticPassword" class="col-sm-2 col-form-label">Biografia</label>
+					    <label for="staticUsuario" class="col-sm-2 col-form-label">Es</label>
 					    <div class="col-sm-6">
-					      <p class="text-monospace"><%=perfil.getBiografia()%></p>
+					      <input type="text" readonly class="form-control-plaintext" id="staticUsuario" value="Proponente">
+					    </div>
+					  </div>
+					  <div class="form-group row">
+					    <label for="staticBiografia" class="col-sm-2 col-form-label">Biografia</label>
+					    <div class="col-sm-6">
+					      <p class="text-monospace" id="staticBiografia"><%=perfil.getBiografia()%></p>
+					    </div>
+					  </div>
+					  <div class="form-group row">
+					    <label for="staticSitioWeb" class="col-sm-2 col-form-label">Sitio web</label>
+					    <div class="col-sm-6">
+					      <a href="<%=perfil.getSitioWeb()%>" target="_blank"><%=perfil.getSitioWeb() %></a>
+					    </div>
+					  </div>
+					  <div class="form-group row">
+					    <label for="staticDireccion" class="col-sm-2 col-form-label">Direccion</label>
+					    <div class="col-sm-6">
+					      <input type="text" readonly class="form-control-plaintext" id="staticDireccion" value="<%=perfil.getDireccion()%>">
 					    </div>
 					  </div>
 					<%   
+				  }else{
+					 %>
+					  <div class="form-group row">
+					    <label for="staticUsuario" class="col-sm-2 col-form-label">Es</label>
+					    <div class="col-sm-6">
+					      <input type="text" readonly class="form-control-plaintext" id="staticUsuario" value="Colaborador">
+					    </div>
+					  </div>
+					 <%
 				  }
 				  %>
 				</form>
@@ -191,7 +242,7 @@
 	  </div>
 	</div>
 
-	<!-- Modal Propuestas -->
+	<!-- Modal Favoritas -->
 	<div class="modal fade" id="favoritasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -210,9 +261,7 @@
 						for (DtPropuesta fav : perfilCompleto.getPropuestasFavoritas()) {
 						%>
 							<li class="list-group-item"><a href="#"><%=fav.getTitulo()%></a></li>
-						<%
-						}
-						%>
+						<% } %>
 						</ul>
 			      	</div>
 	      		</div>
@@ -224,4 +273,76 @@
 	    </div>
 	  </div>
 	</div>
+	
+	<%
+	if (user != null && perfil.getNickname().equals(user.getNickname())){ // entonces esta logueado
+		if (perfil.getTipoUsuario().equals(TipoUsuario.proponente)){ %>
+			<!-- Modal mis propuestas -->
+			<div class="modal fade" id="misPropuestasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Publicadas <i class="fa fa-heart" aria-hidden="true"></i> <%=perfilCompleto.getPropuestasPublicadas().size()%></h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<div class="container-fluid">
+			      		<div class="row">
+					      	<div class="col-lg-12">
+					      		<ul class="list-group">
+								<%
+								for (DtPropuesta mias : perfilCompleto.getPropuestasPublicadas()) {
+								%>
+									<li class="list-group-item"><a href="#"><%=mias.getTitulo()%></a></li>
+								<% } %>
+								</ul>
+					      	</div>
+			      		</div>
+			      	</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		<% } else { %>
+			<!-- Modal mis colaboraciones -->
+			<div class="modal fade" id="misColaboracionesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Colaboraciones <i class="fa fa-heart" aria-hidden="true"></i> <%=perfilCompleto.getPropuestasColaboradas().size()%></h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<div class="container-fluid">
+			      		<div class="row">
+					      	<div class="col-lg-12">
+					      		<ul class="list-group">
+								<%
+								for (DtPropuestaColaborada col : perfilCompleto.getPropuestasColaboradas()) {
+								%>
+									<li class="list-group-item"><a href="#"><%=col.getTitulo()%></a></li>
+								<% } %>
+								</ul>
+					      	</div>
+			      		</div>
+			      	</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		<% } 
+	}
+	%>
+	
+
 <jsp:include page="../partials/footer.jsp" />

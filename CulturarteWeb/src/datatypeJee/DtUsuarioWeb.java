@@ -1,6 +1,7 @@
 package datatypeJee;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -90,5 +91,11 @@ public class DtUsuarioWeb {
 			return sitioWeb;
 		else
 			throw new UsuarioNoExisteElUsuarioException("El usuario no es proponente");
+	}
+	
+	public String getFechaNacimientoAsString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+		
+		return sdf.format(this.fechaNacimiento.getTime());
 	}
 }
