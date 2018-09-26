@@ -79,6 +79,18 @@
 				      <input type="password" readonly class="form-control-plaintext" id="staticCorreo" value="<%=perfil.getPassword()%>">
 				    </div>
 				  </div>
+				  
+				  <%if(perfil.getTipoUsuario().equals(TipoUsuario.proponente)){
+					%>
+					  <div class="form-group row">
+					    <label for="staticPassword" class="col-sm-2 col-form-label">Biografia</label>
+					    <div class="col-sm-6">
+					      <p class="text-monospace"><%=perfil.getBiografia()%></p>
+					    </div>
+					  </div>
+					<%   
+				  }
+				  %>
 				</form>
 			</div>
 	    </div>
