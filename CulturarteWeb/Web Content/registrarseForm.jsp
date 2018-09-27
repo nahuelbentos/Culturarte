@@ -1,7 +1,7 @@
 <jsp:include page="partials/header.jsp"></jsp:include>
 <jsp:include page="partials/navVisitante.jsp"></jsp:include>
 <body>
-   <form action="AltaPerfil" method="post">
+   <form action="AltaPerfil" method="post" enctype="multipart/form-data">
       <div class="form-row">
          <div class="col-md-4 mb-3">
             <label for="nombre">Nombre</label>

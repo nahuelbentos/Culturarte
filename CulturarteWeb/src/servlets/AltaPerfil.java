@@ -1,15 +1,19 @@
 package servlets;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import datatype.DtColaborador;
 import datatype.DtProponente;
@@ -21,6 +25,7 @@ import logica.Factory;
 import logica.IUsuarioController;
 
 @WebServlet("/AltaPerfil")
+@MultipartConfig
 public class AltaPerfil extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -50,6 +55,15 @@ public class AltaPerfil extends HttpServlet {
 			String sitioWeb = request.getParameter("sitioWeb");
 			String tipoUsuario = request.getParameter("tipoUsuario");
 			
+			/*
+			 * Para obtener Parts en el servlet:
+			 * - Se debe definir en el servlet la annotation @MultipartConfig (ver mas arriba)
+			 * - Se debe definir en el jsp el enctype="multipart/form-data" (ver registrarseForm.jsp)
+			 */
+			Part file = request.getPart("imagenUsuarioArchivo");
+			byte[] imagen = new byte[(int) file.getSize()];
+	    	file.getInputStream().read(imagen);
+	    	
 			Factory factory = Factory.getInstance();
 			IUsuarioController IUC = factory.getIUsuarioController();
 
@@ -58,10 +72,10 @@ public class AltaPerfil extends HttpServlet {
 			if ("proponente".equals(tipoUsuario) || "colaborador".equals(tipoUsuario)) {
 				if ("proponente".equals(tipoUsuario)) {
 					dtUsuario = new DtProponente(nickname, nombre, apellido, email, password, new GregorianCalendar(), 
-							null, direccion, biografia, sitioWeb);
+							imagen, direccion, biografia, sitioWeb);
 				} else if ("colaborador".equals(tipoUsuario)) {
 					dtUsuario = new DtColaborador(nickname, nombre, apellido, email, confirmarPassword, 
-							new GregorianCalendar(), null);
+							new GregorianCalendar(), imagen);
 				}
 				if (password.equals(confirmarPassword)) {
 					try {
@@ -77,7 +91,7 @@ public class AltaPerfil extends HttpServlet {
 						request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
 					}
 				} else {
-					request.setAttribute("mensaje", "Las contraseñas no coinciden");
+					request.setAttribute("mensaje", "Las contraseï¿½as no coinciden");
 					request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
 				}
 			} else {
