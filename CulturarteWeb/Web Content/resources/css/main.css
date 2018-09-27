@@ -8,6 +8,15 @@
 	width: 180px;
     height: 180px;
 }
+.img-container{
+	width: 180px;
+    height: 180px;
+    overflow: hidden;
+}
+.img-autoresize{
+    height: 100%;
+	width: auto;
+}
 .img-grid, .img-perfil{
     overflow: hidden;
     margin: 10px;

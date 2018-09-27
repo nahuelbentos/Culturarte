@@ -11,7 +11,9 @@
             <td>NOMBRE: </td><td> <input type="text" value="<%=user.getNombre()%>" /> </td> 
         </tr>
     </table>
-    <img alt="img" src="data:image/jpeg;base64,${imagenPerfil}"/>
-     <a href="otro.jsp">ir</a>
-
+    <div class="img-container">
+	    <img class="img-autoresize" alt="img" src="data:image/jpeg;base64,${imagenPerfil}"/>
+	     <a href="otro.jsp">ir</a>
+	</div>
+	
 <jsp:include page="partials/footer.jsp"></jsp:include>
