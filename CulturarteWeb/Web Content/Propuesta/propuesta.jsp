@@ -14,11 +14,13 @@
  <% }else { %>
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
  <% } %>
-  <section class=" container-fluid">
-  
-  	<div class="header-propuesta img-propuesta">
-  		<img alt="" src="data:image/jpeg;base64,<%=propWeb.getImagenAsBase64()%>">
-  	</div>
+  <div class="header-propuesta img-propuesta">
+  	<img alt="" src="data:image/jpeg;base64,<%=propWeb.getImagenAsBase64()%>">
+  	<h2 class="titulo-propuesta"><%=propWeb.getTitulo()%></h2>
+  </div>
+
+  <section class="container-fluid ">
+  	
   
   </section>
 

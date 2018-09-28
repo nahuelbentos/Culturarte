@@ -92,7 +92,7 @@ public class PropuestaController implements IPropuestaController {
 			Propuesta pro;
 			for (int i = 0; i < propsMin.length; i++) {
 				pro = propuestas.get(i);
-				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
+				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname(), pro.getImagen());
 			}
 			
 			
@@ -305,7 +305,7 @@ public class PropuestaController implements IPropuestaController {
 			Propuesta pro;
 			for (int i = 0; i < propsMin.length; i++) {
 				pro = propuestas.get(i);
-				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
+				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
 			
 			return propsMin;
@@ -352,7 +352,7 @@ public class PropuestaController implements IPropuestaController {
 				
 				return  new DtDatosPropuesta(datapro.getTitulo(), datapro.getDescripcion(), datapro.getImagen(),
 				datapro.getMontoNecesario(), datapro.getFechaPublicacion(), datapro.getFechaEspecatulo(), datapro.getLugar(),
-				datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores);
+				datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores, datapro.getProponenteACargo());
 	        }else
 	        	return dtp;
 		}else 
@@ -407,7 +407,7 @@ public class PropuestaController implements IPropuestaController {
 			Propuesta pro;
 			for (int i = 0; i < propsMin.length; i++) {
 				pro = propuestas.get(i);
-				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname());
+				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
 			
 			
@@ -442,7 +442,7 @@ public class PropuestaController implements IPropuestaController {
 			for (int i = 0; i < props.length; i++) {
 				pro = ps.get(i);
 				
-				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname());
+				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
 			
 			return props;
@@ -522,7 +522,7 @@ public class PropuestaController implements IPropuestaController {
 			for (int i = 0; i < props.length; i++) {
 				pro = ps.get(i);
 				
-				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname());
+				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
 			
 			return props;

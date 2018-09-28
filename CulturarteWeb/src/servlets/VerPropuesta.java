@@ -39,8 +39,11 @@ public class VerPropuesta extends HttpServlet {
 		Factory factory = Factory.getInstance();
 		IPropuestaController iProCont = factory.getIPropuestaController();
 		
+		
 		DtDatosPropuesta propuesta = iProCont.consultarPropuesta(titulo);
-		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), propuesta.getImagen());
+		
+		//DtUsuarioWeb proponente = new DtUsuarioWeb(, nombre, apellido, email, password, fechaNacimiento, imagen, tipoUsuario, direccion, biografia, sitioWeb)
+		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), null, propuesta.getImagen());
 		
 		request.setAttribute("propuesta", propuesta);
 		request.setAttribute("propuestaWeb", proWeb);

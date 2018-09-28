@@ -292,8 +292,7 @@ public class Propuesta {
     	*/
 		
 		ArrayList<String> colaboradores = new ArrayList<String>();
-				
-    	return new DtDatosPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,tipo, 0, colaboradores);
+    	return new DtDatosPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada,tipo, 0, colaboradores,proponenteACargo.getDtProponente());
 
 
     	

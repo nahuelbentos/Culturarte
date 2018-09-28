@@ -19,7 +19,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Explorar</a>
             <div class="dropdown-menu dropdown-menu-culturarte" aria-labelledby="navbarDropdownMenuLink">
-	          <a class="dropdown-item" href="#">Propuestas</a>
+	          <a class="dropdown-item" href="ExplorarPropuestas">Propuestas</a>
 	          <a class="dropdown-item" href="ExplorarUsuarios">Usuarios</a>
 	        </div>
           </li>
