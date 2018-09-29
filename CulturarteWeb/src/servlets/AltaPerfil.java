@@ -1,7 +1,5 @@
 package servlets;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
@@ -18,7 +16,6 @@ import javax.servlet.http.Part;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtUsuario;
-import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.Factory;
