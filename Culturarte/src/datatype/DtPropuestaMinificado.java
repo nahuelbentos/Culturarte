@@ -4,11 +4,13 @@ public class DtPropuestaMinificado {
 
 	private String titulo;
 	private String proponente;
+	private byte[] imagen;
 	
-	public DtPropuestaMinificado(String titulo, String proponente) {
+	public DtPropuestaMinificado(String titulo, String proponente, byte[] imagen) {
 		super();
 		this.titulo = titulo;
 		this.proponente = proponente;
+		this.imagen = imagen;
 	}
 	
 	public String getTitulo() {
@@ -22,6 +24,10 @@ public class DtPropuestaMinificado {
 	}
 	public void setProponente(String proponente) {
 		this.proponente = proponente;
+	}
+
+	public byte[] getImagen() {
+		return imagen;
 	}
 	
 }

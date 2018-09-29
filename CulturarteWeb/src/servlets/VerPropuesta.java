@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import datatype.DtDatosPropuesta;
 import datatypeJee.DtPropuestaWeb;
+import datatypeJee.DtUsuarioWeb;
+import datatypeJee.TipoUsuario;
 import logica.Factory;
 import logica.IPropuestaController;
 
@@ -39,10 +41,18 @@ public class VerPropuesta extends HttpServlet {
 		Factory factory = Factory.getInstance();
 		IPropuestaController iProCont = factory.getIPropuestaController();
 		
+		
 		DtDatosPropuesta propuesta = iProCont.consultarPropuesta(titulo);
-		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), propuesta.getImagen());
+		
+		DtUsuarioWeb proponente = new DtUsuarioWeb(propuesta.getProponenteACargo().getNickname(), propuesta.getProponenteACargo().getNombre(), propuesta.getProponenteACargo().getApellido(),
+				propuesta.getProponenteACargo().getEmail(), propuesta.getProponenteACargo().getPassword(), propuesta.getProponenteACargo().getFechaNacimiento(),
+				propuesta.getProponenteACargo().getImagen(), TipoUsuario.proponente, propuesta.getProponenteACargo().getDireccion(), propuesta.getProponenteACargo().getBiografia(), propuesta.getProponenteACargo().getSitioWeb());
+		
+		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), proponente.getNickname(), propuesta.getImagen(),
+				propuesta.getFechaPublicacion(), propuesta.getFechaEspecatulo());
 		
 		request.setAttribute("propuesta", propuesta);
+		request.setAttribute("proponenteACargo", proponente);
 		request.setAttribute("propuestaWeb", proWeb);
 		RequestDispatcher rd;
 		rd = request.getRequestDispatcher("/Propuesta/propuesta.jsp");
