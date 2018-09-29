@@ -91,3 +91,20 @@ h2.titulo-propuesta{
 	display: inherit;
 	margin-top: 7px;
 }
+.header-propuesta .badge-categoria{
+	font-size: 18px;
+	background-color: #d17326;
+	color: #f4f4f4;
+}
+.header-propuesta .options-propuesta{
+	color: #f4f4f4;
+    position: absolute;
+    right: 10px;
+    margin-top: 10px;
+}
+.header-propuesta .lista-opciones{
+    position: absolute;
+    right: 44px;
+    margin-top: 20px;
+    list-style: none;
+    padding: 4px 10px;}

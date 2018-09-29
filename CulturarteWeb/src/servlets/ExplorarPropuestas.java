@@ -32,11 +32,12 @@ public class ExplorarPropuestas extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Factory factory = Factory.getInstance();
+		Factory factory = Factory.getInstance();
     	IPropuestaController iProCont = factory.getIPropuestaController();
     	
     	DtPropuestaMinificado[] pAux = iProCont.listarPropuestasActivas();
     	DtPropuestaWeb[] props = new DtPropuestaWeb[pAux.length];
+    	
     	for (int i = 0; i < pAux.length; i++) {
 			props[i] = new DtPropuestaWeb(pAux[i].getTitulo(), pAux[i].getProponente(), pAux[i].getImagen(), null, null);		
 		}

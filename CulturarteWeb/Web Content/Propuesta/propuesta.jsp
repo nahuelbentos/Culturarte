@@ -1,3 +1,4 @@
+<%@page import="datatypeJee.TipoUsuario"%>
 <%@page import="datatypeJee.DtUsuarioWeb"%>
 <%@page import="datatype.DtDatosPropuesta"%>
 <%@page import="datatypeJee.DtPropuestaWeb"%>
@@ -5,7 +6,8 @@
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
  <% 
-  DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado"); 
+  DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado"); 
+  TipoUsuario tipoUsuarioLogueado = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
   
   DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getAttribute("propuestaWeb");
   DtUsuarioWeb proponenteACargo = (DtUsuarioWeb)request.getAttribute("proponenteACargo");
@@ -17,8 +19,27 @@
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
  <% } %>
   <div class="header-propuesta img-propuesta">
+
   	<img alt="" src="data:image/jpeg;base64,<%=propWeb.getImagenAsBase64()%>">
-  	<h2 class="titulo-propuesta"><%=propWeb.getTitulo()%> <small class="badge badge-danger" data-toggle="tooltip" data-placement="bottom" title="Categoria"> <%=propuestaCompleta.getCategoria()%></small></h2>
+  	<% if (user != null) { %>
+  		<button class="btn btn-link options-propuesta" id="ver-opciones-propuesta" onclick="verOpciones()">
+  			<i class="fa fa-ellipsis-v fa-2x " aria-hidden="true"></i>
+  		</button>
+  		<ul class="lista-opciones list-group" style="display:none;" id="listado-opciones">
+  		<% if(tipoUsuarioLogueado == TipoUsuario.colaborador) { %>
+  			<li class="list-group-item"><a href="#" class="nav-link"><i class="fa fa-money" aria-hidden="true"></i> Colaborar</a></li>
+  		<% } %>
+  			<li class="list-group-item"><a href="#" class="nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i> Agregar como favorita</a></li>
+  			
+  		</ul>
+  		
+  		<script type="text/javascript">
+  			function verOpciones(){
+  				$("#listado-opciones").toggle("fast");
+  			}
+  		</script>
+  	<% } %>
+  	<h2 class="titulo-propuesta"><%=propWeb.getTitulo()%> <small class="badge badge-categoria" data-toggle="tooltip" data-placement="bottom" title="Categoria"> <%=propuestaCompleta.getCategoria()%></small></h2>
   </div>
 
   <section class="container container-propuesta">
@@ -64,6 +85,35 @@
 				</div>
 			</div>
 		</form>
+		
+		<h3>Colaboraciones</h3>
+	
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Colaborador</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<%
+				int i = 1;
+								
+				for (String colaborador : propuestaCompleta.getColaboradores()) {
+				%>
+				<tr>
+					<th scope="row"><%=i%></th>
+					<td><%=colaborador%></td>
+					<td><a href="#""> Ver Colaboración</a></td>
+				</tr>
+				<%
+					i += 1; 
+				}
+				%>
+			</tbody>
+		</table>
+		
 	</div>
   	
   </section>

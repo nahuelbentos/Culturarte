@@ -12,7 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
+import datatype.DtProponente;
 import datatype.DtUsuario;
+import datatypeJee.TipoUsuario;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.Factory;
 import logica.IUsuarioController;
@@ -54,7 +56,7 @@ public class ManejoSesion extends HttpServlet {
 			IUsuarioController iUsuCon = factory.getIUsuarioController();
 			try {
 				DtUsuario usuarioLogueado = iUsuCon.iniciarSesion(usuario, password);
-
+				
 				if (usuarioLogueado.getPassword().equals(password)) {
 					HttpSession session = request.getSession();
 					session.setAttribute("usuarioLogueado", usuarioLogueado);
@@ -68,6 +70,12 @@ public class ManejoSesion extends HttpServlet {
 			            byte[] encodeBase64 = Base64.encodeBase64(usuarioLogueado.getImagen());
 			            String base64Encoded = new String(encodeBase64, "UTF-8");
 			            request.setAttribute("imagenPerfil", base64Encoded);
+					}
+					
+					if (usuarioLogueado instanceof DtProponente) {
+						session.setAttribute("tipoUsuarioLogueado", TipoUsuario.proponente);
+					}else {
+						session.setAttribute("tipoUsuarioLogueado", TipoUsuario.colaborador);
 					}
 					
 					RequestDispatcher rd;
