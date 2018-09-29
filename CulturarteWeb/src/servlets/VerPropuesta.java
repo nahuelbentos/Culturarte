@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import datatype.DtDatosPropuesta;
 import datatypeJee.DtPropuestaWeb;
+import datatypeJee.DtUsuarioWeb;
+import datatypeJee.TipoUsuario;
 import logica.Factory;
 import logica.IPropuestaController;
 
@@ -42,10 +44,15 @@ public class VerPropuesta extends HttpServlet {
 		
 		DtDatosPropuesta propuesta = iProCont.consultarPropuesta(titulo);
 		
-		//DtUsuarioWeb proponente = new DtUsuarioWeb(, nombre, apellido, email, password, fechaNacimiento, imagen, tipoUsuario, direccion, biografia, sitioWeb)
-		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), null, propuesta.getImagen());
+		DtUsuarioWeb proponente = new DtUsuarioWeb(propuesta.getProponenteACargo().getNickname(), propuesta.getProponenteACargo().getNombre(), propuesta.getProponenteACargo().getApellido(),
+				propuesta.getProponenteACargo().getEmail(), propuesta.getProponenteACargo().getPassword(), propuesta.getProponenteACargo().getFechaNacimiento(),
+				propuesta.getProponenteACargo().getImagen(), TipoUsuario.proponente, propuesta.getProponenteACargo().getDireccion(), propuesta.getProponenteACargo().getBiografia(), propuesta.getProponenteACargo().getSitioWeb());
+		
+		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), proponente.getNickname(), propuesta.getImagen(),
+				propuesta.getFechaPublicacion(), propuesta.getFechaEspecatulo());
 		
 		request.setAttribute("propuesta", propuesta);
+		request.setAttribute("proponenteACargo", proponente);
 		request.setAttribute("propuestaWeb", proWeb);
 		RequestDispatcher rd;
 		rd = request.getRequestDispatcher("/Propuesta/propuesta.jsp");

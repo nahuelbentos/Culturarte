@@ -52,10 +52,6 @@
 					<% 
 				}
 				%>
-			  
-				
-			  
-			  
 			  <li class="nav-item">
 				<a class="nav-link" href="#" data-toggle="modal" data-target="#favoritasModal"><i class="fa fa-heart" aria-hidden="true"></i> Propuestas Favoritas</a>
 			  </li>

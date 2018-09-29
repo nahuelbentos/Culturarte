@@ -15,13 +15,15 @@ public class DtDatosPropuesta {
    private TipoRetorno tipo;
    private double recaudado;
    private DtProponente proponenteACargo;
+   private String categoria;
    
    //Pseudoatributos
    private ArrayList<String> colaboradores;
 	
 	public DtDatosPropuesta(String titulo, String descripcion, byte[] imagen, double montoNecesario,
 			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
-			TipoRetorno tipo, double recaudado, ArrayList<String> colaboradores, DtProponente proponenteACargo) {
+			TipoRetorno tipo, double recaudado, ArrayList<String> colaboradores, DtProponente proponenteACargo,
+			String categoria) {
 		super();
 		this.titulo = titulo;
 		this.descripcion = descripcion;
@@ -35,11 +37,17 @@ public class DtDatosPropuesta {
 		this.recaudado = recaudado;
 		this.colaboradores = colaboradores;
 		this.proponenteACargo = proponenteACargo;
+		this.categoria = categoria;
 	}
 	
 	public DtDatosPropuesta() {
 		
 	}
+	
+	public void setRecaudado(double recaudado) {
+		this.recaudado = recaudado;
+	}
+
 	public String getTitulo() {
 		return titulo;
 	}
@@ -87,5 +95,8 @@ public class DtDatosPropuesta {
 	public ArrayList<String> getColaboradores() {
 		return colaboradores;
 	}
-   
+
+	public String getCategoria() {
+		return categoria;
+	}
 }

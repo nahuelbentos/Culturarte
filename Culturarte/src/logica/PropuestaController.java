@@ -350,14 +350,14 @@ public class PropuestaController implements IPropuestaController {
 					}
 				}
 				
-				return  new DtDatosPropuesta(datapro.getTitulo(), datapro.getDescripcion(), datapro.getImagen(),
-				datapro.getMontoNecesario(), datapro.getFechaPublicacion(), datapro.getFechaEspecatulo(), datapro.getLugar(),
-				datapro.getPrecioEntrada(), datapro.getTipo(), montoTotal, colaboradores, datapro.getProponenteACargo());
+				datapro.setRecaudado(montoTotal);
+				
+				return  datapro;
+				
 	        }else
 	        	return dtp;
 		}else 
 			return dtp;
-		
 	}
 
 	@Override
