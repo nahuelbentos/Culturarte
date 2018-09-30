@@ -41,11 +41,16 @@ public class RegistrarColaboracion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String boton = request.getParameter("submit");
+		System.out.println("entro en el dopost.");
+		String boton = request.getParameter("boton");
 		
 		if (boton.equals("confirmar")) {
-			DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getAttribute("propuestaWeb");
+			//DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getAttribute("propuestaWeb");
 			DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
+			DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getSession().getAttribute("propuestaAColaborar");
+			// ya lo obtuve, lo dejo nulo.
+			request.getSession().setAttribute("propuestaAColaborar", null);
+			
 			String titulo = propWeb.getTitulo();
 			String  montoColaboracion = request.getParameter("montoColaboracion");
 			TipoRetorno tipoRetorno = TipoRetorno.valueOf(request.getParameter("tipoRetorno"));
@@ -63,11 +68,11 @@ public class RegistrarColaboracion extends HttpServlet {
 			} catch (ColaboradorNoExisteException | PropuestaNoExisteException
 					| ColaboracionExistenteException e) {
 				request.setAttribute("mensaje", "Ocurrio un error");
-				request.getRequestDispatcher("/Propuesta/propuesta.jsp").forward(request, response);
+				request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp").forward(request, response);
 			}
 				
 			request.setAttribute("mensaje", "Se registro la colaboracion");
-			request.getRequestDispatcher("/Propuesta/propuesta.jsp").forward(request, response);
+			request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp").forward(request, response);
 				
 		} else if (boton.equals("cancelar")) {
 			RequestDispatcher rd;
