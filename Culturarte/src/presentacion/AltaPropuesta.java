@@ -382,7 +382,7 @@ public class AltaPropuesta extends JInternalFrame {
 	
 	private void registrarPropuesta(ActionEvent arg0) {
 		if (formularioOk()) {
-			DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", "", null, null, "", "", "");
+			DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, null, null, "", "", "");
 			DtCategoria dtCat = new DtCategoria(categoria);
 			DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, new GregorianCalendar(), fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat, null);
 			try {

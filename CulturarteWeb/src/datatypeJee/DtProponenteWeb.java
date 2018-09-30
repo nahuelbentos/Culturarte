@@ -9,7 +9,7 @@ import datatype.DtProponente;
 
 public class DtProponenteWeb extends DtProponente {
 
-	public DtProponenteWeb(String nickname, String nombre, String apellido, String email, String password,
+	public DtProponenteWeb(String nickname, String nombre, String apellido, String email, char[] password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb) {
 		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen, direccion, biografia, sitioWeb);
 		// TODO Auto-generated constructor stub

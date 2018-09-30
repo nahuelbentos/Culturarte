@@ -12,8 +12,18 @@
             <input type="text" class="form-control" id="apellido" name="apellido" placeholder="" required>
          </div>
          <div class="col-md-4 mb-3">
+         	<label for="nickname">Fecha de nacimiento</label>
+         	<input type="text" autocomplete="off" class="form-control" id="fechaDeNacimiento" name="fechaDeNacimiento" required>
+         </div>
+      </div>
+      <div class="form-row">
+      	<div class="col-md-4 mb-3">
             <label for="nickname">Nickname</label>
             <input type="text" class="form-control" id="nickname" name="nickanme" placeholder="" required>
+         </div>
+         <div class="col-md-4 mb-3">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="" name="email" required>
          </div>
       </div>
       <div class="form-row">
@@ -24,10 +34,6 @@
          <div class="col-md-4 mb-3">
             <label for="confirmarPassword">Confirmar Password</label>
             <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" placeholder="" required>
-         </div>
-         <div class="col-md-4 mb-3">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="" name="email" required>
          </div>
       </div>
       <div class="form-row">

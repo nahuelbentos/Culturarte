@@ -16,7 +16,7 @@ public class DtPerfilUsuario extends DtUsuario{
 	private ArrayList<DtColaboracion> colaboracionesHechas;
 	
 	
-	public DtPerfilUsuario(String nickname, String nombre, String apellido, String email, String password,
+	public DtPerfilUsuario(String nickname, String nombre, String apellido, String email, char[] password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, ArrayList<DtProponente> seguidoresProponentes,
 			ArrayList<DtColaborador> seguidoresColaboradores, ArrayList<DtProponente> seguidosProponentes,
 			ArrayList<DtColaborador> seguidosColaboradores, ArrayList<DtPropuesta> propuestasFavoritas,
