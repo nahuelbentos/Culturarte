@@ -321,7 +321,7 @@ public class AltaPerfil extends JInternalFrame {
         String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
         String email = txtEmail.getText();
-        String password = txtPassword.getPassword().toString();
+        char[] password = txtPassword.getPassword();
         GregorianCalendar fechaNacimiento = new GregorianCalendar();
         if (dateChooser.getDate() != null) {
         	fechaNacimiento.setTime(dateChooser.getDate());

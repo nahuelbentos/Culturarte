@@ -8,11 +8,11 @@ public class DtUsuario {
 	private String nombre;
 	private String apellido;
 	private String email;
-	private String password;
+	private char[] password;
 	private GregorianCalendar fechaNacimiento;
 	private byte[] imagen;
 	
-	public DtUsuario(String nickname, String nombre, String apellido, String email, String password, 
+	public DtUsuario(String nickname, String nombre, String apellido, String email, char[] password, 
 			GregorianCalendar fechaNacimiento, byte[] imagen) {
 		super();
 		this.nickname = nickname;
@@ -45,11 +45,11 @@ public class DtUsuario {
 		return imagen;
 	}
 
-	public String getPassword() {
+	public char[] getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(char[] password) {
 		this.password = password;
 	}
 	

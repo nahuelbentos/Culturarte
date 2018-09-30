@@ -283,7 +283,7 @@ public class ModificarPropuesta extends JInternalFrame {
 	private void modificarPropuesta(ActionEvent arg0) {
 		if (!cmbPropuesta.getSelectedItem().equals(TEXTO_COMBO_PROPUESTA)) {
 			if (formularioOk()) {
-				DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", "", null, null, "", "", "");
+				DtProponente dtProponente = new DtProponente(nicknameProponente, "", "", "", null, null, null, "", "", "");
 				DtCategoria dtCat = new DtCategoria(categoria);
 				DtPropuesta dtPropuesta = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion, fechaEspecatulo, lugar, precioEntrada, tipo, 0, dtProponente, null, null, dtCat, null);
 				iPropuestaController.modificarPropuesta(dtPropuesta);
