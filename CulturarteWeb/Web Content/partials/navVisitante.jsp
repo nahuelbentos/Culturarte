@@ -14,7 +14,7 @@
             <a class="nav-link" href="altaDePropuesta.jsp">Quiero proponer</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="registrarColaboracion.jsp">Quiero colaborar</a>
+            <a class="nav-link" href="#">Quiero colaborar</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Explorar</a>
