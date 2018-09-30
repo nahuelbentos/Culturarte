@@ -35,7 +35,7 @@ public abstract class Usuario {
 	@Column(name="EMAIL")
     private String correoElectronico;
 	@Column(name="PASSWORD")
-    private String password;
+    private char[] password;
 	@Column(name="APELLIDO")
     private String apellido;
 	@Lob
@@ -56,7 +56,7 @@ public abstract class Usuario {
     }
     
     public Usuario(String nickname, String nombre, GregorianCalendar fechaNacimiento,
-    		String correoElectronico, String password, String apellido, byte[] imagen) {
+    		String correoElectronico, char[] password, String apellido, byte[] imagen) {
     	super();
         this.nickname = nickname;
         this.nombre = nombre;
@@ -77,7 +77,7 @@ public abstract class Usuario {
         this.correoElectronico = correoElectronico;
     }
     
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 
@@ -107,7 +107,7 @@ public abstract class Usuario {
         return correoElectronico;
     }
     
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 

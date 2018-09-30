@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -50,14 +51,14 @@ public class ManejoSesion extends HttpServlet {
 		if (manejo.equals("iniciar")) {
 			System.out.println("Iniciar sesion");
 			String usuario = request.getParameter("usuario");
-			String password = request.getParameter("password");
+			char[] password = request.getParameter("password").toCharArray();
 			
 			Factory factory = Factory.getInstance();
 			IUsuarioController iUsuCon = factory.getIUsuarioController();
 			try {
 				DtUsuario usuarioLogueado = iUsuCon.iniciarSesion(usuario, password);
 				
-				if (usuarioLogueado.getPassword().equals(password)) {
+				if (Arrays.equals(usuarioLogueado.getPassword(), password)) {
 					HttpSession session = request.getSession();
 					session.setAttribute("usuarioLogueado", usuarioLogueado);
 					

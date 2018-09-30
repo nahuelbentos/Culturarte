@@ -9,7 +9,7 @@ import datatype.DtColaborador;
 
 public class DtColaboradorWeb extends DtColaborador {
 
-	public DtColaboradorWeb(String nickname, String nombre, String apellido, String email, String password,
+	public DtColaboradorWeb(String nickname, String nombre, String apellido, String email, char[] password,
 			GregorianCalendar fechaNacimiento, byte[] imagen) {
 		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
 	}

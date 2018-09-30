@@ -7,7 +7,7 @@ public class DtPerfilColaborador extends DtUsuario {
 
 	private ArrayList<DtPropuestaColaborada> colaboracionesHechas;
 	
-	public DtPerfilColaborador(String nickname, String nombre, String apellido, String email, String password,
+	public DtPerfilColaborador(String nickname, String nombre, String apellido, String email, char[] password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, ArrayList<DtPropuestaColaborada> colaboracionesHechas) {
 		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
 		this.colaboracionesHechas = colaboracionesHechas;

@@ -14,7 +14,7 @@ public class DtUsuarioWeb {
 	private String nombre;
 	private String apellido;
 	private String email;
-	private String password;
+	private char[] password;
 	private GregorianCalendar fechaNacimiento;
 	private byte[] imagen;
 	private TipoUsuario tipoUsuario;
@@ -23,7 +23,7 @@ public class DtUsuarioWeb {
 	private String biografia;
 	private String sitioWeb;
 	
-	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, String password,
+	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, char[] password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, TipoUsuario tipoUsuario, String direccion,
 			String biografia, String sitioWeb) {
 		super();
@@ -52,7 +52,7 @@ public class DtUsuarioWeb {
 	public String getEmail() {
 		return email;
 	}
-	public String getPassword() {
+	public char[] getPassword() {
 		return password;
 	}
 	public GregorianCalendar getFechaNacimiento() {
