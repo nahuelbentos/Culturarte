@@ -400,7 +400,7 @@ public class Principal {
             	String apellido = datosUsuario[3];
             	GregorianCalendar fechaNacimiento = parsearFecha(datosUsuario[4]);
             	String tipoUsuario = datosUsuario[5];
-            	String password = datosUsuario[10];
+            	char[] password = datosUsuario[10].toCharArray();
             	byte[] imagen = obtenerImagen(datosUsuario[6]);
             	DtUsuario dtUsuario = null;
             	if ("P".equals(tipoUsuario)) {
@@ -474,7 +474,7 @@ public class Principal {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
             while ((line = br.readLine()) != null) {
             	String[] datosPropuesta = line.split(cvsSplitBy);
-            	DtProponente dtProponente = new DtProponente(datosPropuesta[0], "", "", "", "", null, null, "", "", "");
+            	DtProponente dtProponente = new DtProponente(datosPropuesta[0], "", "", "", null, null, null, "", "", "");
             	String titulo = datosPropuesta[1];
             	DtCategoria dtCategoria = new DtCategoria(datosPropuesta[2]);
             	GregorianCalendar fechaEspectaculo = parsearFecha(datosPropuesta[3]);

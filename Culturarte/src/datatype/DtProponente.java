@@ -8,7 +8,7 @@ public class DtProponente extends DtUsuario {
 	private String biografia;
 	private String sitioWeb;
 	
-	public DtProponente(String nickname, String nombre, String apellido, String email, String password,
+	public DtProponente(String nickname, String nombre, String apellido, String email, char[] password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb) {
 		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
 		this.direccion = direccion;

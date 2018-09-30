@@ -1,5 +1,9 @@
 <%@page import="datatype.DtUsuario"%>
-<% DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado"); %>
+<%@page import="datatypeJee.TipoUsuario"%>
+<% 
+DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado"); 
+TipoUsuario tipoUser = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
+%>
 <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-color-brand-violeta">
@@ -19,6 +23,9 @@
 	          <a class="dropdown-item" href="ExplorarUsuarios">Usuarios</a>
 	        </div>
           </li>
+          <%if (tipoUser == TipoUsuario.proponente) {%>
+          	<li><a class="nav-link" href="altaDePropuesta.jsp">Tengo una propuesta</a>
+          <% } %>
           <li class="nav-item">
             <a class="nav-link" href="VerPerfil?nickname=<%=user.getNickname()%>"><i class="fa fa-user" aria-hidden="true"></i> Mi perfil</a>
           </li>

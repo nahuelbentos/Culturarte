@@ -345,11 +345,11 @@ public class UsuarioController implements IUsuarioController {
 	    				auxUsuProponente.getDireccion(), auxUsuProponente.getBiografia(), auxUsuProponente.getSitioWeb(),
 	    				prIngresadas, prPublicadas, prCanceladas, prEnFinanciacion, prFinanciadas, prNoFinanciadas);
         	}else
-        		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", "", null,
+        		return  new  DtPerfilProponente("Fallo1pruebaController", "Fallo1pruebaController", "Fallo1pruebaController", "pruebaController", null, null,
             			null,"pruebaController", "pruebaController", "pruebaController",null,null, null, null, null, null);
 
         }else {
-        	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", "", null,
+        	return  new  DtPerfilProponente("FallopruebaController", "FallopruebaController", "FallopruebaController", "pruebaController", null, null,
         			null,"pruebaController", "pruebaController", "pruebaController",null,null, null, null, null, null);
         }
 
@@ -393,10 +393,10 @@ public class UsuarioController implements IUsuarioController {
 						perfil.getCorreoElectronico(), perfil.getPassword(), perfil.getFechaNacimiento(), perfil.getImagen(), colaboracionesHechas);
         	}else
         		return  new  DtPerfilColaborador("Fallo_perfil.getNickname()", "fallo_perfil.getNombre()", "Fallo_perfil.getApellido()",
-        				"falo_perfil.getCorreoElectronico()", "", null,null,null);
+        				"falo_perfil.getCorreoElectronico()", null, null,null,null);
         }else
         	return  new  DtPerfilColaborador("Fallo2_perfil.getNickname()", "Fallo2_perfil.getNombre()", "Fallo2_perfil.getApellido()",
-    				"Fallo2_perfil.getCorreoElectronico()", "", null,null,null);
+    				"Fallo2_perfil.getCorreoElectronico()", null, null,null,null);
         
 
 	}
@@ -505,7 +505,7 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public DtUsuario iniciarSesion(String datoSesion, String password) throws UsuarioNoExisteElUsuarioException {
+	public DtUsuario iniciarSesion(String datoSesion, char[] password) throws UsuarioNoExisteElUsuarioException {
 		
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();

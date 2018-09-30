@@ -11,7 +11,7 @@ import excepciones.UsuarioYaSigueAlUsuarioException;
 
 public interface IUsuarioController {
 
-	public abstract DtUsuario iniciarSesion(String nickname, String password) throws UsuarioNoExisteElUsuarioException;
+	public abstract DtUsuario iniciarSesion(String nickname, char[] password) throws UsuarioNoExisteElUsuarioException;
 	
 	public abstract void cerrarSesion() throws UsuarioSinLoguearseException;
 	

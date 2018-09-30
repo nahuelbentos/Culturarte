@@ -1,6 +1,11 @@
 package servlets;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.servlet.RequestDispatcher;
@@ -34,7 +39,7 @@ public class AltaPerfil extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -44,13 +49,22 @@ public class AltaPerfil extends HttpServlet {
 			String nombre = request.getParameter("nombre");
 			String apellido = request.getParameter("apellido");
 			String nickname = request.getParameter("nickanme");
-			String password = request.getParameter("password");
-			String confirmarPassword = request.getParameter("confirmarPassword");
+			char[] password = request.getParameter("password").toCharArray();
+			char[] confirmarPassword = request.getParameter("confirmarPassword").toCharArray();
 			String email = request.getParameter("email");
 			String direccion = request.getParameter("direccion");
 			String biografia = request.getParameter("biografia");
 			String sitioWeb = request.getParameter("sitioWeb");
 			String tipoUsuario = request.getParameter("tipoUsuario");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+			GregorianCalendar fecha = new GregorianCalendar();
+			try {
+				fecha.setTime(sdf.parse(request.getParameter("fechaDeNacimiento")));
+			} catch (ParseException e1) {
+				request.setAttribute("mensaje", "La fecha ingresada no es válida");
+				request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
+			}
 			
 			/*
 			 * Para obtener Parts en el servlet:
@@ -68,13 +82,13 @@ public class AltaPerfil extends HttpServlet {
 			
 			if ("proponente".equals(tipoUsuario) || "colaborador".equals(tipoUsuario)) {
 				if ("proponente".equals(tipoUsuario)) {
-					dtUsuario = new DtProponente(nickname, nombre, apellido, email, password, new GregorianCalendar(), 
+					dtUsuario = new DtProponente(nickname, nombre, apellido, email, password, fecha, 
 							imagen, direccion, biografia, sitioWeb);
 				} else if ("colaborador".equals(tipoUsuario)) {
 					dtUsuario = new DtColaborador(nickname, nombre, apellido, email, confirmarPassword, 
-							new GregorianCalendar(), imagen);
+							fecha, imagen);
 				}
-				if (password.equals(confirmarPassword)) {
+				if (Arrays.equals(password, confirmarPassword)) {
 					try {
 						IUC.agregarUsuario(dtUsuario);
 						HttpSession session = request.getSession();
@@ -88,7 +102,7 @@ public class AltaPerfil extends HttpServlet {
 						request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
 					}
 				} else {
-					request.setAttribute("mensaje", "Las contrase�as no coinciden");
+					request.setAttribute("mensaje", "Las passwords no coinciden");
 					request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
 				}
 			} else {
