@@ -67,12 +67,11 @@ public class RegistrarColaboracion extends HttpServlet {
 				IPC.generarColaboracion(dtColaboracion );
 			} catch (ColaboradorNoExisteException | PropuestaNoExisteException
 					| ColaboracionExistenteException e) {
-				request.setAttribute("mensaje", "Ocurrio un error");
-				request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp").forward(request, response);
+//				request.getSession().setAttribute("mensaje", "Ocurrio un error");
+				//request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp").forward(request, response);
 			}
-				
-			request.setAttribute("mensaje", "Se registro la colaboracion");
-			request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp").forward(request, response);
+			// Falta agregar un mensaje de que se registro la colaboracion
+			response.sendRedirect("/CulturarteWeb/ExplorarPropuestas");
 				
 		} else if (boton.equals("cancelar")) {
 			RequestDispatcher rd;
