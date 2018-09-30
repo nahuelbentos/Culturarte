@@ -16,7 +16,7 @@ public class DtColaboradorWeb extends DtColaborador {
 	
 	public String getImagenAsBase64() throws UnsupportedEncodingException {
 		byte[] encodeBase64 = Base64.encodeBase64(super.getImagen());
-        String base64Encoded = new String(encodeBase64, "UTF-8");
+	    String base64Encoded = new String(encodeBase64, "UTF-8");
         return base64Encoded;
 	}
 }
