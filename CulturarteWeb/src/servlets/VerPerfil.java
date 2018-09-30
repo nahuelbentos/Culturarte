@@ -39,13 +39,22 @@ public class VerPerfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String nickname = request.getParameter("nickname");
+		
+		/*
+		 * Lo comento para obtenerlo de la sesion y poder mostrar el perfil despues de loguearse
+		 * String nickname = request.getParameter("nickname");
+		 */
+		
+		HttpSession session = request.getSession();
+		DtUsuario user = (DtUsuario) session.getAttribute("usuarioLogueado");
+		 
+		String nickname = user.getNickname();
 		
 		Factory factory = Factory.getInstance();
 		IUsuarioController iUsuCont = factory.getIUsuarioController();
 		try {
 			//esto luego vemos como llamarlo desde algun ajax para no consumir tanto recurso, de momento llamo a todo junto.
-			HttpSession session = request.getSession();
+			//HttpSession session = request.getSession();
 			DtPerfilUsuario  perfilCompleto = iUsuCont.obtenerPerfilUsuario(nickname, (DtUsuario)session.getAttribute("usuarioLogueado"));
 			
 			DtUsuario perfilAux = iUsuCont.verPerfilUsuario(nickname);

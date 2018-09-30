@@ -78,10 +78,9 @@ public class ManejoSesion extends HttpServlet {
 					}else {
 						session.setAttribute("tipoUsuarioLogueado", TipoUsuario.colaborador);
 					}
+
+					response.sendRedirect("/CulturarteWeb/VerPerfil");
 					
-					RequestDispatcher rd;
-					rd = request.getRequestDispatcher("/estaLogueado.jsp");
-					rd.forward(request, response);
 				} else {
 					request.setAttribute("mensaje", "Password incorrecta");
 					request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);

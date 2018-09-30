@@ -8,7 +8,7 @@
 
  DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");  
  
- if (user == null) { 
+ if (user == null) {
  
  %>
   <jsp:include page="../partials/navVisitante.jsp"></jsp:include>
