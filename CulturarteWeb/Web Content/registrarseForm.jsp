@@ -13,7 +13,7 @@
          </div>
          <div class="col-md-4 mb-3">
          	<label for="nickname">Fecha de nacimiento</label>
-         	<input type="text" autocomplete="off" class="form-control" id="fechaDeNacimiento" name="fechaDeNacimiento" required>
+         	<input type="date" autocomplete="off" class="form-control" id="fechaDeNacimiento" name="fechaDeNacimiento" required>
          </div>
       </div>
       <div class="form-row">
