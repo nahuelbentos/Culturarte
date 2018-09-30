@@ -56,17 +56,15 @@ public class AltaPerfil extends HttpServlet {
 			String biografia = request.getParameter("biografia");
 			String sitioWeb = request.getParameter("sitioWeb");
 			String tipoUsuario = request.getParameter("tipoUsuario");
-			String fecha = request.getParameter("fechaDeNacimiento");
 			
-			GregorianCalendar fechaDeNacimiento = new GregorianCalendar();
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			Date date = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+			GregorianCalendar fecha = new GregorianCalendar();
 			try {
-				date = df.parse(fecha);
+				fecha.setTime(sdf.parse(request.getParameter("fechaDeNacimiento")));
 			} catch (ParseException e1) {
-				e1.printStackTrace();
+				request.setAttribute("mensaje", "La fecha ingresada no es válida");
+				request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
 			}
-			fechaDeNacimiento.setTime(date);
 			
 			/*
 			 * Para obtener Parts en el servlet:
@@ -84,11 +82,11 @@ public class AltaPerfil extends HttpServlet {
 			
 			if ("proponente".equals(tipoUsuario) || "colaborador".equals(tipoUsuario)) {
 				if ("proponente".equals(tipoUsuario)) {
-					dtUsuario = new DtProponente(nickname, nombre, apellido, email, password, fechaDeNacimiento, 
+					dtUsuario = new DtProponente(nickname, nombre, apellido, email, password, fecha, 
 							imagen, direccion, biografia, sitioWeb);
 				} else if ("colaborador".equals(tipoUsuario)) {
 					dtUsuario = new DtColaborador(nickname, nombre, apellido, email, confirmarPassword, 
-							fechaDeNacimiento, imagen);
+							fecha, imagen);
 				}
 				if (Arrays.equals(password, confirmarPassword)) {
 					try {
