@@ -54,13 +54,13 @@ public class AltaPropuesta extends HttpServlet {
 				String titulo = request.getParameter("titulo");
 				String descripcion = request.getParameter("descripcion");
 				String lugar = request.getParameter("lugar");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				GregorianCalendar fecha = new GregorianCalendar();
 				try {
 					fecha.setTime(sdf.parse(request.getParameter("fecha")));
 				} catch (ParseException e1) {
 					request.setAttribute("mensaje", "La fecha ingresada no es válida");
-					request.getRequestDispatcher("/altaDePropuesta.jsp").forward(request, response);
+					request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
 				}
 				Float precioEntrada = Float.valueOf(request.getParameter("precioEntrada"));
 				Float montoNecesario = Float.valueOf(request.getParameter("montoNecesario"));
@@ -85,23 +85,19 @@ public class AltaPropuesta extends HttpServlet {
 				try {
 					IPC.altaPropuesta(dtP);;
 					HttpSession session = request.getSession();
-					session.setAttribute("propuestaTitulo", titulo);
+					session.setAttribute("titulo", titulo);
 					
-					request.setAttribute("mensaje", "Propuesta dada de alta correctamente. REDIRECCIONAR A CONSULTA DE LA PROPUESTA SELECCIONADA CUANDO ESTE PRONTO");
-					request.getRequestDispatcher("/altaDePropuesta.jsp").forward(request, response);
-					
-//					RequestDispatcher rd;
-//					rd = request.getRequestDispatcher("/consultaDePropuesta.jsp");
-//					rd.forward(request, response);
+					request.setAttribute("mensaje", "Propuesta dada de alta correctamente");
+					request.getRequestDispatcher("/VerPropuesta").forward(request, response);
 				}catch (PropuestaRepetidaException e) {
 					request.setAttribute("mensaje", "Ya existe la propuesta");
-					request.getRequestDispatcher("/altaDePropuesta.jsp").forward(request, response);
+					request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
 				}catch (ProponenteNoExisteException e) {
 					request.setAttribute("mensaje", "No existe el proponente");
-					request.getRequestDispatcher("/altaDePropuesta.jsp").forward(request, response);
+					request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
 				}catch (CategoriaNoExisteException e) {
 					request.setAttribute("mensaje", "No existe la categoría");
-					request.getRequestDispatcher("/altaDePropuesta.jsp").forward(request, response);
+					request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
 				}
 			} else if (boton.equals("cancelar")) {
 				RequestDispatcher rd;
@@ -110,7 +106,7 @@ public class AltaPropuesta extends HttpServlet {
 			}
 		} else {
 			request.setAttribute("mensaje", "Debe iniciar sesión como proponente para poder crear una nueva propuesta.");
-			request.getRequestDispatcher("/altaDePropuesta.jsp").forward(request, response);
+			request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
 		}
 	}
 

@@ -17,6 +17,10 @@
     height: 100%;
 	width: auto;
 }
+.img-autoresize-landscape{
+    height: auto;
+	width: 100%;
+}
 .img-propuesta{
     /*background: linear-gradient(to bottom right, #f4f4f4, #1a0824);*/
     width: 100%;
