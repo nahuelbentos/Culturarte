@@ -27,6 +27,9 @@
 				<th scope="col">Titulo</th>
 				<th scope="col">Proponente a cargo</th>
 				<th scope="col"></th>
+				<% if (user != null) { %>
+					<th scope="col"></th>
+				<% } %>
 			</tr>
 		</thead>
 		<tbody>
@@ -43,7 +46,10 @@
 				</td>
 				<td><%=itemP.getTitulo()%></td>
 				<td><%=itemP.getProponente()%></td>
-				<td><a href="VerPropuesta?titulo=<%=itemP.getTitulo()%>"> Ver Propuesta</a></td>
+				<td><a href="VerPropuesta?titulo=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Ver Propuesta"> <i class="fa fa-eye" aria-hidden="true" ></i></a></td>
+				<% if (user != null) { %>
+					<td><a href="AgregarFavorita?propuesta=<%=itemP.getTitulo()%>&usuario=<%=user.getNickname()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar como favorita"> <i class="fa fa-heart-o" aria-hidden="true"></i></a></td>
+				<% } %>
 			</tr>
 			<%
 				i += 1; 
