@@ -24,7 +24,7 @@ TipoUsuario tipoUser = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
 	        </div>
           </li>
           <%if (tipoUser == TipoUsuario.proponente) {%>
-          	<li><a class="nav-link" href="altaDePropuesta.jsp">Tengo una propuesta</a>
+          	<li><a class="nav-link" href="Propuesta/altaDePropuesta.jsp">Tengo una propuesta</a>
           <% } %>
           <li class="nav-item">
             <a class="nav-link" href="VerPerfil?nickname=<%=user.getNickname()%>"><i class="fa fa-user" aria-hidden="true"></i> Mi perfil</a>
