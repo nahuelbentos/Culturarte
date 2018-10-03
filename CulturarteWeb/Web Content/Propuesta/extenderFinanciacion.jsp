@@ -5,11 +5,21 @@
 <%@page import="logica.ICategoriaController"%>
 <%@page import="datatype.DtCategoria"%>
 <%@page import="datatype.TipoRetorno"%>
-<%@page import="java.util.Base64"%>
+<%-- <%@page import="java.util.Base64"%> --%>
+<%@page import="org.apache.tomcat.util.codec.binary.Base64"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
-<jsp:include page="../partials/navVisitante.jsp"></jsp:include>
 <body>
-	<% DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");  %>
+	<% 
+	DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
+	if (user == null) { %>
+		<jsp:include page="../partials/navVisitante.jsp"></jsp:include>
+	<%
+	} else { 
+	%>
+		<jsp:include page="../partials/navLogueado.jsp"></jsp:include>
+	<%
+	}
+	%>
 	<% if (user instanceof DtProponente) {  %>
 <!-- 		<form action="../AltaPropuesta" method="post" enctype="multipart/form-data"> -->
 			<div style="padding-top: 15px">
@@ -27,24 +37,22 @@
 					<div class="tab-content" id="myTabContent">
 		 			<!-- Pestaña de propuestas publicadas -->
 						<div class="tab-pane fade show active" id="publicadas" role="tabpanel" aria-labelledby="publicadas-tab">
-							<!-- Títulos -->
-							<div class="form-row" style="margin-bottom: 15px;">
-								<label class="col-form-label" for="titulo">Propuestas</label>
-							</div>
-							
 							<% 
 							DtPropuestaMinificado[] publicadas = (DtPropuestaMinificado[]) request.getAttribute("propuestasPublicadas");  
 							if (publicadas.length > 0){
 								for (DtPropuestaMinificado dtP : publicadas) {
+									byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
+							        String base64Encoded = new String(encodeBase64, "UTF-8");
 							%>
-									<div class="form-row">
-										<a href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
-									</div>
+										<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
+											<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
+											<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+										</div>
 							<%
 								}
 							} else {
 							%>
-								<div class="form-row">
+								<div class="form-row" style="margin-top: 15px;">
 									<h6><font color="red">No se han encontrado propuestas para este estado.</font></h6>
 								</div>
 							<%	
@@ -54,11 +62,6 @@
 						
 					<!-- Pestaña de propuestas en financiacion -->
 						<div class="tab-pane fade" id="enFinanciacion" role="tabpanel" aria-labelledby="enFinanciacion-tab">
-							<!-- Títulos -->
-							<div class="form-row" style="margin-bottom: 15px;">
-								<label class="col-form-label" for="titulo">Propuestas</label>
-							</div>
-							
 							<% 
 							DtPropuestaMinificado[] enFinanciacion = (DtPropuestaMinificado[]) request.getAttribute("propuestasEnFinanciacion");  
 							if (enFinanciacion.length > 0){
@@ -71,7 +74,7 @@
 								}
 							} else {
 							%>
-								<div class="form-row">
+								<div class="form-row" style="margin-top: 15px;">
 									<h6><font color="red">No se han encontrado propuestas para este estado.</font></h6>
 								</div>
 							<%	
