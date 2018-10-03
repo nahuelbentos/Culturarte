@@ -428,7 +428,7 @@ public class PropuestaController implements IPropuestaController {
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion <= :now")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
 											.setParameter("estado", estado.toString())
 											.setParameter("nicknameProponente", nicknameProponente)
 											.setParameter("now", now)
