@@ -12,43 +12,74 @@
 	<% DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");  %>
 	<% if (user instanceof DtProponente) {  %>
 <!-- 		<form action="../AltaPropuesta" method="post" enctype="multipart/form-data"> -->
-			<div class="container container-propuesta">
-				
-				<ul class="nav nav-tabs" id="myTab" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link active" id="publicadas-tab" data-toggle="tab" href="#publicadas" role="tab" aria-controls="publicadas" aria-selected="true">Publicadas</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="enFinanciacion-tab" data-toggle="tab" href="#enFinanciacion" role="tab" aria-controls="enFinanciacion" aria-selected="false">En financiación</a>
-					</li>
-				</ul>
-				 
-				<div class="tab-content" id="myTabContent">
-	 			<!-- Pestaña de propuestas publicadas -->
-					<div class="tab-pane fade show active" id="publicadas" role="tabpanel" aria-labelledby="publicadas-tab">
-						<!-- Títulos -->
-						<div class="form-row" style="margin-bottom: 15px;">
-							<label class="col-form-label" for="titulo">Propuestas</label>
+			<div style="padding-top: 15px">
+				<div class="container container-propuesta">
+					
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="publicadas-tab" data-toggle="tab" href="#publicadas" role="tab" aria-controls="publicadas" aria-selected="true">Publicadas</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="enFinanciacion-tab" data-toggle="tab" href="#enFinanciacion" role="tab" aria-controls="enFinanciacion" aria-selected="false">En financiación</a>
+						</li>
+					</ul>
+					 
+					<div class="tab-content" id="myTabContent">
+		 			<!-- Pestaña de propuestas publicadas -->
+						<div class="tab-pane fade show active" id="publicadas" role="tabpanel" aria-labelledby="publicadas-tab">
+							<!-- Títulos -->
+							<div class="form-row" style="margin-bottom: 15px;">
+								<label class="col-form-label" for="titulo">Propuestas</label>
+							</div>
+							
+							<% 
+							DtPropuestaMinificado[] publicadas = (DtPropuestaMinificado[]) request.getAttribute("propuestasPublicadas");  
+							if (publicadas.length > 0){
+								for (DtPropuestaMinificado dtP : publicadas) {
+							%>
+									<div class="form-row">
+										<a href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+									</div>
+							<%
+								}
+							} else {
+							%>
+								<div class="form-row">
+									<h6><font color="red">No se han encontrado propuestas para este estado.</font></h6>
+								</div>
+							<%	
+							}
+							%>
 						</div>
 						
-						<% 
-						DtPropuestaMinificado[] publicadas = (DtPropuestaMinificado[]) request.getAttribute("propuestasPublicadas");  
-						for (DtPropuestaMinificado dtP : publicadas) {
-						%>
-							<div class="form-row">
-								<a href="../VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+					<!-- Pestaña de propuestas en financiacion -->
+						<div class="tab-pane fade" id="enFinanciacion" role="tabpanel" aria-labelledby="enFinanciacion-tab">
+							<!-- Títulos -->
+							<div class="form-row" style="margin-bottom: 15px;">
+								<label class="col-form-label" for="titulo">Propuestas</label>
 							</div>
-						<%
-						}
-						%>
-						Hola
+							
+							<% 
+							DtPropuestaMinificado[] enFinanciacion = (DtPropuestaMinificado[]) request.getAttribute("propuestasEnFinanciacion");  
+							if (enFinanciacion.length > 0){
+								for (DtPropuestaMinificado dtP : enFinanciacion) {
+							%>
+									<div class="form-row">
+										<a href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+									</div>
+							<%
+								}
+							} else {
+							%>
+								<div class="form-row">
+									<h6><font color="red">No se han encontrado propuestas para este estado.</font></h6>
+								</div>
+							<%	
+							}
+							%>
+						</div>
+						
 					</div>
-					
-				<!-- Pestaña de propuestas en financiacion -->
-					<div class="tab-pane fade" id="enFinanciacion" role="tabpanel" aria-labelledby="enFinanciacion-tab">
-						Chau
-					</div>
-					
 				</div>
 			</div>
 <!-- 		</form> -->

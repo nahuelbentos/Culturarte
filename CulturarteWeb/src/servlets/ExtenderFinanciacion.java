@@ -35,7 +35,6 @@ public class ExtenderFinanciacion extends HttpServlet {
 		if (user instanceof DtProponente) {
 			try {
 				DtPropuestaMinificado[] publicadas = IPC.listarPropuestasProponentePorEstado(user.getNickname(), EstadoPropuesta.publicada);
-				System.out.println(publicadas.length);
 				request.setAttribute("propuestasPublicadas", publicadas);
 			} catch (PropuestaNoExisteException e) {
 				request.setAttribute("mensaje", e);

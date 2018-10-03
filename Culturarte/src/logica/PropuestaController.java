@@ -444,9 +444,11 @@ public class PropuestaController implements IPropuestaController {
 				
 				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
+//			System.out.println("Se encontraron " + props.length + " propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 			
 			return props;
 		}else {
+//			System.out.println("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 			throw new PropuestaNoExisteException("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 		}
 	}
