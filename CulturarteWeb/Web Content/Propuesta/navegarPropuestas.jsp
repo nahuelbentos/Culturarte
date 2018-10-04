@@ -18,7 +18,7 @@
  <% } %>
   <section class=" container-fluid">
 	<h3>Propuestas</h3>
-	
+	<span id="mensaje" style="display: none;" class="alert alert-primary alert-flotante"></span>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -46,9 +46,14 @@
 				</td>
 				<td><%=itemP.getTitulo()%></td>
 				<td><%=itemP.getProponente()%></td>
-				<td><a href="VerPropuesta?titulo=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Ver Propuesta"> <i class="fa fa-eye" aria-hidden="true" ></i></a></td>
-				<% if (user != null) { %>
-					<td><a href="AgregarFavorita?propuesta=<%=itemP.getTitulo()%>&usuario=<%=user.getNickname()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar como favorita"> <i class="fa fa-heart-o" aria-hidden="true"></i></a></td>
+				<td><a href="VerPropuesta?titulo=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Ver Propuesta"> <i class="fa fa-eye fa-2x" aria-hidden="true" ></i></a></td>
+				<% if (user != null) { 
+					String tituloSinEspacios = itemP.getTitulo().replace(" ","");
+					%>
+					<td>
+						<button class="favorito" onclick="gestionarFavoritas('<%=tituloSinEspacios%>','<%=itemP.getTitulo()%>')" data-toggle="tooltip" data-placement="bottom" title="Agregar como favorita"> <i id="<%=tituloSinEspacios%>" class="fa fa-heart-o fa-2x" aria-hidden="true"></i></button>
+					</td>
+<%-- 					<td><a href="AgregarFavorita?propuesta=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar como favorita"> <i class="fa fa-heart-o fa-2x" aria-hidden="true"></i></a></td> --%>
 				<% } %>
 			</tr>
 			<%

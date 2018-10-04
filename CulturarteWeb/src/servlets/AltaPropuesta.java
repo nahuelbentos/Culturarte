@@ -21,6 +21,8 @@ import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
+import datatypeJee.msjUI.DtMensajeUI;
+import datatypeJee.msjUI.TipoMensaje;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaRepetidaException;
@@ -87,7 +89,8 @@ public class AltaPropuesta extends HttpServlet {
 					HttpSession session = request.getSession();
 					session.setAttribute("titulo", titulo);
 					
-					request.setAttribute("mensaje", "Propuesta dada de alta correctamente");
+					DtMensajeUI mensaje = new DtMensajeUI("Propuesta dada de alta correctamente <br> Debe ser evaluada por nuestros especialistas", TipoMensaje.aviso);
+					request.setAttribute("mensaje", mensaje);
 					request.getRequestDispatcher("/VerPropuesta").forward(request, response);
 				}catch (PropuestaRepetidaException e) {
 					request.setAttribute("mensaje", "Ya existe la propuesta");

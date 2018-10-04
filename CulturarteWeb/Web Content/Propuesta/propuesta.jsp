@@ -1,3 +1,5 @@
+<%@page import="datatypeJee.msjUI.TipoMensaje"%>
+<%@page import="datatypeJee.msjUI.DtMensajeUI"%>
 <%@page import="datatypeJee.TipoUsuario"%>
 <%@page import="datatypeJee.DtUsuarioWeb"%>
 <%@page import="datatype.DtDatosPropuesta"%>
@@ -14,11 +16,21 @@
   DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getAttribute("propuestaWeb");
   DtUsuarioWeb proponenteACargo = (DtUsuarioWeb)request.getAttribute("proponenteACargo");
   DtDatosPropuesta propuestaCompleta = (DtDatosPropuesta)request.getAttribute("propuesta");
-    
+  
+  DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
+  String claseUIMsj;
   if (user == null) { %>
   <jsp:include page="../partials/navVisitante.jsp"></jsp:include>
  <% }else { %>
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
+ <% } %>
+ <% if(mensaje != null) { %>
+ <div class="alert alert-warning alert-dismissible fade show" role="alert">
+ 	<%=mensaje.getMensaje()%>
+ 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+ 		<span aria-hidden="true">&times;</span>
+ 	</button>
+ </div>
  <% } %>
   <div class="header-propuesta img-propuesta">
 
@@ -31,7 +43,7 @@
   		<% if(tipoUsuarioLogueado == TipoUsuario.colaborador) { %>
   			<li class="list-group-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#colaboracionModal"><i class="fa fa-money" aria-hidden="true"></i> Colaborar</a></li>
   		<% } %>
-  			<li class="list-group-item"><a href="#" class="nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i> Agregar como favorita</a></li>
+  			<li class="list-group-item"><a href="AgregarFavorita?propuesta=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i> Agregar como favorita</a></li>
   			
   		</ul>
   		

@@ -13,6 +13,7 @@ import datatype.DtDatosPropuesta;
 import datatypeJee.DtPropuestaWeb;
 import datatypeJee.DtUsuarioWeb;
 import datatypeJee.TipoUsuario;
+import datatypeJee.msjUI.DtMensajeUI;
 import logica.Factory;
 import logica.IPropuestaController;
 
@@ -50,6 +51,11 @@ public class VerPropuesta extends HttpServlet {
 		
 		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), proponente.getNickname(), propuesta.getImagen(),
 				propuesta.getFechaPublicacion(), propuesta.getFechaEspecatulo());
+		
+		
+		DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
+		if(mensaje != null)
+			request.setAttribute("mensaje", mensaje);
 		
 		request.setAttribute("propuesta", propuesta);
 		request.setAttribute("proponenteACargo", proponente);

@@ -111,4 +111,17 @@ h2.titulo-propuesta{
     right: 44px;
     margin-top: 20px;
     list-style: none;
-    padding: 4px 10px;}
+    padding: 4px 10px;
+}
+button.favorito{
+	border: none;
+	background: none;
+	color: #c3373d;
+}
+.alert-flotante{
+    display: inline;
+    position: fixed;
+    bottom: 10px;
+    z-index: 100;
+    left: 50%;
+}
