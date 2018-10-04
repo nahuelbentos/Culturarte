@@ -1,5 +1,7 @@
 <%@page import="datatypeJee.msjUI.TipoMensaje"%>
 <%@page import="datatypeJee.msjUI.DtMensajeUI"%>
+<%@page import="java.util.GregorianCalendar"%>
+<%@page import="datatype.EstadoPropuesta"%>
 <%@page import="datatypeJee.TipoUsuario"%>
 <%@page import="datatypeJee.DtUsuarioWeb"%>
 <%@page import="datatype.DtDatosPropuesta"%>
@@ -90,10 +92,28 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="staticLugar" class="col-sm-3 col-form-label">Cuando</label>
+					<label for="staticCuando" class="col-sm-3 col-form-label">Cuando</label>
 					<div class="col-sm-9">
-						<input type="text" readonly class="form-control-plaintext" id="staticLugar" value="<%=propWeb.getFechaEspectaculoAsString()%>">
+						<input type="text" readonly class="form-control-plaintext" id="staticCuando" value="<%=propWeb.getFechaEspectaculoAsString()%>">
 					</div>
+				</div>
+				<div class="form-group row">
+					<label for="staticFinaliza" class="col-sm-3 col-form-label">Finaliza</label>
+					<div class="col-sm-6">
+						<input type="text" readonly class="form-control-plaintext" id="staticFinaliza" value="<%=propWeb.getFechaFinalizacionAsString()%>">
+					</div>
+					<%
+					GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
+					if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { %>
+  						<div class="col-sm-3">
+							<a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>">Extender financiación</a>
+						</div>
+					<%
+					}
+					%>
+				</div>
+				<div class="form-group">
+					<h6><font color="red">${mensaje}</font></h6>
 				</div>
 			</div>
 		</div>

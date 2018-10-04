@@ -428,7 +428,7 @@ public class PropuestaController implements IPropuestaController {
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion <= :now")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
 											.setParameter("estado", estado.toString())
 											.setParameter("nicknameProponente", nicknameProponente)
 											.setParameter("now", now)
@@ -444,9 +444,11 @@ public class PropuestaController implements IPropuestaController {
 				
 				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
+//			System.out.println("Se encontraron " + props.length + " propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 			
 			return props;
 		}else {
+//			System.out.println("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 			throw new PropuestaNoExisteException("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 		}
 	}
@@ -467,6 +469,9 @@ public class PropuestaController implements IPropuestaController {
 			// guardo la nueva fecha de finalización
 			propuesta.setFechaFinalizacion(fechaFinalizacion);
 			em.persist(propuesta);
+			
+			Estado historico = new Estado(propuesta.getEstadoActual(), propuesta, (GregorianCalendar) GregorianCalendar.getInstance());
+			em.persist(historico);
 		}else {
 			em.getTransaction().rollback();
 			em.close();

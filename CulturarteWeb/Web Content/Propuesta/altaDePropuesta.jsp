@@ -6,9 +6,18 @@
 <%@page import="datatype.TipoRetorno"%>
 <%@page import="java.util.Base64"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
-<jsp:include page="../partials/navVisitante.jsp"></jsp:include>
 <body>
-	<% DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");  %>
+	<% 
+	DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
+	if (user == null) { %>
+		<jsp:include page="../partials/navVisitante.jsp"></jsp:include>
+	<%
+	} else { 
+	%>
+		<jsp:include page="../partials/navLogueado.jsp"></jsp:include>
+	<%
+	}
+	%>
 	<% if (user instanceof DtProponente) {  %>
 		<form action="../AltaPropuesta" method="post" enctype="multipart/form-data">
 			<div class="header-propuesta img-propuesta">

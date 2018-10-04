@@ -7,17 +7,22 @@ import java.util.GregorianCalendar;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import datatype.DtPropuestaMinificado;
+import datatype.EstadoPropuesta;
 
 public class DtPropuestaWeb extends DtPropuestaMinificado {
 	
 	private GregorianCalendar fechaPublicacion;
 	private GregorianCalendar fechaEspectaculo;
+	private GregorianCalendar fechaFinalizacion;
+	private EstadoPropuesta estadoActual;
 	
 	public DtPropuestaWeb(String titulo, String proponente, byte[] imagen, 
-			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspectaculo) {
+			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspectaculo, GregorianCalendar fechaFinalizacion, EstadoPropuesta estadoActual) {
 		super(titulo,proponente,imagen);
 		this.fechaEspectaculo = fechaEspectaculo;
 		this.fechaPublicacion = fechaPublicacion;
+		this.fechaFinalizacion = fechaFinalizacion;
+		this.estadoActual = estadoActual;
 	}
 	
 	public String getImagenAsBase64() throws UnsupportedEncodingException {
@@ -36,6 +41,20 @@ public class DtPropuestaWeb extends DtPropuestaMinificado {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm");
 		
 		return sdf.format(this.fechaEspectaculo.getTime());
+	}
+	
+	public GregorianCalendar getFechaFinalizacion() {
+		return this.fechaFinalizacion;
+	}
+	
+	public String getFechaFinalizacionAsString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm");
+		
+		return sdf.format(this.fechaFinalizacion.getTime());
+	}
+	
+	public EstadoPropuesta getEstadoPropuesta() {
+		return estadoActual;
 	}
 	
 }

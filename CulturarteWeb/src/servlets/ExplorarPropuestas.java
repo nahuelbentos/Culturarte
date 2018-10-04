@@ -39,7 +39,7 @@ public class ExplorarPropuestas extends HttpServlet {
     	DtPropuestaWeb[] props = new DtPropuestaWeb[pAux.length];
     	
     	for (int i = 0; i < pAux.length; i++) {
-			props[i] = new DtPropuestaWeb(pAux[i].getTitulo(), pAux[i].getProponente(), pAux[i].getImagen(), null, null);		
+			props[i] = new DtPropuestaWeb(pAux[i].getTitulo(), pAux[i].getProponente(), pAux[i].getImagen(), null, null, null, null);		
 		}
     	
     	request.setAttribute("listaPropuestas", props);
