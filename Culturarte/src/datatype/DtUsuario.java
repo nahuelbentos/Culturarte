@@ -1,6 +1,8 @@
 package datatype;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class DtUsuario {
 	
@@ -12,6 +14,8 @@ public class DtUsuario {
 	private GregorianCalendar fechaNacimiento;
 	private byte[] imagen;
 	
+	private List<String> tituloFavoritas;
+	
 	public DtUsuario(String nickname, String nombre, String apellido, String email, char[] password, 
 			GregorianCalendar fechaNacimiento, byte[] imagen) {
 		super();
@@ -22,6 +26,7 @@ public class DtUsuario {
 		this.password = password;
 		this.fechaNacimiento = fechaNacimiento;
 		this.imagen = imagen;
+		this.tituloFavoritas = new ArrayList<String>();
 	}
 	public DtUsuario() {
 		super();		
@@ -51,6 +56,22 @@ public class DtUsuario {
 
 	public void setPassword(char[] password) {
 		this.password = password;
+	}
+	
+	public List<String> getTituloFavoritas() {
+		return tituloFavoritas;
+	}
+	
+	public void setTituloFavoritas(List<String> tituloFavoritas) {
+		this.tituloFavoritas = tituloFavoritas;
+	}
+	
+	public void addTituloFavoritas(String tituloFavorita) {
+		this.tituloFavoritas.add(tituloFavorita);
+	}
+	
+	public boolean isMemberTituloFavorita(String tituloFavorita) {
+		return this.tituloFavoritas.contains(tituloFavorita);
 	}
 	
 }

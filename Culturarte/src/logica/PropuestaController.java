@@ -562,6 +562,7 @@ public class PropuestaController implements IPropuestaController {
 				
 				em.getTransaction().commit();
 				em.close();
+				
 			}else {
 				em.getTransaction().rollback();
 				em.close();
