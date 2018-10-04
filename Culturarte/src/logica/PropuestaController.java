@@ -469,6 +469,9 @@ public class PropuestaController implements IPropuestaController {
 			// guardo la nueva fecha de finalización
 			propuesta.setFechaFinalizacion(fechaFinalizacion);
 			em.persist(propuesta);
+			
+			Estado historico = new Estado(propuesta.getEstadoActual(), propuesta, (GregorianCalendar) GregorianCalendar.getInstance());
+			em.persist(historico);
 		}else {
 			em.getTransaction().rollback();
 			em.close();

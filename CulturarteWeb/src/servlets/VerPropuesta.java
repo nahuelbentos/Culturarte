@@ -49,11 +49,12 @@ public class VerPropuesta extends HttpServlet {
 				propuesta.getProponenteACargo().getImagen(), TipoUsuario.proponente, propuesta.getProponenteACargo().getDireccion(), propuesta.getProponenteACargo().getBiografia(), propuesta.getProponenteACargo().getSitioWeb());
 		
 		DtPropuestaWeb proWeb = new DtPropuestaWeb(propuesta.getTitulo(), proponente.getNickname(), propuesta.getImagen(),
-				propuesta.getFechaPublicacion(), propuesta.getFechaEspecatulo());
+				propuesta.getFechaPublicacion(), propuesta.getFechaEspecatulo(), propuesta.getFechaFinalizacion(), propuesta.getEstadoActual());
 		
 		request.setAttribute("propuesta", propuesta);
 		request.setAttribute("proponenteACargo", proponente);
 		request.setAttribute("propuestaWeb", proWeb);
+		request.setAttribute("mensaje", request.getAttribute("mensaje"));
 		RequestDispatcher rd;
 		rd = request.getRequestDispatcher("/Propuesta/propuesta.jsp");
 		rd.forward(request, response);

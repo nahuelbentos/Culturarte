@@ -21,7 +21,6 @@
 	}
 	%>
 	<% if (user instanceof DtProponente) {  %>
-<!-- 		<form action="../AltaPropuesta" method="post" enctype="multipart/form-data"> -->
 			<div style="padding-top: 15px">
 				<div class="container container-propuesta">
 					
@@ -44,10 +43,10 @@
 									byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 							        String base64Encoded = new String(encodeBase64, "UTF-8");
 							%>
-										<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
-											<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
-											<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
-										</div>
+									<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
+										<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
+										<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+									</div>
 							<%
 								}
 							} else {
@@ -66,9 +65,12 @@
 							DtPropuestaMinificado[] enFinanciacion = (DtPropuestaMinificado[]) request.getAttribute("propuestasEnFinanciacion");  
 							if (enFinanciacion.length > 0){
 								for (DtPropuestaMinificado dtP : enFinanciacion) {
+									byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
+							        String base64Encoded = new String(encodeBase64, "UTF-8");
 							%>
-									<div class="form-row">
-										<a href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+									<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
+										<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
+										<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
 									</div>
 							<%
 								}
@@ -85,7 +87,6 @@
 					</div>
 				</div>
 			</div>
-<!-- 		</form> -->
 	<%} else {  %>
 		<div class="form-row">
 			<div class="col-md-4 mb-3">
