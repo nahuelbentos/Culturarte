@@ -45,6 +45,7 @@
 					<li class="nav-item">
 						<% if (perfil.getTipoUsuario().equals(TipoUsuario.proponente)){ %>
 							<a class="nav-link" href="#" data-toggle="modal" data-target="#misPropuestasModal"><i class="fa fa-music" aria-hidden="true"></i> Mis Propuestas</a>
+							<a class="nav-link" href="ListarPropuestaProponenteEstado?estado=financiada" ><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuestas</a>
 						<% } else { %>
 							<a class="nav-link" href="#" data-toggle="modal" data-target="#misColaboracionesModal"><i class="fa fa-money" aria-hidden="true"></i> Mis Colaboraciones</a>
 						<% } %>
@@ -91,13 +92,13 @@
 				    </div>
 				  </div>
 				  <div class="form-group row">
-				    <label for="staticCorreo" class="col-sm-2 col-form-label">Correo Electrónico</label>
+				    <label for="staticCorreo" class="col-sm-2 col-form-label">Correo Electrnico</label>
 				    <div class="col-sm-6">
 				      <input type="text" readonly class="form-control-plaintext" id="staticCorreo" value="<%=perfil.getEmail()%>">
 				    </div>
 				  </div>
 				  <div class="form-group row">
-				    <label for="staticPassword" class="col-sm-2 col-form-label">Contraseña</label>
+				    <label for="staticPassword" class="col-sm-2 col-form-label">Contrasea</label>
 				    <div class="col-sm-6">
 				      <input type="password" readonly class="form-control-plaintext" id="staticCorreo" value="<%=perfil.getPassword()%>">
 				    </div>
