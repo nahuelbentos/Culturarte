@@ -107,11 +107,13 @@
 					</div>
 					<%
 					GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
-					if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { %>
-  						<div class="col-sm-3">
-							<a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>">Extender financiación</a>
-						</div>
+					if (user.getNickname().equals(propWeb.getProponente())){
+						if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { %>
+	  						<div class="col-sm-3">
+								<a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>">Extender financiación</a>
+							</div>
 					<%
+						}
 					}
 					%>
 				</div>
