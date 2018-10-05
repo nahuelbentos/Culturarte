@@ -47,6 +47,7 @@ import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
+import excepciones.UsuarioYaExisteFavoritaException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.Factory;
 import logica.ICategoriaController;
@@ -553,7 +554,6 @@ public class Principal {
             	DtUsuario dtUsuario = new DtUsuario(datosPropuestaFavorita[0], null, null, "", null, null, null);
             	String propuesta = datosPropuestaFavorita[1];
             	IPC.agregarFavorita(propuesta, dtUsuario);
-            	
             }
         }
 	}

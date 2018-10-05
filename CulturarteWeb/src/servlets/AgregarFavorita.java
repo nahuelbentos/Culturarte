@@ -14,6 +14,7 @@ import datatype.DtUsuario;
 import datatypeJee.msjUI.DtMensajeUI;
 import datatypeJee.msjUI.TipoMensaje;
 import excepciones.UsuarioSinLoguearseException;
+import excepciones.UsuarioYaExisteFavoritaException;
 import logica.Factory;
 import logica.IPropuestaController;
 
@@ -46,6 +47,9 @@ public class AgregarFavorita extends HttpServlet {
 		
 		try {
 			iProCont.agregarFavorita(titulo, usuarioLogueado);
+			//actualizo las favoritas del usuario logueado.
+			usuarioLogueado.addTituloFavoritas(titulo);
+			session.setAttribute("usuarioLogueado", usuarioLogueado);
 		} catch (UsuarioSinLoguearseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,6 +78,10 @@ public class AgregarFavorita extends HttpServlet {
 		
 		try {
 			iProCont.agregarFavorita(titulo, usuarioLogueado);
+			// le agrego la propuesta a las propuestas favoritas del usuario 
+			// en sesion para no leer de nuevo desde la base
+			usuarioLogueado.addTituloFavoritas(titulo);
+			session.setAttribute("usuarioLogueado", usuarioLogueado);
 		} catch (UsuarioSinLoguearseException e) {
 			e.printStackTrace();
 		}

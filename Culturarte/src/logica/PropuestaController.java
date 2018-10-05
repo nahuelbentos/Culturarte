@@ -22,6 +22,7 @@ import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
 import excepciones.UsuarioSinLoguearseException;
+import excepciones.UsuarioYaExisteFavoritaException;
 import persistencia.ConexionPostgresHibernate;
 
 public class PropuestaController implements IPropuestaController {
@@ -539,11 +540,9 @@ public class PropuestaController implements IPropuestaController {
 	}
 
 	@Override
-	public void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException{
+	public void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
 		/** Controlo que el usuario este logueado, en caso que no este logueado lanzo exception **/
 		if (usuarioLogueado != null) {
-			
-			System.out.println(usuarioLogueado.getNickname());
 			
 			cph = ConexionPostgresHibernate.getInstancia();
 			emf = cph.getEntityManager();
@@ -556,13 +555,16 @@ public class PropuestaController implements IPropuestaController {
 				System.out.println(p.getTitulo());
 				Usuario u = em.find(Usuario.class, usuarioLogueado.getNickname());
 				
-				u.addFavorita(p);
-				
-				em.merge(u);
-				
-				em.getTransaction().commit();
-				em.close();
-				
+				try {
+					u.addFavorita(p);
+					em.merge(u);
+					
+					em.getTransaction().commit();
+					em.close();
+				} catch (UsuarioYaExisteFavoritaException e) {
+					em.getTransaction().rollback();
+					em.close();
+				}
 			}else {
 				em.getTransaction().rollback();
 				em.close();

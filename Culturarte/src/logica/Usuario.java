@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import datatype.DtUsuario;
+import excepciones.UsuarioYaExisteFavoritaException;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -137,8 +138,11 @@ public abstract class Usuario {
 		usuariosQueSigue.remove(u);
 	}
 	
-	public void addFavorita(Propuesta p) {
-		this.propuestasFavoritas.add(p);
+	public void addFavorita(Propuesta p) throws UsuarioYaExisteFavoritaException{
+		if (!this.propuestasFavoritas.contains(p))
+			this.propuestasFavoritas.add(p);
+		else
+			throw new UsuarioYaExisteFavoritaException("Ya se encuentra "+p.getTitulo()+" como una propuesta favorita.");
 	}
 	
 	public abstract DtUsuario getDtUsuario();

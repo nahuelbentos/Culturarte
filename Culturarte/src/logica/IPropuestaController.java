@@ -16,6 +16,7 @@ import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
 import excepciones.UsuarioSinLoguearseException;
+import excepciones.UsuarioYaExisteFavoritaException;
 
 public interface IPropuestaController {
 

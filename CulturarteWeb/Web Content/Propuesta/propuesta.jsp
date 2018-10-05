@@ -45,8 +45,11 @@
   		<% if(tipoUsuarioLogueado == TipoUsuario.colaborador) { %>
   			<li class="list-group-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#colaboracionModal"><i class="fa fa-money" aria-hidden="true"></i> Colaborar</a></li>
   		<% } %>
+  		<% if(!user.isMemberTituloFavorita(propWeb.getTitulo())) { %>
   			<li class="list-group-item"><a href="AgregarFavorita?propuesta=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i> Agregar como favorita</a></li>
-  			
+  		<% } else {%>
+  			<li class="list-group-item"><a href="" class="nav-link"><i class="fa fa-heart" aria-hidden="true"></i> Quitar de favoritas</a></li>
+  		<% } %>
   		</ul>
   		
   		<script type="text/javascript">
