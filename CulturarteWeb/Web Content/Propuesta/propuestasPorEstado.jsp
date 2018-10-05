@@ -37,7 +37,7 @@
 			%>
 					<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
 						<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
-						<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+						<a class="titulo-propuesta" style="z-index: 2;" target="_blank" href="../VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
 					</div>
 			<%
 				}
@@ -62,7 +62,7 @@
 			%>
 					<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
 						<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
-						<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+						<a class="titulo-propuesta" style="z-index: 2;" target="_blank" href="../VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
 					</div>
 			<%
 				}
@@ -87,7 +87,7 @@
 			%>
 					<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
 						<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
-						<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+						<a class="titulo-propuesta" style="z-index: 2;" target="_blank" href="../VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
 					</div>
 			<%
 				}
@@ -112,7 +112,7 @@
 			%>
 					<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
 						<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
-						<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+						<a class="titulo-propuesta" style="z-index: 2;" target="_blank" href="../VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
 					</div>
 			<%
 				}
@@ -137,7 +137,7 @@
 			%>
 					<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
 						<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
-						<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+						<a class="titulo-propuesta" style="z-index: 2;" target="_blank" href="../VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
 					</div>
 			<%
 				}
@@ -162,7 +162,7 @@
 			%>
 					<div class="header-propuesta img-propuesta" style="margin-top: 15px;">
 						<img id="imagenProp" style="z-index: 1;" src="data:image/jpeg;base64,<%=base64Encoded%>" alt=""/>
-						<a class="titulo-propuesta" style="z-index: 2;" href="VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
+						<a class="titulo-propuesta" style="z-index: 2;" target="_blank" href="../VerPropuesta?titulo=<%=dtP.getTitulo()%>"><%=dtP.getTitulo()%></a>
 					</div>
 			<%
 				}
