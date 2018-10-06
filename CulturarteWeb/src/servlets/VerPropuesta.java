@@ -60,7 +60,7 @@ public class VerPropuesta extends HttpServlet {
 		request.setAttribute("propuesta", propuesta);
 		request.setAttribute("proponenteACargo", proponente);
 		request.setAttribute("propuestaWeb", proWeb);
-		request.setAttribute("mensaje", request.getAttribute("mensaje"));
+		//request.setAttribute("mensaje", request.getAttribute("mensaje"));
 		RequestDispatcher rd;
 		rd = request.getRequestDispatcher("/Propuesta/propuesta.jsp");
 		rd.forward(request, response);

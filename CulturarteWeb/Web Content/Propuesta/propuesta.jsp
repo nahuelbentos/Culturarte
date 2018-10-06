@@ -50,6 +50,15 @@
   		<% } else {%>
   			<li class="list-group-item"><a href="" class="nav-link"><i class="fa fa-heart" aria-hidden="true"></i> Quitar de favoritas</a></li>
   		<% } %>
+  		<%
+			GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
+			if (user.getNickname().equals(propWeb.getProponente())){
+				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { %>
+	  			<li class="list-group-item"><a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-plus" aria-hidden="true"></i> Extender financiación</a></li>
+				<%
+				}
+			}
+		%>
   		</ul>
   		
   		<script type="text/javascript">
@@ -79,6 +88,11 @@
 			</div>
 			<div class="col-lg-6">
 				<div class="form-group row">
+					<div class="col-sm-12">
+						<h6 class="card-subtitle mb-2 text-estado"><%=propuestaCompleta.getEstadoActual()%></h6>
+					</div>
+				</div>
+				<div class="form-group row">
 					<label for="staticMontoNecesario" class="col-sm-3 col-form-label">Monto necesario</label>
 					<div class="col-sm-3">
 						<input type="text" readonly class="form-control-plaintext" id="staticMontoNecesario" value="<%=propuestaCompleta.getMontoNecesario()%>">
@@ -105,17 +119,6 @@
 					<div class="col-sm-6">
 						<input type="text" readonly class="form-control-plaintext" id="staticFinaliza" value="<%=propWeb.getFechaFinalizacionAsString()%>">
 					</div>
-					<%
-					GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
-					if (user.getNickname().equals(propWeb.getProponente())){
-						if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { %>
-	  						<div class="col-sm-3">
-								<a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>">Extender financiación</a>
-							</div>
-					<%
-						}
-					}
-					%>
 				</div>
 				<div class="form-group">
 					<h6><font color="red">${mensaje}</font></h6>
@@ -216,11 +219,8 @@
 	
 	<script type="text/javascript">
 	function procesar(tipo) {
-		alert(tipo);
 		document.getElementById("boton").value = tipo;
 		var formColaboracion = document.getElementById("formularioColaboracion");
-		alert(document.getElementById("montoColaboracion").value);
-		alert("encontro el formulario? "+formColaboracion);
 		formColaboracion.submit();
 	}
 	
