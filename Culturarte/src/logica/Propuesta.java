@@ -277,8 +277,8 @@ public class Propuesta {
     	*/
     	return new DtPropuesta(titulo, descripcion, imagen, montoNecesario, fechaPublicacion,
 				fechaEspecatulo, lugar, precioEntrada, tipo, 0,
-				proponenteACargo.getDtProponente(), null, this.getDtEstadoHistorial(),
-				categoria.getDtCategoriaSimple() ,null);
+				proponenteACargo.getDtProponente(), estadoActual, this.getDtEstadoHistorial(),
+				categoria.getDtCategoriaSimple(), null);
 	}
 	
 

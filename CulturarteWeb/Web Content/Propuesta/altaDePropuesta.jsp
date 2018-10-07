@@ -23,8 +23,8 @@
 			<div class="header-propuesta img-propuesta">
 				<img id="imagenUsuario" src="" alt=""/>
 				<div class="custom-file lista-opciones" style="width: 35px;height: 35px;">
-					<input class="custom-file-input" type="file" id="imagenPropuestaArchivo" name="imagenPropuestaArchivo" onchange="readURL(this);" accept="image/jpeg, image/png">
-					<img src="${pageContext.request.contextPath}/resources/images/icon-camera.png" height="25px" width="25px">
+					<input style="position:absolute;top:-100px;" type="file" id="imagenPropuestaArchivo" name="imagenPropuestaArchivo" onchange="readURL(this);" accept="image/jpeg, image/png">
+					<button onclick="seleccionarImagen('imagenPropuestaArchivo')" data-toggle="tooltip" data-placement="bottom" title="Seleccionar imagen" class="seleccionarImg"> <i class="fa fa-camera fa-2x" aria-hidden="true" style="color:#d07325;"> </i></button>
 				</div>
 			</div>
 				

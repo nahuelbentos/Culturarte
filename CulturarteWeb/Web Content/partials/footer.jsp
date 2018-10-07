@@ -34,6 +34,13 @@ function readURL(input) {
     }
 }
 </script>
+
+<script>
+	function refPropCateg() {
+// 		$.get("../ListaPropuestasPorCategoria?categoria=" + $("#selCategoria").val());
+		$("#divPropuestasPorEstado").load("../ListaPropuestasPorCategoria?categoria=" + $("#selCategoria").val());
+	}
+</script>
   
 </body>
 </html>

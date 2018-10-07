@@ -66,3 +66,8 @@ function cambiarEstilo(idElemento){
 		button.attr('data-original-title','Agregar como favorita');
 	}
 }
+
+function seleccionarImagen(idInputFile){
+	console.log("hizo click en el boton.");
+	$('#'+idInputFile).click();
+}
