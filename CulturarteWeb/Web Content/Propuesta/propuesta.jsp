@@ -53,8 +53,18 @@
   		<%
 			GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 			if (user.getNickname().equals(propWeb.getProponente())){
-				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { %>
+				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { 
+				%>
 	  			<li class="list-group-item"><a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-plus" aria-hidden="true"></i> Extender financiación</a></li>
+				<%
+				}
+			}
+		%>
+  		<%
+			if (user.getNickname().equals(propWeb.getProponente())){
+				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.financiada)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { 
+				%>
+	  			<li class="list-group-item"><a href="CancelarPropuesta?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuesta</a></li>
 				<%
 				}
 			}
