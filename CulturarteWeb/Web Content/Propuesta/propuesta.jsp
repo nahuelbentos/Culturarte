@@ -120,9 +120,6 @@
 						<input type="text" readonly class="form-control-plaintext" id="staticFinaliza" value="<%=propWeb.getFechaFinalizacionAsString()%>">
 					</div>
 				</div>
-				<div class="form-group">
-					<h6><font color="red">${mensaje}</font></h6>
-				</div>
 			</div>
 		</div>
 		
