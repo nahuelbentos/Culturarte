@@ -41,11 +41,8 @@ public class RegistrarColaboracion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("entro en el dopost.");
 		String boton = request.getParameter("boton");
-		
 		if (boton.equals("confirmar")) {
-			//DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getAttribute("propuestaWeb");
 			DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
 			DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getSession().getAttribute("propuestaAColaborar");
 			// ya lo obtuve, lo dejo nulo.
@@ -65,18 +62,15 @@ public class RegistrarColaboracion extends HttpServlet {
 			
 			try {
 				IPC.generarColaboracion(dtColaboracion );
+				request.getSession().setAttribute("mensaje", "Se registro con exito la colaboracion");
 			} catch (ColaboradorNoExisteException | PropuestaNoExisteException
 					| ColaboracionExistenteException e) {
-//				request.getSession().setAttribute("mensaje", "Ocurrio un error");
-				//request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp").forward(request, response);
+				request.getSession().setAttribute("mensaje", "Ocurrio un error");
 			}
-			// Falta agregar un mensaje de que se registro la colaboracion
 			response.sendRedirect("/CulturarteWeb/ExplorarPropuestas");
 				
 		} else if (boton.equals("cancelar")) {
-			RequestDispatcher rd;
-			rd = request.getRequestDispatcher("/index.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("/CulturarteWeb/ExplorarPropuestas");
 		}
 	}
 }

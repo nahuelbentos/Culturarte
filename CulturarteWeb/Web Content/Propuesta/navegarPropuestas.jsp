@@ -14,6 +14,20 @@
   }else { %>
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
  <% } %>
+ 
+ 
+ <% if ("Se registro con exito la colaboraicon".equals(request.getAttribute("mensaje"))) { %>
+ 	<div class="alert alert-success" role="alert">
+		${mensaje}
+		<% session.removeAttribute("mensaje"); %>
+	</div>
+ <% } else if ("Ocurrio un error".equals(request.getAttribute("mensaje"))) { %>
+  	<div class="alert alert-danger" role="alert">
+		${mensaje}
+		<% session.removeAttribute("mensaje"); %>
+	</div>
+ <% } %>
+ 
   <section class=" container-fluid">
 	<div class="row">
 	<div class = "col-lg-9">
