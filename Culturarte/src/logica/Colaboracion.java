@@ -122,4 +122,8 @@ public class Colaboracion {
 	public DtPropuesta obtPropuesta() {
 		return new DtPropuesta(propuestaColaborada.getTitulo());
 	}
+	
+	public DtPropuesta obtenerDtPropuesta() {
+		return propuestaColaborada.getDtPropuesta();
+	}
 }
