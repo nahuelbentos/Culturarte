@@ -19,7 +19,7 @@ TipoUsuario tipoUser = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Explorar</a>
             <div class="dropdown-menu dropdown-menu-culturarte" aria-labelledby="navbarDropdownMenuLink">
-	          <a class="dropdown-item" href="ExplorarPropuestas">Propuestas</a>
+	          <a class="dropdown-item" href="ExplorarPropuestas">Propuestas por estado</a>
 	          <a class="dropdown-item" href="ExplorarUsuarios">Usuarios</a>
 	        </div>
           </li>
@@ -36,7 +36,7 @@ TipoUsuario tipoUser = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
         </form>
         <form action="ManejoSesion" method="post">
 	        <button type="submit" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Salir" name="manejoSesion" value="cerrar" id="cerrarSesion">
-	          <a href="#" class="login"><i class="fa fa-lg fa-sign-out" aria-hidden="true"></i></a>
+	          <span class="login" style="color:#f4f4f4;"><i style="color:#f4f4f4;" class="fa fa-lg fa-sign-out" aria-hidden="true"></i></span>
 	        </button>
         </form>
       </div>

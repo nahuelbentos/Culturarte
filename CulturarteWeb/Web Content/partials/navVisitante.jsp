@@ -28,12 +28,12 @@
           <input class="form-control mr-sm-2" type="search" placeholder="Titulo, descripcion, lugar" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
-        <button type="button" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Iniciar Sesion">
+        <span class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Iniciar Sesion">
           <a href="iniciarSesionForm.jsp" class="icon"><i class="fa fa-lg fa-sign-in" aria-hidden="true"></i></a>
-        </button>
-        <button type="button" class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Registrarse">
+        </span>
+        <span class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Registrarse">
           <a href="registrarseForm.jsp" class="icon"><i class="fa fa-lg fa-user" aria-hidden="true"></i></a>
-        </button>
+        </span>
       </div>
     </nav>
   </header>
