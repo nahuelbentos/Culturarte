@@ -1,9 +1,14 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="datatype.EstadoPropuesta"%>
 <%@page import="datatypeJee.DtPropuestaWeb"%>
 <%@page import="datatype.DtUsuario"%>
+<%@page import="datatype.DtPerfilUsuario"%>
+<%@page import="datatype.DtPropuestaColaborada"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
  <% 
 
+ DtPerfilUsuario perfilCompleto = (DtPerfilUsuario)request.getAttribute("perfilCompleto");
  DtPropuestaWeb[] listadoPropuestas = (DtPropuestaWeb[]) request.getAttribute("listaPropuestas");
  DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");  
  
@@ -14,6 +19,20 @@
   }else { %>
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
  <% } %>
+ 
+ 
+ <% if ("Se registro con exito la colaboraicon".equals(request.getSession().getAttribute("mensaje")) || "Se registro con exito el comentario".equals(request.getSession().getAttribute("mensaje"))) { %>
+ 	<div class="alert alert-success" role="alert">
+		${mensaje}
+		<% session.removeAttribute("mensaje"); %>
+	</div>
+ <% } else if ("Ocurrio un error".equals(request.getSession().getAttribute("mensaje"))) { %>
+  	<div class="alert alert-danger" role="alert">
+		${mensaje}
+		<% session.removeAttribute("mensaje"); %>
+	</div>
+ <% } %>
+ 
   <section class=" container-fluid">
 	<h3>Propuestas</h3>
 	<span id="mensaje" style="display: none;" class="alert alert-primary alert-flotante"></span>
@@ -62,13 +81,22 @@
 
 <%-- 					<td><a href="AgregarFavorita?propuesta=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar como favorita"> <i class="fa fa-heart-o fa-2x" aria-hidden="true"></i></a></td> --%>
 				<% } %>
+				
+				<%
+					if (perfilCompleto != null) {
+					ArrayList<DtPropuestaColaborada> listadoPropuestasColaboradas = perfilCompleto.getPropuestasColaboradas();
+						if (listadoPropuestasColaboradas != null) {
+							for (DtPropuestaColaborada dtPropuestaColaborada : listadoPropuestasColaboradas) {
+								if (EstadoPropuesta.financiada.equals(itemP.getEstadoPropuesta()) && itemP.getTitulo().equals(dtPropuestaColaborada.getTitulo())) {
+								%>
+									<td><a href="ComentarPropuesta?titulo=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar Comentario"><i class="btn btn-info" aria-hidden="true" >Agregar Comentario</i></a></td>
+								<% } %>
+							<% } %>
+						<% } %>
+					<% } %>
+				<% } %>
 			</tr>
-			<%
-				i += 1; 
-			}
-			%>
 		</tbody>
 	</table>
   </section>
-
 <jsp:include page="../partials/footer.jsp" />

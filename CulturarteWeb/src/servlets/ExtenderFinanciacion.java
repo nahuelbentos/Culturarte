@@ -2,13 +2,14 @@ package servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import datatypeJee.msjUI.DtMensajeUI;
+import datatypeJee.msjUI.TipoMensaje;
 import excepciones.PropuestaNoExisteException;
 import logica.Factory;
 import logica.IPropuestaController;
@@ -22,17 +23,18 @@ public class ExtenderFinanciacion extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String titulo = request.getParameter("titulo");
 		Factory fab = Factory.getInstance();
 		IPropuestaController IPC = fab.getIPropuestaController();
 		
 		try {
 			IPC.extenderFinanciacion(titulo);
-			request.setAttribute("mensaje", "Se extendió la financiacion por 30 días mas.");
+			DtMensajeUI msg = new DtMensajeUI("Se extendió la financiacion por 30 días mas.", TipoMensaje.informacion);
+			request.setAttribute("mensaje", msg);
 		} catch (PropuestaNoExisteException e) {
 			e.printStackTrace();
-			request.setAttribute("mensaje", e);
+			DtMensajeUI msg = new DtMensajeUI(e.getMessage(), TipoMensaje.error);
+			request.setAttribute("mensaje", msg);
 		}
 		request.getRequestDispatcher("VerPropuesta?titulo="+titulo).forward(request, response);
 	}

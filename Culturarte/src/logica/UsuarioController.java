@@ -443,10 +443,11 @@ public class UsuarioController implements IUsuarioController {
 				em.getTransaction().begin();
 				
 				DtPropuesta[] dtp = null;
+				Usuario usuario = em.find(Usuario.class, usuarioLogueado.getNickname());
 				
 				@SuppressWarnings("unchecked")
 				List<Colaboracion> colaboraciones = em.createQuery("SELECT c FROM Colaboracion c, Propuesta p WHERE c.propuestaColaborada=p.titulo AND c.colaborador = :colaborador AND p.estadoActual = :estado AND c.comentario IS NULL")
-						.setParameter("colaborador", usuarioLogueado)
+						.setParameter("colaborador", usuario)
 						.setParameter("estado", EstadoPropuesta.financiada)
 						.getResultList();
 				em.close();
@@ -454,7 +455,7 @@ public class UsuarioController implements IUsuarioController {
 					dtp = new DtPropuesta[colaboraciones.size()];
 					int i = 0;
 					for (Colaboracion colaboracion : colaboraciones) {
-						DtPropuesta itemDtp = colaboracion.obtPropuesta();
+						DtPropuesta itemDtp = colaboracion.obtenerDtPropuesta();
 						dtp[i] = itemDtp;
 						
 						i++;

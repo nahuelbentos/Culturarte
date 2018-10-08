@@ -23,6 +23,9 @@ TipoUsuario tipoUser = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
 	          <a class="dropdown-item" href="ExplorarUsuarios">Usuarios</a>
 	        </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="ComentarPropuesta"> Agregar comentario a Propuesta</a>
+          </li>
           <%if (tipoUser == TipoUsuario.proponente) {%>
           	<li><a class="nav-link" href="Propuesta/altaDePropuesta.jsp">Tengo una propuesta</a>
           <% } %>
