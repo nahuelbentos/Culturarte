@@ -21,6 +21,14 @@
   
   DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
   String claseUIMsj;
+
+  System.out.println("user: " + user + "\n");
+
+  System.out.println("tipoUsuarioLogueado: " + tipoUsuarioLogueado + "\n");
+  System.out.println("propWeb: " + propWeb + "\n");
+  System.out.println("proponenteACargo: " + proponenteACargo + "\n");
+  System.out.println("propuestaCompleta: " + propuestaCompleta + "\n");
+  System.out.println("mensaje: " + mensaje + "\n");	
   if (user == null) { %>
   <jsp:include page="../partials/navVisitante.jsp"></jsp:include>
  <% }else { %>
@@ -62,9 +70,9 @@
 		%>
   		<%
 			if (user.getNickname().equals(propWeb.getProponente())){
-				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.financiada)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { 
+				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.financiada)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) {
 				%>
-	  			<li class="list-group-item"><a href="CancelarPropuesta?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuesta</a></li>
+	  			<li class="list-group-item"><a href="CancelarPropuesta?titulo=<%=propWeb.getTitulo()%>&pantalla=propuesta" class="nav-link"><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuesta</a></li>
 				<%
 				}
 			}

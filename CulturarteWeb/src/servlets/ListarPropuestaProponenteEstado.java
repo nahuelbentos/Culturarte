@@ -14,6 +14,7 @@ import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import datatypeJee.DtPropuestaWeb;
+import datatypeJee.msjUI.DtMensajeUI;
 import excepciones.PropuestaNoExisteException;
 import logica.Factory;
 import logica.IPropuestaController;
@@ -40,7 +41,7 @@ public class ListarPropuestaProponenteEstado extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		EstadoPropuesta estado = EstadoPropuesta.valueOf(request.getParameter("estado"));
-		String mensaje = request.getParameter("mensaje");
+		DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
 
     	request.setAttribute("mensaje", mensaje);
     	

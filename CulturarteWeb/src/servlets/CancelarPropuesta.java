@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import datatypeJee.msjUI.DtMensajeUI;
+import datatypeJee.msjUI.TipoMensaje;
 import excepciones.PropuestaNoExisteException;
 import logica.Factory;
 import logica.IPropuestaController;
@@ -34,6 +36,7 @@ public class CancelarPropuesta extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String titulo = request.getParameter("titulo");
+		String pantalla = request.getParameter("pantalla");
 		
 		Factory factory = Factory.getInstance();
 		IPropuestaController iPropCont = factory.getIPropuestaController();
@@ -43,11 +46,14 @@ public class CancelarPropuesta extends HttpServlet {
 			//esto luego vemos como llamarlo desde algun ajax para no consumir tanto recurso, de momento llamo a todo junto.
 //			HttpSession session = request.getSession();
 			iPropCont.cancelarPropuesta(titulo);
-			
-			
-			request.setAttribute("mensaje", "Se cancelo correctamente la propuesta: " + titulo);
+			System.out.println("pantalla: " + pantalla + "\n");
+			DtMensajeUI msg = new DtMensajeUI("Se cancelo correctamente la propuesta: " + titulo, TipoMensaje.informacion);
+			request.setAttribute("mensaje", msg);
 			RequestDispatcher rd;
-			rd = request.getRequestDispatcher("ListarPropuestaProponenteEstado?estado=financiada");
+			if(pantalla.equals("propuesta"))
+				rd = request.getRequestDispatcher("VerPropuesta?titulo="+titulo);
+			else
+				rd = request.getRequestDispatcher("ListarPropuestaProponenteEstado?estado=financiada");
 			rd.forward(request, response);
 		} catch (PropuestaNoExisteException e) {
 			// TODO Auto-generated catch block

@@ -43,7 +43,8 @@
 				if (user != null && perfil.getNickname().equals(user.getNickname())){ // entonces esta logueado
 					%>
 					<li class="nav-item">
-						<% if (perfil.getTipoUsuario().equals(TipoUsuario.proponente)){ %>
+						<% if (perfil.getTipoUsuario().equals(TipoUsuario.proponente)){
+							%>
 							<a class="nav-link" href="#" data-toggle="modal" data-target="#misPropuestasModal"><i class="fa fa-music" aria-hidden="true"></i> Mis Propuestas</a>
 							<a class="nav-link" href="ListarPropuestaProponenteEstado?estado=financiada" ><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuestas</a>
 						<% } else { %>
