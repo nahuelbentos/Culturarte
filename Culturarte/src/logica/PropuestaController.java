@@ -425,7 +425,7 @@ public class PropuestaController implements IPropuestaController {
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
+//		System.out.println("PropuestaController.  \n nicknameProponente: " + nicknameProponente + " \n estado: " + estado);
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
