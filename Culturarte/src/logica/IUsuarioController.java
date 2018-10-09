@@ -48,4 +48,6 @@ public interface IUsuarioController {
 
 
 	public abstract void borrarUsuarios();
+	
+	public abstract void borrarUsuariosTests();
 }

@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="src/libs/postgresql-42.2.4.jar"/>
 	<classpathentry kind="lib" path="src/libs/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="src/libs/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
