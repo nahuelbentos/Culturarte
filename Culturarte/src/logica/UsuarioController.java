@@ -553,6 +553,20 @@ public class UsuarioController implements IUsuarioController {
 		em.close();
 	}
 	
+	@Override
+	public void borrarUsuariosTests() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.createQuery("delete from UsuarioSigue WHERE usuarioUno LIKE 'test%'").executeUpdate();
+		em.createQuery("delete from UsuarioSigue WHERE usuarioDos LIKE 'test%'").executeUpdate();
+		em.createQuery("delete from Colaboracion WHERE colaborador LIKE 'test%'").executeUpdate();
+		em.createQuery("delete from Usuario WHERE nickname LIKE 'test%'").executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
+	
 	public DtPerfilUsuario obtenerPerfilUsuario(String nickname, DtUsuario usuarioLogueado) {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
