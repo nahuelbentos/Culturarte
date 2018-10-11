@@ -223,28 +223,16 @@ public class UsuarioController implements IUsuarioController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		Usuario usuario = em.find(Usuario.class, nickname);
-		
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue "
-				+ "WHERE usuario_uno_id = :usuarioUno").setParameter("usuarioUno", usuario).getResultList();
+		List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
 		if (usuarios != null) {
 	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.size()];
 	        Usuario usuarioDos;
 	        for (int i = 0; i < usuarios.size(); i++) {
 	        	usuarioDos = usuarios.get(i);
-	        	if (usuarioDos instanceof Colaborador) {
-					Colaborador usuarioAAgregar = (Colaborador) usuarioDos;
-					listaDeUsuarios[i] = new DtColaborador(usuarioAAgregar.getNickname(), usuarioAAgregar.getNombre(),
-							usuarioAAgregar.getApellido(), usuarioAAgregar.getCorreoElectronico(), usuarioAAgregar.getPassword(), 
-		        			usuarioAAgregar.getFechaNacimiento(), usuarioAAgregar.getImagen());
-	        	} else if (usuarioDos instanceof Proponente) {
-	        		Proponente usuarioAAgregar = (Proponente) usuarioDos;
-					listaDeUsuarios[i] = new DtProponente(usuarioAAgregar.getNickname(), usuarioAAgregar.getNombre(),
-							usuarioAAgregar.getApellido(), usuarioAAgregar.getCorreoElectronico(), usuarioAAgregar.getPassword(), 
-							usuarioAAgregar.getFechaNacimiento(), usuarioAAgregar.getImagen(), usuarioAAgregar.getDireccion(), 
-		        			usuarioAAgregar.getBiografia(), usuarioAAgregar.getLinkWeb());
-				}
+	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
+	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getPassword(), 
+	        			usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
 	        }
 	        return listaDeUsuarios;
 		}
