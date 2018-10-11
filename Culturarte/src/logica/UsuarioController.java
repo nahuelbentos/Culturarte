@@ -675,5 +675,47 @@ public class UsuarioController implements IUsuarioController {
 		return perfil;
 	}
 
+	@Override
+	public DtColaborador[] getMasColaboradores() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+
+		@SuppressWarnings("unchecked")
+        List<Colaborador> colaboradores = em.createQuery("SELECT u FROM Colaboracion c1, Usuario u "
+        		+ "WHERE c1.colaborador = u.nickname "
+        		+ "GROUP BY u "
+        		+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
+        em.close();
+        
+        DtColaborador[] dtcol = new DtColaborador[3];
+        for (int i = 0; i < dtcol.length; i++) {
+			dtcol[i] = colaboradores.get(i).getDtColaborador();
+		}
+        
+        return dtcol;
+	}
+
+	@Override
+	public DtProponente[] getMasProponedores() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+
+		@SuppressWarnings("unchecked")
+		List<Proponente> proponentes = em.createQuery("SELECT u FROM Propuesta p, Usuario u "
+				+ "WHERE p.proponenteACargo = u.nickname "
+				+ "GROUP BY u "
+				+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
+        em.close();
+        
+        DtProponente[] dtcol = new DtProponente[3];
+        for (int i = 0; i < dtcol.length; i++) {
+			dtcol[i] = proponentes.get(i).getDtProponente();
+		}
+        
+        return dtcol;
+	}
+
 	
 }

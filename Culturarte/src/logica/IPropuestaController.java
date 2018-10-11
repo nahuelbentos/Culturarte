@@ -16,7 +16,6 @@ import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
 import excepciones.UsuarioSinLoguearseException;
-import excepciones.UsuarioYaExisteFavoritaException;
 
 public interface IPropuestaController {
 
@@ -68,6 +67,9 @@ public interface IPropuestaController {
 	public abstract void borrarEstadosPropuestas(); // Para la carga de datos.
 	
 	public abstract ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat);
+	
+	//funciones para el inicio de la aplicacion web
+	public abstract DtPropuesta[] getPropuestasPopulares();
 	
 }
 

@@ -47,4 +47,8 @@ public interface IUsuarioController {
 	public abstract DtPerfilUsuario obtenerPerfilUsuario(String nickname, DtUsuario usuarioLogueado);
 
 	public abstract void borrarUsuarios();
+	
+	public abstract DtColaborador[] getMasColaboradores();
+	
+	public abstract DtProponente[] getMasProponedores();
 }

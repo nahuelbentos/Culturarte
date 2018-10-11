@@ -617,6 +617,7 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
         @SuppressWarnings("unchecked")
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+        
         em.close();
 
 		ArrayList<DtPropuesta> dtps = new ArrayList<DtPropuesta>();
@@ -636,6 +637,31 @@ public class PropuestaController implements IPropuestaController {
 		em.createQuery("delete from Estado").executeUpdate();
 		em.getTransaction().commit();
 		em.close();
+	}
+
+	@Override
+	public DtPropuesta[] getPropuestasPopulares() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		
+		//select p from Person p join p.categories c where c.categoryId = :categoryId
+		@SuppressWarnings("unchecked")
+		List<Propuesta> populares = em.createQuery("SELECT p FROM Usuario u "
+				+ "JOIN u.propuestasFavoritas p "
+				+ "GROUP BY p "
+				+ "ORDER BY count(p) DESC").setMaxResults(5).getResultList();
+		
+		em.close();
+		
+		DtPropuesta[] dtpop = new DtPropuesta[populares.size()]; 
+		
+		for (int i = 0; i < dtpop.length; i++) {
+			dtpop[i] = populares.get(i).getDtPropuesta();		
+		}
+		
+		return dtpop;
 	}
 	
 }
