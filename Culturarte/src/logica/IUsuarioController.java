@@ -3,6 +3,7 @@ package logica;
 import datatype.*;
 import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
+import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
@@ -27,7 +28,7 @@ public interface IUsuarioController {
 
 	public abstract DtUsuario[] listarUsuariosQueSigue(String nickname);
 
-	public abstract DtUsuario[] listarProponentes();
+	public abstract DtUsuario[] listarProponentes() throws ProponenteNoExisteException;
 
 	public abstract DtPerfilProponente verPerfilProponente(String nickname);
 
@@ -40,14 +41,10 @@ public interface IUsuarioController {
 	public abstract DtPropuesta[] listarPropuestasDeUnColaborador(String nickname);
 	
 	public abstract DtPropuesta[] listarPropuestasColaborador(DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException;
-	
 
 	public abstract void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException;
-//	public abstract void agregarComentarioAPropuesta(String comentario, String titulo) throws UsuarioSinLoguearseException;
+	
 	public abstract DtPerfilUsuario obtenerPerfilUsuario(String nickname, DtUsuario usuarioLogueado);
 
-
 	public abstract void borrarUsuarios();
-	
-	public abstract void borrarUsuariosTests();
 }

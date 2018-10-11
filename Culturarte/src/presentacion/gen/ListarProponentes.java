@@ -3,10 +3,13 @@ package presentacion.gen;
 import javax.swing.JPanel;
 
 import datatype.DtUsuario;
+import excepciones.ColaboradorNoExisteException;
+import excepciones.ProponenteNoExisteException;
 import logica.IUsuarioController;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -46,19 +49,15 @@ public class ListarProponentes extends JPanel {
 	}
 	
 	public void setListaDeProponentes() {
-		System.out.println("Entro en setListaDeProponentes \n");
 		modelNicknames.removeAllElements();
-        DtUsuario[] proponentes = iUsuController.listarProponentes();
-        if (proponentes != null) {
-            for (int i = 0; i < proponentes.length; i++) {
-            	modelNicknames.addElement(proponentes[i].getNickname());
-            	
-//        		System.out.println("Proponente [" +i+ "]: " +  proponentes[i].getNickname() + " \n");
-            }
-        } else {
-        	modelNicknames.addElement("No hay proponentes registrados en el sistema");
+		try {
+			DtUsuario[] proponentes = iUsuController.listarProponentes();
+	        for (int i = 0; i < proponentes.length; i++) {
+	        	modelNicknames.addElement(proponentes[i].getNickname());
+	        }
+        } catch (ProponenteNoExisteException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(),"Lista Proponente", JOptionPane.ERROR_MESSAGE);
         }
-//		System.out.println("Termino setListaDeProponentes \n");
 	}
 	
 	public String getColaboradorSeleccionado() {

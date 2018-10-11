@@ -352,12 +352,12 @@ public class ModificarPropuesta extends JInternalFrame {
 	
 	public void setListaDeProponentes() {
 		entProponente.removeAllItems();
-        DtUsuario[] proponentes = iUsuarioController.listarProponentes();
-        if (proponentes != null) {
+		try {
+			DtUsuario[] proponentes = iUsuarioController.listarProponentes();
             for (int i = 0; i < proponentes.length; i++) {
             	entProponente.addItem(proponentes[i].getNickname());
             }
-        } else {
+		} catch (ProponenteNoExisteException e) {
         	entProponente.addItem("No hay proponentes registrados en el sistema");
         }
 	}
