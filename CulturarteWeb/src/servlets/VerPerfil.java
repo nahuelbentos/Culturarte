@@ -47,8 +47,8 @@ public class VerPerfil extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		DtUsuario user = (DtUsuario) session.getAttribute("usuarioLogueado");
-		 
-		String nickname = user.getNickname();
+		if(user != null) 
+			String nickname = user.getNickname();
 		
 		Factory factory = Factory.getInstance();
 		IUsuarioController iUsuCont = factory.getIUsuarioController();

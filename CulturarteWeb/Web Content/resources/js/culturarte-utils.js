@@ -3,7 +3,10 @@
  *  */
 $(function () {
 	$('[data-toggle="tooltip"]').tooltip();
+	$('.carousel').carousel();
 });
+
+
 
 /** FUNCIONES GENERALES PARA CONSUMIR AJAX **/
 //declao variables globales para

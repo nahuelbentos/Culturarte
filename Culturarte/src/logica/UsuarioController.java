@@ -571,7 +571,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 
 		Usuario u = em.find(Usuario.class, nickname);
         @SuppressWarnings("unchecked")

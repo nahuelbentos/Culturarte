@@ -645,8 +645,6 @@ public class PropuestaController implements IPropuestaController {
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		
-		
-		//select p from Person p join p.categories c where c.categoryId = :categoryId
 		@SuppressWarnings("unchecked")
 		List<Propuesta> populares = em.createQuery("SELECT p FROM Usuario u "
 				+ "JOIN u.propuestasFavoritas p "
