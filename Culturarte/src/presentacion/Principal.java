@@ -111,7 +111,7 @@ public class Principal {
         IUC = factory.getIUsuarioController();
         ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
-        
+        IUC.getMasColaboradores();
         altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 

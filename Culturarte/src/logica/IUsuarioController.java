@@ -50,4 +50,8 @@ public interface IUsuarioController {
 	public abstract void borrarUsuarios();
 	
 	public abstract void borrarUsuariosTests();
+	
+	public abstract DtColaborador[] getMasColaboradores();
+	
+	public abstract DtProponente[] getMasProponedores();
 }
