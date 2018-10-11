@@ -95,7 +95,7 @@ public class AltaPerfil extends HttpServlet {
 						session.setAttribute("usuarioLogueado", dtUsuario);
 						
 						RequestDispatcher rd;
-						rd = request.getRequestDispatcher("/estaLogueado.jsp");
+						rd = request.getRequestDispatcher("/index.jsp");
 						rd.forward(request, response);
 					} catch (UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException e) {
 						request.setAttribute("mensaje", "Ya existe el nickname o el email");
