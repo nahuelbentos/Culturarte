@@ -448,7 +448,6 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasColaborador(DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
-		
 		if (usuarioLogueado != null) {
 			/** Obtengo las colaboraciones del colaborador "usuarioLogueado" que no haya comentado y esten financiadas **/
 			if (usuarioLogueado instanceof DtColaborador) {
@@ -478,9 +477,6 @@ public class UsuarioController implements IUsuarioController {
 					}
 				}
 				return dtp;
-				
-				
-				
 			}else{
 				throw new UsuarioSinLoguearseException("Debes ser colaborador para ver tus colaboraciones.");
 			}
@@ -490,8 +486,7 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException{
-		
+	public void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
 		if (usuarioLogueado != null) {
 			// obtengo las colaboraciones del usuario logueado
 			if (usuarioLogueado instanceof DtColaborador) {
@@ -523,7 +518,6 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario iniciarSesion(String datoSesion, char[] password) throws UsuarioNoExisteElUsuarioException {
-		
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();

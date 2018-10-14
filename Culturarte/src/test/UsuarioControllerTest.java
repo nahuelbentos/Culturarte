@@ -14,6 +14,7 @@ import datatype.DtUsuario;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
+import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
@@ -259,6 +260,52 @@ public class UsuarioControllerTest {
         IUC.agregarUsuario(dtNuevoUsuario);
         DtUsuario dtUsuario = IUC.iniciarSesion("testCorreoUno", "testPassword".toCharArray());
         assertEquals(dtNuevoUsuario.getNickname(), dtUsuario.getNickname());
+	}
+	
+	@Test(expected = Test.None.class)
+	public void verPerfilUsuario() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, UsuarioNoExisteElUsuarioException {
+		DtUsuario dtNuevoUsuario = new DtProponente("testNickname", "testNombre", "testApellido", 
+				"testCorreo", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+        Factory factory = Factory.getInstance();
+        IUsuarioController IUC = factory.getIUsuarioController();
+        IUC.agregarUsuario(dtNuevoUsuario);
+        IUC.verPerfilUsuario(dtNuevoUsuario.getNickname());
+	}
+	
+	@Test(expected = UsuarioNoExisteElUsuarioException.class)
+	public void verPerfilUsuarioNoExisteElUsuario() throws UsuarioNoExisteElUsuarioException {
+        Factory factory = Factory.getInstance();
+        IUsuarioController IUC = factory.getIUsuarioController();
+        IUC.verPerfilUsuario("testUsuarioNoExiste");
+	}
+	
+	@Test(expected = UsuarioSinLoguearseException.class)
+	public void listarPropuestasColaboradorSinLoguearse() throws UsuarioNoExisteElUsuarioException, UsuarioSinLoguearseException {
+        Factory factory = Factory.getInstance();
+        IUsuarioController IUC = factory.getIUsuarioController();
+        IUC.listarPropuestasColaborador(null);
+	}
+	
+	@Test(expected = UsuarioSinLoguearseException.class)
+	public void listarPropuestasColaboradorPasandoleUnProponente() throws UsuarioNoExisteElUsuarioException, UsuarioSinLoguearseException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
+        Factory factory = Factory.getInstance();
+        IUsuarioController IUC = factory.getIUsuarioController();
+		DtUsuario dtNuevoUsuario = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
+				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+		IUC.agregarUsuario(dtNuevoUsuario);
+        IUC.listarPropuestasColaborador(dtNuevoUsuario);
+	}
+	
+	@Test(expected = Test.None.class)
+	public void listarPropuestasColaboradorCorrectamente() throws UsuarioNoExisteElUsuarioException, UsuarioSinLoguearseException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
+        Factory factory = Factory.getInstance();
+        IUsuarioController IUC = factory.getIUsuarioController();
+        DtUsuario dtNuevoUsuario = new DtColaborador("testNickname", "testNombre", "testApellido", 
+				"testCorreoUno", "testPassword".toCharArray(), new GregorianCalendar(), null);
+        IUC.agregarUsuario(dtNuevoUsuario);
+        IUC.listarPropuestasColaborador(dtNuevoUsuario);
 	}
 	
 	@Before
