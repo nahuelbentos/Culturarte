@@ -53,6 +53,50 @@ function gestionarFavoritas(idElemento, tituloPropuesta){
     }
 }
 
+function seguirUsuario(nickname){
+	console.log("arranca peticion");
+	
+	// instanciar ajax
+	peticionHTTP = inicializarXHR();
+	var bloqueMsj = document.getElementById("mensaje");
+    if (peticionHTTP) {
+        peticionHTTP.open("GET",'SeguirUsuario?nickname='+nickname,true);
+        peticionHTTP.send(null);
+        // controlar estados
+        peticionHTTP.onreadystatechange = function() {
+            if (peticionHTTP.readyState==READY_STATE_COMPLETE) {
+                if (peticionHTTP.status==STATUS_OK) {
+                	cambiarEstiloStar(nickname);
+//                	console.log("Termio peticion");
+                	bloqueMsj.innerHTML = peticionHTTP.responseText;
+//                	alert(peticionHTTP.responseText);
+                	bloqueMsj.style.display = "inline";
+                }
+            }
+        }
+    }
+}
+
+function dejarSeguirUsuario(nickname){
+	// instanciar ajax
+	peticionHTTP = inicializarXHR();
+	var bloqueMsj = document.getElementById("mensaje");
+    if (peticionHTTP) {
+        peticionHTTP.open("GET",'DejarSeguirUsuario?nickname='+nickname,true);
+        peticionHTTP.send(null);
+        // controlar estados
+        peticionHTTP.onreadystatechange = function() {
+            if (peticionHTTP.readyState==READY_STATE_COMPLETE) {
+                if (peticionHTTP.status==STATUS_OK) {
+                	cambiarEstiloStar(nickname);
+//                	console.log("Termio peticion");
+                	bloqueMsj.innerHTML = peticionHTTP.responseText;
+                }
+            }
+        }
+    }
+}
+
 function cambiarEstilo(idElemento){
 	var icono = $('#'+idElemento);
 	var button = icono.parent('button');
@@ -64,6 +108,20 @@ function cambiarEstilo(idElemento){
 	} else{
 		icono.removeClass('fa-heart').addClass('fa-heart-o');
 		button.attr('data-original-title','Agregar como favorita');
+	}
+}
+
+function cambiarEstiloStar(nickname){
+	var icono = $('#'+nickname);
+	var button = icono.parent('button');
+	var esFavorita = icono.hasClass('fa-star');
+	if (!esFavorita){
+		icono.removeClass('fa-star-o').addClass('fa-star');
+		console.log(button.attr('data-original-title'));
+		button.attr('data-original-title','Dejar de seguir');
+	} else{
+		icono.removeClass('fa-star').addClass('fa-star-o');
+		button.attr('data-original-title','Seguir usuario');
 	}
 }
 

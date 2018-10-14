@@ -15,6 +15,7 @@ public class DtUsuario {
 	private byte[] imagen;
 	
 	private List<String> tituloFavoritas;
+	private List<String> usuarioSeguidos;
 	
 	public DtUsuario(String nickname, String nombre, String apellido, String email, char[] password, 
 			GregorianCalendar fechaNacimiento, byte[] imagen) {
@@ -27,6 +28,7 @@ public class DtUsuario {
 		this.fechaNacimiento = fechaNacimiento;
 		this.imagen = imagen;
 		this.tituloFavoritas = new ArrayList<String>();
+		this.usuarioSeguidos = new ArrayList<String>();
 	}
 	public DtUsuario() {
 		super();		
@@ -73,5 +75,21 @@ public class DtUsuario {
 	public boolean isMemberTituloFavorita(String tituloFavorita) {
 		return this.tituloFavoritas.contains(tituloFavorita);
 	}
+	public List<String> getUsuarioSeguidos() {
+		return usuarioSeguidos;
+	}
+	public void setUsuarioSeguidos(List<String> usuarioSeguidos) {
+		this.usuarioSeguidos = usuarioSeguidos;
+	}
 	
+	public void addUsuarioSeguido(String usuarioASeguir) {
+		this.usuarioSeguidos.add(usuarioASeguir);
+	}
+	public void removeUsuarioSeguido(String usuarioASeguir) {
+		this.usuarioSeguidos.remove(usuarioASeguir);
+	}
+	
+	public boolean isMemberUsuarioSeguidos(String usuarioASeguir) {
+		return this.usuarioSeguidos.contains(usuarioASeguir);
+	}
 }

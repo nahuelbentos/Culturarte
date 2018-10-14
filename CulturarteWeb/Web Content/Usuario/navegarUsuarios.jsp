@@ -1,3 +1,4 @@
+
 <%@page import="datatypeJee.DtProponenteWeb"%>
 <%@page import="datatypeJee.DtColaboradorWeb"%>
 <%@page import="java.util.ArrayList"%>
@@ -11,9 +12,7 @@
  ArrayList<DtColaboradorWeb> listaColraboradores = (ArrayList<DtColaboradorWeb>) request.getAttribute("listaColaboradores");
  ArrayList<DtProponenteWeb> listaProponentes = (ArrayList<DtProponenteWeb>) request.getAttribute("listaProponentes");
 
- 
  DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");  
- 
  if (user == null) { 
  
  %>
@@ -23,6 +22,9 @@
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
  <% } %>
   <section class=" container-fluid">
+	 
+	<span id="mensaje" style="display: none;" class="alert alert-primary alert-flotante"></span>
+	
 	<h3>Colaboradores</h3>
 	
 	<table class="table table-striped">
@@ -32,7 +34,8 @@
 				<th scope="col"></th>
 				<th scope="col">NickName</th>
 				<th scope="col">Nombre</th>
-				<th scope="col">Nombre</th>
+				<th scope="col"></th>
+				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -50,8 +53,35 @@
 					</div>
 				</td>
 				<td><%=dtu.getNickname()%></td>
-				<td><%=dtu.getNombre()%></td>
-				<td><a href="VerPerfil?nickname=<%=dtu.getNickname()%>"> Ver Perfil</a></td>
+				<td><%=dtu.getNombre()%></td> 
+				<%
+				if(!user.getNickname().equals(dtu.getNickname())){
+
+						if (!user.isMemberUsuarioSeguidos(dtu.getNickname())) {
+						%>
+							
+							<td>
+								<button class="seguido" onclick="seguirUsuario('<%=dtu.getNickname()%>')" data-toggle="tooltip" data-placement="bottom" title="Seguir Usuario"> 
+									<i id="<%=dtu.getNickname()%>" class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+								</button>
+							</td> 
+						<% } else{ %>
+							
+							<td>
+								<button class="seguido" onclick="dejarSeguirUsuario('<%=dtu.getNickname()%>')" data-toggle="tooltip" data-placement="bottom" title="Dejar de Seguir Usuario"> 
+									<i id="<%=dtu.getNickname()%>" class="fa fa-star fa-2x" aria-hidden="true"></i>
+								</button>
+							</td> 
+						<%
+						}
+						%>
+							
+						
+					<%
+					}
+				%>
+				<td><a href="VerPerfil?nickname=<%=dtu.getNickname()%>"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></td> 
+				
 			</tr>
 			<%
 					i += 1; 
@@ -70,6 +100,7 @@
 				<th scope="col">NickName</th>
 				<th scope="col">Nombre</th>
 				<th scope="col"></th>
+				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -87,8 +118,38 @@
 					</div>
 				</td>
 				<td><%=dtu.getNickname()%></td>
-				<td><%=dtu.getNombre()%></td>
-				<td><a href="VerPerfil?nickname=<%=dtu.getNickname()%>"> Ver Perfil</a></td>
+				<td><%=dtu.getNombre()%></td> 
+				<%
+				if(!user.getNickname().equals(dtu.getNickname())){
+					for (String seg : user.getUsuarioSeguidos()){
+						System.out.println("Sigo a: "+seg);
+					}
+					if (!user.isMemberUsuarioSeguidos(dtu.getNickname())) {
+						%>
+							
+							<td>
+								<button class="seguido" onclick="seguirUsuario('<%=dtu.getNickname()%>')" data-toggle="tooltip" data-placement="bottom" title="Seguir Usuario"> 
+									<i id="<%=dtu.getNickname()%>" class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+								</button>
+							</td> 
+						<% } else{ %>
+							
+							<td>
+								<button class="seguido" onclick="dejarSeguirUsuario('<%=dtu.getNickname()%>')" data-toggle="tooltip" data-placement="bottom" title="Dejar de Seguir Usuario"> 
+									<i id="<%=dtu.getNickname()%>" class="fa fa-star fa-2x" aria-hidden="true"></i>
+								</button>
+							</td> 
+						<%
+						}
+						%>
+				<%
+				}else{
+					%>
+					<td></td>	
+					<%
+				}
+				%>
+				<td><a href="VerPerfil?nickname=<%=dtu.getNickname()%>"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></td> 
 			</tr>
 			<%
 					j += 1; 

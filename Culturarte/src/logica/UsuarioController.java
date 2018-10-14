@@ -511,7 +511,7 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
+		//em.getTransaction().begin();
 		
 		Usuario u = null;
 		
@@ -523,6 +523,14 @@ public class UsuarioController implements IUsuarioController {
 				DtUsuario dtu = u.getDtUsuario();
 				for (Propuesta p : u.getPropuestasFavoritas()) {
 					dtu.addTituloFavoritas(p.getTitulo());
+				}
+		        @SuppressWarnings("unchecked")
+		        List<Usuario> seguidos = em.createQuery("select u.usuarioDos FROM UsuarioSigue u WHERE u.usuarioUno = :nickname")
+		        		.setParameter("nickname", u)
+		        		.getResultList();
+				for (Usuario s : seguidos) {
+					System.out.println("Usuario seguido(UsuarioUno): " + s.getNickname() + " \n");
+					dtu.addUsuarioSeguido(s.getNickname());
 				}
 				return dtu;
 			}

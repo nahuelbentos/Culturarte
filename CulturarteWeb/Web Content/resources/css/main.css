@@ -133,6 +133,11 @@ button.favorito{
 	background: none;
 	color: #c3373d;
 }
+button.seguido{
+	border: none;
+	background: none;
+	color: #cc712e;
+}
 button.seleccionarImg{
 	border: none;
 	background: none;

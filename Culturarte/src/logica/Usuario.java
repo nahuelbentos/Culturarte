@@ -150,5 +150,10 @@ public abstract class Usuario {
 	public List<Propuesta> getPropuestasFavoritas() {
 		return propuestasFavoritas;
 	}
+
+	public List<UsuarioSigue> getUsuariosQueSigue() {
+		return usuariosQueSigue;
+	}
+
 	
 }

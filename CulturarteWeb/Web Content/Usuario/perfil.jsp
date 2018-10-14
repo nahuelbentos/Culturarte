@@ -57,9 +57,15 @@
 			  <li class="nav-item">
 				<a class="nav-link" href="#" data-toggle="modal" data-target="#favoritasModal"><i class="fa fa-heart" aria-hidden="true"></i> Propuestas Favoritas</a>
 			  </li>
+			  <%
+				if (user != null && perfil.getNickname().equals(user.getNickname()) && perfil.getTipoUsuario().equals(TipoUsuario.proponente)){ // entonces esta logueado
+					%>
 			  <li class="nav-item">
 				<a class="nav-link" href="ListaPropuestasExtenderFinanciacion"><i class="fa fa-money" aria-hidden="true"></i> Extender financiación</a>
 			  </li>
+					<% 
+				}
+				%>
 			</ul>
 		</div>
 		<div class="col-lg-10">

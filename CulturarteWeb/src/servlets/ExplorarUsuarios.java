@@ -40,6 +40,8 @@ public class ExplorarUsuarios extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	Factory factory = Factory.getInstance();
     	IUsuarioController iUsuCont = factory.getIUsuarioController();
+    	String accion = request.getParameter("accion");
+    	String msg = request.getParameter("msg");
     	
     	DtUsuario[] auxUsuarios = iUsuCont.listarUsuarios();
     	
@@ -59,7 +61,10 @@ public class ExplorarUsuarios extends HttpServlet {
     	
     	request.setAttribute("listaColaboradores", listaColaboradores);
     	request.setAttribute("listaProponentes", listaProponentes);
-		RequestDispatcher rd;
+    	request.setAttribute("msg", msg);
+    	request.setAttribute("accion", accion);
+		
+    	RequestDispatcher rd;
 		rd = request.getRequestDispatcher("/Usuario/navegarUsuarios.jsp");
 		rd.forward(request, response);
 	}
