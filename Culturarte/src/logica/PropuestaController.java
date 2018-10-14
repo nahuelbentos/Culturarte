@@ -332,14 +332,8 @@ public class PropuestaController implements IPropuestaController {
 		em.close();
 		DtDatosPropuesta dtp = new DtDatosPropuesta();
 		if (p != null) {
-//			System.out.println("1 \n");
-//			System.out.println("\n p.titulo: " + p.getTitulo());
 			DtDatosPropuesta datapro= p.getDtDatosPropuesta(); //2
-
-//			System.out.println("2 \n");
 	        if(datapro!=null) {
-//				System.out.println("3 \n");
-//				System.out.println("\n datapro.Descripcion: " + datapro.getDescripcion());
 				ArrayList<String> colaboradores = new ArrayList<String>();
 				double montoTotal=0;
 				for (Colaboracion col : colColab) { //3
@@ -422,8 +416,6 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
-//		System.out.println("PropuestaController.  \n nicknameProponente: " + nicknameProponente + " \n estado: " + estado);
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
@@ -443,11 +435,8 @@ public class PropuestaController implements IPropuestaController {
 				
 				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
-//			System.out.println("Se encontraron " + props.length + " propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
-			
 			return props;
 		}else {
-//			System.out.println("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 			throw new PropuestaNoExisteException("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
 		}
 	}
@@ -550,7 +539,6 @@ public class PropuestaController implements IPropuestaController {
 			Propuesta p = em.find(Propuesta.class, titulo);
 			
 			if (p != null) {
-				System.out.println(p.getTitulo());
 				Usuario u = em.find(Usuario.class, usuarioLogueado.getNickname());
 				
 				try {

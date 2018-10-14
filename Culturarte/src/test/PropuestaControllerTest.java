@@ -27,9 +27,11 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.Factory;
+import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
 import logica.Propuesta;
@@ -44,6 +46,7 @@ public class PropuestaControllerTest {
 	private static Factory factory;
 	private static IUsuarioController iUsuCont;
 	private static IPropuestaController iPropCont;
+	private static ICategoriaController iCatCont;
 	
 	private static DtCategoria cat;
 	private static DtProponente propACargo;
@@ -58,13 +61,15 @@ public class PropuestaControllerTest {
 		factory = Factory.getInstance();
 		iUsuCont = factory.getIUsuarioController();
 		iPropCont = factory.getIPropuestaController();
+		iCatCont = factory.getICategoriaController();
 		
 		iPropCont.borrarPropuestas();
 		iUsuCont.borrarUsuarios();
+		iCatCont.listarCategorias();
 		
 		cat = new DtCategoria("Categorias");
-		propACargo = new DtProponente("testNicknameTres", "testNombre", "testApellido", 
-				"testCorreoTres", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+		propACargo = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
+				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
 		col = new DtColaborador("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null);
@@ -197,9 +202,48 @@ public class PropuestaControllerTest {
 	
 	public void listarPropuestasPorEstadoTest(){}  
 	
-	public void agregarFavoritaTest(){} 
+	@Test(expected = UsuarioSinLoguearseException.class)
+	public void agregarPropuestaFavoritaSinLoguearse() throws UsuarioSinLoguearseException{
+		iPropCont.agregarFavorita(p.getTitulo(), null);
+	}
+	
+	@Test(expected = Test.None.class)
+	public void agregarPropuestaFavorita() throws UsuarioSinLoguearseException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException{
+		DtUsuario dtNuevoUsuario = new DtProponente("testNicknameTres", "testNombre", "testApellido", 
+				"testCorreoTres", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+		iUsuCont.agregarUsuario(dtNuevoUsuario);
+		iPropCont.agregarFavorita(p.getTitulo(), dtNuevoUsuario);
+	} 
+	
+	@Test(expected = Test.None.class)
+	public void agregarPropuestaFavoritaUsuarioYaExisteFavorita() throws UsuarioSinLoguearseException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException{
+		DtUsuario dtNuevoUsuario = new DtProponente("testNicknameCuatro", "testNombre", "testApellido", 
+				"testCorreoCuatro", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+		iUsuCont.agregarUsuario(dtNuevoUsuario);
+		iPropCont.agregarFavorita(p.getTitulo(), dtNuevoUsuario);
+		iPropCont.agregarFavorita(p.getTitulo(), dtNuevoUsuario);
+	}
+	
+	@Test(expected = Test.None.class)
+	public void agregarPropuestaFavoritaLaPropuestaEsNull() throws UsuarioSinLoguearseException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException{
+		DtUsuario dtNuevoUsuario = new DtProponente("testNicknameCinco", "testNombre", "testApellido", 
+				"testCorreoCinco", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+		iUsuCont.agregarUsuario(dtNuevoUsuario);
+		iPropCont.agregarFavorita("testPropuestaNoExiste", dtNuevoUsuario);
+	} 
 
-	public void extenderFinanciacionTest(){} 
+	@Test(expected = Test.None.class)
+	public void extenderFinanciacionTest() throws PropuestaNoExisteException {
+		iPropCont.extenderFinanciacion(p.getTitulo());
+	}
+	
+	@Test(expected = PropuestaNoExisteException.class)
+	public void extenderFinanciacionPropuestaInexistenteTest() throws PropuestaNoExisteException {
+		iPropCont.extenderFinanciacion("testPropuestaNoExiste");
+	}
 
 	public void cancelarPropuestaTest(){}
 	
