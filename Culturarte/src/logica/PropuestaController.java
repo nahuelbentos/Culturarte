@@ -127,14 +127,6 @@ public class PropuestaController implements IPropuestaController {
 					em.close();
 					throw new ColaboracionExistenteException("Ya Existe Colaboracion para el colaborador");
 				}else {
-					Colaboracion beanCol = new Colaboracion(colaboracion.getMonto(),colaboracion.getFechaAporte(),colaboracion.getTipo());
-					beanCol.setColaborador(c);
-					beanCol.setPropuestaColaborada(p);
-					
-					em.persist(beanCol);
-					
-					/* Una vez registrada la colaboracion actualizo el estado de la propuesta. */
-					
 					EstadoPropuesta estadoActual = null;
 					boolean actualizo = true;
 					
@@ -143,8 +135,8 @@ public class PropuestaController implements IPropuestaController {
 					 * calculo el recaudado y cambio el estado segun corresponda */
 					@SuppressWarnings("unchecked")
 					List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE propuestaColaborada = :propuesta").setParameter("propuesta", p).getResultList();
-					if (colaboraciones != null) {
-						double recaudado = 0;
+					if (!colaboraciones.isEmpty()) {
+						double recaudado = colaboracion.getMonto();
 						
 						for (Colaboracion auxCol : colaboraciones)
 							recaudado += auxCol.getMonto();
@@ -157,6 +149,12 @@ public class PropuestaController implements IPropuestaController {
 					} else {
 						estadoActual = EstadoPropuesta.enFinanciacion;
 					}
+					
+					Colaboracion beanCol = new Colaboracion(colaboracion.getMonto(),colaboracion.getFechaAporte(),colaboracion.getTipo());
+					beanCol.setColaborador(c);
+					beanCol.setPropuestaColaborada(p);
+					
+					em.persist(beanCol);
 					
 					if (actualizo) {
 						// Actualizo estado Actual de la propuesta
