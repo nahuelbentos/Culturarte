@@ -14,8 +14,6 @@ public interface IUsuarioController {
 
 	public abstract DtUsuario iniciarSesion(String nickname, char[] password) throws UsuarioNoExisteElUsuarioException;
 	
-	public abstract void cerrarSesion() throws UsuarioSinLoguearseException;
-	
 	public abstract void agregarUsuario(DtUsuario dtNuevoUsuario) throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException;
 
 	public abstract DtUsuario verPerfilUsuario(String nickname) throws UsuarioNoExisteElUsuarioException;

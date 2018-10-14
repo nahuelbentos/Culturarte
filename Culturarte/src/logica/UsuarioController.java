@@ -82,7 +82,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		/*Defino la clave en colaboracion a buscar, recibida por parametro.*/
 		ColaboracionID claveColaboracion = new ColaboracionID();
@@ -102,7 +101,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
@@ -174,7 +172,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
@@ -196,7 +193,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 
 		Usuario usuario = em.find(Usuario.class, nickname);
         DtUsuario dtUsuario = null;
@@ -225,7 +221,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		Usuario usuario = em.find(Usuario.class, nickname);
         @SuppressWarnings("unchecked")
@@ -262,11 +257,11 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
 		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
+        em.close();
         if (!usuarios.isEmpty()) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -276,10 +271,8 @@ public class UsuarioController implements IUsuarioController {
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword(), 
                 		usuario.getFechaNacimiento(), usuario.getImagen());
             }
-            em.close();
             return dtUsuario;
         }else {
-        	em.close();
         	throw new ColaboradorNoExisteException("No hay colaboradores registrados");
         }
 	}
@@ -290,7 +283,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 
         @SuppressWarnings("unchecked")
 		List<Propuesta> propouestas = em.createQuery("FROM Propuesta").getResultList();
@@ -377,7 +369,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 
 		Usuario usuario = em.find(Usuario.class, nickname); //1y2
 
@@ -422,7 +413,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		DtPropuesta[] dtp = null;
 		
@@ -456,7 +446,6 @@ public class UsuarioController implements IUsuarioController {
 				cph = ConexionPostgresHibernate.getInstancia();
 				emf = cph.getEntityManager();
 				em = emf.createEntityManager();
-				em.getTransaction().begin();
 				
 				DtPropuesta[] dtp = null;
 				Usuario usuario = em.find(Usuario.class, usuarioLogueado.getNickname());
@@ -527,7 +516,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		Usuario u = null;
 		DtUsuario dtu = null;
@@ -548,12 +536,7 @@ public class UsuarioController implements IUsuarioController {
 		em.close();
 		return dtu;
 	}
-
-	@Override
-	public void cerrarSesion() throws UsuarioSinLoguearseException {
-		
-	}
-
+	
 	@Override
 	public void borrarUsuarios() {
 		cph = ConexionPostgresHibernate.getInstancia();
