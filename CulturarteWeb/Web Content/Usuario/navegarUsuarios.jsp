@@ -121,9 +121,6 @@
 				<td><%=dtu.getNombre()%></td> 
 				<%
 				if(!user.getNickname().equals(dtu.getNickname())){
-					for (String seg : user.getUsuarioSeguidos()){
-						System.out.println("Sigo a: "+seg);
-					}
 					if (!user.isMemberUsuarioSeguidos(dtu.getNickname())) {
 						%>
 							

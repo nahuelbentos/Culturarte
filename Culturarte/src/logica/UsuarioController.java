@@ -541,7 +541,6 @@ public class UsuarioController implements IUsuarioController {
 		        		.setParameter("nickname", u)
 		        		.getResultList();
 				for (Usuario s : seguidos) {
-					System.out.println("Usuario seguido(UsuarioUno): " + s.getNickname() + " \n");
 					dtu.addUsuarioSeguido(s.getNickname());
 				}
 				return dtu;
@@ -692,7 +691,7 @@ public class UsuarioController implements IUsuarioController {
         		+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
         em.close();
         
-        DtColaborador[] dtcol = new DtColaborador[3];
+        DtColaborador[] dtcol = new DtColaborador[colaboradores.size()];
         for (int i = 0; i < dtcol.length; i++) {
 			dtcol[i] = colaboradores.get(i).getDtColaborador();
 		}
@@ -713,7 +712,7 @@ public class UsuarioController implements IUsuarioController {
 				+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
         em.close();
         
-        DtProponente[] dtcol = new DtProponente[3];
+        DtProponente[] dtcol = new DtProponente[proponentes.size()];
         for (int i = 0; i < dtcol.length; i++) {
 			dtcol[i] = proponentes.get(i).getDtProponente();
 		}
