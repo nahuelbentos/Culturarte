@@ -11,4 +11,3 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 </head>
-</html>

@@ -48,8 +48,6 @@ public class ListarColaboradores extends JPanel {
 				modelNicknames.addElement(cols[i].getNickname());
 			}
 		} catch (ColaboradorNoExisteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage(),"Lista colaboradores", JOptionPane.ERROR_MESSAGE);
 		}
 	}

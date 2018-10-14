@@ -20,6 +20,7 @@ import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
+import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
@@ -97,7 +98,7 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public  DtUsuario[] listarProponentes() {
+	public  DtUsuario[] listarProponentes() throws ProponenteNoExisteException {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
@@ -106,7 +107,7 @@ public class UsuarioController implements IUsuarioController {
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
 		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
-        if (usuarios != null) {
+        if (!usuarios.isEmpty()) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
             for (int i = 0; i < usuarios.size(); i++) {
@@ -115,9 +116,12 @@ public class UsuarioController implements IUsuarioController {
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword(), 
                 		usuario.getFechaNacimiento(), usuario.getImagen());
             }
+            em.close();
+            return dtUsuario;
+        } else {
+        	em.close();
+        	throw new ProponenteNoExisteException("No hay proponentes registrados");
         }
-        em.close();
-        return dtUsuario;
 	}
 
 	@Override
@@ -223,20 +227,34 @@ public class UsuarioController implements IUsuarioController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
+		Usuario usuario = em.find(Usuario.class, nickname);
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue").getResultList();
+		List<Usuario> usuarios = em.createQuery("SELECT usuarioDos FROM UsuarioSigue "
+				+ "WHERE usuario_uno_id = :usuarioUno").setParameter("usuarioUno", usuario).getResultList();
+        DtUsuario[] listaDeUsuarios = null;
 		if (usuarios != null) {
-	        DtUsuario[] listaDeUsuarios = new DtUsuario[usuarios.size()];
+	        listaDeUsuarios = new DtUsuario[usuarios.size()];
 	        Usuario usuarioDos;
 	        for (int i = 0; i < usuarios.size(); i++) {
 	        	usuarioDos = usuarios.get(i);
 	        	listaDeUsuarios[i] = new DtUsuario(usuarioDos.getNickname(), usuarioDos.getNombre(),
 	        			usuarioDos.getApellido(), usuarioDos.getCorreoElectronico(), usuarioDos.getPassword(), 
 	        			usuarioDos.getFechaNacimiento(), usuarioDos.getImagen());
+	        	if (usuarioDos instanceof Colaborador) {
+					Colaborador usuarioAAgregar = (Colaborador) usuarioDos;
+					listaDeUsuarios[i] = new DtColaborador(usuarioAAgregar.getNickname(), usuarioAAgregar.getNombre(),
+							usuarioAAgregar.getApellido(), usuarioAAgregar.getCorreoElectronico(), usuarioAAgregar.getPassword(), 
+		        			usuarioAAgregar.getFechaNacimiento(), usuarioAAgregar.getImagen());
+	        	} else if (usuarioDos instanceof Proponente) {
+	        		Proponente usuarioAAgregar = (Proponente) usuarioDos;
+					listaDeUsuarios[i] = new DtProponente(usuarioAAgregar.getNickname(), usuarioAAgregar.getNombre(),
+							usuarioAAgregar.getApellido(), usuarioAAgregar.getCorreoElectronico(), usuarioAAgregar.getPassword(), 
+							usuarioAAgregar.getFechaNacimiento(), usuarioAAgregar.getImagen(), usuarioAAgregar.getDireccion(), 
+		        			usuarioAAgregar.getBiografia(), usuarioAAgregar.getLinkWeb());
+				}
 	        }
-	        return listaDeUsuarios;
 		}
-		return null;
+		return listaDeUsuarios;
 	}
 
 	@Override
@@ -249,7 +267,7 @@ public class UsuarioController implements IUsuarioController {
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
 		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
-        if (usuarios != null) {
+        if (!usuarios.isEmpty()) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
             for (int i = 0; i < usuarios.size(); i++) {
@@ -285,8 +303,6 @@ public class UsuarioController implements IUsuarioController {
     	if (usuario != null) {
         	if (usuario instanceof Proponente) {
 				Proponente p = (Proponente) usuario;
-//	        	System.out.println("parm nickname: " + nickname + " \n");
-//	        	System.out.println("Usuario nombre: " + p.getNombre() + " \n");
 
 	        	DtPerfilProponente auxUsuProponente = p.getDatosBasicos(); //2
 
@@ -432,7 +448,6 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtPropuesta[] listarPropuestasColaborador(DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
-		
 		if (usuarioLogueado != null) {
 			/** Obtengo las colaboraciones del colaborador "usuarioLogueado" que no haya comentado y esten financiadas **/
 			if (usuarioLogueado instanceof DtColaborador) {
@@ -462,9 +477,6 @@ public class UsuarioController implements IUsuarioController {
 					}
 				}
 				return dtp;
-				
-				
-				
 			}else{
 				throw new UsuarioSinLoguearseException("Debes ser colaborador para ver tus colaboraciones.");
 			}
@@ -474,8 +486,7 @@ public class UsuarioController implements IUsuarioController {
 	}
 
 	@Override
-	public void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException{
-		
+	public void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
 		if (usuarioLogueado != null) {
 			// obtengo las colaboraciones del usuario logueado
 			if (usuarioLogueado instanceof DtColaborador) {
@@ -507,20 +518,21 @@ public class UsuarioController implements IUsuarioController {
 
 	@Override
 	public DtUsuario iniciarSesion(String datoSesion, char[] password) throws UsuarioNoExisteElUsuarioException {
-		
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		//em.getTransaction().begin();
 		
 		Usuario u = null;
+		DtUsuario dtu = null;
 		
 		try {
 			u = em.find(Usuario.class, datoSesion);
 			if (u == null) {
 				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
+
 			} else {
-				DtUsuario dtu = u.getDtUsuario();
+				dtu = u.getDtUsuario();
 				for (Propuesta p : u.getPropuestasFavoritas()) {
 					dtu.addTituloFavoritas(p.getTitulo());
 				}
@@ -535,12 +547,11 @@ public class UsuarioController implements IUsuarioController {
 				return dtu;
 			}
 		} catch (NoResultException nre){
+			em.close();
 			throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
 		}
-		
 		em.close();
-		
-		return null;
+		return dtu;
 	}
 
 	@Override
@@ -565,7 +576,6 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 
 		Usuario u = em.find(Usuario.class, nickname);
         @SuppressWarnings("unchecked")
@@ -667,6 +677,48 @@ public class UsuarioController implements IUsuarioController {
 		// TODO Auto-generated method stub
 		em.close();
 		return perfil;
+	}
+
+	@Override
+	public DtColaborador[] getMasColaboradores() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+
+		@SuppressWarnings("unchecked")
+        List<Colaborador> colaboradores = em.createQuery("SELECT u FROM Colaboracion c1, Usuario u "
+        		+ "WHERE c1.colaborador = u.nickname "
+        		+ "GROUP BY u "
+        		+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
+        em.close();
+        
+        DtColaborador[] dtcol = new DtColaborador[3];
+        for (int i = 0; i < dtcol.length; i++) {
+			dtcol[i] = colaboradores.get(i).getDtColaborador();
+		}
+        
+        return dtcol;
+	}
+
+	@Override
+	public DtProponente[] getMasProponedores() {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+
+		@SuppressWarnings("unchecked")
+		List<Proponente> proponentes = em.createQuery("SELECT u FROM Propuesta p, Usuario u "
+				+ "WHERE p.proponenteACargo = u.nickname "
+				+ "GROUP BY u "
+				+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
+        em.close();
+        
+        DtProponente[] dtcol = new DtProponente[3];
+        for (int i = 0; i < dtcol.length; i++) {
+			dtcol[i] = proponentes.get(i).getDtProponente();
+		}
+        
+        return dtcol;
 	}
 
 	
