@@ -153,3 +153,16 @@ button.seleccionarImg{
     letter-spacing: 3px;
     font-style: oblique;
 }
+.carousel-inner > .carousel-item { 
+    height: 100vh; 
+}  
+.carousel-inner > .carousel-item > img { 
+    position: absolute; 
+}
+.carousel-inner > .carousel-item > .carousel-caption >h5 { 
+    text-align: left!important;
+    font-size: 25px!important;
+    text-shadow: 0 0 3px #000!important;
+}   
+    
+   

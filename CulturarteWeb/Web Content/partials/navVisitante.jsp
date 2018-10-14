@@ -1,7 +1,7 @@
 <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-color-brand-violeta">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="Inicio">
         <img src="${pageContext.request.contextPath}/resources/images/logo_culturarte_header.png" height="35" alt="">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
