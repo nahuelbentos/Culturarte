@@ -36,21 +36,18 @@ public class Inicio extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if (session.getAttribute("init") == null) {
 		
-			Factory factory = Factory.getInstance();
-	    	IUsuarioController iUsuCont = factory.getIUsuarioController();
-	    	IPropuestaController iProCont = factory.getIPropuestaController();
-	    	
-	    	DtPropuesta[] populares					= iProCont.getPropuestasPopulares();
-	    	DtProponente[] mayoresProponentes		= iUsuCont.getMasProponedores();
-	    	DtColaborador[] mayoresColaboradores	= iUsuCont.getMasColaboradores();
-	    	
-	    	session.setAttribute("init", 1);
-			session.setAttribute("mayColaboradores", mayoresColaboradores);
-			session.setAttribute("mayProponentes", mayoresProponentes);
-			session.setAttribute("masPopulares", populares);
-		}
+		Factory factory = Factory.getInstance();
+    	IUsuarioController iUsuCont = factory.getIUsuarioController();
+    	IPropuestaController iProCont = factory.getIPropuestaController();
+    	
+    	DtPropuesta[] populares					= iProCont.getPropuestasPopulares();
+    	DtProponente[] mayoresProponentes		= iUsuCont.getMasProponedores();
+    	DtColaborador[] mayoresColaboradores	= iUsuCont.getMasColaboradores();
+    	
+		session.setAttribute("mayColaboradores", mayoresColaboradores);
+		session.setAttribute("mayProponentes", mayoresProponentes);
+		session.setAttribute("masPopulares", populares);
 		
     	request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
