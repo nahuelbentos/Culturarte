@@ -517,8 +517,8 @@ public class UsuarioController implements IUsuarioController {
 			u = em.find(Usuario.class, datoSesion);
 			if (u == null) {
 				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
-
-			} else {
+			}
+			if (u != null) {
 				dtu = u.getDtUsuario();
 				for (Propuesta p : u.getPropuestasFavoritas()) {
 					dtu.addTituloFavoritas(p.getTitulo());
@@ -530,14 +530,12 @@ public class UsuarioController implements IUsuarioController {
 				for (Usuario s : seguidos) {
 					dtu.addUsuarioSeguido(s.getNickname());
 				}
-				return dtu;
 			}
+			return dtu;
 		} catch (NoResultException nre){
 			em.close();
 			throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
 		}
-		em.close();
-		return dtu;
 	}
 	
 	@Override
