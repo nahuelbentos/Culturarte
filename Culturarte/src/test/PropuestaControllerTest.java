@@ -387,5 +387,9 @@ public class PropuestaControllerTest {
 		
 		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasProponentePorEstado(paux.getProponenteACargo().getNickname(), paux.getEstadoActual());
 	}
-	
+
+	@Test(expected = PropuestaNoExisteException.class)
+	public void listarPropuestaPorCategoriaTest() {
+		iPropCont.listarPropuestasPorCategoria("Teatro");
+	}
 }
