@@ -216,19 +216,11 @@ public class PropuestaControllerTest {
 	}
 
 	@Test(expected = PropuestaNoExisteException.class)
-<<<<<<< Culturarte/src/test/PropuestaControllerTest.java
-	public void listarPropuestasNoExistentesTest() throws PropuestaNoExisteException {
+	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException {
 		borroPropuestas();
-		DtPropuestaMinificado[] dtpm1 = iPropCont.listarPropuestas();
-		DtPropuestaMinificado[] dtpm2 = iPropCont.listarPropuestasActivas();
-		DtPropuesta[] dtp = iPropCont.listarPropuestasExistentes();
-=======
-	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException{
-		this.borroPropuestas();
 		iPropCont.listarPropuestas();
 		iPropCont.listarPropuestasActivas();
 		iPropCont.listarPropuestasExistentes();
->>>>>>> Culturarte/src/test/PropuestaControllerTest.java
 	}
 	
 	@Test(expected = Test.None.class) 
