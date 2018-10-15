@@ -323,7 +323,15 @@ public class PropuestaControllerTest {
 	public void cancelarPropuestaNoExistenteTest() throws PropuestaNoExisteException{
 		iPropCont.cancelarPropuesta("testPropuestaNoExiste");		
 	}
+
 	
-	public void getPropuestasPopularesTest(){} 
+	@Test(expected = Test.None.class)
+	public void getPropuestasPopularesTest(){
+		iPropCont.getPropuestasPopulares();
+	} 
 	
+	@Test(expected = Test.None.class)
+	public void borrarEstadosPropuestaTest(){
+		iPropCont.borrarEstadosPropuestas();
+	} 
 }
