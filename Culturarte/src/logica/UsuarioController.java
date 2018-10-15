@@ -82,7 +82,7 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		
+		 
 		/*Defino la clave en colaboracion a buscar, recibida por parametro.*/
 		ColaboracionID claveColaboracion = new ColaboracionID();
 		claveColaboracion.setIdColaborador(nickname);

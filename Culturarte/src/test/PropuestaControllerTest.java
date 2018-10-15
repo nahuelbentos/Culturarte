@@ -10,6 +10,7 @@ import org.junit.Test;
 import datatype.DtCategoria;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
+import datatype.DtPropuestaMinificado;
 import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
@@ -79,11 +80,36 @@ public class PropuestaControllerTest {
 		iPropCont.evaluarPropuesta("no existe",EstadoPropuesta.cancelada);
 	}
 	
-	public void seleccionarPropuestaTest(){} 
+
+	@Test(expected = Test.None.class) 
+	public void seleccionarPropuestaTest(){
+		iPropCont.seleccionarPropuesta(p.getTitulo());
+		} 
+	
+
+	@Test(expected = PropuestaNoExisteException.class)
+	public void seleccionarPropuestaInexistenteTest() throws PropuestaNoExisteException{
+		iPropCont.seleccionarPropuesta("NoExisteEstaPropuesta");
+	} 
+	
+	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException{
+	
+		DtPropuestaMinificado[] dtpm1 = iPropCont.listarPropuestas();
+		DtPropuestaMinificado[] dtpm2 = iPropCont.listarPropuestasActivas();
+		DtPropuesta[] dtp = iPropCont.listarPropuestasExistentes();
+		
+	}
+
+	@Test(expected = PropuestaNoExisteException.class)
+	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException{
+		borroPropuestas();
+		DtPropuestaMinificado[] dtpm1 = iPropCont.listarPropuestas();
+		DtPropuestaMinificado[] dtpm2 = iPropCont.listarPropuestasActivas();
+		DtPropuesta[] dtp = iPropCont.listarPropuestasExistentes();
+	}
 	
 	public void modificarPropuestaTest(){} 
 	
-	public void listarPropuestasExistentesTest(){}
 	
 	public void consultarPropuestaTest(){} 
 	
