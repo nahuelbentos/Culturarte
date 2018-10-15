@@ -275,4 +275,57 @@ public class PropuestaControllerTest {
 	
 	public void getPropuestasPopularesTest(){} 
 	
+	@Test(expected = NullPointerException.class)
+	public void listarColaboracionesTestNull() {
+		DtColaboracion[] dtC = iPropCont.listarColaboraciones("testPropuestaNoExiste");
+	}
+	
+	@Test
+	public void listarColaboracionesTestSuccess() {
+		DtColaboracion[] dtC = iPropCont.listarColaboraciones(p.getTitulo());
+	}
+	
+	@Test(expected = PropuestaNoExisteException.class)
+	public void listarPropuestasPorEstadoTestFail() throws PropuestaNoExisteException {
+		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasPorEstado(EstadoPropuesta.ingresada);
+	}
+	
+	@Test
+	public void listarPropuestasPorEstadoTestSuccess() throws PropuestaNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		Propuesta paux = em.find(Propuesta.class, p.getTitulo());
+		em.close();
+		
+		
+		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasPorEstado(paux.getEstadoActual());
+	}
+	
+	@Test(expected = PropuestaNoExisteException.class)
+	public void listadoPropuestasIngresadasTestFail() throws PropuestaNoExisteException {
+		DtPropuestaMinificado[] dtPM = iPropCont.listadoPropuestasIngresadas();
+	}
+	
+	@Test
+	public void listadoPropuestasIngresadasTestSuccess() throws PropuestaNoExisteException {
+		DtPropuestaMinificado[] dtPM = iPropCont.listadoPropuestasIngresadas();
+	}
+	
+	@Test(expected = PropuestaNoExisteException.class)
+	public void listarPropuestasProponentePorEstadoTestFail() throws PropuestaNoExisteException {
+		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasProponentePorEstado("", EstadoPropuesta.ingresada);
+	}
+	
+	@Test
+	public void listarPropuestasProponentePorEstadoTestSuccess() throws PropuestaNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		Propuesta paux = em.find(Propuesta.class, p.getTitulo());
+		em.close();
+		
+		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasProponentePorEstado(paux.getProponenteACargo().getNickname(), paux.getEstadoActual());
+	}
+	
 }

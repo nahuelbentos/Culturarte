@@ -244,7 +244,6 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		DtColaboracion[] dtC = null;
 		@SuppressWarnings("unchecked")
@@ -254,10 +253,10 @@ public class PropuestaController implements IPropuestaController {
             dtC = new DtColaboracion[cols.size()];
             DtColaboracion colab=null;
 
-            for (int i = 0; i < cols.size(); i++) {
-                colab = cols.get(i).getDataColaboracion();
-                dtC[i] = new DtColaboracion(colab.getTituloPropuesta(), colab.getColaborador(), colab.getMonto(), colab.getFechaAporte(), colab.getTipo());
-            }
+	        for (int i = 0; i < cols.size(); i++) {
+	            colab = cols.get(i).getDataColaboracion();
+	            dtC[i] = new DtColaboracion(colab.getTituloPropuesta(), colab.getColaborador(), colab.getMonto(), colab.getFechaAporte(), colab.getTipo());
+	        }
         }
         
         return dtC;
