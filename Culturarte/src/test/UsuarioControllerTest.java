@@ -316,7 +316,7 @@ public class UsuarioControllerTest {
         ICategoriaController ICC = factory.getICategoriaController();
 		IPC.borrarPropuestas();
 		IUC.borrarUsuarios();
-		ICC.borrarCategorias();
+		//ICC.borrarCategorias();
 	}
 	
 }
