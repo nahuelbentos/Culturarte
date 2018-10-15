@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import org.junit.Test;
 import datatype.DtCategoria;
 import datatype.DtColaboracion;
 import datatype.DtColaborador;
+import datatype.DtEstado;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
@@ -207,24 +209,64 @@ public class PropuestaControllerTest {
 	
 	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException{
 	
-		DtPropuestaMinificado[] dtpm1 = iPropCont.listarPropuestas();
-		DtPropuestaMinificado[] dtpm2 = iPropCont.listarPropuestasActivas();
-		DtPropuesta[] dtp = iPropCont.listarPropuestasExistentes();
+		iPropCont.listarPropuestas();
+		iPropCont.listarPropuestasActivas();
+		iPropCont.listarPropuestasExistentes();
 		
 	}
 
 	@Test(expected = PropuestaNoExisteException.class)
 	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException{
-		borroPropuestas();
-		DtPropuestaMinificado[] dtpm1 = iPropCont.listarPropuestas();
-		DtPropuestaMinificado[] dtpm2 = iPropCont.listarPropuestasActivas();
-		DtPropuesta[] dtp = iPropCont.listarPropuestasExistentes();
+		this.borroPropuestas();
+		iPropCont.listarPropuestas();
+		iPropCont.listarPropuestasActivas();
+		iPropCont.listarPropuestasExistentes();
 	}
 	
-	public void modificarPropuestaTest(){} 
+	@Test(expected = Test.None.class) 
+	public void modificarPropuestaExistenteTest(){
+		byte[] image = null;
+		char[] password = null;
+		GregorianCalendar fechaPublicacion = new GregorianCalendar(), fechaEspecatulo= new GregorianCalendar(),fechaNacimiento = new GregorianCalendar();
+		DtProponente proponenteACargo = new DtProponente("NuevoNickname", "NuevoNombre", "Nuevoapellido", "NuevoEmail", password, 
+				fechaNacimiento, image, "NuevoDireccion", "NuevoBiografia", "NuevoSitioWeb");
+		
+		ArrayList<DtColaboracion> colaboraciones= new ArrayList<DtColaboracion>();
+		DtCategoria categoria= new DtCategoria("Teatro");
+		ArrayList<DtEstado> estadoHistorial= new ArrayList<DtEstado>();
+		EstadoPropuesta estadoActual= EstadoPropuesta.financiada;
+		DtPropuesta dtp = new DtPropuesta("tituloPropuestaTest", "nuevaDescripcion", image,100000 , fechaPublicacion, fechaEspecatulo,
+				"nuevoLugar", 100, TipoRetorno.EntradasGratis, 0, proponenteACargo, estadoActual, estadoHistorial, categoria, colaboraciones);
+		iPropCont.modificarPropuesta(dtp);
+	}
 	
+	@Test(expected = PropuestaNoExisteException.class)
+	public void modificarPropuestaNoExistenteTest(){
+		byte[] image = null;
+		char[] password = null;
+		GregorianCalendar fechaPublicacion = new GregorianCalendar(), fechaEspecatulo= new GregorianCalendar(),fechaNacimiento = new GregorianCalendar();
+		DtProponente proponenteACargo = new DtProponente("NuevoNickname", "NuevoNombre", "Nuevoapellido", "NuevoEmail", password, 
+				fechaNacimiento, image, "NuevoDireccion", "NuevoBiografia", "NuevoSitioWeb");
+		
+		ArrayList<DtColaboracion> colaboraciones= new ArrayList<DtColaboracion>();
+		DtCategoria categoria= new DtCategoria("Teatro");
+		ArrayList<DtEstado> estadoHistorial= new ArrayList<DtEstado>();
+		EstadoPropuesta estadoActual= EstadoPropuesta.financiada;
+		DtPropuesta dtp = new DtPropuesta("nuevoTitulo", "nuevaDescripcion", image,100000 , fechaPublicacion, fechaEspecatulo,
+				"nuevoLugar", 100, TipoRetorno.EntradasGratis, 0, proponenteACargo, estadoActual, estadoHistorial, categoria, colaboraciones);
+		iPropCont.modificarPropuesta(dtp);
+	}
 	
-	public void consultarPropuestaTest(){} 
+
+	@Test(expected = Test.None.class)
+	public void consultarPropuestaExistenteTest(){
+		iPropCont.consultarPropuesta("tituloPropuestaTest");
+	} 
+
+	@Test(expected = PropuestaNoExisteException.class)
+	public void consultarPropuestaNoExistenteTest(){
+		iPropCont.consultarPropuesta("nuevoTitulo");
+	} 
 	
 	public void listarPropuestasPorEstadoTest(){}  
 	
@@ -270,8 +312,17 @@ public class PropuestaControllerTest {
 	public void extenderFinanciacionPropuestaInexistenteTest() throws PropuestaNoExisteException {
 		iPropCont.extenderFinanciacion("testPropuestaNoExiste");
 	}
+	
+	@Test(expected = Test.None.class)
+	public void cancelarPropuestaExistenteTest() throws PropuestaNoExisteException{
+		iPropCont.cancelarPropuesta(p.getTitulo());
+		assertEquals(EstadoPropuesta.cancelada, p.getEstadoActual());
+	}
 
-	public void cancelarPropuestaTest(){}
+	@Test(expected = PropuestaNoExisteException.class)
+	public void cancelarPropuestaNoExistenteTest() throws PropuestaNoExisteException{
+		iPropCont.cancelarPropuesta("testPropuestaNoExiste");		
+	}
 	
 	public void getPropuestasPopularesTest(){} 
 	
