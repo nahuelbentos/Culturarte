@@ -200,9 +200,9 @@ public class PropuestaControllerTest {
 		} 
 	
 
-	@Test(expected = PropuestaNoExisteException.class)
-	public void seleccionarPropuestaInexistenteTest() throws PropuestaNoExisteException{
-		iPropCont.seleccionarPropuesta("NoExisteEstaPropuesta");
+	@Test(expected = Test.None.class)
+	public void seleccionarPropuestaInexistenteTest() {
+		assertEquals(null, iPropCont.seleccionarPropuesta("NoExisteEstaPropuesta"));
 	} 
 	
 	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException{
@@ -214,7 +214,7 @@ public class PropuestaControllerTest {
 	}
 
 	@Test(expected = PropuestaNoExisteException.class)
-	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException{
+	public void listarPropuestasNoExistentesTest() throws PropuestaNoExisteException {
 		borroPropuestas();
 		DtPropuestaMinificado[] dtpm1 = iPropCont.listarPropuestas();
 		DtPropuestaMinificado[] dtpm2 = iPropCont.listarPropuestasActivas();

@@ -88,18 +88,15 @@ public class PropuestaController implements IPropuestaController {
         @SuppressWarnings("unchecked")
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
         em.close();
-        if (propuestas != null) {
+        if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
 			Propuesta pro;
 			for (int i = 0; i < propsMin.length; i++) {
 				pro = propuestas.get(i);
 				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname(), pro.getImagen());
 			}
-			
-			
 			return propsMin;
 		}else {
-			
 			throw new PropuestaNoExisteException("No existen propuestas en el sistema.");
 		}
 	}
