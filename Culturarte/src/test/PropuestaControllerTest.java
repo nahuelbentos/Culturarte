@@ -202,9 +202,9 @@ public class PropuestaControllerTest {
 		} 
 	
 
-	@Test(expected = PropuestaNoExisteException.class)
-	public void seleccionarPropuestaInexistenteTest() throws PropuestaNoExisteException{
-		iPropCont.seleccionarPropuesta("NoExisteEstaPropuesta");
+	@Test(expected = Test.None.class)
+	public void seleccionarPropuestaInexistenteTest() {
+		assertEquals(null, iPropCont.seleccionarPropuesta("NoExisteEstaPropuesta"));
 	} 
 	
 	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException{
@@ -225,8 +225,8 @@ public class PropuestaControllerTest {
 	}
 
 	@Test(expected = PropuestaNoExisteException.class)
-	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException{
-		this.borroPropuestas();
+	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException {
+		borroPropuestas();
 		iPropCont.listarPropuestas();
 		iPropCont.listarPropuestasActivas();
 		iPropCont.listarPropuestasExistentes();
