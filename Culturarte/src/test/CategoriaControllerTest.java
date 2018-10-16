@@ -2,8 +2,6 @@ package test;
 
 import java.util.ArrayList;
 
-import javax.swing.tree.TreePath;
-
 import org.junit.Before;
 import org.junit.Test;
 
