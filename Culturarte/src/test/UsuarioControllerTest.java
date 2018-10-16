@@ -3,10 +3,10 @@ package test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import datatype.DtCategoria;
@@ -15,10 +15,12 @@ import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;
+import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -29,20 +31,28 @@ import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.Factory;
-import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
-import logica.UsuarioController;
 
 public class UsuarioControllerTest {
 
+	private static Factory factory;
+	private static IUsuarioController IUC;
+	private static IPropuestaController IPC;
+	
+	// Metodo que se ejecuta antes de todos los before
+	@BeforeClass
+	public static void antesDeTodo() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
+		factory = Factory.getInstance();
+		IUC = factory.getIUsuarioController();
+		IPC = factory.getIPropuestaController();
+	}
+	
 	@Test(expected = Test.None.class)
 	public void agregarUsuarioProponenteCorrectamente() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
 		DtUsuario dtNuevoUsuario = new DtProponente("testNickname", "testNombre", "testApellido", 
 				"testCorreo", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuario);
 	}
 	
@@ -50,8 +60,6 @@ public class UsuarioControllerTest {
 	public void agregarUsuarioColaboradorCorrectamente() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
 		DtUsuario dtNuevoUsuario = new DtColaborador("testNickname", "testNombre", "testApellido", 
 				"testCorreo", null, new GregorianCalendar(), null);
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuario);
 	}
 	
@@ -60,8 +68,6 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuario = new DtProponente("testNickname", "testNombre", "testApellido", 
 				"testCorreo", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuario);
         IUC.agregarUsuario(dtNuevoUsuario);
 	}
@@ -74,8 +80,6 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioDos = new DtProponente("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreo", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
 	}
@@ -88,8 +92,6 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioDos = new DtProponente("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         IUC.seguirUsuario(dtNuevoUsuarioUno.getNickname(), dtNuevoUsuarioDos.getNickname());
@@ -103,8 +105,6 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioDos = new DtProponente("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         IUC.seguirUsuario(dtNuevoUsuarioUno.getNickname(), dtNuevoUsuarioDos.getNickname());
@@ -119,8 +119,6 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioDos = new DtProponente("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         IUC.seguirUsuario(dtNuevoUsuarioUno.getNickname(), dtNuevoUsuarioDos.getNickname());
@@ -135,8 +133,6 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioDos = new DtProponente("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         IUC.seguirUsuario(dtNuevoUsuarioUno.getNickname(), dtNuevoUsuarioDos.getNickname());
@@ -149,8 +145,6 @@ public class UsuarioControllerTest {
 				"testCorreoUno", null, new GregorianCalendar(), null);
 		DtUsuario dtNuevoUsuarioDos = new DtColaborador("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null);
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         IUC.seguirUsuario(dtNuevoUsuarioUno.getNickname(), dtNuevoUsuarioDos.getNickname());
@@ -162,16 +156,12 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
 	
 		String nombreCategoria = "testCategoria";
 		ArrayList<DtCategoria> padres = new ArrayList<>();
 		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
         
-		IPropuestaController IPC = factory.getIPropuestaController();
 		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
 				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
 				null,cat,null);
@@ -182,10 +172,13 @@ public class UsuarioControllerTest {
 	}
 	
 	@Test(expected = Test.None.class)
-	public void verPerfilProponenteTest() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, UsuarioYaSigueAlUsuarioException, CategoriaYaExisteException, CategoriaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException {
+	public void verPerfilProponenteTest() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, UsuarioYaSigueAlUsuarioException, CategoriaYaExisteException, CategoriaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException, PropuestaNoExisteException {
+		
 		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
+		DtUsuario dtNuevoUsuarioDos = new DtColaborador("testNicknamedos", "testNombre", "testApellido", 
+				"testCorreoUno", null, new GregorianCalendar(), null);
         Factory factory = Factory.getInstance();
         
         IUsuarioController IUC = factory.getIUsuarioController();
@@ -196,13 +189,41 @@ public class UsuarioControllerTest {
 		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
         
 		IPropuestaController IPC = factory.getIPropuestaController();
+
 		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
-				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.ingresada,
+				null,cat,null);
+		DtPropuesta p1 = new DtPropuesta("tituloPropuestaTest1","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.cancelada,
+				null,cat,null);
+		DtPropuesta p2 = new DtPropuesta("tituloPropuestaTest2","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.publicada,
+				null,cat,null);
+		DtPropuesta p3 = new DtPropuesta("tituloPropuestaTest3","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.enFinanciacion,
+				null,cat,null);
+		DtPropuesta p4 = new DtPropuesta("tituloPropuestaTest4","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.financiada,
+				null,cat,null);
+		DtPropuesta p5 = new DtPropuesta("tituloPropuestaTest5","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.noFinanciada,
 				null,cat,null);
 		
 		IPC.altaPropuesta(p);
+		IPC.altaPropuesta(p1);
+		IPC.altaPropuesta(p2);
+		IPC.altaPropuesta(p3);
+		IPC.altaPropuesta(p4);
+		IPC.altaPropuesta(p5);
+		IPC.evaluarPropuesta(p1.getTitulo(), p1.getEstadoActual());
+		IPC.evaluarPropuesta(p2.getTitulo(), p2.getEstadoActual());
+		IPC.evaluarPropuesta(p3.getTitulo(), p3.getEstadoActual());
+		IPC.evaluarPropuesta(p4.getTitulo(), p4.getEstadoActual());
+		IPC.evaluarPropuesta(p5.getTitulo(), p5.getEstadoActual());
 		
 		IUC.verPerfilProponente(dtNuevoUsuarioUno.getNickname());
+		IUC.verPerfilProponente(dtNuevoUsuarioDos.getNickname());
+		IUC.verPerfilProponente("no existe usuario");
 	}
 	
 	@Test(expected = Test.None.class)
@@ -211,8 +232,7 @@ public class UsuarioControllerTest {
 				"testCorreoUno", null, new GregorianCalendar(), null);
 		DtUsuario dtNuevoUsuarioDos = new DtColaborador("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null);
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
+		IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         DtUsuario[] dtUsuarios = IUC.listarUsuarios();
         assertEquals(dtNuevoUsuarioUno.getNickname(), dtUsuarios[0].getNickname());
@@ -229,8 +249,6 @@ public class UsuarioControllerTest {
 				"testSitioWeb");
 		DtUsuario[] dtUsuariosEsperados = new DtUsuario[1];
 		dtUsuariosEsperados[0] = dtNuevoUsuarioDos;
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         IUC.agregarUsuario(dtNuevoUsuarioTres);
@@ -247,8 +265,6 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioDos = new DtColaborador("testNicknameDos", "testNombre", "testApellido", 
 				"testCorreoDos", null, new GregorianCalendar(), null);
 		DtUsuario[] dtUsuariosEsperados = new DtUsuario[0];
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuarioUno);
         IUC.agregarUsuario(dtNuevoUsuarioDos);
         DtUsuario[] dtUsuarios = IUC.listarUsuariosQueSigue(dtNuevoUsuarioUno.getNickname());
@@ -257,15 +273,11 @@ public class UsuarioControllerTest {
 	
 	@Test(expected = ColaboradorNoExisteException.class)
 	public void listarColaboradoresNoHayRegistrados() throws ColaboradorNoExisteException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         DtUsuario[] dtUsuariosEsperados = IUC.listarColaboradores();
 	}
 	
 	@Test(expected = Test.None.class)
 	public void listarColaboradores() throws ColaboradorNoExisteException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
 		DtUsuario dtNuevoUsuario = new DtColaborador("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null);
         IUC.agregarUsuario(dtNuevoUsuario);
@@ -274,15 +286,11 @@ public class UsuarioControllerTest {
 	
 	@Test(expected = ProponenteNoExisteException.class)
 	public void listarProponentesNoHayRegistrados() throws ProponenteNoExisteException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         DtUsuario[] dtUsuariosEsperados = IUC.listarProponentes();
 	}
 	
 	@Test(expected = Test.None.class)
 	public void listarProponentes() throws ProponenteNoExisteException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         DtUsuario dtNuevoUsuario = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
@@ -292,15 +300,11 @@ public class UsuarioControllerTest {
 	
 	@Test(expected = UsuarioNoExisteElUsuarioException.class)
 	public void iniciarSesionNoExisteElUsuario() throws UsuarioNoExisteElUsuarioException{
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         DtUsuario dtUsuario = IUC.iniciarSesion("testUsuario", "testPassword".toCharArray());
 	}
-	
+		
 	@Test(expected = Test.None.class)
 	public void iniciarSesionValidoConNickname() throws UsuarioNoExisteElUsuarioException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException{
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         DtUsuario dtNuevoUsuario = new DtColaborador("testNickname", "testNombre", "testApellido", 
 				"testCorreoUno", "testPassword".toCharArray(), new GregorianCalendar(), null);
         IUC.agregarUsuario(dtNuevoUsuario);
@@ -310,8 +314,6 @@ public class UsuarioControllerTest {
 	
 	@Test(expected = Test.None.class)
 	public void iniciarSesionValidoConEmail() throws UsuarioNoExisteElUsuarioException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException{
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         DtUsuario dtNuevoUsuario = new DtColaborador("testNickname", "testNombre", "testApellido", 
 				"testCorreoUno", "testPassword".toCharArray(), new GregorianCalendar(), null);
         IUC.agregarUsuario(dtNuevoUsuario);
@@ -324,30 +326,22 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuario = new DtProponente("testNickname", "testNombre", "testApellido", 
 				"testCorreo", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.agregarUsuario(dtNuevoUsuario);
         IUC.verPerfilUsuario(dtNuevoUsuario.getNickname());
 	}
 	
 	@Test(expected = UsuarioNoExisteElUsuarioException.class)
 	public void verPerfilUsuarioNoExisteElUsuario() throws UsuarioNoExisteElUsuarioException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.verPerfilUsuario("testUsuarioNoExiste");
 	}
 	
 	@Test(expected = UsuarioSinLoguearseException.class)
 	public void listarPropuestasColaboradorSinLoguearse() throws UsuarioNoExisteElUsuarioException, UsuarioSinLoguearseException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         IUC.listarPropuestasColaborador(null);
 	}
 	
 	@Test(expected = UsuarioSinLoguearseException.class)
 	public void listarPropuestasColaboradorPasandoleUnProponente() throws UsuarioNoExisteElUsuarioException, UsuarioSinLoguearseException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
 		DtUsuario dtNuevoUsuario = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
@@ -357,8 +351,6 @@ public class UsuarioControllerTest {
 	
 	@Test(expected = Test.None.class)
 	public void listarPropuestasColaboradorCorrectamente() throws UsuarioNoExisteElUsuarioException, UsuarioSinLoguearseException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
         DtUsuario dtNuevoUsuario = new DtColaborador("testNickname", "testNombre", "testApellido", 
 				"testCorreoUno", "testPassword".toCharArray(), new GregorianCalendar(), null);
         IUC.agregarUsuario(dtNuevoUsuario);
@@ -370,16 +362,13 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        
-        IUsuarioController IUC = factory.getIUsuarioController();
+
         IUC.agregarUsuario(dtNuevoUsuarioUno);
 	
 		String nombreCategoria = "testCategoria";
 		ArrayList<DtCategoria> padres = new ArrayList<>();
 		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
         
-		IPropuestaController IPC = factory.getIPropuestaController();
 		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
 				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
 				null,cat,null);
@@ -400,16 +389,12 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        
-        IUsuarioController IUC = factory.getIUsuarioController();
+
         IUC.agregarUsuario(dtNuevoUsuarioUno);
 	
 		String nombreCategoria = "testCategoria";
 		ArrayList<DtCategoria> padres = new ArrayList<>();
 		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
-        
-		IPropuestaController IPC = factory.getIPropuestaController();
 		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
 				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
 				null,cat,null);
@@ -430,16 +415,13 @@ public class UsuarioControllerTest {
 		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-        Factory factory = Factory.getInstance();
-        
-        IUsuarioController IUC = factory.getIUsuarioController();
+
         IUC.agregarUsuario(dtNuevoUsuarioUno);
 	
 		String nombreCategoria = "testCategoria";
 		ArrayList<DtCategoria> padres = new ArrayList<>();
 		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
         
-		IPropuestaController IPC = factory.getIPropuestaController();
 		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
 				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
 				null,cat,null);
@@ -456,30 +438,50 @@ public class UsuarioControllerTest {
 	}
 	
 	@Test(expected = Test.None.class)
-	public void masColaboradoresTest() {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
-       
+	public void masColaboradoresTest() {       
         IUC.getMasColaboradores();
 	}
 	
 	@Test(expected = Test.None.class)
-	public void masProponedoresTest() {
-        Factory factory = Factory.getInstance();
-        IUsuarioController IUC = factory.getIUsuarioController();
-       
+	public void masProponedoresTest() {       
         IUC.getMasProponedores();
 	}
 	
 	@Before
 	public void eliminarDatos() {
-		Factory factory = Factory.getInstance();
-        IPropuestaController IPC = factory.getIPropuestaController();
-        IUsuarioController IUC = factory.getIUsuarioController();
-        ICategoriaController ICC = factory.getICategoriaController();
 		IPC.borrarPropuestas();
 		IUC.borrarUsuarios();
-		//ICC.borrarCategorias();
+	}
+	
+	@Test(expected = ColaboracionNoExisteException.class)
+	public void listarColaboracionNoExiste() throws ColaboracionNoExisteException {       
+        IUC.listarColaboracion("tituloPropuestaTest", "testNicknameDos");
+	}
+	
+	@Test(expected = Test.None.class)
+	public void listarColaboracion() throws ColaboracionNoExisteException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException, ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
+		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
+				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+
+        IUC.agregarUsuario(dtNuevoUsuarioUno);
+		String nombreCategoria = "testCategoria";
+		ArrayList<DtCategoria> padres = new ArrayList<>();
+		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
+		
+		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
+				null,cat,null);
+		
+		IPC.altaPropuesta(p);
+		
+		DtUsuario col = new DtColaborador("testNicknameDos", "testNombre", "testApellido", 
+				"testCorreoDos", null, new GregorianCalendar(), null);
+		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(),col.getNickname(),100,new GregorianCalendar(),TipoRetorno.EntradasGratis);
+		IUC.agregarUsuario(col);
+		IPC.generarColaboracion(colaboracion);
+		
+        IUC.listarColaboracion("tituloPropuestaTest", "testNicknameDos");
 	}
 	
 }
