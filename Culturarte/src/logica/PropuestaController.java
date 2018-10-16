@@ -246,7 +246,7 @@ public class PropuestaController implements IPropuestaController {
 		@SuppressWarnings("unchecked")
 		List<Colaboracion> cols = em.createQuery("FROM Colaboracion WHERE PROPUESTA='" + titulo + "'").getResultList();
 		em.close();
-        if (cols != null) {
+        if (!cols.isEmpty()) {
             dtC = new DtColaboracion[cols.size()];
             DtColaboracion colab=null;
 
@@ -254,8 +254,7 @@ public class PropuestaController implements IPropuestaController {
 	            colab = cols.get(i).getDataColaboracion();
 	            dtC[i] = new DtColaboracion(colab.getTituloPropuesta(), colab.getColaborador(), colab.getMonto(), colab.getFechaAporte(), colab.getTipo());
 	        }
-        }
-        
+        }        
         return dtC;
 	}
 
@@ -295,26 +294,21 @@ public class PropuestaController implements IPropuestaController {
         @SuppressWarnings("unchecked")
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "'").getResultList();
         em.close();
-        if (propuestas != null) {
+        if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
 			Propuesta pro;
 			for (int i = 0; i < propsMin.length; i++) {
 				pro = propuestas.get(i);
 				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
-			
 			return propsMin;
 		}else {
-			
 			throw new PropuestaNoExisteException("No existen propuestas en el sistema con estado " + estadoPropuesta + ".");
 		}
 	}
 
 	@Override
 	public DtDatosPropuesta consultarPropuesta(String titulo) {
-		// la comento, hay que revisar si se puede usar otro Dt.
-
-		
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
@@ -391,18 +385,15 @@ public class PropuestaController implements IPropuestaController {
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada'").getResultList();
         em.close();
         
-        if (propuestas != null) {
+        if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
 			Propuesta pro;
 			for (int i = 0; i < propsMin.length; i++) {
 				pro = propuestas.get(i);
 				propsMin[i] = new DtPropuestaMinificado(pro.getTitulo(), pro.getProponenteACargo().getNickname(),pro.getImagen());
 			}
-			
-			
 			return propsMin;
 		}else {
-			
 			throw new PropuestaNoExisteException("No quedan propuestas por evaluar");
 		}
 	}
@@ -422,7 +413,7 @@ public class PropuestaController implements IPropuestaController {
 											.getResultList();
         em.close();
         
-        if (ps != null) {
+        if (!ps.isEmpty()) {
 			DtPropuestaMinificado[] props = new DtPropuestaMinificado[ps.size()];
 			Propuesta pro;
 			

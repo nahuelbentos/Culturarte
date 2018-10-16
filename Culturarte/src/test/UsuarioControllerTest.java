@@ -3,7 +3,6 @@ package test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
@@ -20,6 +19,7 @@ import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -30,17 +30,14 @@ import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.Factory;
-import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
-import logica.UsuarioController;
 
 public class UsuarioControllerTest {
 
 	private static Factory factory;
 	private static IUsuarioController IUC;
 	private static IPropuestaController IPC;
-	private static ICategoriaController ICC;
 	
 	// Metodo que se ejecuta antes de todos los before
 	@BeforeClass
@@ -48,7 +45,6 @@ public class UsuarioControllerTest {
 		factory = Factory.getInstance();
 		IUC = factory.getIUsuarioController();
 		IPC = factory.getIPropuestaController();
-		ICC = factory.getICategoriaController();	
 	}
 	
 	@Test(expected = Test.None.class)
@@ -419,7 +415,37 @@ public class UsuarioControllerTest {
 	public void eliminarDatos() {
 		IPC.borrarPropuestas();
 		IUC.borrarUsuarios();
-		//ICC.borrarCategorias();
+	}
+	
+	@Test(expected = ColaboracionNoExisteException.class)
+	public void listarColaboracionNoExiste() throws ColaboracionNoExisteException {       
+        IUC.listarColaboracion("tituloPropuestaTest", "testNicknameDos");
+	}
+	
+	@Test(expected = Test.None.class)
+	public void listarColaboracion() throws ColaboracionNoExisteException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException, ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
+		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
+				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+
+        IUC.agregarUsuario(dtNuevoUsuarioUno);
+		String nombreCategoria = "testCategoria";
+		ArrayList<DtCategoria> padres = new ArrayList<>();
+		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
+		
+		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
+				null,cat,null);
+		
+		IPC.altaPropuesta(p);
+		
+		DtUsuario col = new DtColaborador("testNicknameDos", "testNombre", "testApellido", 
+				"testCorreoDos", null, new GregorianCalendar(), null);
+		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(),col.getNickname(),100,new GregorianCalendar(),TipoRetorno.EntradasGratis);
+		IUC.agregarUsuario(col);
+		IPC.generarColaboracion(colaboracion);
+		
+        IUC.listarColaboracion("tituloPropuestaTest", "testNicknameDos");
 	}
 	
 }
