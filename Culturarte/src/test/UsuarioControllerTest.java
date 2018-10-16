@@ -15,10 +15,12 @@ import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;
+import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -182,10 +184,13 @@ public class UsuarioControllerTest {
 	}
 	
 	@Test(expected = Test.None.class)
-	public void verPerfilProponenteTest() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, UsuarioYaSigueAlUsuarioException, CategoriaYaExisteException, CategoriaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException {
+	public void verPerfilProponenteTest() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, UsuarioYaSigueAlUsuarioException, CategoriaYaExisteException, CategoriaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException, PropuestaNoExisteException {
+		
 		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
+		DtUsuario dtNuevoUsuarioDos = new DtColaborador("testNicknameUno", "testNombre", "testApellido", 
+				"testCorreoUno", null, new GregorianCalendar(), null);
         Factory factory = Factory.getInstance();
         
         IUsuarioController IUC = factory.getIUsuarioController();
@@ -196,13 +201,42 @@ public class UsuarioControllerTest {
 		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
         
 		IPropuestaController IPC = factory.getIPropuestaController();
+
+		
 		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
-				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.ingresada,
+				null,cat,null);
+		DtPropuesta p1 = new DtPropuesta("tituloPropuestaTest1","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.cancelada,
+				null,cat,null);
+		DtPropuesta p2 = new DtPropuesta("tituloPropuestaTest2","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.publicada,
+				null,cat,null);
+		DtPropuesta p3 = new DtPropuesta("tituloPropuestaTest3","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.enFinanciacion,
+				null,cat,null);
+		DtPropuesta p4 = new DtPropuesta("tituloPropuestaTest4","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.financiada,
+				null,cat,null);
+		DtPropuesta p5 = new DtPropuesta("tituloPropuestaTest5","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,EstadoPropuesta.noFinanciada,
 				null,cat,null);
 		
 		IPC.altaPropuesta(p);
+		IPC.altaPropuesta(p1);
+		IPC.altaPropuesta(p2);
+		IPC.altaPropuesta(p3);
+		IPC.altaPropuesta(p4);
+		IPC.altaPropuesta(p5);
+		IPC.evaluarPropuesta(p1.getTitulo(), p1.getEstadoActual());
+		IPC.evaluarPropuesta(p2.getTitulo(), p2.getEstadoActual());
+		IPC.evaluarPropuesta(p3.getTitulo(), p3.getEstadoActual());
+		IPC.evaluarPropuesta(p4.getTitulo(), p4.getEstadoActual());
+		IPC.evaluarPropuesta(p5.getTitulo(), p5.getEstadoActual());
 		
 		IUC.verPerfilProponente(dtNuevoUsuarioUno.getNickname());
+		IUC.verPerfilProponente(dtNuevoUsuarioDos.getNickname());
+		IUC.verPerfilProponente("no existe usuario");
 	}
 	
 	@Test(expected = Test.None.class)

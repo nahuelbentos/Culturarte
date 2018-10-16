@@ -207,8 +207,17 @@ public class PropuestaControllerTest {
 		iPropCont.seleccionarPropuesta("NoExisteEstaPropuesta");
 	} 
 	
-	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException{
-	
+	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException{
+
+		p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,propACargo,null,
+				null, cat,null);
+		iPropCont.altaPropuesta(p);
+
+		DtPropuesta p2 = new DtPropuesta("tituloPropuestaTest2","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,propACargo,null,
+				null, cat,null);
+		iPropCont.altaPropuesta(p2);
 		iPropCont.listarPropuestas();
 		iPropCont.listarPropuestasActivas();
 		iPropCont.listarPropuestasExistentes();
