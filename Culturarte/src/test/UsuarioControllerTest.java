@@ -174,10 +174,10 @@ public class UsuarioControllerTest {
 	@Test(expected = Test.None.class)
 	public void verPerfilProponenteTest() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, UsuarioYaSigueAlUsuarioException, CategoriaYaExisteException, CategoriaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException, PropuestaNoExisteException {
 		
-		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
+		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno1", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
 				"testSitioWeb");
-		DtUsuario dtNuevoUsuarioDos = new DtColaborador("testNicknamedos", "testNombre", "testApellido", 
+		DtUsuario dtNuevoUsuarioDos = new DtColaborador("testNicknamedos2", "testNombre", "testApellido", 
 				"testCorreoUno", null, new GregorianCalendar(), null);
         Factory factory = Factory.getInstance();
         
@@ -330,9 +330,17 @@ public class UsuarioControllerTest {
         IUC.verPerfilUsuario(dtNuevoUsuario.getNickname());
 	}
 	
+	@Test(expected = Test.None.class)
+	public void verPerfilUsuarioColaborador() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, UsuarioNoExisteElUsuarioException {
+		DtUsuario dtNuevoUsuario = new DtColaborador("testNickname", "testNombre", "testApellido", 
+				"testCorreo", null, new GregorianCalendar(), null);
+        IUC.agregarUsuario(dtNuevoUsuario);
+        IUC.verPerfilUsuario(dtNuevoUsuario.getNickname());
+	}
+	
 	@Test(expected = UsuarioNoExisteElUsuarioException.class)
 	public void verPerfilUsuarioNoExisteElUsuario() throws UsuarioNoExisteElUsuarioException {
-        IUC.verPerfilUsuario("testUsuarioNoExiste");
+        IUC.verPerfilUsuario("165416161sa61dcsa6c1a6");
 	}
 	
 	@Test(expected = UsuarioSinLoguearseException.class)
@@ -408,6 +416,32 @@ public class UsuarioControllerTest {
 		IPC.generarColaboracion(colaboracion);
 		
 		IUC.verPerfilColaborador(col.getNickname());
+	}
+	
+	@Test(expected = Test.None.class)
+	public void verPerfilColaboradorEsPropTest() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException, ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException, UsuarioSinLoguearseException{
+		DtUsuario dtNuevoUsuarioUno = new DtProponente("testNicknameUno", "testNombre", "testApellido", 
+				"testCorreoUno", null, new GregorianCalendar(), null, "testDireccion", "TestBiografia", 
+				"testSitioWeb");
+
+        IUC.agregarUsuario(dtNuevoUsuarioUno);
+	
+		String nombreCategoria = "testCategoria";
+		ArrayList<DtCategoria> padres = new ArrayList<>();
+		DtCategoria cat = new DtCategoria(nombreCategoria, padres, null);
+		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)dtNuevoUsuarioUno,null,
+				null,cat,null);
+		
+		IPC.altaPropuesta(p);
+		
+		DtUsuario col = new DtColaborador("testNicknameDos", "testNombre", "testApellido", 
+				"testCorreoDos", null, new GregorianCalendar(), null);
+		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(),col.getNickname(),100,new GregorianCalendar(),TipoRetorno.EntradasGratis);
+		IUC.agregarUsuario(col);
+		IPC.generarColaboracion(colaboracion);
+		
+		IUC.verPerfilColaborador(dtNuevoUsuarioUno.getNickname());
 	}
 	
 	@Test(expected = Test.None.class)

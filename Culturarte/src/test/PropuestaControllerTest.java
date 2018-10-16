@@ -62,7 +62,7 @@ public class PropuestaControllerTest {
 	
 	// Metodo que se ejecuta antes de todos los before
 	@BeforeClass
-	public static void antesDeTodo() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
+	public static void antesDeTodo() throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException {
 		factory = Factory.getInstance();
 		iUsuCont = factory.getIUsuarioController();
 		iPropCont = factory.getIPropuestaController();
@@ -84,6 +84,33 @@ public class PropuestaControllerTest {
 		iUsuCont.agregarUsuario(col);
 		iUsuCont.agregarUsuario(col2);
 		
+		
+
+		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)propACargo,EstadoPropuesta.ingresada,
+				null,cat,null);
+		DtPropuesta p1 = new DtPropuesta("tituloPropuestaTest1","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)propACargo,EstadoPropuesta.cancelada,
+				null,cat,null);
+		DtPropuesta p2 = new DtPropuesta("tituloPropuestaTest2","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)propACargo,EstadoPropuesta.publicada,
+				null,cat,null);
+		DtPropuesta p3 = new DtPropuesta("tituloPropuestaTest3","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)propACargo,EstadoPropuesta.enFinanciacion,
+				null,cat,null);
+		DtPropuesta p4 = new DtPropuesta("tituloPropuestaTest4","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)propACargo,EstadoPropuesta.financiada,
+				null,cat,null);
+		DtPropuesta p5 = new DtPropuesta("tituloPropuestaTest5","dscPropuestaTest",null,40000,new GregorianCalendar(),
+				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)propACargo,EstadoPropuesta.noFinanciada,
+				null,cat,null);
+		
+		iPropCont.altaPropuesta(p);
+		iPropCont.altaPropuesta(p1);
+		iPropCont.altaPropuesta(p2);
+		iPropCont.altaPropuesta(p3);
+		iPropCont.altaPropuesta(p4);
+		iPropCont.altaPropuesta(p5);
 	}
 	
 	@Before
@@ -220,17 +247,10 @@ public class PropuestaControllerTest {
 	} 
 	
 @Test(expected = Test.None.class)
-	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException{
+	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException, PropuestaRepetidaException, ProponenteNoExisteException, CategoriaNoExisteException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException{
 
-		p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
-				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,propACargo,null,
-				null, cat,null);
-		iPropCont.altaPropuesta(p);
 
-		DtPropuesta p2 = new DtPropuesta("tituloPropuestaTest2","dscPropuestaTest",null,40000,new GregorianCalendar(),
-				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,propACargo,null,
-				null, cat,null);
-		iPropCont.altaPropuesta(p2);
+	
 		iPropCont.listarPropuestas();
 		iPropCont.listarPropuestasActivas();
 		iPropCont.listarPropuestasExistentes();
@@ -238,7 +258,7 @@ public class PropuestaControllerTest {
 
 	@Test(expected = PropuestaNoExisteException.class)
 	public void listarPropuestasNoExistentesTest()throws PropuestaNoExisteException {
-		borroPropuestas();
+		this.borroPropuestas();
 		iPropCont.listarPropuestas();
 		iPropCont.listarPropuestasActivas();
 		iPropCont.listarPropuestasExistentes();
@@ -335,7 +355,9 @@ public class PropuestaControllerTest {
 	@Test(expected = Test.None.class)
 	public void cancelarPropuestaExistenteTest() throws PropuestaNoExisteException{
 		iPropCont.cancelarPropuesta(p.getTitulo());
-		EstadoPropuesta estado = p.getEstadoActual();
+		DtPropuesta dtp = iPropCont.seleccionarPropuesta(p.getTitulo());
+		EstadoPropuesta estado = dtp.getEstadoActual();
+		
 		assertEquals(EstadoPropuesta.cancelada, estado);
 	}
 
@@ -362,7 +384,11 @@ public class PropuestaControllerTest {
 	}
 	
 	@Test
-	public void listarColaboracionesTestSuccess() {
+	public void listarColaboracionesTestSuccess() throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
+		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(),col.getNickname(),100,new GregorianCalendar(),TipoRetorno.EntradasGratis); 
+		DtColaboracion colaboracion2 = new DtColaboracion(p.getTitulo(),col.getNickname(),1000,new GregorianCalendar(),TipoRetorno.EntradasYPorcentaje);
+		iPropCont.generarColaboracion(colaboracion);
+//		iPropCont.generarColaboracion(colaboracion2);
 		DtColaboracion[] dtC = iPropCont.listarColaboraciones(p.getTitulo());
 	}
 	
