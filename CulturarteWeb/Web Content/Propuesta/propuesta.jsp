@@ -153,7 +153,7 @@
 				<tr>
 					<th scope="row"><%=i%></th>
 					<td><%=colaborador%></td>
-					<td><a href="#""> Ver Colaboración</a></td>
+					<td><a href="#"> Ver Colaboración</a></td>
 				</tr>
 				<%
 					i += 1; 
