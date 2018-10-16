@@ -1,7 +1,9 @@
 package test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -16,6 +18,7 @@ import org.junit.Test;
 import datatype.DtCategoria;
 import datatype.DtColaboracion;
 import datatype.DtColaborador;
+import datatype.DtDatosPropuesta;
 import datatype.DtEstado;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
@@ -24,7 +27,6 @@ import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
-import excepciones.CategoriaYaExisteException;
 import excepciones.ColaboracionExistenteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
@@ -153,6 +155,18 @@ public class PropuestaControllerTest {
 		em.close();
 	}
 	
+	@Test(expected = PropuestaNoExisteException.class)
+	public void colaboracionNoExisteElColaborador() throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
+		DtColaboracion colaboracion = new DtColaboracion("noExisteLaPropuesta",col.getNickname(),100,new GregorianCalendar(),TipoRetorno.EntradasGratis);
+		iPropCont.generarColaboracion(colaboracion);
+	}
+	
+	@Test(expected = ColaboradorNoExisteException.class)
+	public void colaboracionNoExisteLaPropuesta() throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
+		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(), "colaboradorNoExiste",100,new GregorianCalendar(),TipoRetorno.EntradasGratis);
+		iPropCont.generarColaboracion(colaboracion);
+	}
+	
 	@Test(expected = ColaboracionExistenteException.class)
 	public void colaboracionExisteTest() throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException {
 		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(),col.getNickname(),100,new GregorianCalendar(),TipoRetorno.EntradasGratis);
@@ -194,25 +208,22 @@ public class PropuestaControllerTest {
 		assertEquals(EstadoPropuesta.financiada, paux.getEstadoActual());
 		em.close();
 	}
-	
 
 	@Test(expected = Test.None.class) 
 	public void seleccionarPropuestaTest(){
 		iPropCont.seleccionarPropuesta(p.getTitulo());
-		} 
-	
+	}
 
 	@Test(expected = Test.None.class)
 	public void seleccionarPropuestaInexistenteTest() {
 		assertEquals(null, iPropCont.seleccionarPropuesta("NoExisteEstaPropuesta"));
 	} 
 	
+	@Test(expected = Test.None.class)
 	public void listarPropuestasExistentesTest() throws PropuestaNoExisteException{
-	
 		iPropCont.listarPropuestas();
 		iPropCont.listarPropuestasActivas();
 		iPropCont.listarPropuestasExistentes();
-		
 	}
 
 	@Test(expected = PropuestaNoExisteException.class)
@@ -240,7 +251,7 @@ public class PropuestaControllerTest {
 		iPropCont.modificarPropuesta(dtp);
 	}
 	
-	@Test(expected = PropuestaNoExisteException.class)
+	@Test(expected = Test.None.class)
 	public void modificarPropuestaNoExistenteTest(){
 		byte[] image = null;
 		char[] password = null;
@@ -256,19 +267,17 @@ public class PropuestaControllerTest {
 				"nuevoLugar", 100, TipoRetorno.EntradasGratis, 0, proponenteACargo, estadoActual, estadoHistorial, categoria, colaboraciones);
 		iPropCont.modificarPropuesta(dtp);
 	}
-	
 
 	@Test(expected = Test.None.class)
 	public void consultarPropuestaExistenteTest(){
 		iPropCont.consultarPropuesta("tituloPropuestaTest");
 	} 
 
-	@Test(expected = PropuestaNoExisteException.class)
+	@Test(expected = Test.None.class)
 	public void consultarPropuestaNoExistenteTest(){
-		iPropCont.consultarPropuesta("nuevoTitulo");
-	} 
-	
-	public void listarPropuestasPorEstadoTest(){}  
+		DtDatosPropuesta propuesta = iPropCont.consultarPropuesta("nuevoTitulo");
+		assertEquals(null, propuesta.getTitulo());
+	}
 	
 	@Test(expected = UsuarioSinLoguearseException.class)
 	public void agregarPropuestaFavoritaSinLoguearse() throws UsuarioSinLoguearseException{
@@ -316,7 +325,8 @@ public class PropuestaControllerTest {
 	@Test(expected = Test.None.class)
 	public void cancelarPropuestaExistenteTest() throws PropuestaNoExisteException{
 		iPropCont.cancelarPropuesta(p.getTitulo());
-		assertEquals(EstadoPropuesta.cancelada, p.getEstadoActual());
+		EstadoPropuesta estado = p.getEstadoActual();
+		assertEquals(EstadoPropuesta.cancelada, estado);
 	}
 
 	@Test(expected = PropuestaNoExisteException.class)
@@ -335,9 +345,10 @@ public class PropuestaControllerTest {
 		iPropCont.borrarEstadosPropuestas();
 	} 
 	
-	@Test(expected = NullPointerException.class)
+	@Test(expected = Test.None.class)
 	public void listarColaboracionesTestNull() {
 		DtColaboracion[] dtC = iPropCont.listarColaboraciones("testPropuestaNoExiste");
+		assertEquals(null, dtC);
 	}
 	
 	@Test
@@ -347,6 +358,7 @@ public class PropuestaControllerTest {
 	
 	@Test(expected = PropuestaNoExisteException.class)
 	public void listarPropuestasPorEstadoTestFail() throws PropuestaNoExisteException {
+		borroPropuestas();
 		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasPorEstado(EstadoPropuesta.ingresada);
 	}
 	
@@ -357,13 +369,12 @@ public class PropuestaControllerTest {
 		em = emf.createEntityManager();
 		Propuesta paux = em.find(Propuesta.class, p.getTitulo());
 		em.close();
-		
-		
 		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasPorEstado(paux.getEstadoActual());
 	}
 	
 	@Test(expected = PropuestaNoExisteException.class)
 	public void listadoPropuestasIngresadasTestFail() throws PropuestaNoExisteException {
+		borroPropuestas();
 		DtPropuestaMinificado[] dtPM = iPropCont.listadoPropuestasIngresadas();
 	}
 	
@@ -388,8 +399,19 @@ public class PropuestaControllerTest {
 		DtPropuestaMinificado[] dtPM = iPropCont.listarPropuestasProponentePorEstado(paux.getProponenteACargo().getNickname(), paux.getEstadoActual());
 	}
 
-	@Test(expected = PropuestaNoExisteException.class)
+	@Test(expected = Test.None.class)
 	public void listarPropuestaPorCategoriaTest() {
-		iPropCont.listarPropuestasPorCategoria("Teatro");
+		ArrayList<DtPropuesta> propuestas = iPropCont.listarPropuestasPorCategoria("Teatro");
+		assertTrue(propuestas.isEmpty());
+	}
+	
+	@Test(expected = ParseException.class)
+	public void setearEstadosPropuestaException() throws ParseException {
+		iPropCont.setearEstadosPropuests("enFinanciacion", p.getTitulo(), new GregorianCalendar().toString());
+	}
+	
+	@Test(expected = Test.None.class)
+	public void setearEstadosPropuesta() throws ParseException {
+		iPropCont.setearEstadosPropuests("enFinanciacion", p.getTitulo(), "2017-05-15 15:30:00.000");
 	}
 }
