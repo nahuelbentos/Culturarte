@@ -90,7 +90,7 @@
 			         <div class="form-row">
 			         	<div class="col-md-8 mb-3">
 			               <label for="biografia">Biografia</label>
-			               <textarea class="col-sm-12 form-control" id="biografia" name="biografia" placeholder="" required></textarea>
+			               <textarea class="col-sm-12 form-control" id="biografia" name="biografia" placeholder=""></textarea>
 			            </div>
 			         </div>
 			      </div>

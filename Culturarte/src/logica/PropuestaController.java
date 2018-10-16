@@ -312,7 +312,6 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		Propuesta p = em.find(Propuesta.class, titulo); //1
 		
@@ -324,12 +323,11 @@ public class PropuestaController implements IPropuestaController {
 		if (p != null) {
 			DtDatosPropuesta datapro= p.getDtDatosPropuesta(); //2
 	        if(datapro!=null) {
-				ArrayList<String> colaboradores = new ArrayList<String>();
 				double montoTotal=0;
 				for (Colaboracion col : colColab) { //3
 					if(col.tieneProp(titulo)) { //4 
 						montoTotal += col.getMonto(); //5.1 
-						colaboradores.add(col.getColaborador().getNickname()); //5.2				
+						datapro.addColaborador(col.getColaborador().getNickname()); //5.2				
 					}
 				}
 				

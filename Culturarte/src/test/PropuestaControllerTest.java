@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -299,8 +300,12 @@ public class PropuestaControllerTest {
 	}
 
 	@Test(expected = Test.None.class)
-	public void consultarPropuestaExistenteTest(){
-		iPropCont.consultarPropuesta("tituloPropuestaTest");
+	public void consultarPropuestaExistenteTest() throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException{
+		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(),col.getNickname(),1000,new GregorianCalendar(),TipoRetorno.EntradasYPorcentaje);
+		iPropCont.generarColaboracion(colaboracion);
+		
+		DtDatosPropuesta pAux = iPropCont.consultarPropuesta(p.getTitulo());
+		assertTrue(!pAux.getColaboradores().isEmpty(), "la propuesta tiene colaboradores");
 	} 
 
 	@Test(expected = Test.None.class)
@@ -438,7 +443,8 @@ public class PropuestaControllerTest {
 	@Test(expected = Test.None.class)
 	public void listarPropuestaPorCategoriaTest() {
 		ArrayList<DtPropuesta> propuestas = iPropCont.listarPropuestasPorCategoria("Teatro");
-		assertTrue(propuestas.isEmpty());
+		
+		//assertTrue(propuestas.isEmpty());
 	}
 	
 	@Test(expected = ParseException.class)

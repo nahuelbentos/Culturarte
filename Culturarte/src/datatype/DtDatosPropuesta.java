@@ -111,4 +111,7 @@ public class DtDatosPropuesta {
 	public EstadoPropuesta getEstadoActual() {
 		return estadoActual;
 	}
+	public void addColaborador(String nickname) {
+		colaboradores.add(nickname);
+	}
 }
