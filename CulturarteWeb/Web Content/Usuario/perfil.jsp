@@ -26,7 +26,7 @@
 	<div class="row">
 		<div class="col-lg-2">
 			<div class="img-perfil shadow border">
-				<img alt="<%=perfil.getNickname()%>" src="data:image/jpeg;base64,<%=perfil.getImagenAsBase64()%>">
+				<img alt="<%=perfil.getNickname()%>" src="data:image/jpeg;base64,<%=(perfil.getImagen()!=null) ? perfil.getImagenAsBase64() : "" %>">
 			</div>
 			<ul class="nav flex-column">
 			  <li class="nav-item">
@@ -107,7 +107,7 @@
 				  <div class="form-group row">
 				    <label for="staticPassword" class="col-sm-2 col-form-label">Contrasea</label>
 				    <div class="col-sm-6">
-				      <input type="password" readonly class="form-control-plaintext" id="staticCorreo" value="<%=perfil.getPassword()%>">
+				      <input type="password" readonly class="form-control-plaintext" id="staticCorreo" value="contraseña">
 				    </div>
 				  </div>
 				  

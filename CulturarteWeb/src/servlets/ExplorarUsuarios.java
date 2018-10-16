@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,29 +43,34 @@ public class ExplorarUsuarios extends HttpServlet {
     	String msg = request.getParameter("msg");
     	
     	DtUsuario[] auxUsuarios = iUsuCont.listarUsuarios();
-    	
     	List<DtColaboradorWeb> listaColaboradores = new ArrayList<DtColaboradorWeb>();
     	List<DtProponenteWeb> listaProponentes = new ArrayList<DtProponenteWeb>();
-    	
-    	for (DtUsuario dtUsuario : auxUsuarios) {
-			if (dtUsuario instanceof DtColaborador) {
-				listaColaboradores.add(new DtColaboradorWeb(dtUsuario.getNickname(), dtUsuario.getNombre(), 
-						dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getPassword(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen()));
-			}else if (dtUsuario instanceof DtProponente) {
-				listaProponentes.add(new DtProponenteWeb(dtUsuario.getNickname(), dtUsuario.getNombre(), 
-						dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getPassword(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen(),
-						((DtProponente) dtUsuario).getBiografia(),((DtProponente) dtUsuario).getDireccion(),((DtProponente) dtUsuario).getSitioWeb()));
+    	if (auxUsuarios.length > 0) {
+
+	    	
+	    	for (DtUsuario dtUsuario : auxUsuarios) {
+				if (dtUsuario instanceof DtColaborador) {
+					listaColaboradores.add(new DtColaboradorWeb(dtUsuario.getNickname(), dtUsuario.getNombre(), 
+							dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getPassword(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen()));
+				}else if (dtUsuario instanceof DtProponente) {
+					listaProponentes.add(new DtProponenteWeb(dtUsuario.getNickname(), dtUsuario.getNombre(), 
+							dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getPassword(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen(),
+							((DtProponente) dtUsuario).getBiografia(),((DtProponente) dtUsuario).getDireccion(),((DtProponente) dtUsuario).getSitioWeb()));
+				}
 			}
-		}
-    	
-    	request.setAttribute("listaColaboradores", listaColaboradores);
-    	request.setAttribute("listaProponentes", listaProponentes);
-    	request.setAttribute("msg", msg);
-    	request.setAttribute("accion", accion);
-		
-    	RequestDispatcher rd;
-		rd = request.getRequestDispatcher("/Usuario/navegarUsuarios.jsp");
-		rd.forward(request, response);
+	    	
+	    	request.setAttribute("listaColaboradores", listaColaboradores);
+	    	request.setAttribute("listaProponentes", listaProponentes);
+	    	request.setAttribute("msg", msg);
+	    	request.setAttribute("accion", accion);
+			
+    	}else {
+	    	request.setAttribute("listaColaboradores", listaColaboradores);
+	    	request.setAttribute("listaProponentes", listaProponentes);
+	    	System.out.println(listaColaboradores.size());
+    		request.setAttribute("msg", "No hay usuarios registrados en la aplicación.");
+    	}
+    	request.getRequestDispatcher("/Usuario/navegarUsuarios.jsp").forward(request, response);
 	}
 
 	/**
