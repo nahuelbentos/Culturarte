@@ -456,4 +456,9 @@ public class PropuestaControllerTest {
 	public void setearEstadosPropuesta() throws ParseException {
 		iPropCont.setearEstadosPropuests("enFinanciacion", p.getTitulo(), "2017-05-15 15:30:00.000");
 	}
+	
+	@Test
+	public void propuestasDesdeBuscadorTest() {
+		DtPropuestaMinificado[] dtPM = iPropCont.propuestasDesdeBuscador(p.getTitulo());
+	}
 }

@@ -636,4 +636,27 @@ public class PropuestaController implements IPropuestaController {
 		return dtpop;
 	}
 	
+	@Override
+	public DtPropuestaMinificado[] propuestasDesdeBuscador(String buscar) {
+		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		@SuppressWarnings("unchecked")
+		List<Propuesta> resultado = em.createQuery("FROM Propuesta WHERE (titulo like '%:titulo%') " + 
+													"or (descripcion like '%:descripcion%') " + 
+													"or (lugar like '%:lugar%')").getResultList();
+		
+		em.close();
+		
+		DtPropuestaMinificado[] dtResu = new DtPropuestaMinificado[resultado.size()]; 
+		
+		for (int i = 0; i < dtResu.length; i++) {
+			dtResu[i] = new DtPropuestaMinificado(resultado.get(i).getTitulo(), resultado.get(i).getProponenteACargo().getNickname(), resultado.get(i).getImagen());
+		}
+		
+		return dtResu;
+	}
+	
 }

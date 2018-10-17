@@ -70,6 +70,8 @@ public interface IPropuestaController {
 	
 	//funciones para el inicio de la aplicacion web
 	public abstract DtPropuesta[] getPropuestasPopulares();
+
+	public abstract DtPropuestaMinificado[] propuestasDesdeBuscador(String buscar);
 	
 }
 
