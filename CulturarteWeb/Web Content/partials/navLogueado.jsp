@@ -34,8 +34,8 @@ TipoUsuario tipoUser = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
             <a class="nav-link" href="${pageContext.request.contextPath}/VerPerfil?nickname=<%=user.getNickname()%>"><i class="fa fa-user" aria-hidden="true"></i> Mi perfil</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Título, descripción, lugar" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/Buscador" method="post">
+          <input class="form-control mr-sm-2" name="search" type="search" placeholder="Título, descripción, lugar" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
         <form action="${pageContext.request.contextPath}/ManejoSesion" method="post">

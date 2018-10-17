@@ -87,7 +87,7 @@ public class PropuestaControllerTest {
 		
 		
 
-		DtPropuesta p = new DtPropuesta("tituloPropuestaTest","dscPropuestaTest",null,40000,new GregorianCalendar(),
+		DtPropuesta p = new DtPropuesta("tituloPropuestaTestPRO","dscPropuestaTest",null,40000,new GregorianCalendar(),
 				new GregorianCalendar(),"lugarPropuestaTest",100,TipoRetorno.EntradasYPorcentaje,0,(DtProponente)propACargo,EstadoPropuesta.ingresada,
 				null,cat,null);
 		DtPropuesta p1 = new DtPropuesta("tituloPropuestaTest1","dscPropuestaTest",null,40000,new GregorianCalendar(),
@@ -460,5 +460,6 @@ public class PropuestaControllerTest {
 	@Test
 	public void propuestasDesdeBuscadorTest() {
 		DtPropuestaMinificado[] dtPM = iPropCont.propuestasDesdeBuscador(p.getTitulo());
+		assertEquals(1, dtPM.length);
 	}
 }

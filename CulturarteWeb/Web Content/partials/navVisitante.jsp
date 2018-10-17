@@ -17,8 +17,8 @@
 	        </div>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Titulo, descripcion, lugar" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/Buscador" method="post">
+          <input class="form-control mr-sm-2" name="search" type="search" placeholder="Título, descripción, lugar" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
         <span class="btn btn-login orange-tooltip" data-toggle="tooltip" data-placement="bottom" title="Iniciar Sesion">
