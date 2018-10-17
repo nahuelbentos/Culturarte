@@ -1,11 +1,9 @@
 package servlets;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.servlet.RequestDispatcher;
@@ -21,6 +19,7 @@ import javax.servlet.http.Part;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtUsuario;
+import datatypeJee.TipoUsuario;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
 import logica.Factory;
@@ -93,6 +92,12 @@ public class AltaPerfil extends HttpServlet {
 						IUC.agregarUsuario(dtUsuario);
 						HttpSession session = request.getSession();
 						session.setAttribute("usuarioLogueado", dtUsuario);
+						
+						if (dtUsuario instanceof DtProponente) {
+							session.setAttribute("tipoUsuarioLogueado", TipoUsuario.proponente);
+						}else {
+							session.setAttribute("tipoUsuarioLogueado", TipoUsuario.colaborador);
+						}
 						
 						RequestDispatcher rd;
 						rd = request.getRequestDispatcher("/index.jsp");

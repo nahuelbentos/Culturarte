@@ -57,7 +57,6 @@ public class ComentarPropuesta extends HttpServlet {
 					rd = request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp");
 					rd.forward(request, response);
 				} catch (UsuarioSinLoguearseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	    	} else {
