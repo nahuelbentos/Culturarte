@@ -155,7 +155,10 @@ public class PropuestaController implements IPropuestaController {
 					
 					if (actualizo) {
 						// Actualizo estado Actual de la propuesta
-						em.createQuery("UPDATE Propuesta SET estadoActual = :estado").setParameter("estado", estadoActual).executeUpdate();
+						em.createQuery("UPDATE Propuesta SET estadoActual = :estado WHERE titulo = :titulo")
+						.setParameter("estado", estadoActual)
+						.setParameter("titulo", p.getTitulo())
+						.executeUpdate();
 						
 						// Actualizo historial del estado de la propuesta
 						Estado e = new Estado(estadoActual, p, new GregorianCalendar());
