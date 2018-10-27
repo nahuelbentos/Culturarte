@@ -15,6 +15,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import datatype.DtProponente;
 import datatype.DtUsuario;
+import datatypeJee.DtUsuarioWeb;
 import datatypeJee.TipoUsuario;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.Factory;
@@ -55,7 +56,10 @@ public class ManejoSesion extends HttpServlet {
 			Factory factory = Factory.getInstance();
 			IUsuarioController iUsuCon = factory.getIUsuarioController();
 			try {
-				DtUsuario usuarioLogueado = iUsuCon.iniciarSesion(usuario, password);
+				DtUsuario usuarioLogueado = iUsuCon.iniciarSesion(usuario, password);  
+//				DtUsuarioWeb usuarioLogueado = new DtUsuarioWeb(usuarioLogueadoWS.getNickname(), usuarioLogueadoWS.getNombre(),
+//						usuarioLogueadoWS.getApellido(), usuarioLogueadoWS.getEmail(), usuarioLogueadoWS.getPassword(),
+//						usuarioLogueadoWS.getFechaNacimiento(), usuarioLogueadoWS.getImagen());
 				
 				if (Arrays.equals(usuarioLogueado.getPassword(), password)) {
 					HttpSession session = request.getSession();
