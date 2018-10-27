@@ -53,6 +53,7 @@ import logica.Factory;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
+import publicadores.ControladorUsuarioPublish;
 
 public class Principal {
 	
@@ -106,6 +107,10 @@ public class Principal {
 
 	public Principal() throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException {
 		initialize();
+		
+		// Levantar los Web Services
+		ControladorUsuarioPublish CUP = new ControladorUsuarioPublish();
+		CUP.publicar();
  
         Factory factory = Factory.getInstance();
         IUC = factory.getIUsuarioController();
