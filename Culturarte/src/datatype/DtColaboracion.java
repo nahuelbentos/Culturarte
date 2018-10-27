@@ -35,6 +35,30 @@ public class DtColaboracion {
 	public TipoRetorno getTipo() {
 		return tipo;
 	}
+
+	public void setTituloPropuesta(String tituloPropuesta) {
+		this.tituloPropuesta = tituloPropuesta;
+	}
+
+	public void setColaborador(String colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public void setMonto(double monto) {
+		this.monto = monto;
+	}
+
+	public void setFechaAporte(GregorianCalendar fechaAporte) {
+		this.fechaAporte = fechaAporte;
+	}
+
+	public void setTipo(TipoRetorno tipo) {
+		this.tipo = tipo;
+	}
+
+	public DtColaboracion() {
+		super();
+	}
 	
 	
 	

@@ -11,5 +11,13 @@ public class DtEstado {
 	public EstadoPropuesta getEstado() {
 		return estado;
 	}
+
+	public void setEstado(EstadoPropuesta estado) {
+		this.estado = estado;
+	}
+
+	public DtEstado() {
+		super();
+	}
 	
 }

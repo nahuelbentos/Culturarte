@@ -2,14 +2,11 @@ package datatype;
 
 import java.util.ArrayList;
 
-import logica.Categoria;
-
 public class DtCategoria {
 
 	private String nombre;
 
 	private ArrayList<DtCategoria> superCategorias;
-
 	private ArrayList<DtCategoria> subCategorias;
 
 	public DtCategoria(String nombre) {
@@ -26,7 +23,12 @@ public class DtCategoria {
 		this.superCategorias = superCategorias;
 		this.subCategorias = subCategorias;
 	}
-
+	
+	public void addHijo(DtCategoria dtC) {
+		subCategorias.add(dtC);
+	}
+	
+	// Getters, Setters, Constructor
 	public String getNombre() {
 		return nombre;
 	}
@@ -38,10 +40,24 @@ public class DtCategoria {
 	public ArrayList<DtCategoria> getSubCategorias() {
 		return subCategorias;
 	}
-	
-	public void addHijo(DtCategoria dtC) {
-		subCategorias.add(dtC);
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
+
+	public void setSuperCategorias(ArrayList<DtCategoria> superCategorias) {
+		this.superCategorias = superCategorias;
+	}
+
+	public void setSubCategorias(ArrayList<DtCategoria> subCategorias) {
+		this.subCategorias = subCategorias;
+	}
+
+	public DtCategoria() {
+		super();
+	}
+	
+	
 
 }
 

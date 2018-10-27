@@ -8,5 +8,6 @@ public class DtColaborador extends DtUsuario {
 			GregorianCalendar fechaNacimiento, byte[] imagen) {
 		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
 	}
-
+	
+	
 }

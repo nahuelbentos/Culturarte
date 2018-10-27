@@ -16,6 +16,13 @@ public class DtPerfilColaborador extends DtUsuario {
 	public ArrayList<DtPropuestaColaborada> getColaboracionesHechas() {
 		return colaboracionesHechas;
 	}
+	
+	public void setColaboracionesHechas(ArrayList<DtPropuestaColaborada> colaboracionesHechas) {
+		this.colaboracionesHechas = colaboracionesHechas;
+	}
 
-
+	public DtPerfilColaborador() {
+		super();
+	}
+	
 }

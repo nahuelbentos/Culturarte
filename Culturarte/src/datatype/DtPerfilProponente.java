@@ -30,33 +30,53 @@ public class DtPerfilProponente extends DtProponente{
 		return prIngresadas;
 	}
 
-
-	public void setPrIngresadas(ArrayList<DtPropuesta> prIngresadas) {
-		this.prIngresadas = prIngresadas;
-	}
-
 	public ArrayList<DtPropuesta> getPrPublicadas() {
 		return prPublicadas;
 	}
-
-
+	
 	public ArrayList<DtPropuesta> getPrCanceladas() {
 		return prCanceladas;
 	}
-
 
 	public ArrayList<DtPropuesta> getPrEnFinanciacion() {
 		return prEnFinanciacion;
 	}
 
-
 	public ArrayList<DtPropuesta> getPrFinanciadas() {
 		return prFinanciadas;
 	}
 
-
 	public ArrayList<DtPropuesta> getPrNoFinanciadas() {
 		return prNoFinanciadas;
+	}
+
+	public void setPrPublicadas(ArrayList<DtPropuesta> prPublicadas) {
+		this.prPublicadas = prPublicadas;
+	}
+
+	public void setPrCanceladas(ArrayList<DtPropuesta> prCanceladas) {
+		this.prCanceladas = prCanceladas;
+	}
+
+	public void setPrEnFinanciacion(ArrayList<DtPropuesta> prEnFinanciacion) {
+		this.prEnFinanciacion = prEnFinanciacion;
+	}
+
+	public void setPrFinanciadas(ArrayList<DtPropuesta> prFinanciadas) {
+		this.prFinanciadas = prFinanciadas;
+	}
+
+	public void setPrNoFinanciadas(ArrayList<DtPropuesta> prNoFinanciadas) {
+		this.prNoFinanciadas = prNoFinanciadas;
+	}
+
+	public void setPrIngresadas(ArrayList<DtPropuesta> prIngresadas) {
+		this.prIngresadas = prIngresadas;
+	}
+
+	public DtPerfilProponente(String nickname, String nombre, String apellido, String email, char[] password,
+			GregorianCalendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb) {
+		super();
 	}	
 	
 }
