@@ -55,13 +55,35 @@ public class DtUsuario {
 	public char[] getPassword() {
 		return password;
 	}
-
-	public void setPassword(char[] password) {
-		this.password = password;
-	}
 	
 	public List<String> getTituloFavoritas() {
 		return tituloFavoritas;
+	}
+	public List<String> getUsuarioSeguidos() {
+		return usuarioSeguidos;
+	}
+	
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
+	}
+
+	public void setPassword(char[] password) {
+		this.password = password;
 	}
 	
 	public void setTituloFavoritas(List<String> tituloFavoritas) {
@@ -75,9 +97,7 @@ public class DtUsuario {
 	public boolean isMemberTituloFavorita(String tituloFavorita) {
 		return this.tituloFavoritas.contains(tituloFavorita);
 	}
-	public List<String> getUsuarioSeguidos() {
-		return usuarioSeguidos;
-	}
+
 	public void setUsuarioSeguidos(List<String> usuarioSeguidos) {
 		this.usuarioSeguidos = usuarioSeguidos;
 	}

@@ -12,22 +12,33 @@ public class DtPropuestaMinificado {
 		this.proponente = proponente;
 		this.imagen = imagen;
 	}
-	
+
+	public DtPropuestaMinificado() {
+		super();
+	}
+
 	public String getTitulo() {
 		return titulo;
 	}
+
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
+
 	public String getProponente() {
 		return proponente;
 	}
+
 	public void setProponente(String proponente) {
 		this.proponente = proponente;
 	}
 
 	public byte[] getImagen() {
 		return imagen;
+	}
+
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
 	}
 	
 }

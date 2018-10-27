@@ -115,4 +115,65 @@ public class DtPropuesta {
 	public void setColaboraciones(ArrayList<DtColaboracion> colaboraciones) {
 		this.colaboraciones = colaboraciones;
 	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
+	}
+
+	public void setMontoNecesario(float montoNecesario) {
+		this.montoNecesario = montoNecesario;
+	}
+
+	public void setFechaPublicacion(GregorianCalendar fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
+	}
+
+	public void setFechaEspecatulo(GregorianCalendar fechaEspecatulo) {
+		this.fechaEspecatulo = fechaEspecatulo;
+	}
+
+	public void setLugar(String lugar) {
+		this.lugar = lugar;
+	}
+
+	public void setPrecioEntrada(float precioEntrada) {
+		this.precioEntrada = precioEntrada;
+	}
+
+	public void setTipo(TipoRetorno tipo) {
+		this.tipo = tipo;
+	}
+
+	public void setRecaudado(float recaudado) {
+		this.recaudado = recaudado;
+	}
+
+	public void setEstadoActual(EstadoPropuesta estadoActual) {
+		this.estadoActual = estadoActual;
+	}
+
+	public void setProponenteACargo(DtProponente proponenteACargo) {
+		this.proponenteACargo = proponenteACargo;
+	}
+
+	public void setEstadoHistorial(ArrayList<DtEstado> estadoHistorial) {
+		this.estadoHistorial = estadoHistorial;
+	}
+
+	public void setCategoria(DtCategoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public DtPropuesta() {
+		super();
+	}
+	
 }

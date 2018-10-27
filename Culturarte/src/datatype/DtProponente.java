@@ -24,5 +24,18 @@ public class DtProponente extends DtUsuario {
 	public String getSitioWeb() {
 		return sitioWeb;
 	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	public void setBiografia(String biografia) {
+		this.biografia = biografia;
+	}
+	public void setSitioWeb(String sitioWeb) {
+		this.sitioWeb = sitioWeb;
+	}
+	public DtProponente(String nickname, String nombre, String apellido, String email, char[] password,
+			GregorianCalendar fechaNacimiento, byte[] imagen) {
+		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
+	}
 	
 }

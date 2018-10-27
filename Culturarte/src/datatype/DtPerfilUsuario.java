@@ -66,10 +66,47 @@ public class DtPerfilUsuario extends DtUsuario{
 	public ArrayList<DtColaboracion> getColaboracionesHechas() {
 		return colaboracionesHechas;
 	}
-	
-	
 
-	
+	public void setSeguidoresProponentes(ArrayList<DtProponente> seguidoresProponentes) {
+		this.seguidoresProponentes = seguidoresProponentes;
+	}
+
+	public void setSeguidoresColaboradores(ArrayList<DtColaborador> seguidoresColaboradores) {
+		this.seguidoresColaboradores = seguidoresColaboradores;
+	}
+
+	public void setSeguidosProponentes(ArrayList<DtProponente> seguidosProponentes) {
+		this.seguidosProponentes = seguidosProponentes;
+	}
+
+	public void setSeguidosColaboradores(ArrayList<DtColaborador> seguidosColaboradores) {
+		this.seguidosColaboradores = seguidosColaboradores;
+	}
+
+	public void setPropuestasFavoritas(ArrayList<DtPropuesta> propuestasFavoritas) {
+		this.propuestasFavoritas = propuestasFavoritas;
+	}
+
+	public void setPropuestasPublicadas(ArrayList<DtPropuesta> propuestasPublicadas) {
+		this.propuestasPublicadas = propuestasPublicadas;
+	}
+
+	public void setPropuestasCreadas(ArrayList<DtPropuesta> propuestasCreadas) {
+		this.propuestasCreadas = propuestasCreadas;
+	}
+
+	public void setPropuestasColaboradas(ArrayList<DtPropuestaColaborada> propuestasColaboradas) {
+		this.propuestasColaboradas = propuestasColaboradas;
+	}
+
+	public void setColaboracionesHechas(ArrayList<DtColaboracion> colaboracionesHechas) {
+		this.colaboracionesHechas = colaboracionesHechas;
+	}
+
+	public DtPerfilUsuario(String nickname, String nombre, String apellido, String email, char[] password,
+			GregorianCalendar fechaNacimiento, byte[] imagen) {
+		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
+	}
 	
 	
 

@@ -19,24 +19,58 @@ public class DtPropuestaColaborada {
 		this.proponenteACargo = proponenteACargo;
 		this.estadoActual = estadoActual;
 	}
-	public String getTitulo() {
-		return titulo;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public byte[] getImagen() {
-		return imagen;
-	}
-	public double getMontoAportado() {
-		return montoAportado;
-	}
-	public DtProponente getProponenteACargo() {
-		return proponenteACargo;
-	}
-	public EstadoPropuesta getEstadoActual() {
-		return estadoActual;
-	}
-	   
+
+public String getTitulo() {
+	return titulo;
+}
+
+public void setTitulo(String titulo) {
+	this.titulo = titulo;
+}
+
+public String getDescripcion() {
+	return descripcion;
+}
+
+public void setDescripcion(String descripcion) {
+	this.descripcion = descripcion;
+}
+
+public byte[] getImagen() {
+	return imagen;
+}
+
+public void setImagen(byte[] imagen) {
+	this.imagen = imagen;
+}
+
+public double getMontoAportado() {
+	return montoAportado;
+}
+
+public void setMontoAportado(double montoAportado) {
+	this.montoAportado = montoAportado;
+}
+
+public DtProponente getProponenteACargo() {
+	return proponenteACargo;
+}
+
+public void setProponenteACargo(DtProponente proponenteACargo) {
+	this.proponenteACargo = proponenteACargo;
+}
+
+public EstadoPropuesta getEstadoActual() {
+	return estadoActual;
+}
+
+public void setEstadoActual(EstadoPropuesta estadoActual) {
+	this.estadoActual = estadoActual;
+}
+
+public DtPropuestaColaborada() {
+	super();
+}
+	
 	   
 }
