@@ -53,6 +53,7 @@ import logica.Factory;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
+import publicadores.ControladorCategoriaPublish;
 import publicadores.ControladorUsuarioPublish;
 
 public class Principal {
@@ -110,7 +111,9 @@ public class Principal {
 		
 		// Levantar los Web Services
 		ControladorUsuarioPublish CUP = new ControladorUsuarioPublish();
+		ControladorCategoriaPublish CCP = new ControladorCategoriaPublish();
 		CUP.publicar();
+		CCP.publicar();
  
         Factory factory = Factory.getInstance();
         IUC = factory.getIUsuarioController();
