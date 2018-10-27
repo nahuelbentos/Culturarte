@@ -54,48 +54,22 @@ public class ControladorUsuarioPublish {
 	//LOS MÉTODOS QUE VAMOS A PUBLICAR
 	@WebMethod
 	public DtUsuario iniciarSesion(String nickname, char[] password) throws UsuarioNoExisteElUsuarioException{
-		DtUsuario dtU = null;
-		try {
-			dtU = IUC.iniciarSesion(nickname, password);
-		} catch (UsuarioNoExisteElUsuarioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dtU;
+		return IUC.iniciarSesion(nickname, password);
 	}
 	
 	@WebMethod
 	public void agregarUsuario(DtUsuario dtNuevoUsuario) throws UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException{
-		try {
-			IUC.agregarUsuario(dtNuevoUsuario);
-		} catch (UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		IUC.agregarUsuario(dtNuevoUsuario);
 	}
 
 	@WebMethod
 	public DtUsuario verPerfilUsuario(String nickname) throws UsuarioNoExisteElUsuarioException {
-		DtUsuario dtU = null;
-		try {
-			dtU = IUC.verPerfilUsuario(nickname);
-		} catch (UsuarioNoExisteElUsuarioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dtU;
+		return IUC.verPerfilUsuario(nickname);
 	}
 
 	@WebMethod
 	public DtColaboracion listarColaboracion(String titulo, String nickname) throws ColaboracionNoExisteException {
-		DtColaboracion dtC = null;
-		try {
-			dtC = IUC.listarColaboracion(titulo, nickname);
-		} catch (ColaboracionNoExisteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dtC;
+		return IUC.listarColaboracion(titulo, nickname);
 	}
 
 	@WebMethod
@@ -115,14 +89,7 @@ public class ControladorUsuarioPublish {
 
 	@WebMethod
 	public DtUsuario[] listarProponentes() throws ProponenteNoExisteException {
-		DtUsuario[] props = null;
-		try {
-			props = IUC.listarProponentes();
-		} catch (ProponenteNoExisteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return props;
+		return IUC.listarProponentes();
 	}
 
 	@WebMethod
@@ -132,12 +99,7 @@ public class ControladorUsuarioPublish {
 
 	@WebMethod
 	public void seguirUsuario(String nicknameUno, String nicknameDos) throws UsuarioYaSigueAlUsuarioException {
-		try {
-			IUC.seguirUsuario(nicknameUno, nicknameDos);
-		} catch (UsuarioYaSigueAlUsuarioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		IUC.seguirUsuario(nicknameUno, nicknameDos);
 	}
 
 	@WebMethod
@@ -147,14 +109,7 @@ public class ControladorUsuarioPublish {
 
 	@WebMethod
 	public DtUsuario[] listarColaboradores() throws ColaboradorNoExisteException {
-		DtUsuario[] colabs = null;
-		try {
-			colabs = IUC.listarColaboradores();
-		} catch (ColaboradorNoExisteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return colabs;
+		return IUC.listarColaboradores();
 	}
 	
 	@WebMethod
@@ -169,12 +124,7 @@ public class ControladorUsuarioPublish {
 
 	@WebMethod
 	public void agregarComentarioAPropuesta(String comentario, String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
-		try {
-			IUC.agregarComentarioAPropuesta(comentario, titulo, usuarioLogueado);
-		} catch (UsuarioSinLoguearseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		IUC.agregarComentarioAPropuesta(comentario, titulo, usuarioLogueado);
 	}
 	
 	@WebMethod
