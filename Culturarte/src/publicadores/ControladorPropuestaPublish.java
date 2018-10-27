@@ -118,55 +118,65 @@ public class ControladorPropuestaPublish {
 	}
 
 	@WebMethod
-	public  void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException{
+	public void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException{
+		IPC.evaluarPropuesta(titulo, estado);
 	}
 	
 	@WebMethod
 	public  DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws PropuestaNoExisteException{
-		return null;
-		
+		return IPC.listarPropuestasProponentePorEstado(nicknameProponente, estado);
 	}
 
 	@WebMethod
-	public  DtPropuestaMinificado[] listarPropuestasActivas(){
-		return null;
-		
+	public DtPropuestaMinificado[] listarPropuestasActivas(){
+		return IPC.listarPropuestasActivas();
 	}
 	
 	@WebMethod
-	public  void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException{
-		
+	public void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException{
+		IPC.agregarFavorita(titulo, usuarioLogueado);
 	}
 
 	@WebMethod
-	public  void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException{
-		
+	public void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException{
+		IPC.extenderFinanciacion(tituloPropuesta);
 	}
 
 	@WebMethod
 	void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException{
-		
+		IPC.cancelarPropuesta(tituloPropuesta);
 	}
 	
-	@WebMethod
-	public  void borrarPropuestas(){
-		
+	@WebMethod(exclude = true)
+	public void borrarPropuestas(){
+		IPC.borrarPropuestas();
 	} // Para la carga de datos.
 
 	@WebMethod
-	public  void setearEstadosPropuests(String estado, String propuesta, String fechaCambio) throws ParseException{
-		
+	public void setearEstadosPropuests(String estado, String propuesta, String fechaCambio) throws ParseException{
+		IPC.setearEstadosPropuests(estado, propuesta, fechaCambio);
 	} // Para la carga de datos.
 	
 	@WebMethod
-	public  void borrarEstadosPropuestas(){
-		
+	public void borrarEstadosPropuestas(){
+		IPC.borrarEstadosPropuestas();
 	} // Para la carga de datos.
 	
 	@WebMethod
-	public  ArrayList<DtPropuesta> listarPropuestasPorCategoria(String nombreCat){
-		return null;
+	public DtPropuesta[] listarPropuestasPorCategoria(String nombreCat){
+		ArrayList<DtPropuesta> props = IPC.listarPropuestasPorCategoria(nombreCat);
+		DtPropuesta[] dtProps = null;
 		
+		if (props.size() > 0) {
+			dtProps = new DtPropuesta[props.size()];
+			int i = 0;
+			for(DtPropuesta dtP: props) {
+				dtProps[i] = dtP;
+				i++;
+			}
+		}
+		
+		return dtProps;
 	}
 	
 	//funciones para el inicio de la aplicacion web
