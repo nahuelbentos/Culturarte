@@ -41,7 +41,7 @@ public class ControladorPropuestaPublish {
 
 	@WebMethod(exclude = true)
 	public void publicar() {
-		String direccion = "http://127.0.0.1:1234/controladorUsuario";
+		String direccion = "http://127.0.0.1:1234/controladorPropuesta";
 //		System.out.println(direccion);
 		endpoint = Endpoint.publish(direccion, this);
 	}
