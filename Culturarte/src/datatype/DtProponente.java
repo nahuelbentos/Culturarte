@@ -33,9 +33,8 @@ public class DtProponente extends DtUsuario {
 	public void setSitioWeb(String sitioWeb) {
 		this.sitioWeb = sitioWeb;
 	}
-	public DtProponente(String nickname, String nombre, String apellido, String email, char[] password,
-			GregorianCalendar fechaNacimiento, byte[] imagen) {
-		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
+	public DtProponente() {
+		super();
 	}
 	
 }
