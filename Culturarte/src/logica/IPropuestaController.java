@@ -40,7 +40,8 @@ public interface IPropuestaController {
 	public abstract DtPropuesta[] listarPropuestasExistentes();
 	
 	// Falta crear el DtDatosPropuesta
-	public DtDatosPropuesta consultarPropuesta(String titulo);
+	
+	public abstract DtDatosPropuesta consultarPropuesta(String titulo);
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException;
 	
@@ -58,7 +59,7 @@ public interface IPropuestaController {
 
 	public abstract void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException;
 
-	void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException;
+	public abstract void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException;
 	
 	public abstract void borrarPropuestas(); // Para la carga de datos.
 
