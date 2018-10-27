@@ -11,31 +11,20 @@ import javax.jws.soap.SOAPBinding.Style;
 import javax.xml.ws.Endpoint;
 
 import datatype.DtColaboracion;
-import datatype.DtColaborador;
 import datatype.DtDatosPropuesta;
-import datatype.DtPerfilColaborador;
-import datatype.DtPerfilProponente;
-import datatype.DtPerfilUsuario;
-import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
-import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
-import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
-import excepciones.UsuarioYaExisteElEmailException;
-import excepciones.UsuarioYaExisteElUsuarioException;
-import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.Factory;
 import logica.IPropuestaController;
-import logica.IUsuarioController;
 
 
 @WebService
@@ -81,19 +70,19 @@ public class ControladorPropuestaPublish {
 	
 	@WebMethod
 	public  DtPropuesta seleccionarPropuesta(String titulo) {
-		return null;
+		return IPC.seleccionarPropuesta(titulo);
 		
 	}
 	
 	@WebMethod
 	public  boolean modificarPropuesta(DtPropuesta dtPropuesta) {
-		return false;
+		return IPC.modificarPropuesta(dtPropuesta);
 		
 	}
 	
 	@WebMethod
 	public  DtColaboracion[] listarColaboraciones(String titulo) {
-		return null;
+		return IPC.listarColaboraciones(titulo);
 		
 	}
 	
@@ -101,37 +90,35 @@ public class ControladorPropuestaPublish {
 	//public  DtEstadoPropuesta[] listarEstadosDePropuestas();
 	@WebMethod
 	public  DtPropuesta[] listarPropuestasExistentes() {
-		return null;
+		return IPC.listarPropuestasExistentes();
 		
 	}
 	
 	// Falta crear el DtDatosPropuesta
 	@WebMethod
 	public DtDatosPropuesta consultarPropuesta(String titulo){
-		return null;
+		return IPC.consultarPropuesta(titulo);
 		
 	}
 	
 	@WebMethod
 	public  DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException{
-		return null;
+		return IPC.listarPropuestasPorEstado(estadoPropuesta);
 		
 	}
 	
 	@WebMethod
 	public  void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException{
-		
+		IPC.generarColaboracion(colaboracion);
 	}
 	
 	@WebMethod
 	public  DtPropuestaMinificado[] listadoPropuestasIngresadas() throws PropuestaNoExisteException{
-		return null;
-		
+		return IPC.listadoPropuestasIngresadas();
 	}
 
 	@WebMethod
 	public  void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException{
-		
 	}
 	
 	@WebMethod
@@ -185,13 +172,11 @@ public class ControladorPropuestaPublish {
 	//funciones para el inicio de la aplicacion web
 	@WebMethod
 	public  DtPropuesta[] getPropuestasPopulares(){
-		return null;
-		
+		return IPC.getPropuestasPopulares();		
 	}
 
 	@WebMethod
 	public  DtPropuestaMinificado[] propuestasDesdeBuscador(String buscar){
-		return null;
-		
+		return IPC.propuestasDesdeBuscador(buscar);		
 	}
 }
