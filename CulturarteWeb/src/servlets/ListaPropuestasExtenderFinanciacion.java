@@ -7,14 +7,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.rpc.ServiceException;
 
-import datatype.DtProponente;
-import datatype.DtPropuestaMinificado;
-import datatype.DtUsuario;
-import datatype.EstadoPropuesta;
-import excepciones.PropuestaNoExisteException;
-import logica.Factory;
-import logica.IPropuestaController;
+import publicadores.DtUsuario;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
 
 @WebServlet("/ListaPropuestasExtenderFinanciacion")
 @MultipartConfig
@@ -28,30 +26,36 @@ public class ListaPropuestasExtenderFinanciacion extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		Factory fab = Factory.getInstance();
-		IPropuestaController IPC = fab.getIPropuestaController();
-		
-		DtUsuario user = (DtUsuario) request.getSession().getAttribute("usuarioLogueado");
-		if (user instanceof DtProponente) {
-			try {
-				DtPropuestaMinificado[] publicadas = IPC.listarPropuestasProponentePorEstado(user.getNickname(), EstadoPropuesta.publicada);
-				request.setAttribute("propuestasPublicadas", publicadas);
-			} catch (PropuestaNoExisteException e) {
-				request.setAttribute("mensaje", e);
-			}
+		ControladorPropuestaPublishService cps = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish cpp;
+		try {
+			cpp = cps.getControladorPropuestaPublishPort();
 			
-			try {
-				DtPropuestaMinificado[] enFinanciacion = IPC.listarPropuestasProponentePorEstado(user.getNickname(), EstadoPropuesta.enFinanciacion);
-				request.setAttribute("propuestasEnFinanciacion", enFinanciacion);
-			} catch (PropuestaNoExisteException e) {
-				request.setAttribute("mensaje", e);
+			DtUsuario user = (DtUsuario) request.getSession().getAttribute("usuarioLogueado");
+			if (user instanceof publicadores.DtProponente) {
+				try {
+					publicadores.DtPropuestaMinificado[] publicadas = cpp.listarPropuestasProponentePorEstado(user.getNickname(), publicadores.EstadoPropuesta.publicada);
+					request.setAttribute("propuestasPublicadas", publicadas);
+				} catch (publicadores.PropuestaNoExisteException e) {
+					request.setAttribute("mensaje", e);
+				}
+				
+				try {
+					publicadores.DtPropuestaMinificado[] enFinanciacion = cpp.listarPropuestasProponentePorEstado(user.getNickname(), publicadores.EstadoPropuesta.enFinanciacion);
+					request.setAttribute("propuestasEnFinanciacion", enFinanciacion);
+				} catch (publicadores.PropuestaNoExisteException e) {
+					request.setAttribute("mensaje", e);
+				}
+			} else {
+				request.setAttribute("mensaje", "Debe iniciar sesión como proponente para poder extender la financiación de una propuesta.");
 			}
-		} else {
-			request.setAttribute("mensaje", "Debe iniciar sesión como proponente para poder extender la financiación de una propuesta.");
-		}
+			request.getRequestDispatcher("/Propuesta/extenderFinanciacion.jsp").forward(request, response);
 		
-		request.getRequestDispatcher("/Propuesta/extenderFinanciacion.jsp").forward(request, response);
-	}
+		} catch (ServiceException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

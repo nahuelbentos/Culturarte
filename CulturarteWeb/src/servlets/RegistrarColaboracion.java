@@ -3,22 +3,19 @@ package servlets;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.rpc.ServiceException;
 
-import datatype.DtColaboracion;
-import datatype.DtUsuario;
-import datatype.TipoRetorno;
+import publicadores.DtUsuario;
 import datatypeJee.DtPropuestaWeb;
-import excepciones.ColaboracionExistenteException;
-import excepciones.ColaboradorNoExisteException;
-import excepciones.PropuestaNoExisteException;
-import logica.Factory;
-import logica.IPropuestaController;
+import publicadores.TipoRetorno;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
 
 @WebServlet("/RegistrarColaboracion")
 public class RegistrarColaboracion extends HttpServlet {
@@ -50,25 +47,27 @@ public class RegistrarColaboracion extends HttpServlet {
 			
 			String titulo = propWeb.getTitulo();
 			String  montoColaboracion = request.getParameter("montoColaboracion");
-			TipoRetorno tipoRetorno = TipoRetorno.valueOf(request.getParameter("tipoRetorno"));
+			TipoRetorno tipoRetorno = TipoRetorno.fromString(request.getParameter("tipoRetorno"));
 			
-			Factory factory = Factory.getInstance();
-			IPropuestaController IPC = factory.getIPropuestaController();
-			
-			String colaborador = user.getNickname();
-			DtColaboracion dtColaboracion = new DtColaboracion(titulo, colaborador, 
-					Double.parseDouble(montoColaboracion), new GregorianCalendar(), 
-					tipoRetorno);
-			
+			ControladorPropuestaPublishService cps = new ControladorPropuestaPublishServiceLocator();
+			ControladorPropuestaPublish cpp;
 			try {
-				IPC.generarColaboracion(dtColaboracion );
-				request.getSession().setAttribute("mensaje", "Se registro con exito la colaboracion");
-			} catch (ColaboradorNoExisteException | PropuestaNoExisteException
-					| ColaboracionExistenteException e) {
-				request.getSession().setAttribute("mensaje", "Ocurrio un error");
+				cpp = cps.getControladorPropuestaPublishPort();
+				String colaborador = user.getNickname();
+				publicadores.DtColaboracion dtColaboracion = new publicadores.DtColaboracion(colaborador, new GregorianCalendar(), 
+						Double.parseDouble(montoColaboracion), tipoRetorno, titulo);			
+				try {
+					cpp.generarColaboracion(dtColaboracion);
+					request.getSession().setAttribute("mensaje", "Se registro con exito la colaboracion");
+				} catch (publicadores.ColaboradorNoExisteException | publicadores.PropuestaNoExisteException
+						| publicadores.ColaboracionExistenteException e) {
+					request.getSession().setAttribute("mensaje", "Ocurrio un error");
+				}
+				response.sendRedirect("/CulturarteWeb/ExplorarPropuestas");
+			} catch (ServiceException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			response.sendRedirect("/CulturarteWeb/ExplorarPropuestas");
-				
 		} else if (boton.equals("cancelar")) {
 			response.sendRedirect("/CulturarteWeb/ExplorarPropuestas");
 		}
