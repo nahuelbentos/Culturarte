@@ -22,6 +22,8 @@ public class DtUsuario  implements java.io.Serializable {
 
     private org.apache.axis.types.UnsignedShort[] password;
 
+    private java.lang.String passwordStr;
+
     private java.lang.String[] tituloFavoritas;
 
     private java.lang.String[] usuarioSeguidos;
@@ -37,6 +39,7 @@ public class DtUsuario  implements java.io.Serializable {
            java.lang.String nickname,
            java.lang.String nombre,
            org.apache.axis.types.UnsignedShort[] password,
+           java.lang.String passwordStr,
            java.lang.String[] tituloFavoritas,
            java.lang.String[] usuarioSeguidos) {
            this.apellido = apellido;
@@ -46,6 +49,7 @@ public class DtUsuario  implements java.io.Serializable {
            this.nickname = nickname;
            this.nombre = nombre;
            this.password = password;
+           this.passwordStr = passwordStr;
            this.tituloFavoritas = tituloFavoritas;
            this.usuarioSeguidos = usuarioSeguidos;
     }
@@ -200,6 +204,26 @@ public class DtUsuario  implements java.io.Serializable {
 
 
     /**
+     * Gets the passwordStr value for this DtUsuario.
+     * 
+     * @return passwordStr
+     */
+    public java.lang.String getPasswordStr() {
+        return passwordStr;
+    }
+
+
+    /**
+     * Sets the passwordStr value for this DtUsuario.
+     * 
+     * @param passwordStr
+     */
+    public void setPasswordStr(java.lang.String passwordStr) {
+        this.passwordStr = passwordStr;
+    }
+
+
+    /**
      * Gets the tituloFavoritas value for this DtUsuario.
      * 
      * @return tituloFavoritas
@@ -287,6 +311,9 @@ public class DtUsuario  implements java.io.Serializable {
             ((this.password==null && other.getPassword()==null) || 
              (this.password!=null &&
               java.util.Arrays.equals(this.password, other.getPassword()))) &&
+            ((this.passwordStr==null && other.getPasswordStr()==null) || 
+             (this.passwordStr!=null &&
+              this.passwordStr.equals(other.getPasswordStr()))) &&
             ((this.tituloFavoritas==null && other.getTituloFavoritas()==null) || 
              (this.tituloFavoritas!=null &&
               java.util.Arrays.equals(this.tituloFavoritas, other.getTituloFavoritas()))) &&
@@ -340,6 +367,9 @@ public class DtUsuario  implements java.io.Serializable {
                     _hashCode += obj.hashCode();
                 }
             }
+        }
+        if (getPasswordStr() != null) {
+            _hashCode += getPasswordStr().hashCode();
         }
         if (getTituloFavoritas() != null) {
             for (int i=0;
@@ -422,6 +452,13 @@ public class DtUsuario  implements java.io.Serializable {
         elemField.setMinOccurs(0);
         elemField.setNillable(true);
         elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("passwordStr");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "passwordStr"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("tituloFavoritas");
