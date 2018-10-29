@@ -21,6 +21,7 @@ public class DtPerfilColaborador  extends publicadores.DtUsuario  implements jav
            java.lang.String nickname,
            java.lang.String nombre,
            org.apache.axis.types.UnsignedShort[] password,
+           java.lang.String passwordStr,
            java.lang.String[] tituloFavoritas,
            java.lang.String[] usuarioSeguidos,
            publicadores.DtPropuestaColaborada[] colaboracionesHechas) {
@@ -32,6 +33,7 @@ public class DtPerfilColaborador  extends publicadores.DtUsuario  implements jav
             nickname,
             nombre,
             password,
+            passwordStr,
             tituloFavoritas,
             usuarioSeguidos);
         this.colaboracionesHechas = colaboracionesHechas;

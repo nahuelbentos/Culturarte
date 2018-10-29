@@ -16,14 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import datatype.DtColaborador;
-import datatype.DtProponente;
-import datatype.DtUsuario;
+import publicadores.ControladorUsuarioPublish;
+import publicadores.ControladorUsuarioPublishService;
+import publicadores.ControladorUsuarioPublishServiceLocator;
+import publicadores.DtColaborador;
+import publicadores.DtProponente;
+import publicadores.DtUsuario;
 import datatypeJee.TipoUsuario;
-import excepciones.UsuarioYaExisteElEmailException;
-import excepciones.UsuarioYaExisteElUsuarioException;
-import logica.Factory;
-import logica.IUsuarioController;
+import publicadores.UsuarioYaExisteElEmailException;
+import publicadores.UsuarioYaExisteElUsuarioException;
 
 @WebServlet("/AltaPerfil")
 @MultipartConfig
@@ -74,22 +75,39 @@ public class AltaPerfil extends HttpServlet {
 			byte[] imagen = new byte[(int) file.getSize()];
 	    	file.getInputStream().read(imagen);
 	    	
-			Factory factory = Factory.getInstance();
-			IUsuarioController IUC = factory.getIUsuarioController();
+//			Factory factory = Factory.getInstance();
+//			IUsuarioController IUC = factory.getIUsuarioController();
 
 			DtUsuario dtUsuario = null;
 			
 			if ("proponente".equals(tipoUsuario) || "colaborador".equals(tipoUsuario)) {
 				if ("proponente".equals(tipoUsuario)) {
-					dtUsuario = new DtProponente(nickname, nombre, apellido, email, password, fecha, 
-							imagen, direccion, biografia, sitioWeb);
+					dtUsuario = new DtProponente();
+					dtUsuario.setNickname(nickname);
+					dtUsuario.setNombre(nombre);
+					dtUsuario.setApellido(apellido);
+					dtUsuario.setEmail(email);
+					dtUsuario.setPasswordStr(password.toString());
+					dtUsuario.setFechaNacimiento(fecha);
+					dtUsuario.setImagen(imagen);
+					((DtProponente) dtUsuario).setDireccion(direccion);
+					((DtProponente) dtUsuario).setBiografia(biografia);
+					((DtProponente) dtUsuario).setSitioWeb(sitioWeb);
 				} else if ("colaborador".equals(tipoUsuario)) {
-					dtUsuario = new DtColaborador(nickname, nombre, apellido, email, confirmarPassword, 
-							fecha, imagen);
+					dtUsuario = new DtColaborador();
+					dtUsuario.setNickname(nickname);
+					dtUsuario.setNombre(nombre);
+					dtUsuario.setApellido(apellido);
+					dtUsuario.setEmail(email);
+					dtUsuario.setPasswordStr(password.toString());
+					dtUsuario.setFechaNacimiento(fecha);
+					dtUsuario.setImagen(imagen);
 				}
 				if (Arrays.equals(password, confirmarPassword)) {
 					try {
-						IUC.agregarUsuario(dtUsuario);
+						System.out.println("agregamos por ws");
+						this.agregarUsuario(dtUsuario);
+						System.out.println("volvemos del ws");
 						HttpSession session = request.getSession();
 						session.setAttribute("usuarioLogueado", dtUsuario);
 						
@@ -105,6 +123,9 @@ public class AltaPerfil extends HttpServlet {
 					} catch (UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException e) {
 						request.setAttribute("mensaje", "Ya existe el nickname o el email");
 						request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
+					} catch (Exception e1) {
+						request.setAttribute("mensaje", e1.getMessage());
+						request.getRequestDispatcher("/registrarseForm.jsp").forward(request, response);
 					}
 				} else {
 					request.setAttribute("mensaje", "Las passwords no coinciden");
@@ -119,5 +140,12 @@ public class AltaPerfil extends HttpServlet {
 			rd = request.getRequestDispatcher("/index.jsp");
 			rd.forward(request, response);
 		}
+	}
+	
+	//OPERACIÓN CONSUMIDA
+	private void agregarUsuario(DtUsuario dtUsuario) throws Exception {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		port.agregarUsuario(dtUsuario);
 	}
 }

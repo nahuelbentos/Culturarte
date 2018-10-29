@@ -9,5 +9,8 @@ public class DtColaborador extends DtUsuario {
 		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
 	}
 	
+	public DtColaborador() {
+		super();
+	}
 	
 }

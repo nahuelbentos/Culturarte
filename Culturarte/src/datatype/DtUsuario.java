@@ -11,6 +11,7 @@ public class DtUsuario {
 	private String apellido;
 	private String email;
 	private char[] password;
+	private String passwordStr;
 	private GregorianCalendar fechaNacimiento;
 	private byte[] imagen;
 	
@@ -78,6 +79,7 @@ public class DtUsuario {
 	public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
+	
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
 	}
@@ -88,6 +90,14 @@ public class DtUsuario {
 	
 	public void setTituloFavoritas(List<String> tituloFavoritas) {
 		this.tituloFavoritas = tituloFavoritas;
+	}
+	
+	public String getPasswordStr() {
+		return passwordStr;
+	}
+	
+	public void setPasswordStr(String passwordStr) {
+		this.passwordStr = passwordStr;
 	}
 	
 	public void addTituloFavoritas(String tituloFavorita) {
@@ -105,6 +115,7 @@ public class DtUsuario {
 	public void addUsuarioSeguido(String usuarioASeguir) {
 		this.usuarioSeguidos.add(usuarioASeguir);
 	}
+	
 	public void removeUsuarioSeguido(String usuarioASeguir) {
 		this.usuarioSeguidos.remove(usuarioASeguir);
 	}
@@ -112,4 +123,5 @@ public class DtUsuario {
 	public boolean isMemberUsuarioSeguidos(String usuarioASeguir) {
 		return this.usuarioSeguidos.contains(usuarioASeguir);
 	}
+	
 }
