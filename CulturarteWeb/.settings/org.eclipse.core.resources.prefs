@@ -1,8 +1,13 @@
 eclipse.preferences.version=1
 encoding//src/publicadores/CategoriaNoExisteException.java=UTF-8
+encoding//src/publicadores/CategoriaYaExisteException.java=UTF-8
 encoding//src/publicadores/ColaboracionExistenteException.java=UTF-8
 encoding//src/publicadores/ColaboracionNoExisteException.java=UTF-8
 encoding//src/publicadores/ColaboradorNoExisteException.java=UTF-8
+encoding//src/publicadores/ControladorCategoriaPublish.java=UTF-8
+encoding//src/publicadores/ControladorCategoriaPublishPortBindingStub.java=UTF-8
+encoding//src/publicadores/ControladorCategoriaPublishService.java=UTF-8
+encoding//src/publicadores/ControladorCategoriaPublishServiceLocator.java=UTF-8
 encoding//src/publicadores/ControladorPropuestaPublish.java=UTF-8
 encoding//src/publicadores/ControladorPropuestaPublishPortBindingStub.java=UTF-8
 encoding//src/publicadores/ControladorPropuestaPublishService.java=UTF-8

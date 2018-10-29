@@ -13,12 +13,15 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import datatype.DtProponente;
-import datatype.DtUsuario;
+import publicadores.ControladorUsuarioPublish;
+import publicadores.ControladorUsuarioPublishService;
+import publicadores.ControladorUsuarioPublishServiceLocator;
+import publicadores.DtProponente;
+import publicadores.DtUsuario;
 import datatypeJee.TipoUsuario;
-import excepciones.UsuarioNoExisteElUsuarioException;
-import logica.Factory;
-import logica.IUsuarioController;
+import publicadores.UsuarioNoExisteElUsuarioException;
+//import logica.Factory;
+//import logica.IUsuarioController;
 
 /**
  * Servlet implementation class IniciarSesion
@@ -52,10 +55,11 @@ public class ManejoSesion extends HttpServlet {
 			String usuario = request.getParameter("usuario");
 			char[] password = request.getParameter("password").toCharArray();
 			
-			Factory factory = Factory.getInstance();
-			IUsuarioController iUsuCon = factory.getIUsuarioController();
+			ControladorUsuarioPublishService cppsl = new ControladorUsuarioPublishServiceLocator();
+			ControladorUsuarioPublish ccp = cppsl.getControladorUsuarioPublishPort();
+			
 			try {
-				DtUsuario usuarioLogueado = iUsuCon.iniciarSesion(usuario, password);
+				DtUsuario usuarioLogueado = ccp.iniciarSesion(usuario, password);
 				
 				if (Arrays.equals(usuarioLogueado.getPassword(), password)) {
 					HttpSession session = request.getSession();

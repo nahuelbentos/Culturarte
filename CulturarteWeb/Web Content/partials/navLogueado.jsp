@@ -1,4 +1,4 @@
-<%@page import="datatype.DtUsuario"%>
+<%@page import="publicadores.DtUsuario"%>
 <%@page import="datatypeJee.TipoUsuario"%>
 <% 
 DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado"); 
