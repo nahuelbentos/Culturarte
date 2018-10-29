@@ -105,8 +105,9 @@ public class AltaPerfil extends HttpServlet {
 				}
 				if (Arrays.equals(password, confirmarPassword)) {
 					try {
+						System.out.println("agregamos por ws");
 						this.agregarUsuario(dtUsuario);
-						
+						System.out.println("volvemos del ws");
 						HttpSession session = request.getSession();
 						session.setAttribute("usuarioLogueado", dtUsuario);
 						
