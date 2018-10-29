@@ -18,6 +18,7 @@ import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtProponente;
 import publicadores.DtUsuario;
+import datatypeJee.DtUsuarioWeb;
 import datatypeJee.TipoUsuario;
 import publicadores.UsuarioNoExisteElUsuarioException;
 //import logica.Factory;

@@ -2,7 +2,9 @@ package datatypeJee;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -22,6 +24,24 @@ public class DtUsuarioWeb {
 	private String direccion;
 	private String biografia;
 	private String sitioWeb;
+
+	//pseudoatributos del usuario logueado
+	private List<String> tituloFavoritas;
+	private List<String> usuarioSeguidos;
+	
+	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, char[] password, 
+			GregorianCalendar fechaNacimiento, byte[] imagen) {
+		super();
+		this.nickname = nickname;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.email = email;
+		this.password = password;
+		this.fechaNacimiento = fechaNacimiento;
+		this.imagen = imagen;
+		this.tituloFavoritas = new ArrayList<String>();
+		this.usuarioSeguidos = new ArrayList<String>();
+	}
 	
 	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, char[] password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, TipoUsuario tipoUsuario, String direccion,
@@ -97,5 +117,32 @@ public class DtUsuarioWeb {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
 		
 		return sdf.format(this.fechaNacimiento.getTime());
+	}
+
+	public void setTituloFavoritas(List<String> tituloFavoritas) {
+		this.tituloFavoritas = tituloFavoritas;
+	}
+	
+	public void addTituloFavoritas(String tituloFavorita) {
+		this.tituloFavoritas.add(tituloFavorita);
+	}
+	
+	public boolean isMemberTituloFavorita(String tituloFavorita) {
+		return this.tituloFavoritas.contains(tituloFavorita);
+	}
+
+	public void setUsuarioSeguidos(List<String> usuarioSeguidos) {
+		this.usuarioSeguidos = usuarioSeguidos;
+	}
+	
+	public void addUsuarioSeguido(String usuarioASeguir) {
+		this.usuarioSeguidos.add(usuarioASeguir);
+	}
+	public void removeUsuarioSeguido(String usuarioASeguir) {
+		this.usuarioSeguidos.remove(usuarioASeguir);
+	}
+	
+	public boolean isMemberUsuarioSeguidos(String usuarioASeguir) {
+		return this.usuarioSeguidos.contains(usuarioASeguir);
 	}
 }

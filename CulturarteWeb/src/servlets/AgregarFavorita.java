@@ -9,14 +9,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.rpc.ServiceException;
 
-import datatype.DtUsuario;
+import datatypeJee.DtUsuarioWeb;
 import datatypeJee.msjUI.DtMensajeUI;
 import datatypeJee.msjUI.TipoMensaje;
-import excepciones.UsuarioSinLoguearseException;
-import excepciones.UsuarioYaExisteFavoritaException;
-import logica.Factory;
-import logica.IPropuestaController;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
+import publicadores.DtUsuario;
+import publicadores.UsuarioSinLoguearseException;
+
+//import datatype.DtUsuario;
+//import excepciones.UsuarioSinLoguearseException;
+//import excepciones.UsuarioYaExisteFavoritaException;
+
+//import logica.Factory;
+//import logica.IPropuestaController;
 
 /**
  * Servlet implementation class AgregarFavorita
@@ -41,19 +50,28 @@ public class AgregarFavorita extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		DtUsuario usuarioLogueado = (DtUsuario)session.getAttribute("usuarioLogueado");
+//		DtUsuarioWeb usuarioLogueado = (DtUsuarioWeb)session.getAttribute("usuarioLogueado");
 		
-		Factory factory = Factory.getInstance();
-		IPropuestaController iProCont = factory.getIPropuestaController();
-		
+
+		ControladorPropuestaPublishService cpp = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish port;
 		try {
-			iProCont.agregarFavorita(titulo, usuarioLogueado);
-			//actualizo las favoritas del usuario logueado.
-			usuarioLogueado.addTituloFavoritas(titulo);
-			session.setAttribute("usuarioLogueado", usuarioLogueado);
-		} catch (UsuarioSinLoguearseException e) {
+			port = cpp.getControladorPropuestaPublishPort();
+			try {
+				port.agregarFavorita(titulo, usuarioLogueado);
+				//actualizo las favoritas del usuario logueado.
+//				usuarioLogueado.addTituloFavoritas(titulo);
+				session.setAttribute("usuarioLogueado", usuarioLogueado);
+			} catch (UsuarioSinLoguearseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ServiceException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+		
+		
 		
 		DtMensajeUI mensaje = new DtMensajeUI("Ahora "+titulo+" es una de tus favoritas.", TipoMensaje.informacion);
 		request.setAttribute("mensaje", mensaje);
@@ -72,19 +90,26 @@ public class AgregarFavorita extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		DtUsuario usuarioLogueado = (DtUsuario)session.getAttribute("usuarioLogueado");
-		
-		Factory factory = Factory.getInstance();
-		IPropuestaController iProCont = factory.getIPropuestaController();
-		
+
+		ControladorPropuestaPublishService cpp = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish port;
 		try {
-			iProCont.agregarFavorita(titulo, usuarioLogueado);
-			// le agrego la propuesta a las propuestas favoritas del usuario 
-			// en sesion para no leer de nuevo desde la base
-			usuarioLogueado.addTituloFavoritas(titulo);
-			session.setAttribute("usuarioLogueado", usuarioLogueado);
-		} catch (UsuarioSinLoguearseException e) {
-			e.printStackTrace();
+			port = cpp.getControladorPropuestaPublishPort();
+			try {
+				port.agregarFavorita(titulo, usuarioLogueado);
+				// le agrego la propuesta a las propuestas favoritas del usuario 
+				// en sesion para no leer de nuevo desde la base
+//				usuarioLogueado.addTituloFavoritas(titulo);
+				session.setAttribute("usuarioLogueado", usuarioLogueado);
+			} catch (UsuarioSinLoguearseException e) {
+				e.printStackTrace();
+			}
+		} catch (ServiceException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		
+		
 		
 		response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
