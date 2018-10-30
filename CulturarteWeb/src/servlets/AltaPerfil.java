@@ -87,7 +87,7 @@ public class AltaPerfil extends HttpServlet {
 					dtUsuario.setNombre(nombre);
 					dtUsuario.setApellido(apellido);
 					dtUsuario.setEmail(email);
-					dtUsuario.setPasswordStr(password.toString());
+					dtUsuario.setPasswordString(password.toString());
 					dtUsuario.setFechaNacimiento(fecha);
 					dtUsuario.setImagen(imagen);
 					((DtProponente) dtUsuario).setDireccion(direccion);
@@ -99,7 +99,7 @@ public class AltaPerfil extends HttpServlet {
 					dtUsuario.setNombre(nombre);
 					dtUsuario.setApellido(apellido);
 					dtUsuario.setEmail(email);
-					dtUsuario.setPasswordStr(password.toString());
+					dtUsuario.setPasswordString(password.toString());
 					dtUsuario.setFechaNacimiento(fecha);
 					dtUsuario.setImagen(imagen);
 				}

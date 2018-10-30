@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 <%@page import="publicadores.DtProponente"%>
 <%@page import="publicadores.DtColaborador"%>
 <%@page import="publicadores.DtUsuario"%>
 <%@page import="publicadores.DtPropuesta"%>
+=======
+<%@page import="datatype.DtProponente"%>
+<%@page import="datatype.DtColaborador"%>
+<%@page import="publicadores.DtUsuario"%>
+<%@page import="datatype.DtPropuesta"%>
+>>>>>>> refs/heads/master
 <%@page import="org.apache.tomcat.util.codec.binary.Base64"%>
 <jsp:include page="partials/header.jsp"></jsp:include>
 

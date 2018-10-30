@@ -49,7 +49,7 @@ public class UsuarioController implements IUsuarioController {
 		Usuario usuarioDos = null;
 		
 		/* Le asigno la contraseña de String a char[] porque se rompia el webservice */
-		dtUsuario.setPassword(dtUsuario.getPasswordStr().toCharArray());
+		dtUsuario.setPassword(dtUsuario.getPasswordString().toCharArray());
 		
 		try {
 			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico")

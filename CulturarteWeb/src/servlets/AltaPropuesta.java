@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -14,20 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import javax.xml.rpc.ServiceException;
 
-import datatype.DtCategoria;
-import datatype.DtProponente;
-import datatype.DtPropuesta;
-import datatype.DtUsuario;
-import datatype.EstadoPropuesta;
-import datatype.TipoRetorno;
+import publicadores.DtCategoria;
+import publicadores.DtProponente;
+import publicadores.DtPropuesta;
+import publicadores.DtUsuario;
+import publicadores.EstadoPropuesta;
+import publicadores.TipoRetorno;
 import datatypeJee.msjUI.DtMensajeUI;
 import datatypeJee.msjUI.TipoMensaje;
-import excepciones.CategoriaNoExisteException;
-import excepciones.ProponenteNoExisteException;
-import excepciones.PropuestaRepetidaException;
-import logica.Factory;
-import logica.IPropuestaController;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
 
 @WebServlet("/AltaPropuesta")
 @MultipartConfig
@@ -66,7 +66,7 @@ public class AltaPropuesta extends HttpServlet {
 				}
 				Float precioEntrada = Float.valueOf(request.getParameter("precioEntrada"));
 				Float montoNecesario = Float.valueOf(request.getParameter("montoNecesario"));
-				TipoRetorno tipoRetorno = TipoRetorno.valueOf(request.getParameter("tipoRetorno"));
+				TipoRetorno tipoRetorno = TipoRetorno.fromValue(request.getParameter("tipoRetorno"));
 				
 				/*
 				 * Para obtener Parts en el servlet:
@@ -77,31 +77,46 @@ public class AltaPropuesta extends HttpServlet {
 				byte[] imagen = new byte[(int) file.getSize()];
 		    	file.getInputStream().read(imagen);
 		    	
-				Factory factory = Factory.getInstance();
-				IPropuestaController IPC = factory.getIPropuestaController();
+				DtCategoria dtC = new DtCategoria();
+				dtC.setNombre(categoria);
 				
-				DtCategoria dtC = new DtCategoria(categoria);
+				DtPropuesta dtP = new DtPropuesta();
+				dtP.setTitulo(titulo);
+				dtP.setDescripcion(descripcion);
+				dtP.setImagen(imagen);	
+				dtP.setMontoNecesario(montoNecesario);
+				dtP.setFechaPublicacion(new GregorianCalendar());
+				dtP.setFechaEspecatulo(fecha);
+				dtP.setLugar(lugar);
+				dtP.setPrecioEntrada(precioEntrada);
+				dtP.setTipo(tipoRetorno);
+				dtP.setProponenteACargo(dtProponente);
+				dtP.setEstadoActual(EstadoPropuesta.ingresada);
+				dtP.setCategoria(dtC);
 				
-				DtPropuesta dtP = new DtPropuesta(titulo, descripcion, imagen, montoNecesario, new GregorianCalendar(), fecha, lugar, precioEntrada, tipoRetorno, 0, dtProponente, EstadoPropuesta.ingresada, null, dtC, null);
-				
+				ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
 				try {
-					IPC.altaPropuesta(dtP);;
-					HttpSession session = request.getSession();
-					session.setAttribute("titulo", titulo);
+					ControladorPropuestaPublish cpp = cppsl.getControladorPropuestaPublishPort();
 					
-					DtMensajeUI mensaje = new DtMensajeUI("Propuesta dada de alta correctamente <br> Debe ser evaluada por nuestros especialistas", TipoMensaje.aviso);
-					request.setAttribute("mensaje", mensaje);
-					request.getRequestDispatcher("/VerPropuesta").forward(request, response);
-				}catch (PropuestaRepetidaException e) {
-					request.setAttribute("mensaje", "Ya existe la propuesta");
-					request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
-				}catch (ProponenteNoExisteException e) {
-					request.setAttribute("mensaje", "No existe el proponente");
-					request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
-				}catch (CategoriaNoExisteException e) {
-					request.setAttribute("mensaje", "No existe la categoría");
-					request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
+					try {
+						cpp.altaPropuesta(dtP);
+						
+						HttpSession session = request.getSession();
+						session.setAttribute("titulo", titulo);
+						
+						DtMensajeUI mensaje = new DtMensajeUI("Propuesta dada de alta correctamente <br> Debe ser evaluada por nuestros especialistas", TipoMensaje.aviso);
+						request.setAttribute("mensaje", mensaje);
+						request.getRequestDispatcher("/VerPropuesta").forward(request, response);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+						request.setAttribute("mensaje", "Ocurrió un error al intentar crear la propuesta");
+						request.getRequestDispatcher("/Propuesta/altaDePropuesta.jsp").forward(request, response);
+					}
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				
 			} else if (boton.equals("cancelar")) {
 				RequestDispatcher rd;
 				rd = request.getRequestDispatcher("/index.jsp");

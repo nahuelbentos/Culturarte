@@ -1,8 +1,11 @@
-<%@page import="datatype.DtProponente"%>
-<%@page import="datatype.DtUsuario"%>
-<%@page import="logica.Factory"%>
-<%@page import="logica.ICategoriaController"%>
-<%@page import="datatype.DtCategoria"%>
+<%@page import="publicadores.ControladorCategoriaPublish"%>
+<%@page import="publicadores.ControladorCategoriaPublishServiceLocator"%>
+<%@page import="publicadores.ControladorCategoriaPublishService"%>
+<%@page import="publicadores.DtProponente"%>
+<%@page import="publicadores.DtUsuario"%>
+<%-- <%@page import="logica.Factory"%> --%>
+<%-- <%@page import="logica.ICategoriaController"%> --%>
+<%@page import="publicadores.DtCategoria"%>
 <%@page import="datatype.TipoRetorno"%>
 <%@page import="java.util.Base64"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
@@ -39,9 +42,9 @@
 								<select id="categoria" name="categoria" class="col-sm-9 form-control" required>
 								<option value=""></option>
 									<% 
-									Factory fab = Factory.getInstance();
-									ICategoriaController cc = fab.getICategoriaController();
-									DtCategoria[] dtC = cc.listarCategorias();
+									ControladorCategoriaPublishService cppsl = new ControladorCategoriaPublishServiceLocator();
+									ControladorCategoriaPublish ccp = cppsl.getControladorCategoriaPublishPort();
+									DtCategoria[] dtC = ccp.listarCategorias();
 									if (!(dtC == null)) { 
 										for (DtCategoria d : dtC){
 									%>

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.rpc.ServiceException;
 
 import publicadores.DtPerfilUsuario;
 import publicadores.DtPropuesta;
@@ -17,10 +18,10 @@ import publicadores.UsuarioSinLoguearseException;
 import publicadores.ControladorUsuarioPublish;
 import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
+import publicadores.UsuarioSinLoguearseException;
 import datatypeJee.DtPropuestaWeb;
 //import logica.Factory;
 //import logica.IUsuarioController;
-
 
 @WebServlet("/ComentarPropuesta")
 public class ComentarPropuesta extends HttpServlet {
@@ -31,23 +32,24 @@ public class ComentarPropuesta extends HttpServlet {
 		super();
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		DtUsuario usuario = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
-		DtPerfilUsuario perfilCompleto;
-		try {
-			perfilCompleto = this.getPerfilCompleto(usuario.getNickname(), (DtUsuario)session.getAttribute("usuarioLogueado"));
-			
-			DtPropuesta[] pAux;
-	    	
-	    	if (request.getParameter("titulo") == null) {	    	
-				try {
+		/**
+		 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+		 */
+		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			ControladorUsuarioPublishService cupsl = new ControladorUsuarioPublishServiceLocator();
+			ControladorUsuarioPublish cup;
+			try {
+				cup = cupsl.getControladorUsuarioPublishPort();
+				
+		    	HttpSession session = request.getSession();
+				DtUsuario usuario = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
+				DtPerfilUsuario perfilCompleto = cup.obtenerPerfilUsuario(usuario.getNickname(), (DtUsuario)session.getAttribute("usuarioLogueado"));
+		    	
+		    	DtPropuesta[] pAux;
+		    	
+		    	if (request.getParameter("titulo") == null) {	    	
 					try {
-						pAux = this.explorarPropuestasPorComentar(usuario);
-						
+						pAux = cup.listarPropuestasColaborador(usuario);
 				    	DtPropuestaWeb[] props = new DtPropuestaWeb[pAux.length];
 				    	
 				    	for (int i = 0; i < pAux.length; i++) {
@@ -58,25 +60,20 @@ public class ComentarPropuesta extends HttpServlet {
 						RequestDispatcher rd;
 						rd = request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp");
 						rd.forward(request, response);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					} catch (UsuarioSinLoguearseException e) {
 						e.printStackTrace();
 					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	    	} else {
-	    		String titulo = request.getParameter("titulo");
-	    		request.getSession().setAttribute("titulo", titulo);	    		
-	    		RequestDispatcher rd;
-	    		rd = request.getRequestDispatcher("/Propuesta/comentarPropuesta.jsp");
-				rd.forward(request, response);
-	    	}
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		    	} else {
+		    		String titulo = request.getParameter("titulo");
+		    		request.getSession().setAttribute("titulo", titulo);	    		
+		    		RequestDispatcher rd;
+		    		rd = request.getRequestDispatcher("/Propuesta/comentarPropuesta.jsp");
+					rd.forward(request, response);
+		    	}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
     	
 	}
 
@@ -102,17 +99,17 @@ public class ComentarPropuesta extends HttpServlet {
 		}
 	}
 	
-	private DtPropuesta[] explorarPropuestasPorComentar(DtUsuario usuarioLogueado) throws Exception{
-		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
-		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
-		return port.listarPropuestasColaborador(usuarioLogueado);
-	}
-	
-	private DtPerfilUsuario getPerfilCompleto(String nickname, DtUsuario usuarioLogueado) throws Exception{
-		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
-		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
-		return port.obtenerPerfilUsuario(nickname, usuarioLogueado);
-	}
+//	private DtPropuesta[] explorarPropuestasPorComentar(DtUsuario usuarioLogueado) throws Exception{
+//		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+//		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+//		return port.listarPropuestasColaborador(usuarioLogueado);
+//	}
+//	
+//	private DtPerfilUsuario getPerfilCompleto(String nickname, DtUsuario usuarioLogueado) throws Exception{
+//		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+//		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+//		return port.obtenerPerfilUsuario(nickname, usuarioLogueado);
+//	}
 	
 	private void agregarComentario(String comentario, String propuesta, DtUsuario usuarioLogueado) throws Exception, UsuarioSinLoguearseException{
 		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();

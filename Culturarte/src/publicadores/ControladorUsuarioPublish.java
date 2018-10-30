@@ -53,8 +53,9 @@ public class ControladorUsuarioPublish {
 	
 	//LOS MÉTODOS QUE VAMOS A PUBLICAR
 	@WebMethod
-	public DtUsuario iniciarSesion(String nickname, char[] password) throws UsuarioNoExisteElUsuarioException{
-		return IUC.iniciarSesion(nickname, password);
+	public DtUsuario iniciarSesion(String nickname, String password) throws UsuarioNoExisteElUsuarioException{
+		char[] aux = password.toCharArray();
+		return IUC.iniciarSesion(nickname, aux);
 	}
 	
 	@WebMethod

@@ -9,15 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.rpc.ServiceException;
 
-import datatype.DtPropuestaMinificado;
-import datatype.DtUsuario;
-import datatype.EstadoPropuesta;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
+import publicadores.DtPropuestaMinificado;
+import publicadores.DtUsuario;
+import publicadores.EstadoPropuesta;
 import datatypeJee.DtPropuestaWeb;
 import datatypeJee.msjUI.DtMensajeUI;
-import excepciones.PropuestaNoExisteException;
-import logica.Factory;
-import logica.IPropuestaController;
+import publicadores.PropuestaNoExisteException;
+//import logica.Factory;
+//import logica.IPropuestaController;
 
 /**
  * Servlet implementation class ListarPropuestaProponenteEstado
@@ -40,23 +44,21 @@ public class ListarPropuestaProponenteEstado extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		EstadoPropuesta estado = EstadoPropuesta.valueOf(request.getParameter("estado"));
+		EstadoPropuesta estado = EstadoPropuesta.fromString(request.getParameter("estado"));
 		DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
 
     	request.setAttribute("mensaje", mensaje);
-    	
-		Factory factory = Factory.getInstance();
-		IPropuestaController iProCont = factory.getIPropuestaController();
-		
-		
-//		try {
+
+    	ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish cpp;
+		try {
+			cpp = cppsl.getControladorPropuestaPublishPort();
+			
 			//esto luego vemos como llamarlo desde algun ajax para no consumir tanto recurso, de momento llamo a todo junto.
 			HttpSession session = request.getSession();
 			DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");
 			try {
-
-		    	
-		    	DtPropuestaMinificado[] pAux = iProCont.listarPropuestasProponentePorEstado(user.getNickname(),estado);
+				DtPropuestaMinificado[] pAux = cpp.listarPropuestasProponentePorEstado(user.getNickname(),estado);
 		    	DtPropuestaWeb[] props = new DtPropuestaWeb[pAux.length];
 				
 		    	for (int i = 0; i < pAux.length; i++) {
@@ -74,11 +76,9 @@ public class ListarPropuestaProponenteEstado extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
-//		} catch (UsuarioNoExisteElUsuarioException e) {
-//			e.printStackTrace();
-//		}
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	/**

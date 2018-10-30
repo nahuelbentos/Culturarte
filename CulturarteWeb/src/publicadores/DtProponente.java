@@ -25,7 +25,7 @@ public class DtProponente  extends publicadores.DtUsuario  implements java.io.Se
            java.lang.String nickname,
            java.lang.String nombre,
            org.apache.axis.types.UnsignedShort[] password,
-           java.lang.String passwordStr,
+           java.lang.String passwordString,
            java.lang.String[] tituloFavoritas,
            java.lang.String[] usuarioSeguidos,
            java.lang.String biografia,
@@ -39,7 +39,7 @@ public class DtProponente  extends publicadores.DtUsuario  implements java.io.Se
             nickname,
             nombre,
             password,
-            passwordStr,
+            passwordString,
             tituloFavoritas,
             usuarioSeguidos);
         this.biografia = biografia;

@@ -19,7 +19,7 @@ public class DtColaborador  extends publicadores.DtUsuario  implements java.io.S
            java.lang.String nickname,
            java.lang.String nombre,
            org.apache.axis.types.UnsignedShort[] password,
-           java.lang.String passwordStr,
+           java.lang.String passwordString,
            java.lang.String[] tituloFavoritas,
            java.lang.String[] usuarioSeguidos) {
         super(
@@ -30,7 +30,7 @@ public class DtColaborador  extends publicadores.DtUsuario  implements java.io.S
             nickname,
             nombre,
             password,
-            passwordStr,
+            passwordString,
             tituloFavoritas,
             usuarioSeguidos);
     }
