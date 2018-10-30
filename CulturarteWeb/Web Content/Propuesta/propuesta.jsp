@@ -1,14 +1,14 @@
 <%@page import="datatypeJee.msjUI.TipoMensaje"%>
 <%@page import="datatypeJee.msjUI.DtMensajeUI"%>
 <%@page import="java.util.GregorianCalendar"%>
-<%@page import="datatype.EstadoPropuesta"%>
+<%@page import="publicadores.EstadoPropuesta"%>
 <%@page import="datatypeJee.TipoUsuario"%>
 <%@page import="datatypeJee.DtUsuarioWeb"%>
-<%@page import="datatype.DtDatosPropuesta"%>
+<%@page import="publicadores.DtDatosPropuesta"%>
 <%@page import="datatypeJee.DtPropuestaWeb"%>
-<%@page import="datatype.DtUsuario"%>
-<%@page import="datatype.DtColaborador"%>
-<%@page import="datatype.TipoRetorno"%>
+<%@page import="publicadores.DtUsuario"%>
+<%@page import="publicadores.DtColaborador"%>
+<%@page import="publicadores.TipoRetorno"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
  <% 

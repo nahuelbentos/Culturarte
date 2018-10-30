@@ -41,9 +41,8 @@ public class Inicio extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		System.out.println("001");
+		DtPropuesta[] populares = null;
 		try {
-			
-			DtPropuesta[] populares;
 			populares = this.getPropuestasPopulares();
 			session.setAttribute("masPopulares", populares);
 			System.out.println("001.1");
@@ -51,8 +50,8 @@ public class Inicio extends HttpServlet {
 			e.printStackTrace();
 		}
 		System.out.println("002");
+		DtProponente[] mayoresProponentes;
 		try {
-			DtProponente[] mayoresProponentes;
 			mayoresProponentes = this.getMasProponedores();
 			session.setAttribute("mayProponentes", mayoresProponentes);
 			System.out.println("002.1");
@@ -60,8 +59,8 @@ public class Inicio extends HttpServlet {
 			e.printStackTrace();
 		}
 		System.out.println("003");
+		DtColaborador[] mayoresColaboradores;
 		try {
-			DtColaborador[] mayoresColaboradores;
 			mayoresColaboradores = this.getMasColaboradores();
 			session.setAttribute("mayColaboradores", mayoresColaboradores);
 			System.out.println("003.1");
