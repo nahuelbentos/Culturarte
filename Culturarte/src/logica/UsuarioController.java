@@ -47,6 +47,10 @@ public class UsuarioController implements IUsuarioController {
 
 		Usuario usuario = em.find(Usuario.class, dtUsuario.getNickname());
 		Usuario usuarioDos = null;
+		
+		/* Le asigno la contraseña de String a char[] porque se rompia el webservice */
+		dtUsuario.setPassword(dtUsuario.getPasswordString().toCharArray());
+		
 		try {
 			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico")
 					.setParameter("correoElectronico", dtUsuario.getEmail()).getSingleResult();

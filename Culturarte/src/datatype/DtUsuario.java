@@ -96,6 +96,7 @@ public class DtUsuario {
 	public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
+	
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
 	}
@@ -123,6 +124,7 @@ public class DtUsuario {
 	public void addUsuarioSeguido(String usuarioASeguir) {
 		this.usuarioSeguidos.add(usuarioASeguir);
 	}
+	
 	public void removeUsuarioSeguido(String usuarioASeguir) {
 		this.usuarioSeguidos.remove(usuarioASeguir);
 	}
