@@ -1,6 +1,6 @@
 <%@page import="datatype.DtProponente"%>
 <%@page import="datatype.DtColaborador"%>
-<%@page import="datatype.DtUsuario"%>
+<%@page import="publicadores.DtUsuario"%>
 <%@page import="datatype.DtPropuesta"%>
 <%@page import="org.apache.tomcat.util.codec.binary.Base64"%>
 <jsp:include page="partials/header.jsp"></jsp:include>

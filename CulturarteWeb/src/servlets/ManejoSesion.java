@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.rpc.ServiceException;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -18,7 +19,6 @@ import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtProponente;
 import publicadores.DtUsuario;
-import datatypeJee.DtUsuarioWeb;
 import datatypeJee.TipoUsuario;
 import publicadores.UsuarioNoExisteElUsuarioException;
 //import logica.Factory;
@@ -54,44 +54,48 @@ public class ManejoSesion extends HttpServlet {
 		if (manejo.equals("iniciar")) {
 			System.out.println("Iniciar sesion");
 			String usuario = request.getParameter("usuario");
-			char[] password = request.getParameter("password").toCharArray();
+			String password = request.getParameter("password");
 			
 			ControladorUsuarioPublishService cppsl = new ControladorUsuarioPublishServiceLocator();
-			ControladorUsuarioPublish ccp = cppsl.getControladorUsuarioPublishPort();
-			
+			ControladorUsuarioPublish ccp;
 			try {
-				DtUsuario usuarioLogueado = ccp.iniciarSesion(usuario, password);
-				
-				if (Arrays.equals(usuarioLogueado.getPassword(), password)) {
-					HttpSession session = request.getSession();
-					session.setAttribute("usuarioLogueado", usuarioLogueado);
+				ccp = cppsl.getControladorUsuarioPublishPort();
+				try {
+					DtUsuario usuarioLogueado = ccp.iniciarSesion(usuario, password);
 					
-					/* Para mostrar la imagen del usuario, se setea un atributo y desde jsp se levanta con
-					 * 
-					 * <img alt="img" src="data:image/jpeg;base64,${imagenPerfil}"/>
-					 * 
-					 */
-					if (usuarioLogueado.getImagen() != null) {
-			            byte[] encodeBase64 = Base64.encodeBase64(usuarioLogueado.getImagen());
-			            String base64Encoded = new String(encodeBase64, "UTF-8");
-			            request.setAttribute("imagenPerfil", base64Encoded);
+					if (Arrays.equals(usuarioLogueado.getPasswordString().toCharArray(), password.toCharArray())) {
+						HttpSession session = request.getSession();
+						session.setAttribute("usuarioLogueado", usuarioLogueado);
+						
+						/* Para mostrar la imagen del usuario, se setea un atributo y desde jsp se levanta con
+						 * 
+						 * <img alt="img" src="data:image/jpeg;base64,${imagenPerfil}"/>
+						 * 
+						 */
+						if (usuarioLogueado.getImagen() != null) {
+				            byte[] encodeBase64 = Base64.encodeBase64(usuarioLogueado.getImagen());
+				            String base64Encoded = new String(encodeBase64, "UTF-8");
+				            request.setAttribute("imagenPerfil", base64Encoded);
+						}
+						
+						if (usuarioLogueado instanceof DtProponente) {
+							session.setAttribute("tipoUsuarioLogueado", TipoUsuario.proponente);
+						}else {
+							session.setAttribute("tipoUsuarioLogueado", TipoUsuario.colaborador);
+						}
+	
+						request.getRequestDispatcher("/index.jsp").forward(request, response);;
+					} else {
+						request.setAttribute("mensaje", "Password incorrecta");
+						request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
 					}
 					
-					if (usuarioLogueado instanceof DtProponente) {
-						session.setAttribute("tipoUsuarioLogueado", TipoUsuario.proponente);
-					}else {
-						session.setAttribute("tipoUsuarioLogueado", TipoUsuario.colaborador);
-					}
-
-					request.getRequestDispatcher("/index.jsp").forward(request, response);;
-				} else {
-					request.setAttribute("mensaje", "Password incorrecta");
+				} catch (UsuarioNoExisteElUsuarioException u) {
+					request.setAttribute("mensaje", "No existe el usuario");
 					request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
 				}
-				
-			} catch (UsuarioNoExisteElUsuarioException u) {
-				request.setAttribute("mensaje", "No existe el usuario");
-				request.getRequestDispatcher("/iniciarSesionForm.jsp").forward(request, response);
+			} catch (ServiceException e) {
+				e.printStackTrace();
 			}
 		}else {
 			System.out.println("Cerrar sesion.");

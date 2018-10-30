@@ -567,7 +567,10 @@ public class Principal {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
             while ((line = br.readLine()) != null) {
             	String[] datosPropuestaFavorita = line.split(cvsSplitBy);
-            	DtUsuario dtUsuario = new DtUsuario(datosPropuestaFavorita[0], null, null, "", null, null, null);
+//            	DtUsuario dtUsuario = new DtUsuario(datosPropuestaFavorita[0], null, null, "", null, null, null);
+            	DtUsuario dtUsuario = new DtUsuario();
+            	dtUsuario.setNickname(datosPropuestaFavorita[0]);
+            	
             	String propuesta = datosPropuestaFavorita[1];
             	IPC.agregarFavorita(propuesta, dtUsuario);
             }

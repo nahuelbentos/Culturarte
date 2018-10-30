@@ -2,12 +2,13 @@ package datatypeJee;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import datatype.DtPropuestaMinificado;
-import datatype.EstadoPropuesta;
+import publicadores.EstadoPropuesta;
 
 public class DtPropuestaWeb extends DtPropuestaMinificado {
 	
@@ -25,6 +26,15 @@ public class DtPropuestaWeb extends DtPropuestaMinificado {
 		this.estadoActual = estadoActual;
 	}
 	
+	public DtPropuestaWeb(String titulo, String nickname, byte[] imagen, 
+			Calendar fechaPublicacion, Calendar fechaEspectaculo, Calendar fechaFinalizacion, publicadores.EstadoPropuesta estadoActual) {
+		super(titulo,nickname,imagen);
+		this.fechaEspectaculo = (GregorianCalendar) fechaEspectaculo;
+		this.fechaPublicacion = (GregorianCalendar) fechaPublicacion;
+		this.fechaFinalizacion = (GregorianCalendar) fechaFinalizacion;
+		this.estadoActual = estadoActual;
+	}
+
 	public String getImagenAsBase64() throws UnsupportedEncodingException {
 		byte[] encodeBase64 = Base64.encodeBase64(super.getImagen());
         String base64Encoded = new String(encodeBase64, "UTF-8");

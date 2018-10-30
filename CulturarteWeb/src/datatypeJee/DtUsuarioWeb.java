@@ -3,12 +3,14 @@ package datatypeJee;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.axis.types.UnsignedShort;
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import excepciones.UsuarioNoExisteElUsuarioException;
+import publicadores.UsuarioNoExisteElUsuarioException;
 
 public class DtUsuarioWeb {
 	
@@ -16,7 +18,7 @@ public class DtUsuarioWeb {
 	private String nombre;
 	private String apellido;
 	private String email;
-	private char[] password;
+	private String password;
 	private GregorianCalendar fechaNacimiento;
 	private byte[] imagen;
 	private TipoUsuario tipoUsuario;
@@ -29,7 +31,7 @@ public class DtUsuarioWeb {
 	private List<String> tituloFavoritas;
 	private List<String> usuarioSeguidos;
 	
-	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, char[] password, 
+	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, String password, 
 			GregorianCalendar fechaNacimiento, byte[] imagen) {
 		super();
 		this.nickname = nickname;
@@ -43,7 +45,7 @@ public class DtUsuarioWeb {
 		this.usuarioSeguidos = new ArrayList<String>();
 	}
 	
-	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, char[] password,
+	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, String password,
 			GregorianCalendar fechaNacimiento, byte[] imagen, TipoUsuario tipoUsuario, String direccion,
 			String biografia, String sitioWeb) {
 		super();
@@ -60,6 +62,23 @@ public class DtUsuarioWeb {
 		this.sitioWeb = sitioWeb;
 	}
 	
+	public DtUsuarioWeb(String nickname, String nombre, String apellido, String email, String password,
+			Calendar fechaNacimiento, byte[] imagen, TipoUsuario tipoUsuario, String direccion,
+			String biografia, String sitioWeb) {
+		super();
+		this.nickname = nickname;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.email = email;
+		this.password = password;
+		this.fechaNacimiento = (GregorianCalendar) fechaNacimiento;
+		this.imagen = imagen;
+		this.tipoUsuario = tipoUsuario;
+		this.direccion = direccion;
+		this.biografia = biografia;
+		this.sitioWeb = sitioWeb;
+	}
+
 	public String getNickname() {
 		return nickname;
 	}
@@ -72,7 +91,7 @@ public class DtUsuarioWeb {
 	public String getEmail() {
 		return email;
 	}
-	public char[] getPassword() {
+	public String getPassword() {
 		return password;
 	}
 	public GregorianCalendar getFechaNacimiento() {
@@ -123,6 +142,58 @@ public class DtUsuarioWeb {
 		this.tituloFavoritas = tituloFavoritas;
 	}
 	
+	public List<String> getTituloFavoritas() {
+		return tituloFavoritas;
+	}
+
+	public List<String> getUsuarioSeguidos() {
+		return usuarioSeguidos;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
+	}
+
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public void setBiografia(String biografia) {
+		this.biografia = biografia;
+	}
+
+	public void setSitioWeb(String sitioWeb) {
+		this.sitioWeb = sitioWeb;
+	}
+
 	public void addTituloFavoritas(String tituloFavorita) {
 		this.tituloFavoritas.add(tituloFavorita);
 	}

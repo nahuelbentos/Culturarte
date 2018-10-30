@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.hibernate.type.CharacterArrayType;
+
 public class DtUsuario {
 	
 	private String nickname;
@@ -11,6 +13,7 @@ public class DtUsuario {
 	private String apellido;
 	private String email;
 	private char[] password;
+	private String passwordString;
 	private GregorianCalendar fechaNacimiento;
 	private byte[] imagen;
 	
@@ -30,6 +33,21 @@ public class DtUsuario {
 		this.tituloFavoritas = new ArrayList<String>();
 		this.usuarioSeguidos = new ArrayList<String>();
 	}
+	
+	public DtUsuario(String nickname, String nombre, String apellido, String email, String password, 
+			GregorianCalendar fechaNacimiento, byte[] imagen) {
+		super();
+		this.nickname = nickname;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.email = email;
+		this.password = password.toCharArray();
+		this.fechaNacimiento = fechaNacimiento;
+		this.imagen = imagen;
+		this.tituloFavoritas = new ArrayList<String>();
+		this.usuarioSeguidos = new ArrayList<String>();
+	}
+	
 	public DtUsuario() {
 		super();		
 	}
@@ -111,5 +129,18 @@ public class DtUsuario {
 	
 	public boolean isMemberUsuarioSeguidos(String usuarioASeguir) {
 		return this.usuarioSeguidos.contains(usuarioASeguir);
+	}
+	
+	public String getPasswordString() {
+		passwordString = "";
+		for (int i=0;i<password.length;i++) {
+			passwordString += Character.toString(password[i]);
+		}
+		return passwordString;
+	}
+	
+	public void setPasswordString(String passwordString) {
+		this.passwordString = passwordString;
+		this.password = passwordString.toCharArray();
 	}
 }
