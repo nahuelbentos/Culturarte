@@ -40,37 +40,42 @@ public class Inicio extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		DtPropuesta[] populares;
+		System.out.println("001");
 		try {
+			
+			DtPropuesta[] populares;
 			populares = this.getPropuestasPopulares();
+			session.setAttribute("masPopulares", populares);
+			System.out.println("001.1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	DtProponente[] mayoresProponentes;
+		System.out.println("002");
 		try {
+			DtProponente[] mayoresProponentes;
 			mayoresProponentes = this.getMasProponedores();
+			session.setAttribute("mayProponentes", mayoresProponentes);
+			System.out.println("002.1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	DtColaborador[] mayoresColaboradores;
+		System.out.println("003");
 		try {
+			DtColaborador[] mayoresColaboradores;
 			mayoresColaboradores = this.getMasColaboradores();
+			session.setAttribute("mayColaboradores", mayoresColaboradores);
+			System.out.println("003.1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	
-		session.setAttribute("mayColaboradores", mayoresColaboradores);
-		session.setAttribute("mayProponentes", mayoresProponentes);
-		session.setAttribute("masPopulares", populares);
-		
-    	request.getRequestDispatcher("/index.jsp").forward(request, response);
+		System.out.println("004");
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	

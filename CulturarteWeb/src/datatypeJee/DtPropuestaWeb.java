@@ -6,9 +6,10 @@ import java.util.GregorianCalendar;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import datatype.DtPropuestaMinificado;
-import datatype.EstadoPropuesta;
+import publicadores.DtPropuestaMinificado;
+import publicadores.EstadoPropuesta;
 
+@SuppressWarnings("serial")
 public class DtPropuestaWeb extends DtPropuestaMinificado {
 	
 	private GregorianCalendar fechaPublicacion;
@@ -18,7 +19,9 @@ public class DtPropuestaWeb extends DtPropuestaMinificado {
 	
 	public DtPropuestaWeb(String titulo, String proponente, byte[] imagen, 
 			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspectaculo, GregorianCalendar fechaFinalizacion, EstadoPropuesta estadoActual) {
-		super(titulo,proponente,imagen);
+		super.setTitulo(titulo);
+		super.setProponente(proponente);
+		super.setImagen(imagen);
 		this.fechaEspectaculo = fechaEspectaculo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.fechaFinalizacion = fechaFinalizacion;
