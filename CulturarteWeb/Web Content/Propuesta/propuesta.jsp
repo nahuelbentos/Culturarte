@@ -11,42 +11,54 @@
 <%@page import="publicadores.TipoRetorno"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
- <% 
-  DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado"); 
-  TipoUsuario tipoUsuarioLogueado = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
-  
-  DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getAttribute("propuestaWeb");
-  DtUsuarioWeb proponenteACargo = (DtUsuarioWeb)request.getAttribute("proponenteACargo");
-  DtDatosPropuesta propuestaCompleta = (DtDatosPropuesta)request.getAttribute("propuesta");
-  
-  DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
-  String claseUIMsj;
-
-  if (user == null) { %>
-  <jsp:include page="../partials/navVisitante.jsp"></jsp:include>
- <% }else { %>
-  <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
- <% } %>
- <% if(mensaje != null) { %>
- <div class="alert alert-warning alert-dismissible fade show" role="alert">
- 	<%=mensaje.getMensaje()%>
- 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
- 		<span aria-hidden="true">&times;</span>
- 	</button>
- </div>
- <% } %>
-  <div class="header-propuesta img-propuesta">
+	<% 
+	DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado"); 
+	TipoUsuario tipoUsuarioLogueado = (TipoUsuario)session.getAttribute("tipoUsuarioLogueado");
+	
+	DtPropuestaWeb propWeb = (DtPropuestaWeb)request.getAttribute("propuestaWeb");
+	DtUsuarioWeb proponenteACargo = (DtUsuarioWeb)request.getAttribute("proponenteACargo");
+	DtDatosPropuesta propuestaCompleta = (DtDatosPropuesta)request.getAttribute("propuesta");
+	
+	DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
+	String claseUIMsj;
+	
+	if (user == null) { 
+	%>
+		<jsp:include page="../partials/navVisitante.jsp"></jsp:include>
+	<%
+	} else { %>
+		<jsp:include page="../partials/navLogueado.jsp"></jsp:include>
+	<%
+	}
+	if(mensaje != null) { 
+	%>
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<%=mensaje.getMensaje()%>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	<%
+	}
+	%>
+	<div class="header-propuesta img-propuesta">
 
   	<img alt="" src="data:image/jpeg;base64,<%=propWeb.getImagenAsBase64()%>">
-  	<% if (user != null) { %>
+  	<%
+  	if (user != null) {
+  	%>
   		<button class="btn btn-link options-propuesta" id="ver-opciones-propuesta" onclick="verOpciones()">
   			<i class="fa fa-ellipsis-v fa-2x " aria-hidden="true"></i>
   		</button>
+  		
   		<ul class="lista-opciones list-group" style="display:none;" id="listado-opciones">
-  		<% if(tipoUsuarioLogueado == TipoUsuario.colaborador) { %>
+  		<%
+  		if(tipoUsuarioLogueado == TipoUsuario.colaborador) {
+  		%>
   			<li class="list-group-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#colaboracionModal"><i class="fa fa-money" aria-hidden="true"></i> Colaborar</a></li>
-  		<% } %>
-  		<% 
+  		<%
+  		}
+  		
   		/*
   		* Migración a WS
 		* El datatype generado solamente trae operaciones básicas, no crea la 
@@ -57,34 +69,37 @@
   		*/
   		Boolean esFavorita = false;
   		for (String titulo : user.getTituloFavoritas()) {
-  			if (titulo == propWeb.getTitulo()){
+  			if (titulo.equals(propWeb.getTitulo())) {
   				esFavorita = true;
-  				break;
+				break;
   			}
   		}
-  		if(!esFavorita) { %>
+  		if(!esFavorita) {
+  		%>
   			<li class="list-group-item"><a href="AgregarFavorita?propuesta=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i> Agregar como favorita</a></li>
-  		<% } else {%>
+  		<%
+  		} else {
+  		%>
   			<li class="list-group-item"><a href="" class="nav-link"><i class="fa fa-heart" aria-hidden="true"></i> Quitar de favoritas</a></li>
-  		<% } %>
   		<%
-			GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
-			if (user.getNickname().equals(propWeb.getProponente())){
-				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { 
-				%>
-	  			<li class="list-group-item"><a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-plus" aria-hidden="true"></i> Extender financiación</a></li>
-				<%
-				}
-			}
+  		}
+  		
+		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
+		if (user.getNickname().equals(propWeb.getProponente())){
+			if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { 
 		%>
-  		<%
-			if (user.getNickname().equals(propWeb.getProponente())){
-				if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.financiada)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) {
-				%>
-	  			<li class="list-group-item"><a href="CancelarPropuesta?titulo=<%=propWeb.getTitulo()%>&pantalla=propuesta" class="nav-link"><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuesta</a></li>
-				<%
-				}
+				<li class="list-group-item"><a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-plus" aria-hidden="true"></i> Extender financiación</a></li>
+		<%
 			}
+		}
+		
+		if (user.getNickname().equals(propWeb.getProponente())){
+			if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.financiada)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) {
+		%>
+  				<li class="list-group-item"><a href="CancelarPropuesta?titulo=<%=propWeb.getTitulo()%>&pantalla=propuesta" class="nav-link"><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuesta</a></li>
+		<%
+			}
+		}
 		%>
   		</ul>
   		
@@ -93,7 +108,10 @@
   				$("#listado-opciones").toggle("fast");
   			}
   		</script>
-  	<% } %>
+  	<%
+  	}
+  	%>
+  	
   	<h2 class="titulo-propuesta"><%=propWeb.getTitulo()%> <small class="badge badge-categoria" data-toggle="tooltip" data-placement="bottom" title="Categoria"> <%=propuestaCompleta.getCategoria()%></small></h2>
   </div>
   
@@ -163,16 +181,17 @@
 			<tbody>
 				<%
 				int i = 1;
-								
-				for (String colaborador : propuestaCompleta.getColaboradores()) {
+				if (propuestaCompleta.getColaboradores() != null){
+					for (String colaborador : propuestaCompleta.getColaboradores()) {
 				%>
-				<tr>
-					<th scope="row"><%=i%></th>
-					<td><%=colaborador%></td>
-					<td><a href="#"> Ver Colaboración</a></td>
-				</tr>
+					<tr>
+						<th scope="row"><%=i%></th>
+						<td><%=colaborador%></td>
+						<td><a href="#"> Ver Colaboración</a></td>
+					</tr>
 				<%
-					i += 1; 
+						i += 1; 
+					}
 				}
 				%>
 			</tbody>
@@ -180,74 +199,77 @@
 		
 	</div>
   	
-  </section>
-  <% if (user instanceof DtColaborador) {  %>
-  	<!-- Modal Colaboracion -->
-	<div class="modal fade" id="colaboracionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Colaborar <i class="fa fa-money" aria-hidden="true"></i></h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	      	<div class="container-fluid">
-	      	
-				<form action="RegistrarColaboracion" method="post" id="formularioColaboracion">
-					<input type="hidden" name="boton" id="boton" value="">
-					<% 
-					// agrego a la session los datos de la propuesta, luego debo borrarlos.
-					session.setAttribute("propuestaAColaborar", propWeb);
-					%>
-					<div class="form-row">
-						<div class="col-md-4 mb-3">
-							<label for="montoColaboracion">Monto</label>
-							<input type="number" class="form-control" id="montoColaboracion" name="montoColaboracion" placeholder="0" required>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label for="tipoRetorno">Tipo de retorno</label>
-							<select id="tipoRetorno" name="tipoRetorno" class="form-control">
-								<% 
-								TipoRetorno tipoRet = propuestaCompleta.getTipo();
-								if (tipoRet.equals(TipoRetorno.EntradasYPorcentaje)) {
-								%>
-									<option value="<%=TipoRetorno.EntradasGratis%>"><%=TipoRetorno.EntradasGratis%></option>
-									<option value="<%=TipoRetorno.Porcentaje%>"><%=TipoRetorno.Porcentaje%></option>
-								<%
-								} else {
-								%>
-									<option value="<%=tipoRet%>"><%=tipoRet%></option>
-								<%
-								}
-								%>
-							</select>
-						</div>
-						
-						<button type="button" class="btn btn-primary" onclick="procesar('confirmar')">Registrar colaboracion</button>
-						<button type="button" class="btn btn-primary" onclick="procesar('cancelar')">Cancelar</button>
+	</section>
+	<%
+	if (user instanceof DtColaborador) {
+	%>
+		<!-- Modal Colaboracion -->
+		<div class="modal fade" id="colaboracionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				 <div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Colaborar <i class="fa fa-money" aria-hidden="true"></i></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-				
-				</form>
+					
+					<div class="modal-body">
+					   	<div class="container-fluid">
+					   		<form action="RegistrarColaboracion" method="post" id="formularioColaboracion">
+								<input type="hidden" name="boton" id="boton" value="">
+								<% 
+								// agrego a la session los datos de la propuesta, luego debo borrarlos.
+								session.setAttribute("propuestaAColaborar", propWeb);
+								%>
+								<div class="form-row">
+									<div class="col-md-4 mb-3">
+										<label for="montoColaboracion">Monto</label>
+										<input type="number" class="form-control" id="montoColaboracion" name="montoColaboracion" placeholder="0" required>
+									</div>
+									
+									<div class="col-md-4 mb-3">
+										<label for="tipoRetorno">Tipo de retorno</label>
+										<select id="tipoRetorno" name="tipoRetorno" class="form-control">
+											<% 
+											TipoRetorno tipoRet = propuestaCompleta.getTipo();
+											if (tipoRet.equals(TipoRetorno.EntradasYPorcentaje)) {
+											%>
+												<option value="<%=TipoRetorno.EntradasGratis%>"><%=TipoRetorno.EntradasGratis%></option>
+												<option value="<%=TipoRetorno.Porcentaje%>"><%=TipoRetorno.Porcentaje%></option>
+											<%
+											} else {
+											%>
+												<option value="<%=tipoRet%>"><%=tipoRet%></option>
+											<%
+											}
+											%>
+										</select>
+									</div>
+								
+									<button type="button" class="btn btn-primary" onclick="procesar('confirmar')">Registrar colaboracion</button>
+									<button type="button" class="btn btn-primary" onclick="procesar('cancelar')">Cancelar</button>
+								</div>
+							
+							</form>
+						</div>
+				   </div>
+				   
+				   <div class="modal-footer">
+				     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				   </div>
+				</div>
+			</div>
+		</div>
 		
-		
-	      	</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-	<script type="text/javascript">
-	function procesar(tipo) {
-		document.getElementById("boton").value = tipo;
-		var formColaboracion = document.getElementById("formularioColaboracion");
-		formColaboracion.submit();
+		<script type="text/javascript">
+			function procesar(tipo) {
+				document.getElementById("boton").value = tipo;
+				var formColaboracion = document.getElementById("formularioColaboracion");
+				formColaboracion.submit();
+			}
+		</script>
+	<%
 	}
-	
-	</script>
-<% } %>
+	%>
 <jsp:include page="../partials/footer.jsp" />
