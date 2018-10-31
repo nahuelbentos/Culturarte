@@ -46,7 +46,23 @@
   		<% if(tipoUsuarioLogueado == TipoUsuario.colaborador) { %>
   			<li class="list-group-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#colaboracionModal"><i class="fa fa-money" aria-hidden="true"></i> Colaborar</a></li>
   		<% } %>
-  		<% if(!user.isMemberTituloFavorita(propWeb.getTitulo())) { %>
+  		<% 
+  		/*
+  		* Migración a WS
+		* El datatype generado solamente trae operaciones básicas, no crea la 
+		* funcion isMember para los pseudoatributos colección.
+		* Para no agregar esta lógica al controlador de usuarios en el backend 
+		* solo por una prueba, lo agregué acá.
+  		* Evaluar si se deja acá o se cambia al backend.
+  		*/
+  		Boolean esFavorita = false;
+  		for (String titulo : user.getTituloFavoritas()) {
+  			if (titulo == propWeb.getTitulo()){
+  				esFavorita = true;
+  				break;
+  			}
+  		}
+  		if(!esFavorita) { %>
   			<li class="list-group-item"><a href="AgregarFavorita?propuesta=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i> Agregar como favorita</a></li>
   		<% } else {%>
   			<li class="list-group-item"><a href="" class="nav-link"><i class="fa fa-heart" aria-hidden="true"></i> Quitar de favoritas</a></li>

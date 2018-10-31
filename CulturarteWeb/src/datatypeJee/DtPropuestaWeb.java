@@ -17,6 +17,7 @@ public class DtPropuestaWeb extends DtPropuestaMinificado {
 	private GregorianCalendar fechaEspectaculo;
 	private GregorianCalendar fechaFinalizacion;
 	private EstadoPropuesta estadoActual;
+	private Boolean esFavoritaDelUsuarioActual;
 	
 	public DtPropuestaWeb(String titulo, String proponente, byte[] imagen, 
 			Calendar fechaPublicacion, Calendar fechaEspectaculo, Calendar fechaFinalizacion, EstadoPropuesta estadoActual) {
@@ -59,6 +60,14 @@ public class DtPropuestaWeb extends DtPropuestaMinificado {
 	
 	public EstadoPropuesta getEstadoPropuesta() {
 		return estadoActual;
+	}
+
+	public Boolean getEsFavoritaDelUsuarioActual() {
+		return esFavoritaDelUsuarioActual;
+	}
+
+	public void setEsFavoritaDelUsuarioActual(Boolean esFavoritaDelUsuarioActual) {
+		this.esFavoritaDelUsuarioActual = esFavoritaDelUsuarioActual;
 	}
 	
 }

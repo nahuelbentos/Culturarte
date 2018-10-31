@@ -13,9 +13,6 @@ import javax.xml.rpc.ServiceException;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
 import publicadores.ControladorPropuestaPublishServiceLocator;
-import publicadores.ControladorUsuarioPublish;
-import publicadores.ControladorUsuarioPublishService;
-import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtDatosPropuesta;
 import datatypeJee.DtPropuestaWeb;
 import datatypeJee.DtUsuarioWeb;
@@ -68,6 +65,7 @@ public class VerPropuesta extends HttpServlet {
 			request.setAttribute("propuesta", propuesta);
 			request.setAttribute("proponenteACargo", proponente);
 			request.setAttribute("propuestaWeb", proWeb);
+			
 			//request.setAttribute("mensaje", request.getAttribute("mensaje"));
 			RequestDispatcher rd;
 			rd = request.getRequestDispatcher("/Propuesta/propuesta.jsp");
