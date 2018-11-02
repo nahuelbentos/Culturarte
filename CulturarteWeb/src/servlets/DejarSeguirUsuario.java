@@ -1,9 +1,7 @@
 package servlets;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,10 +14,6 @@ import publicadores.ControladorUsuarioPublish;
 import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtUsuario;
-import datatypeJee.msjUI.DtMensajeUI;
-import datatypeJee.msjUI.TipoMensaje;
-import logica.IUsuarioController;
-import publicadores.UsuarioYaSigueAlUsuarioException;
 
 /**
  * Servlet implementation class DejarSeguirUsuario
