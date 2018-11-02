@@ -9,14 +9,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.xml.rpc.ServiceException;
 
-import datatype.DtColaborador;
-import datatype.DtProponente;
-import datatype.DtUsuario;
+import publicadores.ControladorUsuarioPublish;
+import publicadores.ControladorUsuarioPublishService;
+import publicadores.ControladorUsuarioPublishServiceLocator;
+import publicadores.DtColaborador;
+import publicadores.DtProponente;
+import publicadores.DtUsuario;
 import datatypeJee.DtColaboradorWeb;
 import datatypeJee.DtProponenteWeb;
-import logica.Factory;
-import logica.IUsuarioController;
 
 /**
  * Servlet implementation class ExplorarUsuarios
@@ -37,24 +40,30 @@ public class ExplorarUsuarios extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Factory factory = Factory.getInstance();
-    	IUsuarioController iUsuCont = factory.getIUsuarioController();
     	String accion = request.getParameter("accion");
     	String msg = request.getParameter("msg");
+		HttpSession session = request.getSession();
+		DtUsuario user = (DtUsuario) session.getAttribute("usuarioLogueado");
+		String nickname = user.getNickname();
     	
-    	DtUsuario[] auxUsuarios = iUsuCont.listarUsuarios();
+    	DtUsuario[] auxUsuarios = null;
+		try {
+			auxUsuarios = listarUsuarios();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
     	List<DtColaboradorWeb> listaColaboradores = new ArrayList<DtColaboradorWeb>();
     	List<DtProponenteWeb> listaProponentes = new ArrayList<DtProponenteWeb>();
     	if (auxUsuarios.length > 0) {
-
-	    	
+		
 	    	for (DtUsuario dtUsuario : auxUsuarios) {
 				if (dtUsuario instanceof DtColaborador) {
 					listaColaboradores.add(new DtColaboradorWeb(dtUsuario.getNickname(), dtUsuario.getNombre(), 
-							dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getPassword(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen()));
+							dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen()));
 				}else if (dtUsuario instanceof DtProponente) {
 					listaProponentes.add(new DtProponenteWeb(dtUsuario.getNickname(), dtUsuario.getNombre(), 
-							dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getPassword(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen(),
+							dtUsuario.getApellido(), dtUsuario.getEmail(), dtUsuario.getFechaNacimiento(), dtUsuario.getImagen(),
 							((DtProponente) dtUsuario).getBiografia(),((DtProponente) dtUsuario).getDireccion(),((DtProponente) dtUsuario).getSitioWeb()));
 				}
 			}
@@ -70,6 +79,14 @@ public class ExplorarUsuarios extends HttpServlet {
 	    	System.out.println(listaColaboradores.size());
     		request.setAttribute("msg", "No hay usuarios registrados en la aplicación.");
     	}
+		
+		DtUsuario[] seguidos = null;
+		try {
+			seguidos = listarSeguidos(nickname);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("seguidos", seguidos);
     	request.getRequestDispatcher("/Usuario/navegarUsuarios.jsp").forward(request, response);
 	}
 
@@ -79,6 +96,18 @@ public class ExplorarUsuarios extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private DtUsuario[] listarUsuarios() throws ServiceException, Exception {
+		ControladorUsuarioPublishService cupls = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish cup = cupls.getControladorUsuarioPublishPort();
+		return cup.listarUsuarios();
+	}
+	
+	private DtUsuario[] listarSeguidos(String nickname) throws ServiceException, Exception {
+		ControladorUsuarioPublishService cupls = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish cup = cupls.getControladorUsuarioPublishPort();
+		return cup.listarUsuariosQueSigue(nickname);
 	}
 
 }

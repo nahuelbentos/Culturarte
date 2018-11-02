@@ -1,6 +1,7 @@
 package datatypeJee;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -9,9 +10,9 @@ import datatype.DtProponente;
 
 public class DtProponenteWeb extends DtProponente {
 
-	public DtProponenteWeb(String nickname, String nombre, String apellido, String email, char[] password,
-			GregorianCalendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb) {
-		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen, direccion, biografia, sitioWeb);
+	public DtProponenteWeb(String nickname, String nombre, String apellido, String email,
+			Calendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb) {
+		super(nickname, nombre, apellido, email, null, (GregorianCalendar) fechaNacimiento, imagen, direccion, biografia, sitioWeb);
 		// TODO Auto-generated constructor stub
 	}
 

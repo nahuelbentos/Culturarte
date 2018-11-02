@@ -1,17 +1,23 @@
 package datatypeJee;
 
 import java.io.UnsupportedEncodingException;
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import datatype.DtColaborador;
+import publicadores.DtColaborador;
 
 public class DtColaboradorWeb extends DtColaborador {
 
-	public DtColaboradorWeb(String nickname, String nombre, String apellido, String email, char[] password,
-			GregorianCalendar fechaNacimiento, byte[] imagen) {
-		super(nickname, nombre, apellido, email, password, fechaNacimiento, imagen);
+	public DtColaboradorWeb(String nickname, String nombre, String apellido, String email,
+			Calendar fechaNacimiento, byte[] imagen) {
+		super();
+		this.setNickname(nickname);
+		this.setNombre(nombre);
+		this.setApellido(apellido);
+		this.setEmail(email);
+		this.setFechaNacimiento(fechaNacimiento);
+		this.setImagen(imagen);
 	}
 	
 	public String getImagenAsBase64() throws UnsupportedEncodingException {
