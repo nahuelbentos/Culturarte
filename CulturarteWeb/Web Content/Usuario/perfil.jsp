@@ -1,26 +1,33 @@
-<%@page import="datatype.DtPropuestaColaborada"%>
-<%@page import="datatype.DtProponente"%>
-<%@page import="datatype.DtPropuesta"%>
-<%@page import="datatype.DtColaborador"%>
-<%@page import="datatype.DtPerfilUsuario"%>
+<%@page import="publicadores.DtPropuestaColaborada"%>
+<%@page import="publicadores.DtProponente"%>
+<%@page import="publicadores.DtPropuesta"%>
+<%@page import="publicadores.DtColaborador"%>
+<%@page import="publicadores.DtPerfilUsuario"%>
 <%@page import="datatypeJee.DtUsuarioWeb"%>
 <%@page import="datatypeJee.TipoUsuario"%>
-<%@page import="datatype.DtUsuario"%>
+<%@page import="publicadores.DtUsuario"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
  <%
- DtUsuarioWeb perfil = (DtUsuarioWeb)request.getAttribute("perfil");
- DtPerfilUsuario perfilCompleto = (DtPerfilUsuario)request.getAttribute("perfilCompleto");
+DtUsuarioWeb perfil = (DtUsuarioWeb)request.getAttribute("perfil");
+DtPerfilUsuario perfilCompleto = (DtPerfilUsuario)request.getAttribute("perfilCompleto");
  
- DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");  
+DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");  
  
- if (user == null) { 
- %>
+DtColaborador[] colSiguen	= perfilCompleto.getSeguidoresColaboradores();
+DtColaborador[] colSigo		= perfilCompleto.getSeguidosColaboradores();
+DtProponente[] proSiguen	= perfilCompleto.getSeguidoresProponentes();
+DtProponente[] proSigo		= perfilCompleto.getSeguidosProponentes();
+DtPropuesta[] favoritas		= perfilCompleto.getPropuestasFavoritas();
+
+DtPropuesta[] publicadas = perfilCompleto.getPropuestasPublicadas();
+DtPropuestaColaborada[] colaboradas = perfilCompleto.getPropuestasColaboradas();
+
+if (user == null) { %>
   <jsp:include page="../partials/navVisitante.jsp"></jsp:include>
- <%
-  }else { %>
+<% }else { %>
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
- <% } %>
+<% } %>
   <section class="container-fluid">
   
 	<div class="row">
@@ -161,7 +168,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Seguidores</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <button type="button" class="Cerrar" data-dismiss="modal" aria-label="Cerrar">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
@@ -169,34 +176,34 @@
 	      	<div class="container-fluid">
 	      		<div class="row">
 			      	<div class="col-lg-6">
-			      		<h5>Colaboradores <i class="fa fa-eye" aria-hidden="true"></i> <%=perfilCompleto.getSeguidoresColaboradores().size()%></h5>
-						<ul class="list-group">
-						<%
-						for (DtColaborador colSeg : perfilCompleto.getSeguidoresColaboradores()) {
-						%>
-							<li class="list-group-item"><a href="VerPerfil?nickname=<%=colSeg.getNickname()%>"><%=colSeg.getNickname()%></a></li>
-						<%
-						}
-						%>
-						</ul>
+			      		<% if (colSiguen != null) { %>
+				      		<h5>Colaboradores <i class="fa fa-eye" aria-hidden="true"></i> <%=colSiguen.length%></h5>
+							<ul class="list-group">
+							<% for (int i=0;i<colSiguen.length;i++) { %>
+								<li class="list-group-item"><a href="VerPerfil?nickname=<%=colSiguen[i].getNickname()%>"><%=colSiguen[i].getNickname()%></a></li>
+							<% } %>
+							</ul>
+			      		<% } else { %>
+			      			<span>No tiene seguidores colaboradores</span>
+			      		<% }  %>
 			      	</div>
 					<div class="col-lg-6">
-						<h5>Proponentes <i class="fa fa-eye" aria-hidden="true"></i> <%=perfilCompleto.getSeguidoresProponentes().size()%></h5>
-						<ul class="list-group">
-						<%
-						for (DtProponente propSeg : perfilCompleto.getSeguidoresProponentes()) {
-						%>
-							<li class="list-group-item"><a href="VerPerfil?nickname=<%=propSeg.getNickname()%>"><%=propSeg.getNickname()%></a></li>
-						<%
-						}
-						%>
-						</ul>
+						<% if (proSiguen != null) { %>
+							<h5>Proponentes <i class="fa fa-eye" aria-hidden="true"></i> <%=proSiguen.length%></h5>
+							<ul class="list-group">
+							<% for (int i=0;i<proSiguen.length;i++) { %>
+								<li class="list-group-item"><a href="VerPerfil?nickname=<%=proSiguen[i].getNickname()%>"><%=proSiguen[i].getNickname()%></a></li>
+							<% } %>
+							</ul>
+						<% } else { %>
+							<span>No tiene seguidores proponentes</span>
+						<% } %> 
 			      	</div>
 	      		</div>
 	      	</div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 	      </div>
 	    </div>
 	  </div>
@@ -208,7 +215,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Seguidos</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <button type="button" class="Cerrar" data-dismiss="modal" aria-label="Cerrar">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
@@ -216,34 +223,34 @@
 	      	<div class="container-fluid">
 	      		<div class="row">
 			      	<div class="col-lg-6">
-			      		<h5>Colaboradores <i class="fa fa-bookmark" aria-hidden="true"></i> <%=perfilCompleto.getSeguidosColaboradores().size()%></h5>
-						<ul class="list-group">
-						<%
-						for (DtColaborador colSeg : perfilCompleto.getSeguidosColaboradores()) {
-						%>
-							<li class="list-group-item"><a href="VerPerfil?nickname=<%=colSeg.getNickname()%>"><%=colSeg.getNickname()%></a></li>
-						<%
-						}
-						%>
-						</ul>
+			      		<% if (colSigo != null) { %>
+				      		<h5>Colaboradores <i class="fa fa-bookmark" aria-hidden="true"></i> <%=colSigo.length%></h5>
+							<ul class="list-group">
+							<% for (int i=0;i<colSigo.length;i++){ %>
+								<li class="list-group-item"><a href="VerPerfil?nickname=<%=colSigo[i].getNickname()%>"><%=colSigo[i].getNickname()%></a></li>
+							<% } %>
+							</ul>
+						<%}else{ %>
+			      			<span>No sigue ningún colaborador</span>
+			      		<% } %> 
 			      	</div>
 					<div class="col-lg-6">
-						<h5>Proponentes <i class="fa fa-bookmark" aria-hidden="true"></i> <%=perfilCompleto.getSeguidosProponentes().size()%></h5>
-						<ul class="list-group">
-						<%
-						for (DtProponente propSeg : perfilCompleto.getSeguidosProponentes()) {
-						%>
-							<li class="list-group-item"><a href="VerPerfil?nickname=<%=propSeg.getNickname()%>"><%=propSeg.getNickname()%></a></li>
-						<%
-						}
-						%>
-						</ul>
+						<% if (proSigo != null) { %>
+							<h5>Proponentes <i class="fa fa-bookmark" aria-hidden="true"></i> <%=proSigo.length%></h5>
+							<ul class="list-group">
+							<% for (int i=0;i<proSigo.length;i++){ %>
+								<li class="list-group-item"><a href="VerPerfil?nickname=<%=proSigo[i].getNickname()%>"><%=proSigo[i].getNickname()%></a></li>
+							<% } %>
+							</ul>
+						<% } else { %>
+							<span>No sigue ningún proponente</span>
+						<% } %>
 			      	</div>
 	      		</div>
 	      	</div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 	      </div>
 	    </div>
 	  </div>
@@ -253,9 +260,10 @@
 	<div class="modal fade" id="favoritasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
+	    <% if (favoritas != null) { %>
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Favoritas <i class="fa fa-heart" aria-hidden="true"></i> <%=perfilCompleto.getPropuestasFavoritas().size()%></h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <h5 class="modal-title" id="exampleModalLabel">Favoritas <i class="fa fa-heart" aria-hidden="true"></i> <%=favoritas.length%></h5>
+	        <button type="button" class="Cerrar" data-dismiss="modal" aria-label="Cerrar">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
@@ -265,17 +273,28 @@
 			      	<div class="col-lg-12">
 			      		<ul class="list-group">
 						<%
-						for (DtPropuesta fav : perfilCompleto.getPropuestasFavoritas()) {
+						for(int i= 0;i<favoritas.length;i++) {
 						%>
-							<li class="list-group-item"><a href="#"><%=fav.getTitulo()%></a></li>
+							<li class="list-group-item"><a href="#"><%=favoritas[i].getTitulo()%></a></li>
 						<% } %>
 						</ul>
 			      	</div>
 	      		</div>
 	      	</div>
 	      </div>
+	    <% } else { %>
+			<div class="modal-body">
+				<div class="container-fluid">
+			      	<div class="row">
+						<div class="col-lg-12">
+							<span>No tiene ninguna propuesta favorita</span>
+						</div>
+			      	</div>
+				</div>
+			</div>
+	    <% } %>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 	      </div>
 	    </div>
 	  </div>
@@ -288,9 +307,10 @@
 			<div class="modal fade" id="misPropuestasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			  <div class="modal-dialog" role="document">
 			    <div class="modal-content">
+			    <% if (publicadas != null) { %>
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Publicadas <i class="fa fa-heart" aria-hidden="true"></i> <%=perfilCompleto.getPropuestasPublicadas().size()%></h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			        <h5 class="modal-title" id="exampleModalLabel">Publicadas <i class="fa fa-heart" aria-hidden="true"></i> <%=publicadas.length%></h5>
+			        <button type="button" class="Cerrar" data-dismiss="modal" aria-label="Cerrar">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 			      </div>
@@ -300,17 +320,28 @@
 					      	<div class="col-lg-12">
 					      		<ul class="list-group">
 								<%
-								for (DtPropuesta mias : perfilCompleto.getPropuestasPublicadas()) {
+								for (int i=0;i<publicadas.length;i++){
 								%>
-									<li class="list-group-item"><a href="#"><%=mias.getTitulo()%></a></li>
+									<li class="list-group-item"><a href="VerPropuesta?titulo=<%=publicadas[i].getTitulo()%>"><%=publicadas[i].getTitulo()%></a></li>
 								<% } %>
 								</ul>
 					      	</div>
 			      		</div>
 			      	</div>
 			      </div>
+			    <% } else { %>
+					<div class="modal-body">
+						<div class="container-fluid">
+					      	<div class="row">
+								<div class="col-lg-12">
+									<span>No tiene ninguna propuesta publicada</span>
+								</div>
+					      	</div>
+						</div>
+					</div>
+			    <% } %>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 			      </div>
 			    </div>
 			  </div>
@@ -320,9 +351,10 @@
 			<div class="modal fade" id="misColaboracionesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			  <div class="modal-dialog" role="document">
 			    <div class="modal-content">
+			    <% if (colaboradas != null) { %>
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Colaboraciones <i class="fa fa-heart" aria-hidden="true"></i> <%=perfilCompleto.getPropuestasColaboradas().size()%></h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			        <h5 class="modal-title" id="exampleModalLabel">Colaboraciones <i class="fa fa-heart" aria-hidden="true"></i> <%=colaboradas.length%></h5>
+			        <button type="button" class="Cerrar" data-dismiss="modal" aria-label="Cerrar">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 			      </div>
@@ -332,17 +364,28 @@
 					      	<div class="col-lg-12">
 					      		<ul class="list-group">
 								<%
-								for (DtPropuestaColaborada col : perfilCompleto.getPropuestasColaboradas()) {
+								for (int i=0;i<colaboradas.length;i++){
 								%>
-									<li class="list-group-item"><a href="#"><%=col.getTitulo()%></a></li>
+									<li class="list-group-item"><a href="VerPropuesta?titulo=<%=colaboradas[i].getTitulo()%>"><%=colaboradas[i].getTitulo()%></a></li>
 								<% } %>
 								</ul>
 					      	</div>
 			      		</div>
 			      	</div>
 			      </div>
+			    <% } else { %>
+					<div class="modal-body">
+						<div class="container-fluid">
+					      	<div class="row">
+								<div class="col-lg-12">
+									<span>No tiene ninguna propuesta colaborada</span>
+								</div>
+					      	</div>
+						</div>
+					</div>
+			    <% } %>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 			      </div>
 			    </div>
 			  </div>
