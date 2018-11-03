@@ -1,3 +1,4 @@
+<%@page import="datatypeJee.msjUI.DtMensajeUI"%>
 <%@page import="publicadores.DtPropuestaColaborada"%>
 <%@page import="publicadores.DtProponente"%>
 <%@page import="publicadores.DtPropuesta"%>
@@ -22,6 +23,7 @@ DtPropuesta[] favoritas		= perfilCompleto.getPropuestasFavoritas();
 
 DtPropuesta[] publicadas = perfilCompleto.getPropuestasPublicadas();
 DtPropuestaColaborada[] colaboradas = perfilCompleto.getPropuestasColaboradas();
+DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
 
 if (user == null) { %>
   <jsp:include page="../partials/navVisitante.jsp"></jsp:include>
@@ -29,7 +31,14 @@ if (user == null) { %>
   <jsp:include page="../partials/navLogueado.jsp"></jsp:include>
 <% } %>
   <section class="container-fluid">
-  
+	 <% if(mensaje != null) { %>
+	 <div class="alert alert-warning alert-dismissible fade show" role="alert">
+	 	<%=mensaje.getMensaje()%>
+	 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	 		<span aria-hidden="true">&times;</span>
+	 	</button>
+	 </div>
+	 <% } %>
 	<div class="row">
 		<div class="col-lg-2">
 			<div class="img-perfil shadow border">

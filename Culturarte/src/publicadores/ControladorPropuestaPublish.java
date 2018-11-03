@@ -143,7 +143,7 @@ public class ControladorPropuestaPublish {
 	}
 
 	@WebMethod
-	void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException{
+	public void cancelarPropuesta(String tituloPropuesta) throws PropuestaNoExisteException{
 		IPC.cancelarPropuesta(tituloPropuesta);
 	}
 	

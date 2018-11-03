@@ -44,58 +44,10 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     return controladorPropuestaPublish;
   }
   
-  public publicadores.DtDatosPropuesta consultarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException{
+  public boolean modificarPropuesta(publicadores.DtPropuesta arg0) throws java.rmi.RemoteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.consultarPropuesta(arg0);
-  }
-  
-  public publicadores.DtPropuestaMinificado[] listarPropuestasPorEstado(publicadores.EstadoPropuesta arg0) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.listarPropuestasPorEstado(arg0);
-  }
-  
-  public publicadores.DtPropuestaMinificado[] listadoPropuestasIngresadas() throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.listadoPropuestasIngresadas();
-  }
-  
-  public publicadores.DtPropuestaMinificado[] listarPropuestasProponentePorEstado(java.lang.String arg0, publicadores.EstadoPropuesta arg1) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.listarPropuestasProponentePorEstado(arg0, arg1);
-  }
-  
-  public publicadores.DtPropuestaMinificado[] listarPropuestasActivas() throws java.rmi.RemoteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.listarPropuestasActivas();
-  }
-  
-  public void extenderFinanciacion(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    controladorPropuestaPublish.extenderFinanciacion(arg0);
-  }
-  
-  public publicadores.DtPropuesta[] listarPropuestasPorCategoria(java.lang.String arg0) throws java.rmi.RemoteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.listarPropuestasPorCategoria(arg0);
-  }
-  
-  public publicadores.DtPropuesta[] getPropuestasPopulares() throws java.rmi.RemoteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.getPropuestasPopulares();
-  }
-  
-  public publicadores.DtPropuestaMinificado[] propuestasDesdeBuscador(java.lang.String arg0) throws java.rmi.RemoteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.propuestasDesdeBuscador(arg0);
+    return controladorPropuestaPublish.modificarPropuesta(arg0);
   }
   
   public void altaPropuesta(publicadores.DtPropuesta arg0) throws java.rmi.RemoteException, publicadores.PropuestaRepetidaException, publicadores.CategoriaNoExisteException, publicadores.ProponenteNoExisteException{
@@ -104,16 +56,22 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     controladorPropuestaPublish.altaPropuesta(arg0);
   }
   
-  public boolean modificarPropuesta(publicadores.DtPropuesta arg0) throws java.rmi.RemoteException{
+  public publicadores.DtPropuesta seleccionarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.modificarPropuesta(arg0);
+    return controladorPropuestaPublish.seleccionarPropuesta(arg0);
   }
   
-  public void generarColaboracion(publicadores.DtColaboracion arg0) throws java.rmi.RemoteException, publicadores.ColaboradorNoExisteException, publicadores.PropuestaNoExisteException, publicadores.ColaboracionExistenteException{
+  public publicadores.DtPropuesta[] listarPropuestasExistentes() throws java.rmi.RemoteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
-    controladorPropuestaPublish.generarColaboracion(arg0);
+    return controladorPropuestaPublish.listarPropuestasExistentes();
+  }
+  
+  public void evaluarPropuesta(java.lang.String arg0, publicadores.EstadoPropuesta arg1) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    controladorPropuestaPublish.evaluarPropuesta(arg0, arg1);
   }
   
   public void agregarFavorita(java.lang.String arg0, publicadores.DtUsuario arg1) throws java.rmi.RemoteException, publicadores.UsuarioSinLoguearseException{
@@ -122,16 +80,22 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     controladorPropuestaPublish.agregarFavorita(arg0, arg1);
   }
   
+  public void setearEstadosPropuests(java.lang.String arg0, java.lang.String arg1, java.lang.String arg2) throws java.rmi.RemoteException, publicadores.ParseException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    controladorPropuestaPublish.setearEstadosPropuests(arg0, arg1, arg2);
+  }
+  
   public void borrarEstadosPropuestas() throws java.rmi.RemoteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
     controladorPropuestaPublish.borrarEstadosPropuestas();
   }
   
-  public void setearEstadosPropuests(java.lang.String arg0, java.lang.String arg1, java.lang.String arg2) throws java.rmi.RemoteException, publicadores.ParseException{
+  public void generarColaboracion(publicadores.DtColaboracion arg0) throws java.rmi.RemoteException, publicadores.ColaboradorNoExisteException, publicadores.PropuestaNoExisteException, publicadores.ColaboracionExistenteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
-    controladorPropuestaPublish.setearEstadosPropuests(arg0, arg1, arg2);
+    controladorPropuestaPublish.generarColaboracion(arg0);
   }
   
   public publicadores.DtPropuestaMinificado[] listarPropuestas() throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
@@ -146,22 +110,64 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     return controladorPropuestaPublish.listarColaboraciones(arg0);
   }
   
-  public publicadores.DtPropuesta[] listarPropuestasExistentes() throws java.rmi.RemoteException{
+  public void cancelarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.listarPropuestasExistentes();
+    controladorPropuestaPublish.cancelarPropuesta(arg0);
   }
   
-  public publicadores.DtPropuesta seleccionarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException{
+  public publicadores.DtPropuestaMinificado[] listadoPropuestasIngresadas() throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.seleccionarPropuesta(arg0);
+    return controladorPropuestaPublish.listadoPropuestasIngresadas();
   }
   
-  public void evaluarPropuesta(java.lang.String arg0, publicadores.EstadoPropuesta arg1) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
+  public publicadores.DtPropuestaMinificado[] listarPropuestasActivas() throws java.rmi.RemoteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
-    controladorPropuestaPublish.evaluarPropuesta(arg0, arg1);
+    return controladorPropuestaPublish.listarPropuestasActivas();
+  }
+  
+  public publicadores.DtPropuesta[] getPropuestasPopulares() throws java.rmi.RemoteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.getPropuestasPopulares();
+  }
+  
+  public publicadores.DtPropuesta[] listarPropuestasPorCategoria(java.lang.String arg0) throws java.rmi.RemoteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.listarPropuestasPorCategoria(arg0);
+  }
+  
+  public publicadores.DtPropuestaMinificado[] listarPropuestasPorEstado(publicadores.EstadoPropuesta arg0) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.listarPropuestasPorEstado(arg0);
+  }
+  
+  public void extenderFinanciacion(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    controladorPropuestaPublish.extenderFinanciacion(arg0);
+  }
+  
+  public publicadores.DtDatosPropuesta consultarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.consultarPropuesta(arg0);
+  }
+  
+  public publicadores.DtPropuestaMinificado[] propuestasDesdeBuscador(java.lang.String arg0) throws java.rmi.RemoteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.propuestasDesdeBuscador(arg0);
+  }
+  
+  public publicadores.DtPropuestaMinificado[] listarPropuestasProponentePorEstado(java.lang.String arg0, publicadores.EstadoPropuesta arg1) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.listarPropuestasProponentePorEstado(arg0, arg1);
   }
   
   
