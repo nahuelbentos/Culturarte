@@ -68,7 +68,7 @@
   		* Evaluar si se deja acá o se cambia al backend.
   		*/
   		boolean esFavorita = false;
-  		if (user.getTituloFavoritas() != null){
+  		if (user.getTituloFavoritas()!=null) {
 	  		for (String titulo : user.getTituloFavoritas()) {
 	  			if (titulo.equals(propWeb.getTitulo())) {
 	  				esFavorita = true;
