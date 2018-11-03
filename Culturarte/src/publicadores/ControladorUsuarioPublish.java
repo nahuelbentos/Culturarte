@@ -120,7 +120,7 @@ public class ControladorUsuarioPublish {
 	
 	@WebMethod
 	public DtPropuesta[] listarPropuestasColaborador(DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException {
-		return listarPropuestasColaborador(usuarioLogueado);
+		return IUC.listarPropuestasColaborador(usuarioLogueado);
 	}
 
 	@WebMethod

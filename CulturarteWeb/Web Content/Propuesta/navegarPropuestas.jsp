@@ -1,9 +1,9 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="datatype.EstadoPropuesta"%>
+<%@page import="publicadores.EstadoPropuesta"%>
 <%@page import="datatypeJee.DtPropuestaWeb"%>
-<%@page import="datatype.DtUsuario"%>
-<%@page import="datatype.DtPerfilUsuario"%>
-<%@page import="datatype.DtPropuestaColaborada"%>
+<%@page import="publicadores.DtUsuario"%>
+<%@page import="publicadores.DtPerfilUsuario"%>
+<%@page import="publicadores.DtPropuestaColaborada"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
  <% 
@@ -68,7 +68,24 @@
 					<td><a href="VerPropuesta?titulo=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Ver Propuesta"> <i class="fa fa-eye fa-2x" aria-hidden="true" ></i></a></td>
 					<% if (user != null) { 
 						String tituloSinEspacios = itemP.getTitulo().replace(" ","");
-						if (!user.isMemberTituloFavorita(itemP.getTitulo())) {
+				  		/*
+				  		* Migración a WS
+						* El datatype generado solamente trae operaciones básicas, no crea la 
+						* funcion isMember para los pseudoatributos colección.
+						* Para no agregar esta lógica al controlador de usuarios en el backend 
+						* solo por una prueba, lo agregué acá.
+				  		* Evaluar si se deja acá o se cambia al backend.
+				  		*/
+				  		Boolean esFavorita = false;
+				  		if (user.getTituloFavoritas() != null){
+					  		for (String titulo : user.getTituloFavoritas()) {
+					  			if (titulo.equals(itemP.getTitulo())) {
+					  				esFavorita = true;
+									break;
+					  			}
+					  		}
+				  		}
+				  		if(!esFavorita) {
 						%>
 							<td>
 								<button class="favorito" onclick="gestionarFavoritas('<%=tituloSinEspacios%>','<%=itemP.getTitulo()%>')" data-toggle="tooltip" data-placement="bottom" title="Agregar como favorita"> <i id="<%=tituloSinEspacios%>" class="fa fa-heart-o fa-2x" aria-hidden="true"></i></button>
@@ -77,24 +94,23 @@
 							<td>
 								<button class="favorito" onclick="" data-toggle="tooltip" data-placement="bottom" title="Quitar de favoritas"> <i id="<%=tituloSinEspacios%>" class="fa fa-heart fa-2x" aria-hidden="true"></i></button>
 							</td>
-						<%
-						}
+						<%	
+			  			}
 						%>
 	
 	<%-- 					<td><a href="AgregarFavorita?propuesta=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar como favorita"> <i class="fa fa-heart-o fa-2x" aria-hidden="true"></i></a></td> --%>
-					<% } %>
-					<%
-					if (perfilCompleto != null) {
-					ArrayList<DtPropuestaColaborada> listadoPropuestasColaboradas = perfilCompleto.getPropuestasColaboradas();
-						if (listadoPropuestasColaboradas != null) {
-							for (DtPropuestaColaborada dtPropuestaColaborada : listadoPropuestasColaboradas) {
-								if (EstadoPropuesta.financiada.equals(itemP.getEstadoPropuesta()) && itemP.getTitulo().equals(dtPropuestaColaborada.getTitulo())) {
-								%>
-									<td><a href="ComentarPropuesta?titulo=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar Comentario"><i class="btn btn-info" aria-hidden="true" >Agregar Comentario</i></a></td>
-								<% } %>
-							<% } %>
-						<% } %>
-					<% } %>
+			<% }
+				if (perfilCompleto != null) {
+					DtPropuestaColaborada[] listadoPropuestasColaboradas = perfilCompleto.getPropuestasColaboradas();
+					if (listadoPropuestasColaboradas != null) {
+						for (DtPropuestaColaborada dtPropuestaColaborada : listadoPropuestasColaboradas) {
+							if (EstadoPropuesta.financiada.equals(itemP.getEstadoPropuesta()) && itemP.getTitulo().equals(dtPropuestaColaborada.getTitulo())) {
+			%>
+								<td><a href="ComentarPropuesta?titulo=<%=itemP.getTitulo()%>" data-toggle="tooltip" data-placement="bottom" title="Agregar Comentario"><i class="btn btn-info" aria-hidden="true" >Agregar Comentario</i></a></td>
+			<%				} %>
+			<%			} %>
+			<%		} %>
+			<%	} %>
 				</tr>
 				<%
 					i += 1; 

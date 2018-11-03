@@ -67,12 +67,14 @@
 		* solo por una prueba, lo agregué acá.
   		* Evaluar si se deja acá o se cambia al backend.
   		*/
-  		Boolean esFavorita = false;
-  		for (String titulo : user.getTituloFavoritas()) {
-  			if (titulo.equals(propWeb.getTitulo())) {
-  				esFavorita = true;
-				break;
-  			}
+  		boolean esFavorita = false;
+  		if (user.getTituloFavoritas() != null){
+	  		for (String titulo : user.getTituloFavoritas()) {
+	  			if (titulo.equals(propWeb.getTitulo())) {
+	  				esFavorita = true;
+					break;
+	  			}
+	  		}
   		}
   		if(!esFavorita) {
   		%>
