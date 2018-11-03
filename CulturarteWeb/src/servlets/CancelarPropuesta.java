@@ -8,12 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.rpc.ServiceException;
 
 import datatypeJee.msjUI.DtMensajeUI;
 import datatypeJee.msjUI.TipoMensaje;
-import excepciones.PropuestaNoExisteException;
-import logica.Factory;
-import logica.IPropuestaController;
+import publicadores.PropuestaNoExisteException;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
 
 /**
  * Servlet implementation class CancelarPropuesta
@@ -27,25 +29,23 @@ public class CancelarPropuesta extends HttpServlet {
      */
     public CancelarPropuesta() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String titulo = request.getParameter("titulo");
 		String pantalla = request.getParameter("pantalla");
 		
-		Factory factory = Factory.getInstance();
-		IPropuestaController iPropCont = factory.getIPropuestaController();
+		ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish cpp;
 		
 		
 		try {
-			//esto luego vemos como llamarlo desde algun ajax para no consumir tanto recurso, de momento llamo a todo junto.
-//			HttpSession session = request.getSession();
-			iPropCont.cancelarPropuesta(titulo);
+			cpp = cppsl.getControladorPropuestaPublishPort();
+			cpp.cancelarPropuesta(titulo);
+			
 			System.out.println("pantalla: " + pantalla + "\n");
 			DtMensajeUI msg = new DtMensajeUI("Se cancelo correctamente la propuesta: " + titulo, TipoMensaje.informacion);
 			request.setAttribute("mensaje", msg);
@@ -55,8 +55,7 @@ public class CancelarPropuesta extends HttpServlet {
 			else
 				rd = request.getRequestDispatcher("ListarPropuestaProponenteEstado?estado=financiada");
 			rd.forward(request, response);
-		} catch (PropuestaNoExisteException e) {
-			// TODO Auto-generated catch block
+		} catch (PropuestaNoExisteException | ServiceException e) {
 			e.printStackTrace();
 		}
 	}
@@ -65,7 +64,6 @@ public class CancelarPropuesta extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

@@ -23,6 +23,7 @@ import publicadores.DtProponente;
 import publicadores.DtUsuario;
 import datatypeJee.DtUsuarioWeb;
 import datatypeJee.TipoUsuario;
+import datatypeJee.msjUI.DtMensajeUI;
 import publicadores.UsuarioNoExisteElUsuarioException;
 //import logica.Factory;
 //import logica.IUsuarioController;
@@ -64,7 +65,7 @@ public class VerPerfil extends HttpServlet {
 		ControladorUsuarioPublish cup;
 		try {
 			cup = cupsl.getControladorUsuarioPublishPort();
-			
+			DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
 			try {
 				//esto luego vemos como llamarlo desde algun ajax para no consumir tanto recurso, de momento llamo a todo junto.
 				//HttpSession session = request.getSession();
@@ -89,6 +90,7 @@ public class VerPerfil extends HttpServlet {
 				
 				request.setAttribute("perfil", perfil);
 				request.setAttribute("perfilCompleto", perfilCompleto);
+				request.setAttribute("mensaje", mensaje);
 				RequestDispatcher rd;
 				rd = request.getRequestDispatcher("/Usuario/perfil.jsp");
 				rd.forward(request, response);

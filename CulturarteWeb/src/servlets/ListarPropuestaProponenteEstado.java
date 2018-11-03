@@ -19,6 +19,7 @@ import publicadores.DtUsuario;
 import publicadores.EstadoPropuesta;
 import datatypeJee.DtPropuestaWeb;
 import datatypeJee.msjUI.DtMensajeUI;
+import datatypeJee.msjUI.TipoMensaje;
 import publicadores.PropuestaNoExisteException;
 //import logica.Factory;
 //import logica.IPropuestaController;
@@ -45,39 +46,47 @@ public class ListarPropuestaProponenteEstado extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		EstadoPropuesta estado = EstadoPropuesta.fromString(request.getParameter("estado"));
-		DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
-
-    	request.setAttribute("mensaje", mensaje);
-
-    	ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
+		
+		ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
 		ControladorPropuestaPublish cpp;
+		RequestDispatcher rd;
+		DtMensajeUI mensaje;
 		try {
 			cpp = cppsl.getControladorPropuestaPublishPort();
 			
 			//esto luego vemos como llamarlo desde algun ajax para no consumir tanto recurso, de momento llamo a todo junto.
 			HttpSession session = request.getSession();
 			DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");
+			
 			try {
 				DtPropuestaMinificado[] pAux = cpp.listarPropuestasProponentePorEstado(user.getNickname(),estado);
 		    	DtPropuestaWeb[] props = new DtPropuestaWeb[pAux.length];
-				
+		    	mensaje = (DtMensajeUI)request.getAttribute("mensaje");
+		    	
 		    	for (int i = 0; i < pAux.length; i++) {
 					props[i] = new DtPropuestaWeb(pAux[i].getTitulo(), pAux[i].getProponente(), pAux[i].getImagen(), null, null, null, estado);		
 				}
 		    	
 		    	request.setAttribute("propuestas", props);
-				RequestDispatcher rd;
-				//rd = request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp");
 				
+				//rd = request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp");
+		    	request.setAttribute("mensaje", mensaje);
 				rd = request.getRequestDispatcher("/Propuesta/navegarPropuestasACancelar.jsp");
 				rd.forward(request, response);
 				
 			} catch (PropuestaNoExisteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				mensaje = new DtMensajeUI(e.getMessage1(), TipoMensaje.error);
+				request.setAttribute("mensaje", mensaje);
+				rd = request.getRequestDispatcher("VerPerfil?nickname="+user.getNickname());
+				rd.forward(request, response);
 			}
 		} catch (ServiceException e1) {
 			e1.printStackTrace();
+			mensaje = new DtMensajeUI(e1.getMessage(), TipoMensaje.error);
+			request.setAttribute("mensaje", mensaje);
+			rd = request.getRequestDispatcher("Inicio");
+			rd.forward(request, response);
 		}
 	}
 

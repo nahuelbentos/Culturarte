@@ -1,6 +1,6 @@
 <%@page import="datatypeJee.msjUI.DtMensajeUI"%>
 <%@page import="datatypeJee.DtPropuestaWeb"%>
-<%@page import="datatype.DtUsuario"%>
+<%@page import="publicadores.DtUsuario"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
  <% 
@@ -11,7 +11,6 @@
  DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
  
  if (user == null) { 
- 
  %>
   <jsp:include page="../partials/navVisitante.jsp"></jsp:include>
  <%
@@ -27,7 +26,8 @@
 	 	</button>
 	 </div>
 	 <% } %>
-	<h3>Propuestas</h3>
+	 <% if (listadoPropuestas != null) { %>
+	<h3>Propuesta disponibles para cancelar</h3>
 		
 	<table class="table table-striped">
 		<thead>
@@ -56,12 +56,12 @@
 				<td><%=itemP.getProponente()%></td>
 				<td><a href="CancelarPropuesta?titulo=<%=itemP.getTitulo()%>&pantalla=navegarPropuesta"> Cancelar Propuesta</a></td>
 			</tr>
-			<%
-				i += 1; 
+			<% i += 1; 
 			}
 			%>
 		</tbody>
 	</table>
+	<% } %>
   </section>
 
 <jsp:include page="../partials/footer.jsp" />
