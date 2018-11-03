@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.rpc.ServiceException;
 
 import publicadores.DtPerfilUsuario;
 import publicadores.DtPropuesta;
@@ -18,7 +17,6 @@ import publicadores.UsuarioSinLoguearseException;
 import publicadores.ControladorUsuarioPublish;
 import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
-import publicadores.UsuarioSinLoguearseException;
 import datatypeJee.DtPropuestaWeb;
 //import logica.Factory;
 //import logica.IUsuarioController;
@@ -32,49 +30,47 @@ public class ComentarPropuesta extends HttpServlet {
 		super();
 	}
 
-		/**
-		 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-		 */
-		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			ControladorUsuarioPublishService cupsl = new ControladorUsuarioPublishServiceLocator();
-			ControladorUsuarioPublish cup;
-			try {
-				cup = cupsl.getControladorUsuarioPublishPort();
-				
-		    	HttpSession session = request.getSession();
-				DtUsuario usuario = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
-				DtPerfilUsuario perfilCompleto = cup.obtenerPerfilUsuario(usuario.getNickname(), (DtUsuario)session.getAttribute("usuarioLogueado"));
-		    	
-		    	DtPropuesta[] pAux;
-		    	
-		    	if (request.getParameter("titulo") == null) {	    	
-					try {
-						pAux = cup.listarPropuestasColaborador(usuario);
-				    	DtPropuestaWeb[] props = new DtPropuestaWeb[pAux.length];
-				    	
-				    	for (int i = 0; i < pAux.length; i++) {
-							props[i] = new DtPropuestaWeb(pAux[i].getTitulo(), pAux[i].getProponenteACargo().getNickname(), pAux[i].getImagen(), null, null, null, pAux[i].getEstadoActual());		
-						}
-				    	request.setAttribute("listaPropuestas", props);
-				    	request.setAttribute("perfilCompleto", perfilCompleto);
-						RequestDispatcher rd;
-						rd = request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp");
-						rd.forward(request, response);
-					} catch (UsuarioSinLoguearseException e) {
-						e.printStackTrace();
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ControladorUsuarioPublishService cupsl = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish cup;
+		try {
+			cup = cupsl.getControladorUsuarioPublishPort();
+			
+	    	HttpSession session = request.getSession();
+			DtUsuario usuario = (DtUsuario)session.getAttribute("usuarioLogueado");
+			DtPerfilUsuario perfilCompleto = cup.obtenerPerfilUsuario(usuario.getNickname(), usuario);
+	    	
+	    	DtPropuesta[] pAux;
+	    	
+	    	if (request.getParameter("titulo") == null) {	    	
+				try {
+					pAux = cup.listarPropuestasColaborador(usuario);
+			    	DtPropuestaWeb[] props = new DtPropuestaWeb[pAux.length];
+			    	
+			    	for (int i = 0; i < pAux.length; i++) {
+						props[i] = new DtPropuestaWeb(pAux[i].getTitulo(), pAux[i].getProponenteACargo().getNickname(), pAux[i].getImagen(), null, null, null, pAux[i].getEstadoActual());		
 					}
-		    	} else {
-		    		String titulo = request.getParameter("titulo");
-		    		request.getSession().setAttribute("titulo", titulo);	    		
-		    		RequestDispatcher rd;
-		    		rd = request.getRequestDispatcher("/Propuesta/comentarPropuesta.jsp");
+			    	request.setAttribute("listaPropuestas", props);
+			    	request.setAttribute("perfilCompleto", perfilCompleto);
+					RequestDispatcher rd;
+					rd = request.getRequestDispatcher("/Propuesta/navegarPropuestas.jsp");
 					rd.forward(request, response);
-		    	}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		
-    	
+				} catch (UsuarioSinLoguearseException e) {
+					e.printStackTrace();
+				}
+	    	} else {
+	    		String titulo = request.getParameter("titulo");
+	    		request.getSession().setAttribute("titulo", titulo);	    		
+	    		RequestDispatcher rd;
+	    		rd = request.getRequestDispatcher("/Propuesta/comentarPropuesta.jsp");
+				rd.forward(request, response);
+	    	}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
