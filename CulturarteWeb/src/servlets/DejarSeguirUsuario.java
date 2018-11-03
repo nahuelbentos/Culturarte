@@ -15,26 +15,15 @@ import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtUsuario;
 
-/**
- * Servlet implementation class DejarSeguirUsuario
- */
 @WebServlet("/DejarSeguirUsuario")
 public class DejarSeguirUsuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public DejarSeguirUsuario() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		DtUsuario user = (DtUsuario) session.getAttribute("usuarioLogueado");
 		
@@ -61,11 +50,7 @@ public class DejarSeguirUsuario extends HttpServlet {
 		response.getWriter().write("Dejaste de seguir al usuario: " + nicknameSeguir);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	

@@ -2,47 +2,36 @@ package servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.rpc.ServiceException;
 
-import datatype.DtUsuario;
-import datatypeJee.msjUI.DtMensajeUI;
-import datatypeJee.msjUI.TipoMensaje;
-import excepciones.UsuarioYaSigueAlUsuarioException;
-import logica.Factory;
-import logica.IUsuarioController;
+import publicadores.ControladorUsuarioPublish;
+import publicadores.ControladorUsuarioPublishService;
+import publicadores.ControladorUsuarioPublishServiceLocator;
+import publicadores.DtUsuario;
+import publicadores.UsuarioYaSigueAlUsuarioException;
 
-/**
- * Servlet implementation class SeguirUsuario
- */
 @WebServlet("/SeguirUsuario")
 public class SeguirUsuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    
     public SeguirUsuario() {
         super();
         // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		DtUsuario user = (DtUsuario) session.getAttribute("usuarioLogueado");
 		
 		String nickname = user.getNickname();
-		Factory factory = Factory.getInstance();
-		IUsuarioController iUsuCont = factory.getIUsuarioController();
+		
 		response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
 		try {
@@ -50,30 +39,37 @@ public class SeguirUsuario extends HttpServlet {
 			//HttpSession session = request.getSession();
 				
 			String nicknameSeguir = request.getParameter("nickname");
-			iUsuCont.seguirUsuario(nickname,nicknameSeguir);
-			user.addUsuarioSeguido(nicknameSeguir);
-			session.setAttribute("usuarioLogueado", user);
-//			DtMensajeUI msg = new DtMensajeUI("Empezaste a seguir al usuario: " + nicknameSeguir, TipoMensaje.informacion);
-//			request.setAttribute("mensaje", msg);
-
+			seguirUsuario(nickname,nicknameSeguir);
+			DtUsuario[] seguidos = listarSeguidos(nickname);
+			session.setAttribute("seguidos", seguidos);
 		    response.getWriter().write("Empezaste a seguir al usuario: " + nicknameSeguir);
 			
 		} catch (UsuarioYaSigueAlUsuarioException e) {
-			// TODO Auto-generated catch block
-//			DtMensajeUI msg = new DtMensajeUI(e.getMessage(), TipoMensaje.error);
-//			request.setAttribute("mensaje", msg);
 		    response.getWriter().write(e.getMessage());
 			
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private void seguirUsuario(String nickname, String nicknameSeguir) throws ServiceException, Exception {
+		ControladorUsuarioPublishService cupsl = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish cup = cupsl.getControladorUsuarioPublishPort();
+		cup.seguirUsuario(nickname, nicknameSeguir);
+	}
+	
+	private DtUsuario[] listarSeguidos(String nickname) throws ServiceException, Exception {
+		ControladorUsuarioPublishService cupls = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish cup = cupls.getControladorUsuarioPublishPort();
+		return cup.listarUsuariosQueSigue(nickname);
 	}
 
 }
