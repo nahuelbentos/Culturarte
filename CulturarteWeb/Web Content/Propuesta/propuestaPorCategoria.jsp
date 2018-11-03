@@ -1,10 +1,8 @@
-<%@page import="datatype.DtPropuestaMinificado"%>
-<%@page import="datatype.DtProponente"%>
-<%@page import="datatype.DtUsuario"%>
-<%@page import="logica.Factory"%>
-<%@page import="logica.ICategoriaController"%>
-<%@page import="datatype.DtCategoria"%>
-<%@page import="datatype.TipoRetorno"%>
+<%@page import="publicadores.DtPropuestaMinificado"%>
+<%@page import="publicadores.DtProponente"%>
+<%@page import="publicadores.DtUsuario"%>
+<%@page import="publicadores.DtCategoria"%>
+<%@page import="publicadores.TipoRetorno"%>
 <%@page import="org.apache.tomcat.util.codec.binary.Base64"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 <body>

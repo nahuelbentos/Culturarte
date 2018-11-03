@@ -1,5 +1,5 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="datatype.DtPropuestaMinificado"%>
+<%@page import="publicadores.DtPropuestaMinificado"%>
 <%@page import="org.apache.tomcat.util.codec.binary.Base64"%>
 
 <body>
@@ -30,7 +30,7 @@
 		<div class="tab-pane fade show active" id="ingresadas" role="tabpanel" aria-labelledby="ingresadas-tab">
 			<% 
 			ArrayList<DtPropuestaMinificado> ingresadas = (ArrayList<DtPropuestaMinificado>) request.getAttribute("listaIngresada");  
-			if (ingresadas != null){
+			if (ingresadas.size() > 0){
 				for (DtPropuestaMinificado dtP : ingresadas) {
 					byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 			        String base64Encoded = new String(encodeBase64, "UTF-8");
@@ -55,7 +55,7 @@
 		<div class="tab-pane fade" id="publicadas" role="tabpanel" aria-labelledby="publicadas-tab">
 			<% 
 			ArrayList<DtPropuestaMinificado> publicadas = (ArrayList<DtPropuestaMinificado>) request.getAttribute("listaPublicada");  
-			if (publicadas != null){
+			if (publicadas.size() > 0){
 				for (DtPropuestaMinificado dtP : publicadas) {
 					byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 			        String base64Encoded = new String(encodeBase64, "UTF-8");
@@ -80,7 +80,7 @@
 		<div class="tab-pane fade" id="enFinanciacion" role="tabpanel" aria-labelledby="enFinanciacion-tab">
 			<% 
 			ArrayList<DtPropuestaMinificado> enFinanciacion = (ArrayList<DtPropuestaMinificado>) request.getAttribute("listaEnFinanciacion");  
-			if (enFinanciacion != null){
+			if (enFinanciacion.size() > 0){
 				for (DtPropuestaMinificado dtP : enFinanciacion) {
 					byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 			        String base64Encoded = new String(encodeBase64, "UTF-8");
@@ -105,7 +105,7 @@
 		<div class="tab-pane fade" id="financiadas" role="tabpanel" aria-labelledby="financiadas-tab">
 			<% 
 			ArrayList<DtPropuestaMinificado> financiadas = (ArrayList<DtPropuestaMinificado>) request.getAttribute("listaFinanciada");  
-			if (financiadas != null){
+			if (financiadas.size() > 0){
 				for (DtPropuestaMinificado dtP : financiadas) {
 					byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 			        String base64Encoded = new String(encodeBase64, "UTF-8");
@@ -130,7 +130,7 @@
 		<div class="tab-pane fade" id="noFinanciadas" role="tabpanel" aria-labelledby="noFinanciadas-tab">
 			<% 
 			ArrayList<DtPropuestaMinificado> noFinanciadas = (ArrayList<DtPropuestaMinificado>) request.getAttribute("listaNoFinanciada");  
-			if (noFinanciadas != null){
+			if (noFinanciadas.size() > 0){
 				for (DtPropuestaMinificado dtP : noFinanciadas) {
 					byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 			        String base64Encoded = new String(encodeBase64, "UTF-8");
@@ -155,7 +155,7 @@
 		<div class="tab-pane fade" id="canceladas" role="tabpanel" aria-labelledby="canceladas-tab">
 			<% 
 			ArrayList<DtPropuestaMinificado> canceladas = (ArrayList<DtPropuestaMinificado>) request.getAttribute("listaCancelada");  
-			if (canceladas != null){
+			if (canceladas.size() > 0){
 				for (DtPropuestaMinificado dtP : canceladas) {
 					byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 			        String base64Encoded = new String(encodeBase64, "UTF-8");
