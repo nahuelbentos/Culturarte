@@ -7,12 +7,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.rpc.ServiceException;
 
 import datatypeJee.msjUI.DtMensajeUI;
 import datatypeJee.msjUI.TipoMensaje;
-import excepciones.PropuestaNoExisteException;
-import logica.Factory;
-import logica.IPropuestaController;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
 
 @WebServlet("/ExtenderFinanciacion")
 public class ExtenderFinanciacion extends HttpServlet {
@@ -24,14 +25,12 @@ public class ExtenderFinanciacion extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String titulo = request.getParameter("titulo");
-		Factory fab = Factory.getInstance();
-		IPropuestaController IPC = fab.getIPropuestaController();
 		
 		try {
-			IPC.extenderFinanciacion(titulo);
+			extenderFinanciacion(titulo);
 			DtMensajeUI msg = new DtMensajeUI("Se extendió la financiacion por 30 días mas.", TipoMensaje.informacion);
 			request.setAttribute("mensaje", msg);
-		} catch (PropuestaNoExisteException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			DtMensajeUI msg = new DtMensajeUI(e.getMessage(), TipoMensaje.error);
 			request.setAttribute("mensaje", msg);
@@ -41,6 +40,12 @@ public class ExtenderFinanciacion extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	private void extenderFinanciacion(String titulo) throws ServiceException, Exception {
+		ControladorPropuestaPublishService cppls = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish cpp = cppls.getControladorPropuestaPublishPort();
+		cpp.extenderFinanciacion(titulo);
 	}
 
 }
