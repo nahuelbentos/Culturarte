@@ -643,11 +643,11 @@ public class PropuestaController implements IPropuestaController {
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		
-		buscar = "%" + buscar.trim() + "%";
+		buscar = "%" + buscar.trim().toLowerCase() + "%";
 		@SuppressWarnings("unchecked")
-		List<Propuesta> resultado = em.createQuery("FROM Propuesta WHERE (titulo like '" + buscar + "') " + 
-													"or (descripcion like '" + buscar + "') " + 
-													"or (lugar like '" + buscar + "')").getResultList();
+		List<Propuesta> resultado = em.createQuery("FROM Propuesta WHERE (lower(titulo) like '" + buscar + "') " + 
+													"or (lower(descripcion) like '" + buscar + "') " + 
+													"or (lower(lugar) like '" + buscar + "')").getResultList();
 		
 		em.close();
 		
