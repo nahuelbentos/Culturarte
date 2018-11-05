@@ -39,6 +39,8 @@ public abstract class Usuario {
     private char[] password;
 	@Column(name="APELLIDO")
     private String apellido;
+	@Column(nullable=false, name="ESTAELIMINADO",columnDefinition = "boolean default false")
+	private boolean flagElm;
 	@Lob
 	@Column(name="IMAGEN")
     private byte[] imagen;
@@ -153,6 +155,14 @@ public abstract class Usuario {
 
 	public List<UsuarioSigue> getUsuariosQueSigue() {
 		return usuariosQueSigue;
+	}
+
+	public boolean isFlagElm() {
+		return flagElm;
+	}
+
+	public void setFlagElm(boolean flagElm) {
+		this.flagElm = flagElm;
 	}
 
 	

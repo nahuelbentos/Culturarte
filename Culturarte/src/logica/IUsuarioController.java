@@ -52,4 +52,6 @@ public interface IUsuarioController {
 	public abstract DtProponente[] getMasProponedores();
 	
 	public abstract DtPerfilProponente[] verProponentesEliminados() throws NoExistenProponentesEliminadosException;
+	
+	public abstract void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException;
 }

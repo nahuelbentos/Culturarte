@@ -662,7 +662,7 @@ public class UsuarioController implements IUsuarioController {
 		em.close();
 		return perfil;
 	}
-
+	
 	@Override
 	public DtColaborador[] getMasColaboradores() {
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -732,6 +732,43 @@ public class UsuarioController implements IUsuarioController {
         }
         return dtProponentesEliminados;
 	}
-
 	
+	@Override
+	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		Usuario usuario = em.find(Usuario.class, nickname);
+		if (usuario instanceof Proponente) {
+			em.getTransaction().begin();
+			usuario.setFlagElm(true);
+			em.merge(usuario);
+			
+	        @SuppressWarnings("unchecked")
+			List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE proponenteACargo = :proponente")
+	            	.setParameter("proponente", usuario)
+	            	.getResultList();
+
+	        for (Propuesta propuesta : propuestas) {
+				// elimino las colaboraciones de la propuesta.
+	        	em.createQuery("DELETE FROM Colaboracion WHERE propuesta = :prop").setParameter("prop", propuesta).executeUpdate();
+	        	// elimino el historico de estados.
+	        	em.createQuery("DELETE FROM Estado WHERE propuesta = :prop").setParameter("prop", propuesta).executeUpdate();
+				// elimino la propuesta
+				em.remove(propuesta);
+			}
+			
+	        // elimino seguidos y seguidores
+	        em.createQuery("DELETE FROM UsuarioSigue where usuarioUno = :usuario").setParameter("usuario", usuario).executeUpdate();
+	        em.createQuery("DELETE FROM UsuarioSigue where usuarioDos = :usuario").setParameter("usuario", usuario).executeUpdate();
+	        
+			em.getTransaction().commit();
+			em.close();
+		} else {
+			em.close();
+			throw new UsuarioNoExisteElUsuarioException("El usuario no es proponente");
+		}
+		
+	}
 }

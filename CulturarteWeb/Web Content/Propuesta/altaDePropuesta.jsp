@@ -6,7 +6,7 @@
 <%-- <%@page import="logica.Factory"%> --%>
 <%-- <%@page import="logica.ICategoriaController"%> --%>
 <%@page import="publicadores.DtCategoria"%>
-<%@page import="datatype.TipoRetorno"%>
+<%@page import="publicadores.TipoRetorno"%>
 <%@page import="java.util.Base64"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 <body>
