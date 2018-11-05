@@ -3,6 +3,7 @@ package logica;
 import datatype.*;
 import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
+import excepciones.NoExistenProponentesEliminadosException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
@@ -49,4 +50,6 @@ public interface IUsuarioController {
 	public abstract DtColaborador[] getMasColaboradores();
 	
 	public abstract DtProponente[] getMasProponedores();
+	
+	public abstract DtPerfilProponente[] verProponentesEliminados() throws NoExistenProponentesEliminadosException;
 }

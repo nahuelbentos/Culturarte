@@ -20,6 +20,7 @@ import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
+import excepciones.NoExistenProponentesEliminadosException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
@@ -702,6 +703,34 @@ public class UsuarioController implements IUsuarioController {
 		}
         
         return dtcol;
+	}
+
+	@Override
+	public DtPerfilProponente[] verProponentesEliminados() throws NoExistenProponentesEliminadosException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+
+		@SuppressWarnings("unchecked")
+		List<Proponente> proponentesEliminados = em.createQuery("FROM Usuario WHERE "
+				+ "TIPOUSUARIO = 'P' AND ESTAELIMINADO = 'S'").getResultList();
+		
+		
+        em.close();
+        
+        DtPerfilProponente[] dtProponentesEliminados = null;
+        
+        if (!proponentesEliminados.isEmpty()) {
+        	dtProponentesEliminados = new DtPerfilProponente[proponentesEliminados.size()];
+            Usuario proponente;
+            for (int i = 0; i < proponentesEliminados.size(); i++) {
+                proponente = proponentesEliminados.get(i);
+                dtProponentesEliminados[i] = verPerfilProponente(proponente.getNickname());
+            }
+        }else {
+        	throw new NoExistenProponentesEliminadosException("No hay proponentes eliminados.");
+        }
+        return dtProponentesEliminados;
 	}
 
 	
