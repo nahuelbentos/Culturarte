@@ -13,6 +13,7 @@ public class DtColaborador  extends publicadores.DtUsuario  implements java.io.S
 
     public DtColaborador(
            java.lang.String apellido,
+           int cantSeguidores,
            java.lang.String email,
            java.util.Calendar fechaNacimiento,
            byte[] imagen,
@@ -24,6 +25,7 @@ public class DtColaborador  extends publicadores.DtUsuario  implements java.io.S
            java.lang.String[] usuarioSeguidos) {
         super(
             apellido,
+            cantSeguidores,
             email,
             fechaNacimiento,
             imagen,

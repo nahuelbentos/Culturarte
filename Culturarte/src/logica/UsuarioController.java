@@ -282,7 +282,6 @@ public class UsuarioController implements IUsuarioController {
         }
 	}
 
-
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -733,5 +732,24 @@ public class UsuarioController implements IUsuarioController {
         return dtProponentesEliminados;
 	}
 
-	
+	public DtUsuario[] verRankingUsuarios() {
+		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+
+		@SuppressWarnings("unchecked")
+		List<Usuario> usuarios = em.createQuery("SELECT u FROM UsuarioSigue us, Usuario u "
+				+ "WHERE us.usuariodos = u.nickname "
+				+ "GROUP BY u "
+				+ "ORDER BY count(us) DESC").getResultList();
+        em.close();
+        
+        DtUsuario[] dtcol = new DtProponente[usuarios.size()];
+        for (int i = 0; i < dtcol.length; i++) {
+			dtcol[i] = usuarios.get(i).getDtUsuario();
+		}
+        
+        return dtcol;
+	}
 }

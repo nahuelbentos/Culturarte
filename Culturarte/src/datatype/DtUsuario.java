@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.hibernate.type.CharacterArrayType;
-
 public class DtUsuario {
 	
 	private String nickname;
@@ -19,6 +17,7 @@ public class DtUsuario {
 	
 	private List<String> tituloFavoritas;
 	private List<String> usuarioSeguidos;
+	private int cantSeguidores;
 	
 	public DtUsuario(String nickname, String nombre, String apellido, String email, char[] password, 
 			GregorianCalendar fechaNacimiento, byte[] imagen) {
@@ -46,6 +45,21 @@ public class DtUsuario {
 		this.imagen = imagen;
 		this.tituloFavoritas = new ArrayList<String>();
 		this.usuarioSeguidos = new ArrayList<String>();
+	}
+	
+	public DtUsuario(String nickname, String nombre, String apellido, String email, String password, 
+			GregorianCalendar fechaNacimiento, byte[] imagen, int cantSeguidores) {
+		super();
+		this.nickname = nickname;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.email = email;
+		this.password = password.toCharArray();
+		this.fechaNacimiento = fechaNacimiento;
+		this.imagen = imagen;
+		this.tituloFavoritas = new ArrayList<String>();
+		this.usuarioSeguidos = new ArrayList<String>();
+		this.cantSeguidores = cantSeguidores;
 	}
 	
 	public DtUsuario() {
@@ -145,4 +159,13 @@ public class DtUsuario {
 		this.passwordString = passwordString;
 		this.password = passwordString.toCharArray();
 	}
+
+	public int getCantSeguidores() {
+		return cantSeguidores;
+	}
+
+	public void setCantSeguidores(int cantSeguidores) {
+		this.cantSeguidores = cantSeguidores;
+	}
+	
 }

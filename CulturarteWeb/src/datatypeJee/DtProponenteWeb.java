@@ -6,13 +6,23 @@ import java.util.GregorianCalendar;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import datatype.DtProponente;
+import publicadores.DtProponente;
 
 public class DtProponenteWeb extends DtProponente {
 
 	public DtProponenteWeb(String nickname, String nombre, String apellido, String email,
 			Calendar fechaNacimiento, byte[] imagen, String direccion, String biografia, String sitioWeb) {
-		super(nickname, nombre, apellido, email, null, (GregorianCalendar) fechaNacimiento, imagen, direccion, biografia, sitioWeb);
+		super();
+		super.setNickname(nickname);
+		super.setNombre(nombre);
+		super.setApellido(apellido);
+		super.setEmail(email);
+		super.setFechaNacimiento((GregorianCalendar) fechaNacimiento);
+		super.setImagen(imagen);
+		super.setDireccion(direccion);
+		super.setBiografia(biografia);
+		super.setSitioWeb(sitioWeb);
+
 		// TODO Auto-generated constructor stub
 	}
 
