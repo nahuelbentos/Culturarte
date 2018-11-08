@@ -16,6 +16,7 @@ import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
+import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
 import excepciones.ColaboradorNoExisteException;
@@ -188,5 +189,15 @@ public class ControladorPropuestaPublish {
 	@WebMethod
 	public  DtPropuestaMinificado[] propuestasDesdeBuscador(String buscar){
 		return IPC.propuestasDesdeBuscador(buscar);		
+	}
+	
+	@WebMethod
+	public  TipoRetorno[] obtenerTiposRetorno(){
+		return TipoRetorno.values();
+	}
+	
+	@WebMethod
+	public  EstadoPropuesta[] obtenerEstadosPropuesta(){
+		return EstadoPropuesta.values();
 	}
 }

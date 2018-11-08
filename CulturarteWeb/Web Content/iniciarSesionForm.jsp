@@ -1,4 +1,4 @@
-<%@page import="datatype.DtUsuario"%>
+<%@page import="publicadores.DtUsuario"%>
 <jsp:include page="partials/header.jsp"></jsp:include>
 
 <jsp:include page="partials/navVisitante.jsp"></jsp:include>
