@@ -1,81 +1,45 @@
 package presentacion;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
-import javax.swing.event.TableColumnModelListener;
-import javax.swing.event.TableModelListener;
-
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-
 import datatype.DtPerfilColaborador;
-import datatype.DtPerfilProponente;
-import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
-import datatype.DtPropuestaMinificado;
-import datatype.DtUsuario;
-import datatype.EstadoPropuesta;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.IUsuarioController;
-import presentacion.gen.ListarPropuestas;
-import presentacion.gen.ListarPropuestasProponente;
-
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
-
-import java.awt.FlowLayout;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import java.awt.GridBagLayout;
 import javax.swing.border.TitledBorder;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+@SuppressWarnings("serial")
 public class VerPerfilColaborador extends JPanel {
-	private JTable tableDatos;
-	private IUsuarioController iUsuController;
-	private JList<String> listPropuestas;
+	
 	private DefaultListModel<String> modelTitulos;
-	private GregorianCalendar f;
-	private DtPerfilProponente dtp;
 	private JTextField txtNickname;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JTextField txtEmail;
 	private JTextField txtFechaDeNacimiento;
-	private JTable tablePropuestaPublicada;
-	
-	private Object[][] data;
-	
-	private final Object[] columnNames = { 
-	                              "Titulo:",
-	                              "Por:"};	
 	private JTable tableColaboracionesHechas;
 	private JPanel perfilCompleto;
-	private JLabel lblImagen;
 	private JPanel panel;
 	/**
 	 * Create the panel.
 	 * @throws UsuarioNoExisteElUsuarioException 
 	 * @throws PropuestaNoExisteException 
 	 */
-	public VerPerfilColaborador(IUsuarioController IUC,String nickname) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
+	public VerPerfilColaborador(IUsuarioController IUC, String nickname) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException {
 		setLayout(null);
 		
 		JLabel lblImagen = new JLabel("Imagen:");
@@ -183,11 +147,9 @@ public class VerPerfilColaborador extends JPanel {
 		add(panel);
 		
 		
-		iUsuController = IUC;
-		
-//		DtPerfilProponente dtp = iUsuController.verPerfilProponente(nickname);
+		//		DtPerfilProponente dtp = iUsuController.verPerfilProponente(nickname);
 		modelTitulos = new DefaultListModel<String>();
-		listPropuestas = new JList<>(modelTitulos);
+		new JList<>(modelTitulos);
 		
 
 		if (nickname != null) {
@@ -248,28 +210,4 @@ public class VerPerfilColaborador extends JPanel {
 	    }
 	}
 
-	private void cargarPerfil(String nickname) {
-		limpiarPanel();
-		DtPerfilColaborador dtc =  iUsuController.verPerfilColaborador(nickname);
-		if(dtc.getImagen() != null) {
-			ImageIcon imageIcon = new ImageIcon(dtc.getImagen());
-			lblImagen.setIcon(imageIcon);
-		}
-		txtNickname.setText(dtc.getNickname());
-		txtNombre.setText(dtc.getNombre());
-		txtApellido.setText(dtc.getApellido());
-		txtEmail.setText(dtc.getEmail());
-		
-	}
-	
-	private void limpiarPanel() {
-		lblImagen.setIcon(null);
-		txtNickname.setText("");
-		txtNombre.setText("");
-		txtApellido.setText("");
-		txtEmail.setText("");
-		
-//		initTableGrilla(true, EstadoPropuesta.ingresada);
-		//initPanelPropuestas(true, EstadoPropuesta.ingresada);
-	}
 }
