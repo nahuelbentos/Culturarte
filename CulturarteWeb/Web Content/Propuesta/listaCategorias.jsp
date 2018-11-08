@@ -1,13 +1,14 @@
-<%@page import="logica.ICategoriaController"%>
-<%@page import="logica.Factory"%>
-<%@page import="datatype.DtCategoria"%>
-<%@page import="datatype.DtUsuario"%>
+<%@page import="publicadores.ControladorCategoriaPublish"%>
+<%@page import="publicadores.ControladorCategoriaPublishServiceLocator"%>
+<%@page import="publicadores.ControladorCategoriaPublishService"%>
+<%@page import="publicadores.DtCategoria"%>
+<%@page import="publicadores.DtUsuario"%>
 
 <body>
 	<% 
-	Factory fab = Factory.getInstance();
-	ICategoriaController ICC = fab.getICategoriaController();
-	DtCategoria[] listaCats = ICC.listarCategorias();
+	ControladorCategoriaPublishService ccpsl = new ControladorCategoriaPublishServiceLocator();
+	ControladorCategoriaPublish ccp = ccpsl.getControladorCategoriaPublishPort();
+	DtCategoria[] listaCats = ccp.listarCategorias();
 	
 	if (listaCats != null) {
 	%> 

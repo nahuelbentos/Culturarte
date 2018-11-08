@@ -1,10 +1,8 @@
-<%@page import="datatype.DtPropuestaMinificado"%>
-<%@page import="datatype.DtProponente"%>
-<%@page import="datatype.DtUsuario"%>
-<%@page import="logica.Factory"%>
-<%@page import="logica.ICategoriaController"%>
-<%@page import="datatype.DtCategoria"%>
-<%@page import="datatype.TipoRetorno"%>
+<%@page import="publicadores.DtPropuestaMinificado"%>
+<%@page import="publicadores.DtProponente"%>
+<%@page import="publicadores.DtUsuario"%>
+<%@page import="publicadores.DtCategoria"%>
+<%@page import="publicadores.TipoRetorno"%>
 <%-- <%@page import="java.util.Base64"%> --%>
 <%@page import="org.apache.tomcat.util.codec.binary.Base64"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
@@ -38,7 +36,7 @@
 						<div class="tab-pane fade show active" id="publicadas" role="tabpanel" aria-labelledby="publicadas-tab">
 							<% 
 							DtPropuestaMinificado[] publicadas = (DtPropuestaMinificado[]) request.getAttribute("propuestasPublicadas");  
-							if (publicadas.length > 0){
+							if (publicadas!=null && publicadas.length > 0){
 								for (DtPropuestaMinificado dtP : publicadas) {
 									byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 							        String base64Encoded = new String(encodeBase64, "UTF-8");
@@ -63,7 +61,7 @@
 						<div class="tab-pane fade" id="enFinanciacion" role="tabpanel" aria-labelledby="enFinanciacion-tab">
 							<% 
 							DtPropuestaMinificado[] enFinanciacion = (DtPropuestaMinificado[]) request.getAttribute("propuestasEnFinanciacion");  
-							if (enFinanciacion.length > 0){
+							if (enFinanciacion != null && enFinanciacion.length > 0){
 								for (DtPropuestaMinificado dtP : enFinanciacion) {
 									byte[] encodeBase64 = Base64.encodeBase64(dtP.getImagen());
 							        String base64Encoded = new String(encodeBase64, "UTF-8");
