@@ -1,10 +1,11 @@
+<%@page import="publicadores.ControladorPropuestaPublish"%>
+<%@page import="publicadores.ControladorPropuestaPublishServiceLocator"%>
+<%@page import="publicadores.ControladorPropuestaPublishService"%>
 <%@page import="publicadores.ControladorCategoriaPublish"%>
 <%@page import="publicadores.ControladorCategoriaPublishServiceLocator"%>
 <%@page import="publicadores.ControladorCategoriaPublishService"%>
 <%@page import="publicadores.DtProponente"%>
 <%@page import="publicadores.DtUsuario"%>
-<%-- <%@page import="logica.Factory"%> --%>
-<%-- <%@page import="logica.ICategoriaController"%> --%>
 <%@page import="publicadores.DtCategoria"%>
 <%@page import="publicadores.TipoRetorno"%>
 <%@page import="java.util.Base64"%>
@@ -42,8 +43,8 @@
 								<select id="categoria" name="categoria" class="col-sm-9 form-control" required>
 								<option value=""></option>
 									<% 
-									ControladorCategoriaPublishService cppsl = new ControladorCategoriaPublishServiceLocator();
-									ControladorCategoriaPublish ccp = cppsl.getControladorCategoriaPublishPort();
+									ControladorCategoriaPublishService ccpsl = new ControladorCategoriaPublishServiceLocator();
+									ControladorCategoriaPublish ccp = ccpsl.getControladorCategoriaPublishPort();
 									DtCategoria[] dtC = ccp.listarCategorias();
 									if (!(dtC == null)) { 
 										for (DtCategoria d : dtC){
@@ -109,11 +110,16 @@
 							<div class="form-row">
 								<label class="col-sm-3 col-form-label" for="tipoRetorno">Tipo de retorno</label>
 								<select id="tipoRetorno" name="tipoRetorno" class="col-sm-9 form-control">
-									<% 
-									for (TipoRetorno tipoRet : TipoRetorno.values()){
+									<%
+									ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
+									ControladorPropuestaPublish cpp = cppsl.getControladorPropuestaPublishPort();
+									TipoRetorno[] tipos = cpp.obtenerTiposRetorno();
+									if (tipos != null){
+										for (TipoRetorno tipoRet : tipos){
 									%>
-										<option value="<%=tipoRet%>"><%=tipoRet%></option>
+											<option value="<%=tipoRet%>"><%=tipoRet%></option>
 									<% 
+										}
 									}
 									%>
 								</select>

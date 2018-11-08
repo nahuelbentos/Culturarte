@@ -737,19 +737,22 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-
+		System.out.println("verRankingUsuarios\n");
 		@SuppressWarnings("unchecked")
 		List<Usuario> usuarios = em.createQuery("SELECT u FROM UsuarioSigue us, Usuario u "
-				+ "WHERE us.usuariodos = u.nickname "
+				+ "WHERE us.usuarioDos = u "
 				+ "GROUP BY u "
 				+ "ORDER BY count(us) DESC").getResultList();
         em.close();
-        
-        DtUsuario[] dtcol = new DtProponente[usuarios.size()];
+        System.out.println("1 \n");
+        DtUsuario[] dtcol = new DtUsuario[usuarios.size()];
+        System.out.println("2 \n");
         for (int i = 0; i < dtcol.length; i++) {
+            System.out.println("3."+ i +"\n");
 			dtcol[i] = usuarios.get(i).getDtUsuario();
 		}
-        
+
+        System.out.println("4 \n");
         return dtcol;
 	}
 }

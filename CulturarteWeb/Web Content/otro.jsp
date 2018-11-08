@@ -1,5 +1,5 @@
 <%@page import="java.util.Base64"%>
-<%@page import="datatype.DtUsuario"%>
+<%@page import="publicadores.DtUsuario"%>
 <jsp:include page="partials/header.jsp"></jsp:include>
 
  <% 

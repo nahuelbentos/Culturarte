@@ -56,16 +56,16 @@ public class ControladorCategoriaPublishProxy implements publicadores.Controlado
     controladorCategoriaPublish.agregarCategoria(arg0);
   }
   
-  public publicadores.DtCategoria[] listarCategoriasJTree() throws java.rmi.RemoteException{
-    if (controladorCategoriaPublish == null)
-      _initControladorCategoriaPublishProxy();
-    return controladorCategoriaPublish.listarCategoriasJTree();
-  }
-  
   public publicadores.DtCategoria[] listarCategorias() throws java.rmi.RemoteException{
     if (controladorCategoriaPublish == null)
       _initControladorCategoriaPublishProxy();
     return controladorCategoriaPublish.listarCategorias();
+  }
+  
+  public publicadores.DtCategoria[] listarCategoriasJTree() throws java.rmi.RemoteException{
+    if (controladorCategoriaPublish == null)
+      _initControladorCategoriaPublishProxy();
+    return controladorCategoriaPublish.listarCategoriasJTree();
   }
   
   
