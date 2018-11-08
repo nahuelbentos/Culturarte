@@ -713,8 +713,7 @@ public class UsuarioController implements IUsuarioController {
 
 		@SuppressWarnings("unchecked")
 		List<Proponente> proponentesEliminados = em.createQuery("FROM Usuario WHERE "
-				+ "TIPOUSUARIO = 'P' AND ESTAELIMINADO = 'S'").getResultList();
-		
+				+ "TIPOUSUARIO = 'P' AND estaeliminado = :no").setParameter("no", false).getResultList();
 		
         em.close();
         
@@ -733,5 +732,4 @@ public class UsuarioController implements IUsuarioController {
         return dtProponentesEliminados;
 	}
 
-	
 }

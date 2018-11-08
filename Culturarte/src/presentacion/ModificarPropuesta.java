@@ -36,14 +36,11 @@ import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;
 import datatype.TipoRetorno;
-import excepciones.CategoriaNoExisteException;
 import excepciones.ProponenteNoExisteException;
-import excepciones.PropuestaRepetidaException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
-import logica.PropuestaController;
 
 @SuppressWarnings("serial")
 public class ModificarPropuesta extends JInternalFrame {

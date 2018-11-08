@@ -3,6 +3,7 @@ package presentacion;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.beans.PropertyVetoException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -32,9 +32,7 @@ import datatype.DtColaboracion;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
-import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
-import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
@@ -47,7 +45,6 @@ import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
-import excepciones.UsuarioYaExisteFavoritaException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.Factory;
 import logica.ICategoriaController;
@@ -69,13 +66,11 @@ public class Principal {
 	private ConsultaColaboracionPropuesta consColProp;
 	private RegistrarColaboracion registrarColaboracion;
 	private EvaluarPropuestas evaluarPropuestas;
-	
+	private VerProponentesEliminados verProponentesEliminados;
 	
 	private ConsultaPerfilProponente consultaPerfilProponente;
 	private ConsultaPerfilColaborador consultaPerfilColaborador;
 	private ConsultaPropuesta consultaPropuesta;
-
-	
 	private ConsultaPropuestaPorEstado consultaPropuestaPorEstado;
 	
 	private IUsuarioController IUC;
@@ -150,22 +145,23 @@ public class Principal {
 		registrarColaboracion = new RegistrarColaboracion(IPC,IUC);
 		registrarColaboracion.setVisible(false);
 		
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
 		consultaPerfilProponente.setVisible(false);
+		
 		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC,IPC);
 		consultaPerfilColaborador.setVisible(false);
+		
 		consultaPropuesta = new ConsultaPropuesta(IPC);
 		consultaPropuesta.setVisible(false);
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		
 		consultaPropuestaPorEstado = new ConsultaPropuestaPorEstado(IPC);
 		consultaPropuestaPorEstado.setVisible(false);
 		
+        verProponentesEliminados = new VerProponentesEliminados(IUC);
+        verProponentesEliminados.setVisible(false);
 		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
-		
 		frmPaginaPrincipal.getContentPane().add(altaCategoria);
 		frmPaginaPrincipal.getContentPane().add(altaPropuesta);
 		frmPaginaPrincipal.getContentPane().add(modificarPropuesta);
@@ -174,15 +170,11 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(dejarDeSeguirUsuario);
 		frmPaginaPrincipal.getContentPane().add(consColProp);
 		frmPaginaPrincipal.getContentPane().add(registrarColaboracion);
-
-
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		frmPaginaPrincipal.getContentPane().add(consultaPerfilProponente);
 		frmPaginaPrincipal.getContentPane().add(consultaPerfilColaborador);
 		frmPaginaPrincipal.getContentPane().add(consultaPropuesta);
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
-		
 		frmPaginaPrincipal.getContentPane().add(consultaPropuestaPorEstado);
+		frmPaginaPrincipal.getContentPane().add(verProponentesEliminados);
 	}
 
 	public void initialize() {
@@ -217,7 +209,7 @@ public class Principal {
 		});
 		mnPropuesta.add(mntmAltaDeProp);
 
-		JMenuItem mntmModificarDatosDe = new JMenuItem("Modificar datos de Propuesta");
+		JMenuItem mntmModificarDatosDe = new JMenuItem("Modificar Propuesta");
 		mntmModificarDatosDe.addActionListener(new ActionListener() {
 
 			@Override
@@ -247,7 +239,7 @@ public class Principal {
 		});
 		mnPropuesta.add(mntmConsultaDePropuesta);
 
-		JMenuItem mntmConsultaDePropuestasPorEstado = new JMenuItem("Consulta de Propuestas por estado");
+		JMenuItem mntmConsultaDePropuestasPorEstado = new JMenuItem("Consulta de Propuestas por Estado");
 		mntmConsultaDePropuestasPorEstado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				consultaPropuestaPorEstado.refreshFrame();
@@ -273,7 +265,7 @@ public class Principal {
 		JMenu mnColaboraciones = new JMenu("Colaboraciones");
 		mnNewMenu.add(mnColaboraciones);
 				
-		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar colaboraci\u00F3n a Propuesta");
+		JMenuItem mntmRegistrarColaboracinA = new JMenuItem("Registrar Colaboraci\u00F3n a Propuesta");
 		mntmRegistrarColaboracinA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				registrarColaboracion.refreshFrame();
@@ -282,10 +274,10 @@ public class Principal {
 		});
 		mnColaboraciones.add(mntmRegistrarColaboracinA);
 
-		JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar colaboraci\u00F3n a Propuesta");
+		JMenuItem mntmCancelarColaboracinA = new JMenuItem("Cancelar Colaboraci\u00F3n a Propuesta");
 		mnColaboraciones.add(mntmCancelarColaboracinA);
 		
-		JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de colaboraci\u00F3n a Propuesta");
+		JMenuItem mntmConsultaDeColaboracin = new JMenuItem("Consulta de Colaboraci\u00F3n a Propuesta");
 		mntmConsultaDeColaboracin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				consColProp.setListarColaboradores();
@@ -297,7 +289,7 @@ public class Principal {
 		JMenu mnNewMenu_1 = new JMenu("Datos");
 		mnNewMenu.add(mnNewMenu_1);
 		
-		JMenuItem mntmAgregarDatos = new JMenuItem("Cargar datos");
+		JMenuItem mntmAgregarDatos = new JMenuItem("Cargar Datos");
 		mntmAgregarDatos.addActionListener(new ActionListener() {
 
 			@Override
@@ -356,7 +348,7 @@ public class Principal {
 
 		mnPerfiles.add(mntmAltaDePerfil);
 
-		JMenuItem mntmConsultaDeProponente = new JMenuItem("Consulta de Perfil de proponente");
+		JMenuItem mntmConsultaDeProponente = new JMenuItem("Consulta de Perfil de Proponente");
 		mntmConsultaDeProponente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				consultaPerfilProponente.refreshFrame();
@@ -365,7 +357,7 @@ public class Principal {
 		});
 		mnPerfiles.add(mntmConsultaDeProponente);
 
-		JMenuItem mntmConsultaDePerfilColaborador = new JMenuItem("Consulta de Perfil de colaborador");
+		JMenuItem mntmConsultaDePerfilColaborador = new JMenuItem("Consulta de Perfil de Colaborador");
 		mntmConsultaDePerfilColaborador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				consultaPerfilColaborador.listarColaboradores.actualizarColaboradores();
@@ -401,6 +393,17 @@ public class Principal {
 			}
 		});
 		mnUsuarios.add(mntmDejarDeSe);
+		
+		JMenuItem mntmVerProponentesEliminados = new JMenuItem("Ver Proponentes Eliminados");
+		mntmVerProponentesEliminados.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				verProponentesEliminados.setListaDeProponentesEliminados();
+				verProponentesEliminados.setVisible(true);
+			}
+		});
+		mnUsuarios.add(mntmVerProponentesEliminados);
 	}
 	
 	private void agregarUsuarios(ActionEvent e) throws ParseException, UnsupportedEncodingException, IOException, URISyntaxException, UsuarioYaExisteElUsuarioException, UsuarioYaExisteElEmailException {
