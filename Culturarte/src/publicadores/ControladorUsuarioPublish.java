@@ -147,5 +147,10 @@ public class ControladorUsuarioPublish {
 	public DtProponente[] getMasProponedores() {
 		return IUC.getMasProponedores();
 	}
+	
+	@WebMethod
+	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException{
+		IUC.eliminarCuenta(nickname);
+	}
 
 }

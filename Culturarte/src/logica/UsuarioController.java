@@ -53,7 +53,9 @@ public class UsuarioController implements IUsuarioController {
 		dtUsuario.setPassword(dtUsuario.getPasswordString().toCharArray());
 		
 		try {
-			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico")
+			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico"
+					+ "and estaeliminado = :no")
+					.setParameter("no", false)
 					.setParameter("correoElectronico", dtUsuario.getEmail()).getSingleResult();
 		} catch (NoResultException nre){}
 		if (usuario != null) {
@@ -109,7 +111,12 @@ public class UsuarioController implements IUsuarioController {
 		
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'"
+				+ "and estaeliminado = :no")
+				.setParameter("no", false)
+				.getResultList();
+        em.close();
+        
         if (!usuarios.isEmpty()) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -119,10 +126,9 @@ public class UsuarioController implements IUsuarioController {
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword(), 
                 		usuario.getFechaNacimiento(), usuario.getImagen());
             }
-            em.close();
+            
             return dtUsuario;
         } else {
-        	em.close();
         	throw new ProponenteNoExisteException("No hay proponentes registrados");
         }
 	}
@@ -180,7 +186,7 @@ public class UsuarioController implements IUsuarioController {
 
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE estaeliminado = :no").setParameter("no", false).getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -265,7 +271,10 @@ public class UsuarioController implements IUsuarioController {
 		
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C' "
+				+ "and estaeliminado = :no")
+				.setParameter("no", false)
+				.getResultList();
         em.close();
         if (!usuarios.isEmpty()) {
             dtUsuario = new DtUsuario[usuarios.size()];
@@ -693,8 +702,12 @@ public class UsuarioController implements IUsuarioController {
 		@SuppressWarnings("unchecked")
 		List<Proponente> proponentes = em.createQuery("SELECT u FROM Propuesta p, Usuario u "
 				+ "WHERE p.proponenteACargo = u.nickname "
+				+ "AND p.estaeliminada = :no "
 				+ "GROUP BY u "
-				+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
+				+ "ORDER BY count(u) DESC")
+				.setParameter("no", false)
+				.setMaxResults(3)
+				.getResultList();
         em.close();
         
         DtProponente[] dtcol = new DtProponente[proponentes.size()];
@@ -713,7 +726,9 @@ public class UsuarioController implements IUsuarioController {
 
 		@SuppressWarnings("unchecked")
 		List<Proponente> proponentesEliminados = em.createQuery("FROM Usuario WHERE "
-				+ "TIPOUSUARIO = 'P' AND ESTAELIMINADO = 'S'").getResultList();
+				+ "TIPOUSUARIO = 'P' AND ESTAELIMINADO = :si")
+				.setParameter("si", true)
+				.getResultList();
 		
 		
         em.close();
@@ -756,7 +771,8 @@ public class UsuarioController implements IUsuarioController {
 	        	// elimino el historico de estados.
 	        	em.createQuery("DELETE FROM Estado WHERE propuesta = :prop").setParameter("prop", propuesta).executeUpdate();
 				// elimino la propuesta
-				em.remove(propuesta);
+	        	propuesta.setFlagElm(true);
+	        	em.merge(propuesta);
 			}
 			
 	        // elimino seguidos y seguidores

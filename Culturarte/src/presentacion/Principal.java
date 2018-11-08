@@ -32,9 +32,7 @@ import datatype.DtColaboracion;
 import datatype.DtColaborador;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
-import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
-import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
@@ -47,7 +45,6 @@ import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
 import excepciones.UsuarioYaExisteElUsuarioException;
-import excepciones.UsuarioYaExisteFavoritaException;
 import excepciones.UsuarioYaSigueAlUsuarioException;
 import logica.Factory;
 import logica.ICategoriaController;
@@ -69,13 +66,9 @@ public class Principal {
 	private ConsultaColaboracionPropuesta consColProp;
 	private RegistrarColaboracion registrarColaboracion;
 	private EvaluarPropuestas evaluarPropuestas;
-	
-	
 	private ConsultaPerfilProponente consultaPerfilProponente;
 	private ConsultaPerfilColaborador consultaPerfilColaborador;
 	private ConsultaPropuesta consultaPropuesta;
-
-	
 	private ConsultaPropuestaPorEstado consultaPropuestaPorEstado;
 	
 	private IUsuarioController IUC;
@@ -123,8 +116,6 @@ public class Principal {
         ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
         
-        IUC.eliminarCuenta("kairoh");
-        
         altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 
@@ -152,14 +143,12 @@ public class Principal {
 		registrarColaboracion = new RegistrarColaboracion(IPC,IUC);
 		registrarColaboracion.setVisible(false);
 		
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		consultaPerfilProponente = new ConsultaPerfilProponente(IUC);
 		consultaPerfilProponente.setVisible(false);
 		consultaPerfilColaborador = new ConsultaPerfilColaborador(IUC,IPC);
 		consultaPerfilColaborador.setVisible(false);
 		consultaPropuesta = new ConsultaPropuesta(IPC);
 		consultaPropuesta.setVisible(false);
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		
 		consultaPropuestaPorEstado = new ConsultaPropuestaPorEstado(IPC);
 		consultaPropuestaPorEstado.setVisible(false);
@@ -177,12 +166,9 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(consColProp);
 		frmPaginaPrincipal.getContentPane().add(registrarColaboracion);
 
-
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		frmPaginaPrincipal.getContentPane().add(consultaPerfilProponente);
 		frmPaginaPrincipal.getContentPane().add(consultaPerfilColaborador);
 		frmPaginaPrincipal.getContentPane().add(consultaPropuesta);
-		/* *-**-*-*--*-* [codigo nbentos] *--*-*-*-*-* */
 		
 		frmPaginaPrincipal.getContentPane().add(consultaPropuestaPorEstado);
 	}

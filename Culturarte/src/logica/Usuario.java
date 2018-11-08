@@ -45,10 +45,15 @@ public abstract class Usuario {
 	@Column(name="IMAGEN")
     private byte[] imagen;
 	
-	@OneToMany(mappedBy="usuarioDos", cascade = CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="usuarioDos", 
+			cascade = { 
+					CascadeType.PERSIST, 
+					CascadeType.MERGE
+	    	}
+			,orphanRemoval = true)
 	private List<UsuarioSigue> usuariosQueSigue = new ArrayList<>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name="USU_PROPUESTASFAV",
 				joinColumns=@JoinColumn(name="USU_ID"),
 				inverseJoinColumns=@JoinColumn(name="PROP_ID"))
