@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.hibernate.type.CharacterArrayType;
-
 public class DtUsuario {
 	
 	private String nickname;
@@ -15,6 +13,7 @@ public class DtUsuario {
 	private char[] password;
 	private String passwordString;
 	private GregorianCalendar fechaNacimiento;
+	private GregorianCalendar fechaDeEliminacion;
 	private byte[] imagen;
 	
 	private List<String> tituloFavoritas;
@@ -48,6 +47,21 @@ public class DtUsuario {
 		this.usuarioSeguidos = new ArrayList<String>();
 	}
 	
+	public DtUsuario(String nickname, String nombre, String apellido, String email, char[] password, 
+			GregorianCalendar fechaNacimiento, GregorianCalendar fechaDeEliminacion, byte[] imagen) {
+		super();
+		this.nickname = nickname;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.email = email;
+		this.password = password;
+		this.fechaNacimiento = fechaNacimiento;
+		this.fechaDeEliminacion = fechaDeEliminacion;
+		this.imagen = imagen;
+		this.tituloFavoritas = new ArrayList<String>();
+		this.usuarioSeguidos = new ArrayList<String>();
+	}
+	
 	public DtUsuario() {
 		super();		
 	}
@@ -65,6 +79,9 @@ public class DtUsuario {
 	}
 	public GregorianCalendar getFechaNacimiento() {
 		return fechaNacimiento;
+	}
+	public GregorianCalendar getFechaDeEliminacion() {
+		return fechaDeEliminacion;
 	}
 	public byte[] getImagen() {
 		return imagen;

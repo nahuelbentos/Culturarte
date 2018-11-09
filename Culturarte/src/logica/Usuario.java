@@ -33,6 +33,8 @@ public abstract class Usuario {
     private String nombre;
 	@Column(name="FECHA_DE_NACIMIENTO")
     private GregorianCalendar fechaNacimiento;
+	@Column(name="FECHA_DE_ELIMINACION")
+    private GregorianCalendar fechaDeEliminacion;
 	@Column(name="EMAIL")
     private String correoElectronico;
 	@Column(name="PASSWORD")
@@ -92,6 +94,10 @@ public abstract class Usuario {
     public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+    
+    public void setFechaEliminacion(GregorianCalendar fechaDeEliminacion) {
+        this.fechaDeEliminacion = fechaDeEliminacion;
+    }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -121,6 +127,10 @@ public abstract class Usuario {
 
     public GregorianCalendar getFechaNacimiento() {
         return fechaNacimiento;
+    }
+    
+    public GregorianCalendar getFechaDeEliminacion() {
+        return fechaDeEliminacion;
     }
 
     public String getNickname() {
@@ -170,5 +180,4 @@ public abstract class Usuario {
 		this.flagElm = flagElm;
 	}
 
-	
 }

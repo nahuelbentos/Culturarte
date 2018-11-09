@@ -35,11 +35,7 @@ public interface IPropuestaController {
 	
 	public abstract DtColaboracion[] listarColaboraciones(String titulo);
 	
-	// Falta crear el DtEstadoPropuesta
-	//public abstract DtEstadoPropuesta[] listarEstadosDePropuestas();
 	public abstract DtPropuesta[] listarPropuestasExistentes();
-	
-	// Falta crear el DtDatosPropuesta
 	
 	public abstract DtDatosPropuesta consultarPropuesta(String titulo);
 	
@@ -53,6 +49,8 @@ public interface IPropuestaController {
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws PropuestaNoExisteException;
 
+	public abstract DtPropuestaMinificado[] listarPropuestasProponente(String nicknameProponente) throws PropuestaNoExisteException;
+	
 	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
 	
 	public abstract void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException;

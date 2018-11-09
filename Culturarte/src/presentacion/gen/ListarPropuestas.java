@@ -104,7 +104,6 @@ public class ListarPropuestas extends JPanel {
 	        this.add(grilla);
 			
 		} catch (PropuestaNoExisteException e) {
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage(),"Grilla propuestas", JOptionPane.ERROR_MESSAGE);
 		}
 		

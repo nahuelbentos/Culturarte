@@ -434,6 +434,35 @@ public class PropuestaController implements IPropuestaController {
 	}
 	
 	@Override
+	public DtPropuestaMinificado[] listarPropuestasProponente(String nicknameProponente) throws PropuestaNoExisteException{
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :si "
+				+ "AND NICK_PROPONENTE = :nicknameProponente")
+				.setParameter("si", true)
+				.setParameter("nicknameProponente", nicknameProponente)
+				.getResultList();
+        em.close();
+        
+        if (!ps.isEmpty()) {
+			DtPropuestaMinificado[] props = new DtPropuestaMinificado[ps.size()];
+			Propuesta pro;
+			
+			for (int i = 0; i < props.length; i++) {
+				pro = ps.get(i);
+				
+				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname(),pro.getImagen());
+			}
+			return props;
+		}else {
+			throw new PropuestaNoExisteException("No existen propuestas del proponente " + nicknameProponente);
+		}
+	}
+	
+	@Override
 	public void extenderFinanciacion(String tituloPropuesta) throws PropuestaNoExisteException{
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
