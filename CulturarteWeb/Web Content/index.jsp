@@ -1,3 +1,4 @@
+<%@page import="datatypeJee.msjUI.DtMensajeUI"%>
 <%@page import="publicadores.DtProponente"%>
 <%@page import="publicadores.DtColaborador"%>
 <%@page import="publicadores.DtUsuario"%>
@@ -12,12 +13,21 @@
  DtProponente[] masProponentes = (DtProponente[])session.getAttribute("mayProponentes");
  
  DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");  
+ DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
  
  if (user == null) { %>
   <jsp:include page="partials/navVisitante.jsp"></jsp:include>
  <% }else { %>
   <jsp:include page="partials/navLogueado.jsp"></jsp:include>
  <% } %>
+<% if(mensaje != null) { %>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	<%=mensaje.getMensaje()%>
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<% } %>
   <section class=" container-fluid">
 	  <div class="row justify-content-between">
 	  	<div class="col-lg-7">

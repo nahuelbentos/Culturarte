@@ -628,8 +628,9 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		
 		@SuppressWarnings("unchecked")
-		List<Propuesta> populares = em.createQuery("SELECT p FROM Usuario u WHERE estaeliminado = :no"
+		List<Propuesta> populares = em.createQuery("SELECT p FROM Usuario u "
 				+ "JOIN u.propuestasFavoritas p "
+				+ "WHERE u.estaeliminado = :no "
 				+ "GROUP BY p "
 				+ "ORDER BY count(p) DESC")
 				.setParameter("no", false)

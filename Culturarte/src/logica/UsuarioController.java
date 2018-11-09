@@ -530,10 +530,16 @@ public class UsuarioController implements IUsuarioController {
 		try {
 			u = em.find(Usuario.class, datoSesion);
 			if (u == null) {
-				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
+				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo "
+						+ "and estaeliminado = :no")
+						.setParameter("no", false)
+						.setParameter("correo", datoSesion)
+						.getSingleResult();
 			}
-			if (u != null) {
-				dtu = u.getDtUsuario();
+			// lo pongo afuera del if para devolver algo.
+			dtu = u.getDtUsuario();
+			if (u != null && !u.isFlagElm()) {
+				
 				for (Propuesta p : u.getPropuestasFavoritas()) {
 					dtu.addTituloFavoritas(p.getTitulo());
 				}
@@ -544,7 +550,10 @@ public class UsuarioController implements IUsuarioController {
 				for (Usuario s : seguidos) {
 					dtu.addUsuarioSeguido(s.getNickname());
 				}
-			}
+			}else {
+				em.close();
+				throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
+			}	
 			return dtu;
 		} catch (NoResultException nre){
 			em.close();
@@ -702,10 +711,10 @@ public class UsuarioController implements IUsuarioController {
 		@SuppressWarnings("unchecked")
 		List<Proponente> proponentes = em.createQuery("SELECT u FROM Propuesta p, Usuario u "
 				+ "WHERE p.proponenteACargo = u.nickname "
-				+ "AND p.estaeliminada = :no "
+				+ "AND p.flagElm = :false "
 				+ "GROUP BY u "
 				+ "ORDER BY count(u) DESC")
-				.setParameter("no", false)
+				.setParameter("false", false)
 				.setMaxResults(3)
 				.getResultList();
         em.close();
