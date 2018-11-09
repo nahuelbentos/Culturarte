@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import datatype.DtColaboracion;
@@ -41,6 +42,10 @@ public class Colaboracion {
 	private TipoRetorno tipo;	
 	@Column(name="COMENTARIO")
 	private String comentario;
+	
+	@OneToOne
+	@JoinColumn(name="PAGO_ID")
+	private Pago pago;
 	
 	public Colaboracion() {
 		super();
