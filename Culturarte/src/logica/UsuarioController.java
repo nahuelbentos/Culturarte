@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -54,7 +55,7 @@ public class UsuarioController implements IUsuarioController {
 		
 		try {
 			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico"
-					+ "and estaeliminado = :no")
+					+ " and flagElm = :no")
 					.setParameter("no", false)
 					.setParameter("correoElectronico", dtUsuario.getEmail()).getSingleResult();
 		} catch (NoResultException nre){}
@@ -112,7 +113,7 @@ public class UsuarioController implements IUsuarioController {
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
 		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'"
-				+ "and estaeliminado = :no")
+				+ " and flagElm = :no")
 				.setParameter("no", false)
 				.getResultList();
         em.close();
@@ -186,7 +187,7 @@ public class UsuarioController implements IUsuarioController {
 
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE estaeliminado = :no").setParameter("no", false).getResultList();
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE flagElm = :no").setParameter("no", false).getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -211,7 +212,8 @@ public class UsuarioController implements IUsuarioController {
         	if (usuario instanceof Proponente) {
 				Proponente proponente = (Proponente) usuario;
 				dtUsuario = new DtProponente(proponente.getNickname(), proponente.getNombre(), proponente.getApellido(),
-						proponente.getCorreoElectronico(), proponente.getPassword(), proponente.getFechaNacimiento(), proponente.getImagen(),
+						proponente.getCorreoElectronico(), proponente.getPassword(), proponente.getFechaNacimiento(), 
+						proponente.getFechaDeEliminacion(), proponente.getImagen(),
 						proponente.getDireccion(), proponente.getBiografia(), proponente.getLinkWeb());
 			} else if (usuario instanceof Colaborador) {
 				Colaborador colaborador = (Colaborador) usuario;
@@ -272,7 +274,7 @@ public class UsuarioController implements IUsuarioController {
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
 		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C' "
-				+ "and estaeliminado = :no")
+				+ " and flagElm = :no")
 				.setParameter("no", false)
 				.getResultList();
         em.close();
@@ -531,7 +533,7 @@ public class UsuarioController implements IUsuarioController {
 			u = em.find(Usuario.class, datoSesion);
 			if (u == null) {
 				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo "
-						+ "and estaeliminado = :no")
+						+ "and flagElm = :no")
 						.setParameter("no", false)
 						.setParameter("correo", datoSesion)
 						.getSingleResult();
@@ -735,7 +737,7 @@ public class UsuarioController implements IUsuarioController {
 
 		@SuppressWarnings("unchecked")
 		List<Proponente> proponentesEliminados = em.createQuery("FROM Usuario WHERE "
-				+ "TIPOUSUARIO = 'P' AND ESTAELIMINADO = :si")
+				+ "TIPOUSUARIO = 'P' AND flagElm = :si")
 				.setParameter("si", true)
 				.getResultList();
 		
@@ -762,10 +764,12 @@ public class UsuarioController implements IUsuarioController {
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		
+		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		Usuario usuario = em.find(Usuario.class, nickname);
 		if (usuario instanceof Proponente) {
 			em.getTransaction().begin();
 			usuario.setFlagElm(true);
+			usuario.setFechaEliminacion(now);
 			em.merge(usuario);
 			
 	        @SuppressWarnings("unchecked")
