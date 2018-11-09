@@ -40,6 +40,7 @@ import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.CategoriaYaExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -127,6 +128,14 @@ public class Principal {
         try {
 			IPC.pagarColaboracion(inpa);
 		} catch (TipoPagoInexistenteExpection e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			DtColaboracion[] infoColabs = IPC.listarColaboracionesAPagar("Mengano");
+			System.out.println(infoColabs);
+		} catch (ColaboracionNoExisteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -12,6 +12,7 @@ import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -75,6 +76,8 @@ public interface IPropuestaController {
 	public abstract DtPropuestaMinificado[] propuestasDesdeBuscador(String buscar);
 	
 	public abstract void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection;
+	
+	public abstract DtColaboracion[] listarColaboracionesAPagar(String nickColaborador) throws ColaboracionNoExisteException;
 	
 }
 

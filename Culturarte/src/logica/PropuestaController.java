@@ -18,6 +18,7 @@ import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -722,6 +723,33 @@ public class PropuestaController implements IPropuestaController {
 		
 		colaboracion.crearPago(infoPago.getPago());
 		
+	}
+	
+	@Override
+	public DtColaboracion[] listarColaboracionesAPagar(String nickColaborador) throws ColaboracionNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		DtColaboracion[] colabs = null;
+        @SuppressWarnings("unchecked")
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE COLABORADOR = :colab")
+				.setParameter("colab", nickColaborador)
+				.getResultList();
+        em.close();
+        
+        if (!colaboraciones.isEmpty()) {
+            colabs = new DtColaboracion[colaboraciones.size()];
+            int i = 0;
+            for (Colaboracion col : colaboraciones) {
+                colabs[i] = new DtColaboracion(col.getPropuestaColaborada().getTitulo(), col.getColaborador().getNickname(), col.getMonto(), col.getFechaAporte(), col.getTipo(), col.getPago() != null);
+                i++;
+            }
+            
+            return colabs;
+        } else {
+        	throw new ColaboracionNoExisteException("No se encontraron colaboraciones.");
+        }
 	}
 	
 }
