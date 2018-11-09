@@ -78,6 +78,7 @@ if (user == null) { %>
 					%>
 			  <li class="nav-item">
 				<a class="nav-link" href="ListaPropuestasExtenderFinanciacion"><i class="fa fa-money" aria-hidden="true"></i> Extender financiación</a>
+				<a class="nav-link text-danger" href="EliminarCuenta" ><i class="fa fa-times" aria-hidden="true"></i> Eliminar mi cuenta</a>
 			  </li>
 					<% 
 				}

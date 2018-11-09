@@ -132,3 +132,7 @@ function seleccionarImagen(idInputFile){
 	console.log("hizo click en el boton.");
 	$('#'+idInputFile).click();
 }
+
+function volver(){
+	history.back();
+}

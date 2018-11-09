@@ -67,7 +67,6 @@ public class Principal {
 	private RegistrarColaboracion registrarColaboracion;
 	private EvaluarPropuestas evaluarPropuestas;
 	private VerProponentesEliminados verProponentesEliminados;
-	
 	private ConsultaPerfilProponente consultaPerfilProponente;
 	private ConsultaPerfilColaborador consultaPerfilColaborador;
 	private ConsultaPropuesta consultaPropuesta;
@@ -117,7 +116,7 @@ public class Principal {
         IUC = factory.getIUsuarioController();
         ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
-        IUC.getMasColaboradores();
+        
         altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 

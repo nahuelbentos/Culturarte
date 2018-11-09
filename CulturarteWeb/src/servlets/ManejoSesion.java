@@ -98,7 +98,6 @@ public class ManejoSesion extends HttpServlet {
 				e.printStackTrace();
 			}
 		}else {
-			System.out.println("Cerrar sesion.");
 			HttpSession session = request.getSession();
 			session.setAttribute("usuarioLogueado", null);
 			

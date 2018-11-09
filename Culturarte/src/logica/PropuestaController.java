@@ -86,7 +86,7 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :no").setParameter("no", false).getResultList();
         em.close();
         if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
@@ -295,7 +295,9 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "'").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "' AND ESTAELIMINADA = :no")
+				.setParameter("no", false)
+				.getResultList();
         em.close();
         if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
@@ -381,9 +383,10 @@ public class PropuestaController implements IPropuestaController {
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada'").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada' ESTAELIMINADA = :no")
+				.setParameter("no", false)
+				.getResultList();
         em.close();
         
         if (!propuestas.isEmpty()) {
@@ -407,7 +410,8 @@ public class PropuestaController implements IPropuestaController {
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :no and estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
+											.setParameter("no", false)
 											.setParameter("estado", estado.toString())
 											.setParameter("nicknameProponente", nicknameProponente)
 											.setParameter("now", now)
@@ -493,7 +497,9 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual <> 'ingresada'").getResultList();
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual <> 'ingresada' and estaeliminada = :no")
+					.setParameter("no", false)
+					.getResultList();
         em.close();
         
         if (ps != null) {
@@ -590,7 +596,9 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estaeliminada = : no")
+					.setParameter("no", false)
+					.getResultList();
         
         em.close();
 
@@ -622,8 +630,12 @@ public class PropuestaController implements IPropuestaController {
 		@SuppressWarnings("unchecked")
 		List<Propuesta> populares = em.createQuery("SELECT p FROM Usuario u "
 				+ "JOIN u.propuestasFavoritas p "
+				+ "WHERE u.estaeliminado = :no "
 				+ "GROUP BY p "
-				+ "ORDER BY count(p) DESC").setMaxResults(5).getResultList();
+				+ "ORDER BY count(p) DESC")
+				.setParameter("no", false)
+				.setMaxResults(5)
+				.getResultList();
 		
 		em.close();
 		
@@ -645,9 +657,13 @@ public class PropuestaController implements IPropuestaController {
 		
 		buscar = "%" + buscar.trim().toLowerCase() + "%";
 		@SuppressWarnings("unchecked")
-		List<Propuesta> resultado = em.createQuery("FROM Propuesta WHERE (lower(titulo) like '" + buscar + "') " + 
+		List<Propuesta> resultado = em.createQuery("FROM Propuesta WHERE " + 
+													"(lower(titulo) like '" + buscar + "') " + 
 													"or (lower(descripcion) like '" + buscar + "') " + 
-													"or (lower(lugar) like '" + buscar + "')").getResultList();
+													"or (lower(lugar) like '" + buscar + "')" +
+													"and estaeliminada = :no")
+									.setParameter("no", false)
+									.getResultList();
 		
 		em.close();
 		
