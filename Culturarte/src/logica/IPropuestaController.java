@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
+import datatype.DtInfoPago;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
@@ -15,6 +16,7 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.TipoPagoInexistenteExpection;
 import excepciones.UsuarioSinLoguearseException;
 
 public interface IPropuestaController {
@@ -71,6 +73,8 @@ public interface IPropuestaController {
 	public abstract DtPropuesta[] getPropuestasPopulares();
 
 	public abstract DtPropuestaMinificado[] propuestasDesdeBuscador(String buscar);
+	
+	public abstract void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection;
 	
 }
 

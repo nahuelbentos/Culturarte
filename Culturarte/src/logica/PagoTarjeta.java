@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import datatype.DtPagoTarjeta;
 import datatype.TipoTarjeta;
 
 @Entity
@@ -29,6 +30,15 @@ public class PagoTarjeta extends Pago {
 		this.fechaVenc = fechaVenc;
 		this.cvc = cvc;
 		this.nombreTitular = nombreTitular;
+	}
+	
+	public PagoTarjeta(DtPagoTarjeta pt) {
+		super(pt.getMontoAPagar());
+		this.tipoTarjeta = pt.getTipoTarjeta();
+		this.nroTarjeta = pt.getNroTarjeta();
+		this.fechaVenc = pt.getFechaVenc();
+		this.cvc = pt.getCvc();
+		this.nombreTitular = pt.getNombreTitular();
 	}
 
 	public TipoTarjeta getTipoTarjeta() {

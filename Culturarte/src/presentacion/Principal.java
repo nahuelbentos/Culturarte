@@ -30,6 +30,9 @@ import javax.swing.JOptionPane;
 import datatype.DtCategoria;
 import datatype.DtColaboracion;
 import datatype.DtColaborador;
+import datatype.DtInfoPago;
+import datatype.DtPago;
+import datatype.DtPagoTrfBancaria;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;
@@ -41,6 +44,7 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.TipoPagoInexistenteExpection;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteElEmailException;
@@ -116,6 +120,16 @@ public class Principal {
         IUC = factory.getIUsuarioController();
         ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
+        
+        /* cu pago col*/
+        DtPago pago = new DtPagoTrfBancaria(null, 0, "BROU", "123003", "mfarcilli");
+        DtInfoPago inpa = new DtInfoPago("Religiosamente", "Mengano", pago); 
+        try {
+			IPC.pagarColaboracion(inpa);
+		} catch (TipoPagoInexistenteExpection e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);

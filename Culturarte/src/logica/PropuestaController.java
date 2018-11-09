@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
+import datatype.DtInfoPago;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
@@ -21,6 +22,7 @@ import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.TipoPagoInexistenteExpection;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteFavoritaException;
 import persistencia.ConexionPostgresHibernate;
@@ -703,6 +705,23 @@ public class PropuestaController implements IPropuestaController {
 		}
 		
 		return dtResu;
+	}
+
+	@Override
+	public void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		ColaboracionID claveColaboracion = new ColaboracionID();
+		claveColaboracion.setIdColaborador(infoPago.getNickColaborador());
+		claveColaboracion.setIdPropuesta(infoPago.getTitPropuesta());
+		
+		Colaboracion colaboracion = em.find(Colaboracion.class, claveColaboracion);
+		em.close();
+		
+		colaboracion.crearPago(infoPago.getPago());
+		
 	}
 	
 }

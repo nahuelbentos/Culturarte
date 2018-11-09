@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import datatype.DtPagoTrfBancaria;
+
 @Entity
 @DiscriminatorValue("B")
 public class PagoTrfBancaria extends Pago {
@@ -19,6 +21,13 @@ public class PagoTrfBancaria extends Pago {
 		this.nombreBanco = nombreBanco;
 		this.numCuenta = numCuenta;
 		this.nombreTitular = nombreTitular;
+	}
+	
+	public PagoTrfBancaria(DtPagoTrfBancaria pb) {
+		super(pb.getMontoAPagar());
+		this.nombreBanco = pb.getNombreBanco();
+		this.numCuenta = pb.getNumCuenta();
+		this.nombreTitular = pb.getNombreTitular();
 	}
 
 	public String getNombreBanco() {

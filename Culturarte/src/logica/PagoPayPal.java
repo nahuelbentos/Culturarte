@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import datatype.DtPagoPayPal;
+
 @Entity
 @DiscriminatorValue("P")
 public class PagoPayPal extends Pago {
@@ -16,6 +18,12 @@ public class PagoPayPal extends Pago {
 		super(montoAPagar);
 		this.numeroCuenta = numeroCuenta;
 		this.nombreTitular = nombreTitular;
+	}
+	
+	public PagoPayPal(DtPagoPayPal pp) {
+		super(pp.getMontoAPagar());
+		this.numeroCuenta = pp.getNumeroCuenta();
+		this.nombreTitular = pp.getNombreTitular();
 	}
 
 	public String getNumeroCuenta() {

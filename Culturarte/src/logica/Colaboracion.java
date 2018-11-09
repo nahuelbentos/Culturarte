@@ -4,6 +4,8 @@ import java.util.GregorianCalendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
@@ -14,9 +16,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import datatype.DtColaboracion;
+import datatype.DtPago;
+import datatype.DtPagoPayPal;
+import datatype.DtPagoTarjeta;
+import datatype.DtPagoTrfBancaria;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
 import datatype.TipoRetorno;
+import excepciones.TipoPagoInexistenteExpection;
+import persistencia.ConexionPostgresHibernate;
 
 @Entity
 @IdClass(ColaboracionID.class)
@@ -130,5 +138,37 @@ public class Colaboracion {
 	
 	public DtPropuesta obtenerDtPropuesta() {
 		return propuestaColaborada.getDtPropuesta();
+	}
+	
+	public Pago getPago() {
+		return pago;
+	}
+
+	public void setPago(Pago pago) {
+		this.pago = pago;
+	}
+
+	public void crearPago(DtPago pago) throws TipoPagoInexistenteExpection {
+		ConexionPostgresHibernate cph = ConexionPostgresHibernate.getInstancia();
+		EntityManagerFactory emf = cph.getEntityManager();
+		EntityManager em = emf.createEntityManager();
+		
+		Pago p;
+		if (pago instanceof DtPagoTarjeta) {
+			p = new PagoTarjeta((DtPagoTarjeta)pago);
+		} else if (pago instanceof DtPagoTrfBancaria) {
+			p = new PagoTrfBancaria((DtPagoTrfBancaria)pago);
+		} else if (pago instanceof DtPagoPayPal) {
+			p = new PagoPayPal((DtPagoPayPal)pago);
+		} else {
+			throw new TipoPagoInexistenteExpection("No existe la forma de pago.");
+		}
+		em.getTransaction().begin();
+		em.persist(p);
+		
+		this.setPago(p);
+		em.merge(this);
+		em.getTransaction().commit();
+		em.close();
 	}
 }

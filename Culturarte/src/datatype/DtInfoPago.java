@@ -2,13 +2,13 @@ package datatype;
 
 public class DtInfoPago {
 	private String titPropuesta;
-	private String nickProponente;
+	private String nickColaborador;
 	private DtPago pago;
 	
 	public DtInfoPago(String titPropuesta, String nickProponente, DtPago pago) {
 		super();
 		this.titPropuesta = titPropuesta;
-		this.nickProponente = nickProponente;
+		this.nickColaborador = nickProponente;
 		this.pago = pago;
 	}
 	
@@ -24,12 +24,12 @@ public class DtInfoPago {
 		this.titPropuesta = titPropuesta;
 	}
 
-	public String getNickProponente() {
-		return nickProponente;
+	public String getNickColaborador() {
+		return nickColaborador;
 	}
 
-	public void setNickProponente(String nickProponente) {
-		this.nickProponente = nickProponente;
+	public void setNickColaborador(String nickProponente) {
+		this.nickColaborador = nickProponente;
 	}
 
 	public DtPago getPago() {
