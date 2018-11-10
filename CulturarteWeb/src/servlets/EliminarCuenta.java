@@ -3,7 +3,6 @@ package servlets;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +18,6 @@ import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtProponente;
 import publicadores.DtUsuario;
-import publicadores.UsuarioNoExisteElUsuarioException;
-import publicadores.UsuarioSinLoguearseException;
 
 /**
  * Servlet implementation class EliminarCuenta
@@ -63,7 +60,6 @@ public class EliminarCuenta extends HttpServlet {
 			
 			msg = new DtMensajeUI("El usuario " + usuLog.getNickname() + " fue eliminado correctamente.", TipoMensaje.informacion);
 			request.setAttribute("mensaje", msg);
-			HttpSession session = request.getSession();
 			request.getSession().setAttribute("usuarioLogueado", null);
 			
 			request.getRequestDispatcher("Inicio").forward(request, response);

@@ -170,4 +170,9 @@ button.seleccionarImg{
     text-shadow: 0 0 3px #000!important;
 }   
     
-   
+.list-formaPago > li{
+	cursor: pointer;
+}
+.list-formaPago > li:hover{
+	background-color: rgb(212,212,212);
+}
