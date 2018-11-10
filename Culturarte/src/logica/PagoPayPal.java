@@ -14,6 +14,10 @@ public class PagoPayPal extends Pago {
 	@Column(name="PP_TITULAR")
 	private String nombreTitular;
 	
+	public PagoPayPal() {
+		super();
+	}
+
 	public PagoPayPal(double montoAPagar, String numeroCuenta, String nombreTitular) {
 		super(montoAPagar);
 		this.numeroCuenta = numeroCuenta;

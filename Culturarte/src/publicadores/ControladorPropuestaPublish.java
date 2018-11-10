@@ -12,6 +12,7 @@ import javax.xml.ws.Endpoint;
 
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
+import datatype.DtInfoPago;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
@@ -19,10 +20,12 @@ import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.TipoPagoInexistenteExpection;
 import excepciones.UsuarioSinLoguearseException;
 import logica.Factory;
 import logica.IPropuestaController;
@@ -179,8 +182,17 @@ public class ControladorPropuestaPublish {
 		
 		return dtProps;
 	}
+
+	@WebMethod
+	public DtColaboracion[] listarColaboracionAPagar(String nickColaborador) throws ColaboracionNoExisteException{
+		return IPC.listarColaboracionesAPagar(nickColaborador);		
+	}
 	
-	//funciones para el inicio de la aplicacion web
+	@WebMethod
+	public void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection{
+		IPC.pagarColaboracion(infoPago);
+	}
+	
 	@WebMethod
 	public  DtPropuesta[] getPropuestasPopulares(){
 		return IPC.getPropuestasPopulares();		

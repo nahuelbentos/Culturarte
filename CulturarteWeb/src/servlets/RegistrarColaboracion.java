@@ -16,6 +16,7 @@ import publicadores.TipoRetorno;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
 import publicadores.ControladorPropuestaPublishServiceLocator;
+import publicadores.DtColaboracion;
 
 @WebServlet("/RegistrarColaboracion")
 public class RegistrarColaboracion extends HttpServlet {
@@ -53,9 +54,14 @@ public class RegistrarColaboracion extends HttpServlet {
 			ControladorPropuestaPublish cpp;
 			try {
 				cpp = cps.getControladorPropuestaPublishPort();
-				String colaborador = user.getNickname();
-				publicadores.DtColaboracion dtColaboracion = new publicadores.DtColaboracion(colaborador, new GregorianCalendar(), 
-						Double.parseDouble(montoColaboracion), tipoRetorno, titulo);			
+				
+				DtColaboracion dtColaboracion = new DtColaboracion();
+				dtColaboracion.setColaborador(user.getNickname());
+				dtColaboracion.setFechaAporte(new GregorianCalendar());
+				dtColaboracion.setTituloPropuesta(titulo);
+				dtColaboracion.setMonto(Double.valueOf(montoColaboracion));
+				dtColaboracion.setTipo(tipoRetorno);
+				dtColaboracion.setPago(false);
 				try {
 					cpp.generarColaboracion(dtColaboracion);
 					request.getSession().setAttribute("mensaje", "Se registro con exito la colaboracion");

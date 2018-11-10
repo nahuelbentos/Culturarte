@@ -122,24 +122,6 @@ public class Principal {
         ICC = factory.getICategoriaController();
         IPC = factory.getIPropuestaController();
         
-        /* cu pago col*/
-        DtPago pago = new DtPagoTrfBancaria(null, 0, "BROU", "123003", "mfarcilli");
-        DtInfoPago inpa = new DtInfoPago("Religiosamente", "Mengano", pago); 
-        try {
-			IPC.pagarColaboracion(inpa);
-		} catch (TipoPagoInexistenteExpection e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        try {
-			DtColaboracion[] infoColabs = IPC.listarColaboracionesAPagar("Mengano");
-			System.out.println(infoColabs);
-		} catch (ColaboracionNoExisteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
         altaPerfil = new AltaPerfil(IUC);
 		altaPerfil.setVisible(false);
 

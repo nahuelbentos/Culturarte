@@ -44,12 +44,6 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     return controladorPropuestaPublish;
   }
   
-  public publicadores.DtDatosPropuesta consultarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.consultarPropuesta(arg0);
-  }
-  
   public publicadores.DtPropuestaMinificado[] listarPropuestasPorEstado(publicadores.EstadoPropuesta arg0) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
@@ -102,6 +96,18 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
     return controladorPropuestaPublish.propuestasDesdeBuscador(arg0);
+  }
+  
+  public void pagarColaboracion(publicadores.DtInfoPago arg0) throws java.rmi.RemoteException, publicadores.TipoPagoInexistenteExpection{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    controladorPropuestaPublish.pagarColaboracion(arg0);
+  }
+  
+  public publicadores.DtColaboracion[] listarColaboracionAPagar(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.listarColaboracionAPagar(arg0);
   }
   
   public publicadores.TipoRetorno[] obtenerTiposRetorno() throws java.rmi.RemoteException{
@@ -158,12 +164,6 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     return controladorPropuestaPublish.listarPropuestas();
   }
   
-  public publicadores.DtColaboracion[] listarColaboraciones(java.lang.String arg0) throws java.rmi.RemoteException{
-    if (controladorPropuestaPublish == null)
-      _initControladorPropuestaPublishProxy();
-    return controladorPropuestaPublish.listarColaboraciones(arg0);
-  }
-  
   public publicadores.DtPropuesta[] listarPropuestasExistentes() throws java.rmi.RemoteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
@@ -180,6 +180,18 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();
     controladorPropuestaPublish.evaluarPropuesta(arg0, arg1);
+  }
+  
+  public publicadores.DtColaboracion[] listarColaboraciones(java.lang.String arg0) throws java.rmi.RemoteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.listarColaboraciones(arg0);
+  }
+  
+  public publicadores.DtDatosPropuesta consultarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    return controladorPropuestaPublish.consultarPropuesta(arg0);
   }
   
   

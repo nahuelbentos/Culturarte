@@ -23,6 +23,10 @@ public class PagoTarjeta extends Pago {
 	@Column(name="PT_NOMBRETITULAR")
 	private String nombreTitular;
 	
+	public PagoTarjeta() {
+		super();
+	}
+	
 	public PagoTarjeta(double montoAPagar, TipoTarjeta tipoTarjeta, double nroTarjeta, Calendar fechaVenc, int cvc, String nombreTitular) {
 		super(montoAPagar);
 		this.tipoTarjeta = tipoTarjeta;

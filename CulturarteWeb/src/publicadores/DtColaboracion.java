@@ -14,6 +14,8 @@ public class DtColaboracion  implements java.io.Serializable {
 
     private double monto;
 
+    private boolean pago;
+
     private publicadores.TipoRetorno tipo;
 
     private java.lang.String tituloPropuesta;
@@ -25,17 +27,18 @@ public class DtColaboracion  implements java.io.Serializable {
            java.lang.String colaborador,
            java.util.Calendar fechaAporte,
            double monto,
+           boolean pago,
            publicadores.TipoRetorno tipo,
            java.lang.String tituloPropuesta) {
            this.colaborador = colaborador;
            this.fechaAporte = fechaAporte;
            this.monto = monto;
+           this.pago = pago;
            this.tipo = tipo;
            this.tituloPropuesta = tituloPropuesta;
     }
 
-
-    /**
+	/**
      * Gets the colaborador value for this DtColaboracion.
      * 
      * @return colaborador
@@ -92,6 +95,26 @@ public class DtColaboracion  implements java.io.Serializable {
      */
     public void setMonto(double monto) {
         this.monto = monto;
+    }
+
+
+    /**
+     * Gets the pago value for this DtColaboracion.
+     * 
+     * @return pago
+     */
+    public boolean isPago() {
+        return pago;
+    }
+
+
+    /**
+     * Sets the pago value for this DtColaboracion.
+     * 
+     * @param pago
+     */
+    public void setPago(boolean pago) {
+        this.pago = pago;
     }
 
 
@@ -153,6 +176,7 @@ public class DtColaboracion  implements java.io.Serializable {
              (this.fechaAporte!=null &&
               this.fechaAporte.equals(other.getFechaAporte()))) &&
             this.monto == other.getMonto() &&
+            this.pago == other.isPago() &&
             ((this.tipo==null && other.getTipo()==null) || 
              (this.tipo!=null &&
               this.tipo.equals(other.getTipo()))) &&
@@ -177,6 +201,7 @@ public class DtColaboracion  implements java.io.Serializable {
             _hashCode += getFechaAporte().hashCode();
         }
         _hashCode += new Double(getMonto()).hashCode();
+        _hashCode += (isPago() ? Boolean.TRUE : Boolean.FALSE).hashCode();
         if (getTipo() != null) {
             _hashCode += getTipo().hashCode();
         }
@@ -211,6 +236,12 @@ public class DtColaboracion  implements java.io.Serializable {
         elemField.setFieldName("monto");
         elemField.setXmlName(new javax.xml.namespace.QName("", "monto"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "double"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("pago");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "pago"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();

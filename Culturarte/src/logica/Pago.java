@@ -22,6 +22,10 @@ public abstract class Pago {
 	
 	private double montoAPagar;
 
+	public Pago() {
+		super();
+	}
+	
 	public Pago(double montoAPagar) {
 		super();
 		this.montoAPagar = montoAPagar;

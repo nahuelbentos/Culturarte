@@ -34,6 +34,10 @@ public class PagoTrfBancaria extends Pago {
 		return nombreBanco;
 	}
 
+	public PagoTrfBancaria() {
+		super();
+	}
+
 	public void setNombreBanco(String nombreBanco) {
 		this.nombreBanco = nombreBanco;
 	}
