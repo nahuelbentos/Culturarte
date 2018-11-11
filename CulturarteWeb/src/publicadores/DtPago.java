@@ -8,6 +8,8 @@
 package publicadores;
 
 public abstract class DtPago  implements java.io.Serializable {
+    private boolean compEmitido;
+
     private java.lang.Long id;
 
     private double montoAPagar;
@@ -16,10 +18,32 @@ public abstract class DtPago  implements java.io.Serializable {
     }
 
     public DtPago(
+           boolean compEmitido,
            java.lang.Long id,
            double montoAPagar) {
+           this.compEmitido = compEmitido;
            this.id = id;
            this.montoAPagar = montoAPagar;
+    }
+
+
+    /**
+     * Gets the compEmitido value for this DtPago.
+     * 
+     * @return compEmitido
+     */
+    public boolean isCompEmitido() {
+        return compEmitido;
+    }
+
+
+    /**
+     * Sets the compEmitido value for this DtPago.
+     * 
+     * @param compEmitido
+     */
+    public void setCompEmitido(boolean compEmitido) {
+        this.compEmitido = compEmitido;
     }
 
 
@@ -74,6 +98,7 @@ public abstract class DtPago  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
+            this.compEmitido == other.isCompEmitido() &&
             ((this.id==null && other.getId()==null) || 
              (this.id!=null &&
               this.id.equals(other.getId()))) &&
@@ -89,6 +114,7 @@ public abstract class DtPago  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        _hashCode += (isCompEmitido() ? Boolean.TRUE : Boolean.FALSE).hashCode();
         if (getId() != null) {
             _hashCode += getId().hashCode();
         }
@@ -104,6 +130,12 @@ public abstract class DtPago  implements java.io.Serializable {
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://publicadores/", "dtPago"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("compEmitido");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "compEmitido"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("", "id"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));

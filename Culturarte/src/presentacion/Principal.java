@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 import datatype.DtCategoria;
 import datatype.DtColaboracion;
 import datatype.DtColaborador;
-import datatype.DtPagoPayPal;
 import datatype.DtProponente;
 import datatype.DtPropuesta;
 import datatype.DtUsuario;

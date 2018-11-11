@@ -38,7 +38,8 @@ public class DtColaboracion  implements java.io.Serializable {
            this.tituloPropuesta = tituloPropuesta;
     }
 
-	/**
+
+    /**
      * Gets the colaborador value for this DtColaboracion.
      * 
      * @return colaborador

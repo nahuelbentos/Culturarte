@@ -13,6 +13,9 @@ import javax.xml.ws.Endpoint;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtInfoPago;
+import datatype.DtPagoPayPal;
+import datatype.DtPagoTarjeta;
+import datatype.DtPagoTrfBancaria;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
@@ -222,5 +225,10 @@ public class ControladorPropuestaPublish {
 	@WebMethod
 	public DtInfoPago obtenerComprobanteDePagoDeColaboracion(String nickColaborador, String tituloPropuesta) throws TipoPagoInexistenteExpection, ColaboracionNoExisteException {
 		return IPC.obtenerComprobanteDePagoDeColaboracion(nickColaborador, tituloPropuesta);
+	}
+	
+	@WebMethod
+	public void losTiposExtendidos(DtPagoTarjeta dtPT, DtPagoTrfBancaria dtTB, DtPagoPayPal dtPP) {
+		// método para publicar data types con herencia, ya que si no van expresamente por parámetros no los importa en el cliente
 	}
 }
