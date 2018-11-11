@@ -5,8 +5,8 @@ public class DtPagoTrfBancaria extends DtPago {
 	private String numCuenta;
 	private String nombreTitular;
 	
-	public DtPagoTrfBancaria(Long id, double montoAPagar, String nombreBanco, String numCuenta, String nombreTitular) {
-		super(id, montoAPagar);
+	public DtPagoTrfBancaria(Long id, double montoAPagar, boolean compEmitido, String nombreBanco, String numCuenta, String nombreTitular) {
+		super(id, montoAPagar, compEmitido);
 		this.nombreBanco = nombreBanco;
 		this.numCuenta = numCuenta;
 		this.nombreTitular = nombreTitular;

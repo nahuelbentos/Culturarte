@@ -18,14 +18,14 @@ public class PagoPayPal extends Pago {
 		super();
 	}
 
-	public PagoPayPal(double montoAPagar, String numeroCuenta, String nombreTitular) {
-		super(montoAPagar);
+	public PagoPayPal(double montoAPagar, boolean compEmitido, String numeroCuenta, String nombreTitular) {
+		super(compEmitido, montoAPagar);
 		this.numeroCuenta = numeroCuenta;
 		this.nombreTitular = nombreTitular;
 	}
 	
 	public PagoPayPal(DtPagoPayPal pp) {
-		super(pp.getMontoAPagar());
+		super(pp.isCompEmitido(), pp.getMontoAPagar());
 		this.numeroCuenta = pp.getNumeroCuenta();
 		this.nombreTitular = pp.getNombreTitular();
 	}
@@ -44,5 +44,14 @@ public class PagoPayPal extends Pago {
 
 	public void setNombreTitular(String nombreTitular) {
 		this.nombreTitular = nombreTitular;
+	}
+	
+	@Override
+	public DtPagoPayPal getDtPago() {
+		return new DtPagoPayPal(this.getId(), 
+								this.getMontoAPagar(), 
+								this.isCompEmitido(), 
+								this.numeroCuenta, 
+								this.nombreTitular);
 	}
 }

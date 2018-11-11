@@ -9,8 +9,8 @@ public class DtPagoTarjeta extends DtPago {
 	private int cvc;
 	private String nombreTitular;
 	
-	public DtPagoTarjeta(Long id, double montoAPagar, TipoTarjeta tipoTarjeta, double nroTarjeta, Calendar fechaVenc, int cvc, String nombreTitular) {
-		super(id, montoAPagar);
+	public DtPagoTarjeta(Long id, double montoAPagar, boolean compEmitido, TipoTarjeta tipoTarjeta, double nroTarjeta, Calendar fechaVenc, int cvc, String nombreTitular) {
+		super(id, montoAPagar, compEmitido);
 		this.tipoTarjeta = tipoTarjeta;
 		this.nroTarjeta = nroTarjeta;
 		this.fechaVenc = fechaVenc;

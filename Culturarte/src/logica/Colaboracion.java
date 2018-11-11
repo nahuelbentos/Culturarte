@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import datatype.DtColaboracion;
+import datatype.DtInfoPago;
 import datatype.DtPago;
 import datatype.DtPagoPayPal;
 import datatype.DtPagoTarjeta;
@@ -170,5 +171,15 @@ public class Colaboracion {
 		em.merge(this);
 		em.getTransaction().commit();
 		em.close();
+	}
+	
+	public DtInfoPago getDtInfoPago() {
+		DtPago dtP = pago.getDtPago();
+		dtP.setMontoAPagar(monto);
+		return new DtInfoPago(this.propuestaColaborada.getTitulo(), this.colaborador.getNickname(), dtP);
+	}
+	
+	public void marcarPagoComoEmitido() {
+		pago.setCompEmitido(true);
 	}
 }

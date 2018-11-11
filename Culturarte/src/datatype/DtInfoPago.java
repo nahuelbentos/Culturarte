@@ -5,10 +5,10 @@ public class DtInfoPago {
 	private String nickColaborador;
 	private DtPago pago;
 	
-	public DtInfoPago(String titPropuesta, String nickProponente, DtPago pago) {
+	public DtInfoPago(String titPropuesta, String nickColaborador, DtPago pago) {
 		super();
 		this.titPropuesta = titPropuesta;
-		this.nickColaborador = nickProponente;
+		this.nickColaborador = nickColaborador;
 		this.pago = pago;
 	}
 	
@@ -28,8 +28,8 @@ public class DtInfoPago {
 		return nickColaborador;
 	}
 
-	public void setNickColaborador(String nickProponente) {
-		this.nickColaborador = nickProponente;
+	public void setNickColaborador(String nickColaborador) {
+		this.nickColaborador = nickColaborador;
 	}
 
 	public DtPago getPago() {

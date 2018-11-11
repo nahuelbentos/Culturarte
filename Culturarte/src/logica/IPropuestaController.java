@@ -78,6 +78,8 @@ public interface IPropuestaController {
 	public abstract void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection;
 	
 	public abstract DtColaboracion[] listarColaboracionesAPagar(String nickColaborador) throws ColaboracionNoExisteException;
+
+	public abstract DtInfoPago obtenerComprobanteDePagoDeColaboracion(String nickColaborador, String tituloPropuesta) throws TipoPagoInexistenteExpection, ColaboracionNoExisteException;
 	
 }
 

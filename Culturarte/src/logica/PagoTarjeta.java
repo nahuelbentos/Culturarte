@@ -27,8 +27,8 @@ public class PagoTarjeta extends Pago {
 		super();
 	}
 	
-	public PagoTarjeta(double montoAPagar, TipoTarjeta tipoTarjeta, double nroTarjeta, Calendar fechaVenc, int cvc, String nombreTitular) {
-		super(montoAPagar);
+	public PagoTarjeta(boolean compEmitido, double montoAPagar, TipoTarjeta tipoTarjeta, double nroTarjeta, Calendar fechaVenc, int cvc, String nombreTitular) {
+		super(compEmitido, montoAPagar);
 		this.tipoTarjeta = tipoTarjeta;
 		this.nroTarjeta = nroTarjeta;
 		this.fechaVenc = fechaVenc;
@@ -37,7 +37,7 @@ public class PagoTarjeta extends Pago {
 	}
 	
 	public PagoTarjeta(DtPagoTarjeta pt) {
-		super(pt.getMontoAPagar());
+		super(pt.isCompEmitido(), pt.getMontoAPagar());
 		this.tipoTarjeta = pt.getTipoTarjeta();
 		this.nroTarjeta = pt.getNroTarjeta();
 		this.fechaVenc = pt.getFechaVenc();
@@ -83,5 +83,17 @@ public class PagoTarjeta extends Pago {
 
 	public void setNombreTitular(String nombreTitular) {
 		this.nombreTitular = nombreTitular;
+	}
+	
+	@Override
+	public DtPagoTarjeta getDtPago() {
+		return new DtPagoTarjeta(this.getId(), 
+								this.getMontoAPagar(), 
+								this.isCompEmitido(), 
+								tipoTarjeta, 
+								nroTarjeta, 
+								fechaVenc,
+								cvc,
+								nombreTitular);
 	}
 }

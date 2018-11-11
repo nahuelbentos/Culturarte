@@ -18,6 +18,7 @@ import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
+import datatype.TipoTarjeta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
 import excepciones.ColaboracionNoExisteException;
@@ -211,5 +212,15 @@ public class ControladorPropuestaPublish {
 	@WebMethod
 	public  EstadoPropuesta[] obtenerEstadosPropuesta(){
 		return EstadoPropuesta.values();
+	}
+	
+	@WebMethod
+	public  TipoTarjeta[] obtenerTiposTarjeta(){
+		return TipoTarjeta.values();
+	}
+	
+	@WebMethod
+	public DtInfoPago obtenerComprobanteDePagoDeColaboracion(String nickColaborador, String tituloPropuesta) throws TipoPagoInexistenteExpection, ColaboracionNoExisteException {
+		return IPC.obtenerComprobanteDePagoDeColaboracion(nickColaborador, tituloPropuesta);
 	}
 }

@@ -4,8 +4,8 @@ public class DtPagoPayPal extends DtPago {
 	private String numeroCuenta;
 	private String nombreTitular;
 	
-	public DtPagoPayPal(Long id, double montoAPagar, String numeroCuenta, String nombreTitular) {
-		super(id, montoAPagar);
+	public DtPagoPayPal(Long id, double montoAPagar, boolean compEmitido, String numeroCuenta, String nombreTitular) {
+		super(id, montoAPagar, compEmitido);
 		this.numeroCuenta = numeroCuenta;
 		this.nombreTitular = nombreTitular;
 	}

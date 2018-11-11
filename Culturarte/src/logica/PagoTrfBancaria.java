@@ -16,15 +16,15 @@ public class PagoTrfBancaria extends Pago {
 	@Column(name="PB_NOMBRETITULAR")
 	private String nombreTitular;
 	
-	public PagoTrfBancaria(double montoAPagar, String nombreBanco, String numCuenta, String nombreTitular) {
-		super(montoAPagar);
+	public PagoTrfBancaria(boolean compEmitido, double montoAPagar, String nombreBanco, String numCuenta, String nombreTitular) {
+		super(compEmitido, montoAPagar);
 		this.nombreBanco = nombreBanco;
 		this.numCuenta = numCuenta;
 		this.nombreTitular = nombreTitular;
 	}
 	
 	public PagoTrfBancaria(DtPagoTrfBancaria pb) {
-		super(pb.getMontoAPagar());
+		super(pb.isCompEmitido(), pb.getMontoAPagar());
 		this.nombreBanco = pb.getNombreBanco();
 		this.numCuenta = pb.getNumCuenta();
 		this.nombreTitular = pb.getNombreTitular();
@@ -56,5 +56,15 @@ public class PagoTrfBancaria extends Pago {
 
 	public void setNombreTitular(String nombreTitular) {
 		this.nombreTitular = nombreTitular;
+	}
+	
+	@Override
+	public DtPagoTrfBancaria getDtPago() {
+		return new DtPagoTrfBancaria(this.getId(), 
+									this.getMontoAPagar(), 
+									this.isCompEmitido(), 
+									nombreBanco, 
+									numCuenta, 
+									nombreTitular);
 	}
 }

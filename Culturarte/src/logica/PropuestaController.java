@@ -742,7 +742,15 @@ public class PropuestaController implements IPropuestaController {
             colabs = new DtColaboracion[colaboraciones.size()];
             int i = 0;
             for (Colaboracion col : colaboraciones) {
-                colabs[i] = new DtColaboracion(col.getPropuestaColaborada().getTitulo(), col.getColaborador().getNickname(), col.getMonto(), col.getFechaAporte(), col.getTipo(), col.getPago() != null);
+            	// El comprobante de pago se puede emitir unicamente si 
+            	// el pago está hecho y si aun no se ha emitido antes
+            	boolean puedoEmitir = false;
+            	if (col.getPago() != null)
+            		puedoEmitir = !col.getPago().isCompEmitido();
+            	else
+            		puedoEmitir = false;
+            	
+                colabs[i] = new DtColaboracion(col.getPropuestaColaborada().getTitulo(), col.getColaborador().getNickname(), col.getMonto(), col.getFechaAporte(), col.getTipo(), puedoEmitir);
                 i++;
             }
             
@@ -752,4 +760,33 @@ public class PropuestaController implements IPropuestaController {
         }
 	}
 	
+	@Override
+	public DtInfoPago obtenerComprobanteDePagoDeColaboracion(String nickColaborador, String tituloPropuesta) throws TipoPagoInexistenteExpection, ColaboracionNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		DtInfoPago infoPago = null;
+		@SuppressWarnings("unchecked")
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE COLABORADOR = :colab and PROPUESTA = :prop")
+												.setParameter("colab", nickColaborador)
+												.setParameter("prop", tituloPropuesta)
+												.getResultList();
+		
+		if (!colaboraciones.isEmpty()) {
+			em.getTransaction().begin();
+			for (Colaboracion col : colaboraciones) {
+				infoPago = col.getDtInfoPago();
+				col.marcarPagoComoEmitido();
+				em.persist(col);
+			}
+			em.getTransaction().commit();
+			em.close();
+			return infoPago;
+		} else {
+			em.getTransaction().rollback();
+			em.close();
+			throw new ColaboracionNoExisteException("No se encontró la colaboración de " + nickColaborador + " para la propuesta " + tituloPropuesta + ".");
+		}
+	}
 }
