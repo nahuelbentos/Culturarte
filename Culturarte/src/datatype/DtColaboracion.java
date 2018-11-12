@@ -9,7 +9,16 @@ public class DtColaboracion {
 	private double monto;
 	private GregorianCalendar fechaAporte;
 	private TipoRetorno tipo;
+	private boolean pago;
 	
+	public boolean isPago() {
+		return pago;
+	}
+
+	public void setPago(boolean pago) {
+		this.pago = pago;
+	}
+
 	public DtColaboracion(String tituloPropuesta, String colaborador, double monto, GregorianCalendar fechaAporte,
 			TipoRetorno tipo) {
 		super();
@@ -18,6 +27,16 @@ public class DtColaboracion {
 		this.monto = monto;
 		this.fechaAporte = fechaAporte;
 		this.tipo = tipo;
+	}
+	
+	public DtColaboracion(String tituloPropuesta, String colaborador, double monto, GregorianCalendar fechaAporte, TipoRetorno tipo, boolean pago) {
+		super();
+		this.tituloPropuesta = tituloPropuesta;
+		this.colaborador = colaborador;
+		this.monto = monto;
+		this.fechaAporte = fechaAporte;
+		this.tipo = tipo;
+		this.pago = pago;
 	}
 			
 	public String getTituloPropuesta() {

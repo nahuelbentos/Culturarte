@@ -11,16 +11,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
+import datatype.DtInfoPago;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.TipoPagoInexistenteExpection;
 import excepciones.UsuarioSinLoguearseException;
 import excepciones.UsuarioYaExisteFavoritaException;
 import persistencia.ConexionPostgresHibernate;
@@ -86,7 +89,7 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :no").setParameter("no", false).getResultList();
         em.close();
         if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
@@ -266,7 +269,6 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		DtPropuesta[] dtPropuesta = null;
         @SuppressWarnings("unchecked")
@@ -292,10 +294,11 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "'").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "' AND ESTAELIMINADA = :no")
+				.setParameter("no", false)
+				.getResultList();
         em.close();
         if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
@@ -311,7 +314,36 @@ public class PropuestaController implements IPropuestaController {
 	}
 
 	@Override
-	public DtDatosPropuesta consultarPropuesta(String titulo) {
+	public DtDatosPropuesta consultarPropuesta(String titulo) throws ProponenteNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		Propuesta p = em.find(Propuesta.class, titulo); //1
+		
+		if (p != null) {
+			@SuppressWarnings("unchecked")
+			List<Colaboracion> colColab = em.createQuery("FROM Colaboracion WHERE propuesta = :p")
+									.setParameter("p",p)
+									.getResultList();
+
+			em.close();
+			DtDatosPropuesta dtp = p.getDtDatosPropuesta();
+			double montoTotal = 0;
+			for (Colaboracion colaboracion : colColab) {
+				montoTotal = montoTotal + colaboracion.getMonto();				
+				dtp.addColaborador(colaboracion.getColaborador().getNickname());
+			}
+			dtp.setRecaudado(montoTotal);
+			return dtp;
+		}else {
+			em.close();
+			throw new ProponenteNoExisteException("No existe la propuesta");
+		}
+	}
+
+	@Override
+	public DtDatosPropuesta consultarDatosPropuesta(String titulo) {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
@@ -324,7 +356,7 @@ public class PropuestaController implements IPropuestaController {
 		em.close();
 		DtDatosPropuesta dtp = new DtDatosPropuesta();
 		if (p != null) {
-			DtDatosPropuesta datapro= p.getDtDatosPropuesta(); //2
+			DtDatosPropuesta datapro = p.getDtDatosPropuesta(); //2
 	        if(datapro!=null) {
 				double montoTotal=0;
 				for (Colaboracion col : colColab) { //3
@@ -344,6 +376,7 @@ public class PropuestaController implements IPropuestaController {
 			return dtp;
 	}
 
+	
 	@Override
 	public void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException {
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -381,9 +414,10 @@ public class PropuestaController implements IPropuestaController {
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada'").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada' AND estaeliminada = :no")
+				.setParameter("no", false)
+				.getResultList();
         em.close();
         
         if (!propuestas.isEmpty()) {
@@ -407,7 +441,8 @@ public class PropuestaController implements IPropuestaController {
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :no and estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
+											.setParameter("no", false)
 											.setParameter("estado", estado.toString())
 											.setParameter("nicknameProponente", nicknameProponente)
 											.setParameter("now", now)
@@ -426,6 +461,35 @@ public class PropuestaController implements IPropuestaController {
 			return props;
 		}else {
 			throw new PropuestaNoExisteException("No existen propuestas en el estado " + estado + " para el proponente " + nicknameProponente);
+		}
+	}
+	
+	@Override
+	public DtPropuestaMinificado[] listarPropuestasProponente(String nicknameProponente) throws PropuestaNoExisteException{
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+        @SuppressWarnings("unchecked")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :si "
+				+ "AND NICK_PROPONENTE = :nicknameProponente")
+				.setParameter("si", true)
+				.setParameter("nicknameProponente", nicknameProponente)
+				.getResultList();
+        em.close();
+        
+        if (!ps.isEmpty()) {
+			DtPropuestaMinificado[] props = new DtPropuestaMinificado[ps.size()];
+			Propuesta pro;
+			
+			for (int i = 0; i < props.length; i++) {
+				pro = ps.get(i);
+				
+				props[i] = new DtPropuestaMinificado(pro.getTitulo(),pro.getProponenteACargo().getNickname(),pro.getImagen());
+			}
+			return props;
+		}else {
+			throw new PropuestaNoExisteException("No existen propuestas del proponente " + nicknameProponente);
 		}
 	}
 	
@@ -493,7 +557,9 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual <> 'ingresada'").getResultList();
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual <> 'ingresada' and estaeliminada = :no")
+					.setParameter("no", false)
+					.getResultList();
         em.close();
         
         if (ps != null) {
@@ -590,7 +656,9 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta").getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estaeliminada = : no")
+					.setParameter("no", false)
+					.getResultList();
         
         em.close();
 
@@ -622,8 +690,12 @@ public class PropuestaController implements IPropuestaController {
 		@SuppressWarnings("unchecked")
 		List<Propuesta> populares = em.createQuery("SELECT p FROM Usuario u "
 				+ "JOIN u.propuestasFavoritas p "
+				+ "WHERE u.estaeliminado = :no "
 				+ "GROUP BY p "
-				+ "ORDER BY count(p) DESC").setMaxResults(5).getResultList();
+				+ "ORDER BY count(p) DESC")
+				.setParameter("no", false)
+				.setMaxResults(5)
+				.getResultList();
 		
 		em.close();
 		
@@ -645,9 +717,13 @@ public class PropuestaController implements IPropuestaController {
 		
 		buscar = "%" + buscar.trim().toLowerCase() + "%";
 		@SuppressWarnings("unchecked")
-		List<Propuesta> resultado = em.createQuery("FROM Propuesta WHERE (lower(titulo) like '" + buscar + "') " + 
+		List<Propuesta> resultado = em.createQuery("FROM Propuesta WHERE " + 
+													"(lower(titulo) like '" + buscar + "') " + 
 													"or (lower(descripcion) like '" + buscar + "') " + 
-													"or (lower(lugar) like '" + buscar + "')").getResultList();
+													"or (lower(lugar) like '" + buscar + "')" +
+													"and estaeliminada = :no")
+									.setParameter("no", false)
+									.getResultList();
 		
 		em.close();
 		
@@ -659,5 +735,87 @@ public class PropuestaController implements IPropuestaController {
 		
 		return dtResu;
 	}
+
+	@Override
+	public void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		ColaboracionID claveColaboracion = new ColaboracionID();
+		claveColaboracion.setIdColaborador(infoPago.getNickColaborador());
+		claveColaboracion.setIdPropuesta(infoPago.getTitPropuesta());
+		
+		Colaboracion colaboracion = em.find(Colaboracion.class, claveColaboracion);
+		em.close();
+		
+		colaboracion.crearPago(infoPago.getPago());
+		
+	}
 	
+	@Override
+	public DtColaboracion[] listarColaboracionesAPagar(String nickColaborador) throws ColaboracionNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		DtColaboracion[] colabs = null;
+        @SuppressWarnings("unchecked")
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE COLABORADOR = :colab")
+				.setParameter("colab", nickColaborador)
+				.getResultList();
+        em.close();
+        
+        if (!colaboraciones.isEmpty()) {
+            colabs = new DtColaboracion[colaboraciones.size()];
+            int i = 0;
+            for (Colaboracion col : colaboraciones) {
+            	// El comprobante de pago se puede emitir unicamente si 
+            	// el pago está hecho y si aun no se ha emitido antes
+            	boolean puedoEmitir = false;
+            	if (col.getPago() != null)
+            		puedoEmitir = !col.getPago().isCompEmitido();
+            	else
+            		puedoEmitir = false;
+            	
+                colabs[i] = new DtColaboracion(col.getPropuestaColaborada().getTitulo(), col.getColaborador().getNickname(), col.getMonto(), col.getFechaAporte(), col.getTipo(), puedoEmitir);
+                i++;
+            }
+            
+            return colabs;
+        } else {
+        	throw new ColaboracionNoExisteException("No se encontraron colaboraciones.");
+        }
+	}
+	
+	@Override
+	public DtInfoPago obtenerComprobanteDePagoDeColaboracion(String nickColaborador, String tituloPropuesta) throws TipoPagoInexistenteExpection, ColaboracionNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		DtInfoPago infoPago = null;
+		@SuppressWarnings("unchecked")
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE COLABORADOR = :colab and PROPUESTA = :prop")
+												.setParameter("colab", nickColaborador)
+												.setParameter("prop", tituloPropuesta)
+												.getResultList();
+		
+		if (!colaboraciones.isEmpty()) {
+			em.getTransaction().begin();
+			for (Colaboracion col : colaboraciones) {
+				infoPago = col.getDtInfoPago();
+				col.marcarPagoComoEmitido();
+				em.persist(col);
+			}
+			em.getTransaction().commit();
+			em.close();
+			return infoPago;
+		} else {
+			em.getTransaction().rollback();
+			em.close();
+			throw new ColaboracionNoExisteException("No se encontró la colaboración de " + nickColaborador + " para la propuesta " + tituloPropuesta + ".");
+		}
+	}
+
 }

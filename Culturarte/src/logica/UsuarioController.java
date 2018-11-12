@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -53,7 +54,9 @@ public class UsuarioController implements IUsuarioController {
 		dtUsuario.setPassword(dtUsuario.getPasswordString().toCharArray());
 		
 		try {
-			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico")
+			usuarioDos = (Usuario) em.createQuery("FROM Usuario where correoElectronico = :correoElectronico"
+					+ " and flagElm = :no")
+					.setParameter("no", false)
 					.setParameter("correoElectronico", dtUsuario.getEmail()).getSingleResult();
 		} catch (NoResultException nre){}
 		if (usuario != null) {
@@ -109,7 +112,12 @@ public class UsuarioController implements IUsuarioController {
 		
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'").getResultList();
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'P'"
+				+ " and flagElm = :no")
+				.setParameter("no", false)
+				.getResultList();
+        em.close();
+        
         if (!usuarios.isEmpty()) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -119,10 +127,9 @@ public class UsuarioController implements IUsuarioController {
                 		usuario.getApellido(), usuario.getCorreoElectronico(), usuario.getPassword(), 
                 		usuario.getFechaNacimiento(), usuario.getImagen());
             }
-            em.close();
+            
             return dtUsuario;
         } else {
-        	em.close();
         	throw new ProponenteNoExisteException("No hay proponentes registrados");
         }
 	}
@@ -180,7 +187,7 @@ public class UsuarioController implements IUsuarioController {
 
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("FROM Usuario").getResultList();
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE flagElm = :no").setParameter("no", false).getResultList();
         if (usuarios != null) {
             dtUsuario = new DtUsuario[usuarios.size()];
             Usuario usuario;
@@ -205,7 +212,8 @@ public class UsuarioController implements IUsuarioController {
         	if (usuario instanceof Proponente) {
 				Proponente proponente = (Proponente) usuario;
 				dtUsuario = new DtProponente(proponente.getNickname(), proponente.getNombre(), proponente.getApellido(),
-						proponente.getCorreoElectronico(), proponente.getPassword(), proponente.getFechaNacimiento(), proponente.getImagen(),
+						proponente.getCorreoElectronico(), proponente.getPassword(), proponente.getFechaNacimiento(), 
+						proponente.getFechaDeEliminacion(), proponente.getImagen(),
 						proponente.getDireccion(), proponente.getBiografia(), proponente.getLinkWeb());
 			} else if (usuario instanceof Colaborador) {
 				Colaborador colaborador = (Colaborador) usuario;
@@ -265,7 +273,10 @@ public class UsuarioController implements IUsuarioController {
 		
 		DtUsuario[] dtUsuario = null;
         @SuppressWarnings("unchecked")
-		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C'").getResultList();
+		List<Usuario> usuarios = em.createQuery("FROM Usuario WHERE TIPOUSUARIO = 'C' "
+				+ " and flagElm = :no")
+				.setParameter("no", false)
+				.getResultList();
         em.close();
         if (!usuarios.isEmpty()) {
             dtUsuario = new DtUsuario[usuarios.size()];
@@ -520,10 +531,16 @@ public class UsuarioController implements IUsuarioController {
 		try {
 			u = em.find(Usuario.class, datoSesion);
 			if (u == null) {
-				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo").setParameter("correo", datoSesion).getSingleResult();
+				u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo "
+						+ "and flagElm = :no")
+						.setParameter("no", false)
+						.setParameter("correo", datoSesion)
+						.getSingleResult();
 			}
-			if (u != null) {
-				dtu = u.getDtUsuario();
+			// lo pongo afuera del if para devolver algo.
+			dtu = u.getDtUsuario();
+			if (u != null && !u.isFlagElm()) {
+				
 				for (Propuesta p : u.getPropuestasFavoritas()) {
 					dtu.addTituloFavoritas(p.getTitulo());
 				}
@@ -534,7 +551,10 @@ public class UsuarioController implements IUsuarioController {
 				for (Usuario s : seguidos) {
 					dtu.addUsuarioSeguido(s.getNickname());
 				}
-			}
+			}else {
+				em.close();
+				throw new UsuarioNoExisteElUsuarioException("Nickname / Email o Password incorrectos");
+			}	
 			return dtu;
 		} catch (NoResultException nre){
 			em.close();
@@ -661,7 +681,7 @@ public class UsuarioController implements IUsuarioController {
 		em.close();
 		return perfil;
 	}
-
+	
 	@Override
 	public DtColaborador[] getMasColaboradores() {
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -692,8 +712,12 @@ public class UsuarioController implements IUsuarioController {
 		@SuppressWarnings("unchecked")
 		List<Proponente> proponentes = em.createQuery("SELECT u FROM Propuesta p, Usuario u "
 				+ "WHERE p.proponenteACargo = u.nickname "
+				+ "AND p.flagElm = :false "
 				+ "GROUP BY u "
-				+ "ORDER BY count(u) DESC").setMaxResults(3).getResultList();
+				+ "ORDER BY count(u) DESC")
+				.setParameter("false", false)
+				.setMaxResults(3)
+				.getResultList();
         em.close();
         
         DtProponente[] dtcol = new DtProponente[proponentes.size()];
@@ -712,8 +736,9 @@ public class UsuarioController implements IUsuarioController {
 
 		@SuppressWarnings("unchecked")
 		List<Proponente> proponentesEliminados = em.createQuery("FROM Usuario WHERE "
-				+ "TIPOUSUARIO = 'P' AND ESTAELIMINADO = 'S'").getResultList();
-		
+				+ "TIPOUSUARIO = 'P' AND flagElm = :si")
+				.setParameter("si", true)
+				.getResultList();
 		
         em.close();
         
@@ -799,5 +824,54 @@ public class UsuarioController implements IUsuarioController {
 		}		
 		System.out.println("6 \n");
 		return dtpop;
+	}
+	
+	@Override
+	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
+		Usuario usuario = em.find(Usuario.class, nickname);
+		if (usuario instanceof Proponente) {
+			em.getTransaction().begin();
+			usuario.setFlagElm(true);
+			usuario.setFechaEliminacion(now);
+			em.merge(usuario);
+			
+	        @SuppressWarnings("unchecked")
+			List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE proponenteACargo = :proponente")
+	            	.setParameter("proponente", usuario)
+	            	.getResultList();
+	        
+	        for (Propuesta propuesta : propuestas) {
+	        	// elimino el historico de estados.
+	        	em.createQuery("DELETE FROM Estado WHERE propuesta = :prop").setParameter("prop", propuesta).executeUpdate();
+				// elimino la propuesta
+	        	propuesta.setFlagElm(true);
+	        	
+	        	// elimino las colaboraciones de la propuesta.
+		        @SuppressWarnings("unchecked")
+				List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE propuestaColaborada = :propuesta")
+		            	.setParameter("propuesta", propuesta)
+		            	.getResultList();
+		        for (Colaboracion colaboracion : colaboraciones) {
+		        	colaboracion.setFlagElm(true);
+		        	em.merge(colaboracion);
+		        }
+	        	em.merge(propuesta);
+			}
+			
+	        // elimino seguidos y seguidores
+	        em.createQuery("DELETE FROM UsuarioSigue where usuarioUno = :usuario").setParameter("usuario", usuario).executeUpdate();
+	        em.createQuery("DELETE FROM UsuarioSigue where usuarioDos = :usuario").setParameter("usuario", usuario).executeUpdate();
+	        
+			em.getTransaction().commit();
+			em.close();
+		} else {
+			em.close();
+			throw new UsuarioNoExisteElUsuarioException("El usuario no es proponente");
+		}
 	}
 }

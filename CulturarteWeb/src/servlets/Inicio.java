@@ -41,16 +41,13 @@ public class Inicio extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		System.out.println("001");
 		DtPropuesta[] populares = null;
 		try {
 			populares = this.getPropuestasPopulares();
 			session.setAttribute("masPopulares", populares);
-			System.out.println("001.1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("002");
 		DtProponente[] mayoresProponentes;
 		try {
 			mayoresProponentes = this.getMasProponedores();
@@ -59,12 +56,10 @@ public class Inicio extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("003");
 		DtColaborador[] mayoresColaboradores;
 		try {
 			mayoresColaboradores = this.getMasColaboradores();
 			session.setAttribute("mayColaboradores", mayoresColaboradores);
-			System.out.println("003.1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

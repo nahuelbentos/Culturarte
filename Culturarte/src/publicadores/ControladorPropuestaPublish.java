@@ -12,17 +12,24 @@ import javax.xml.ws.Endpoint;
 
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
+import datatype.DtInfoPago;
+import datatype.DtPagoPayPal;
+import datatype.DtPagoTarjeta;
+import datatype.DtPagoTrfBancaria;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import datatype.TipoRetorno;
+import datatype.TipoTarjeta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.TipoPagoInexistenteExpection;
 import excepciones.UsuarioSinLoguearseException;
 import logica.Factory;
 import logica.IPropuestaController;
@@ -97,7 +104,7 @@ public class ControladorPropuestaPublish {
 	
 	// Falta crear el DtDatosPropuesta
 	@WebMethod
-	public DtDatosPropuesta consultarPropuesta(String titulo){
+	public DtDatosPropuesta consultarPropuesta(String titulo) throws ProponenteNoExisteException{
 		return IPC.consultarPropuesta(titulo);
 		
 	}
@@ -179,8 +186,17 @@ public class ControladorPropuestaPublish {
 		
 		return dtProps;
 	}
+
+	@WebMethod
+	public DtColaboracion[] listarColaboracionAPagar(String nickColaborador) throws ColaboracionNoExisteException{
+		return IPC.listarColaboracionesAPagar(nickColaborador);		
+	}
 	
-	//funciones para el inicio de la aplicacion web
+	@WebMethod
+	public void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection{
+		IPC.pagarColaboracion(infoPago);
+	}
+	
 	@WebMethod
 	public  DtPropuesta[] getPropuestasPopulares(){
 		return IPC.getPropuestasPopulares();		
@@ -199,5 +215,20 @@ public class ControladorPropuestaPublish {
 	@WebMethod
 	public  EstadoPropuesta[] obtenerEstadosPropuesta(){
 		return EstadoPropuesta.values();
+	}
+	
+	@WebMethod
+	public  TipoTarjeta[] obtenerTiposTarjeta(){
+		return TipoTarjeta.values();
+	}
+	
+	@WebMethod
+	public DtInfoPago obtenerComprobanteDePagoDeColaboracion(String nickColaborador, String tituloPropuesta) throws TipoPagoInexistenteExpection, ColaboracionNoExisteException {
+		return IPC.obtenerComprobanteDePagoDeColaboracion(nickColaborador, tituloPropuesta);
+	}
+	
+	@WebMethod
+	public void losTiposExtendidos(DtPagoTarjeta dtPT, DtPagoTrfBancaria dtTB, DtPagoPayPal dtPP) {
+		// método para publicar data types con herencia, ya que si no van expresamente por parámetros no los importa en el cliente
 	}
 }

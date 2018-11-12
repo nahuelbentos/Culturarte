@@ -300,7 +300,7 @@ public class PropuestaControllerTest {
 	}
 
 	@Test(expected = Test.None.class)
-	public void consultarPropuestaExistenteTest() throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException{
+	public void consultarPropuestaExistenteTest() throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException, ProponenteNoExisteException{
 		DtColaboracion colaboracion = new DtColaboracion(p.getTitulo(),col.getNickname(),1000,new GregorianCalendar(),TipoRetorno.EntradasYPorcentaje);
 		iPropCont.generarColaboracion(colaboracion);
 		
@@ -309,7 +309,7 @@ public class PropuestaControllerTest {
 	} 
 
 	@Test(expected = Test.None.class)
-	public void consultarPropuestaNoExistenteTest(){
+	public void consultarPropuestaNoExistenteTest() throws ProponenteNoExisteException{
 		DtDatosPropuesta propuesta = iPropCont.consultarPropuesta("nuevoTitulo");
 		assertEquals(null, propuesta.getTitulo());
 	}

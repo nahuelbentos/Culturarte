@@ -14,6 +14,7 @@
 		<class>logica.Categoria</class>
 		<class>logica.Colaboracion</class>
 		<class>logica.Estado</class>
+		<class>logica.Pago</class>
 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />

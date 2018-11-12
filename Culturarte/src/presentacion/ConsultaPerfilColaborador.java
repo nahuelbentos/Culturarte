@@ -1,61 +1,39 @@
 package presentacion;
 
-import java.awt.EventQueue;
-
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
-import logica.ICategoriaController;
 import logica.IPropuestaController;
 import logica.IUsuarioController;
 import presentacion.gen.ListarColaboradores;
 
-import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import java.awt.GridLayout;
 import javax.swing.JLabel;
-import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.awt.event.ActionEvent;
-import java.awt.Rectangle;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-
-import datatype.DtColaboracion;
-import datatype.DtColaborador;
 import datatype.DtPerfilColaborador;
-import datatype.DtPerfilUsuario;
-import datatype.DtProponente;
-import datatype.DtPropuesta;
 import datatype.DtPropuestaColaborada;
-import datatype.EstadoPropuesta;
-
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+@SuppressWarnings("serial")
 public class ConsultaPerfilColaborador extends JInternalFrame {
 
-	/**
-	 * Create the frame.
-	 * @throws UsuarioNoExisteElUsuarioException 
-	 */
-//	private VerPerfilColaborador verPerfilColaborador;
-	private String nickname;
 	public ListarColaboradores listarColaboradores;
 	private JTextField txtNickname;
 	private JTextField txtNombre;
@@ -68,17 +46,13 @@ public class ConsultaPerfilColaborador extends JInternalFrame {
 	private Object[][] data;
 	private JLabel lblImagen;
 	private IUsuarioController iUsuController;
-	private IPropuestaController ipc;
 	private DtPerfilColaborador dtc;
 	private JPanel panelColaboraciones;
 	
 	public ConsultaPerfilColaborador(IUsuarioController IUC,IPropuestaController PIPC) throws UsuarioNoExisteElUsuarioException, PropuestaNoExisteException, PropertyVetoException{
 		setClosable(true);
 		iUsuController=IUC;
-		ipc = PIPC;
-		
-		
-//		setNormalBounds(new Rectangle(0, 0, 0, 50));
+		//		setNormalBounds(new Rectangle(0, 0, 0, 50));
 		//setBounds(100, 100, 673, 425);
 		setBounds(10, 10, 1045, 905);
         setIconifiable(true);

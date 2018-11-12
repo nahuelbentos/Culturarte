@@ -56,4 +56,6 @@ public interface IUsuarioController {
 	public abstract DtUsuario[] verRankingUsuarios();
 	
 	public abstract DtPropuesta[] listarFavoritasUsuario(String nickname);
+
+	public abstract void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException;
 }

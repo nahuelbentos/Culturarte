@@ -1,5 +1,6 @@
 package logica;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -11,14 +12,14 @@ import javax.persistence.ManyToOne;
 public class UsuarioSigue {
 
 	@Id 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(
 			name="USUARIO_UNO_ID"
 	)
 	private Usuario usuarioUno;
 	
 	@Id
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(
 			name="USUARIO_DOS_ID"
 	)

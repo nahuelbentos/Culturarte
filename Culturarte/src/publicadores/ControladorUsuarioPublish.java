@@ -158,6 +158,9 @@ public class ControladorUsuarioPublish {
 		return IUC.listarFavoritasUsuario(nickname);
 	}
 	
-	
+	@WebMethod
+	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException{
+		IUC.eliminarCuenta(nickname);
+	}
 
 }

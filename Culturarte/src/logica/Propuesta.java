@@ -56,7 +56,7 @@ public class Propuesta {
 	private EstadoPropuesta estadoActual;
 	
 	
-   // PseudoAtributos
+//	PseudoAtributos
 	@ManyToOne
 	@JoinColumn(name="NICK_PROPONENTE")
 	private Proponente proponenteACargo;
@@ -65,6 +65,9 @@ public class Propuesta {
 	@JoinColumn(name="ID_CATEGORIA")
 	private Categoria categoria;
 	
+	@Column(nullable=false, name="ESTAELIMINADA",columnDefinition = "boolean default false")
+	private boolean flagElm;
+	
 	@ManyToMany(mappedBy="propuestasFavoritas")
 	private List<Usuario> usuariosFollowers = new ArrayList<>();
 	
@@ -72,7 +75,15 @@ public class Propuesta {
 		super();
 	}
    
-   public Propuesta(String titulo, String descripcion, byte[] imagen, 
+	public boolean isFlagElm() {
+		return flagElm;
+	}
+
+	public void setFlagElm(boolean flagElm) {
+		this.flagElm = flagElm;
+	}
+
+	public Propuesta(String titulo, String descripcion, byte[] imagen, 
 			float d, GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, 
 			float e, String lugar, TipoRetorno tipo) {
 	    this.titulo = titulo;
@@ -94,15 +105,15 @@ public class Propuesta {
 	    this.estadoActual = EstadoPropuesta.ingresada;
 	}
 
-   public Propuesta(DtPropuesta dtP) {
-	    this.titulo = dtP.getTitulo();
-	    this.descripcion = dtP.getDescripcion();
-	    this.imagen = dtP.getImagen();
-	    this.montoNecesario = dtP.getMontoNecesario();
-	    this.fechaPublicacion = dtP.getFechaPublicacion();
-	    this.fechaEspecatulo = dtP.getFechaEspecatulo();
-	    this.precioEntrada = dtP.getPrecioEntrada();
-	    this.lugar = dtP.getLugar();
+	public Propuesta(DtPropuesta dtP) {
+		this.titulo = dtP.getTitulo();
+		this.descripcion = dtP.getDescripcion();
+		this.imagen = dtP.getImagen();
+		this.montoNecesario = dtP.getMontoNecesario();
+		this.fechaPublicacion = dtP.getFechaPublicacion();
+		this.fechaEspecatulo = dtP.getFechaEspecatulo();
+		this.precioEntrada = dtP.getPrecioEntrada();
+		this.lugar = dtP.getLugar();
 	    this.fechaFinalizacion = fechaPublicacion;
 	    
 	    // Calculo la fecha de finalizacion con respecto al día de hoy

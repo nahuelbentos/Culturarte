@@ -64,7 +64,7 @@ if (user == null) { %>
 							<a class="nav-link" href="#" data-toggle="modal" data-target="#misPropuestasModal"><i class="fa fa-music" aria-hidden="true"></i> Mis Propuestas</a>
 							<a class="nav-link" href="ListarPropuestaProponenteEstado?estado=financiada" ><i class="fa fa-trash" aria-hidden="true"></i> Cancelar Propuestas</a>
 						<% } else { %>
-							<a class="nav-link" href="#" data-toggle="modal" data-target="#misColaboracionesModal"><i class="fa fa-money" aria-hidden="true"></i> Mis Colaboraciones</a>
+							<a class="nav-link" href="ExplorarMisColaboraciones"><i class="fa fa-money" aria-hidden="true"></i> Mis Colaboraciones</a>
 						<% } %>
 					</li>
 					<% 
@@ -78,6 +78,7 @@ if (user == null) { %>
 					%>
 			  <li class="nav-item">
 				<a class="nav-link" href="ListaPropuestasExtenderFinanciacion"><i class="fa fa-money" aria-hidden="true"></i> Extender financiación</a>
+				<a class="nav-link text-danger" href="EliminarCuenta" ><i class="fa fa-times" aria-hidden="true"></i> Eliminar mi cuenta</a>
 			  </li>
 					<% 
 				}
@@ -344,50 +345,6 @@ if (user == null) { %>
 					      	<div class="row">
 								<div class="col-lg-12">
 									<span>No tiene ninguna propuesta publicada</span>
-								</div>
-					      	</div>
-						</div>
-					</div>
-			    <% } %>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-		<% } else { %>
-			<!-- Modal mis colaboraciones -->
-			<div class="modal fade" id="misColaboracionesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			    <% if (colaboradas != null) { %>
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Colaboraciones <i class="fa fa-heart" aria-hidden="true"></i> <%=colaboradas.length%></h5>
-			        <button type="button" class="Cerrar" data-dismiss="modal" aria-label="Cerrar">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="container-fluid">
-			      		<div class="row">
-					      	<div class="col-lg-12">
-					      		<ul class="list-group">
-								<%
-								for (int i=0;i<colaboradas.length;i++){
-								%>
-									<li class="list-group-item"><a href="VerPropuesta?titulo=<%=colaboradas[i].getTitulo()%>"><%=colaboradas[i].getTitulo()%></a></li>
-								<% } %>
-								</ul>
-					      	</div>
-			      		</div>
-			      	</div>
-			      </div>
-			    <% } else { %>
-					<div class="modal-body">
-						<div class="container-fluid">
-					      	<div class="row">
-								<div class="col-lg-12">
-									<span>No tiene ninguna propuesta colaborada</span>
 								</div>
 					      	</div>
 						</div>

@@ -5,16 +5,19 @@ import java.util.ArrayList;
 
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
+import datatype.DtInfoPago;
 import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.EstadoPropuesta;
 import excepciones.CategoriaNoExisteException;
 import excepciones.ColaboracionExistenteException;
+import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.PropuestaRepetidaException;
+import excepciones.TipoPagoInexistenteExpection;
 import excepciones.UsuarioSinLoguearseException;
 
 public interface IPropuestaController {
@@ -35,13 +38,11 @@ public interface IPropuestaController {
 	
 	public abstract DtColaboracion[] listarColaboraciones(String titulo);
 	
-	// Falta crear el DtEstadoPropuesta
-	//public abstract DtEstadoPropuesta[] listarEstadosDePropuestas();
 	public abstract DtPropuesta[] listarPropuestasExistentes();
 	
-	// Falta crear el DtDatosPropuesta
+	public abstract DtDatosPropuesta consultarPropuesta(String titulo) throws ProponenteNoExisteException;
 	
-	public abstract DtDatosPropuesta consultarPropuesta(String titulo);
+	public abstract DtDatosPropuesta consultarDatosPropuesta(String titulo) throws ProponenteNoExisteException;
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException;
 	
@@ -53,6 +54,8 @@ public interface IPropuestaController {
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasProponentePorEstado(String nicknameProponente, EstadoPropuesta estado) throws PropuestaNoExisteException;
 
+	public abstract DtPropuestaMinificado[] listarPropuestasProponente(String nicknameProponente) throws PropuestaNoExisteException;
+	
 	public abstract DtPropuestaMinificado[] listarPropuestasActivas();
 	
 	public abstract void agregarFavorita(String titulo, DtUsuario usuarioLogueado) throws UsuarioSinLoguearseException;
@@ -73,6 +76,12 @@ public interface IPropuestaController {
 	public abstract DtPropuesta[] getPropuestasPopulares();
 
 	public abstract DtPropuestaMinificado[] propuestasDesdeBuscador(String buscar);
+	
+	public abstract void pagarColaboracion(DtInfoPago infoPago) throws TipoPagoInexistenteExpection;
+	
+	public abstract DtColaboracion[] listarColaboracionesAPagar(String nickColaborador) throws ColaboracionNoExisteException;
+
+	public abstract DtInfoPago obtenerComprobanteDePagoDeColaboracion(String nickColaborador, String tituloPropuesta) throws TipoPagoInexistenteExpection, ColaboracionNoExisteException;
 	
 }
 
