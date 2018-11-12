@@ -329,16 +329,13 @@ public class PropuestaController implements IPropuestaController {
 
 			em.close();
 			DtDatosPropuesta dtp = p.getDtDatosPropuesta();
-			
-			double montoTotal=0;
+			double montoTotal = 0;
+			ArrayList<String> colaboradores = new ArrayList<String>();
 			for (Colaboracion colaboracion : colColab) {
-				montoTotal = colaboracion.getMonto();
-				
-				ArrayList<String> colaboradores = new ArrayList<String>();
-				dtp.setColaboradores(colaboradores);
-				
+				montoTotal = montoTotal + colaboracion.getMonto();				
 				dtp.addColaborador(colaboracion.getColaborador().getNickname());
 			}
+			dtp.setColaboradores(colaboradores);
 			dtp.setRecaudado(montoTotal);
 			return dtp;
 		}else {
