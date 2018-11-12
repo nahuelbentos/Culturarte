@@ -47,8 +47,8 @@ public class VerProponentesEliminados extends JInternalFrame {
 	private JLabel lblSeleecionarUsuario;
 	private JLabel lblSeleccionarPropuesta;
 	private static final String TEXTO_COMBO_UNO = "No hay proponentes eliminados en el sistema";
-	private static final String TEXTO_COMBO_DOS = "El proponente no hab�a ingresado propuestas";
-	private static final String TEXTO_COMBO_TRES = "No se hab�an registrado colaboraciones";
+	private static final String TEXTO_COMBO_DOS = "El proponente no habia ingresado propuestas";
+	private static final String TEXTO_COMBO_TRES = "No se habian registrado colaboraciones";
 	private static final String TEXTO_COMBO_DOS_INICIAL = "Seleccione una de sus propuestas";
 	private static final String TEXTO_COMBO_TRES_INICIAL = "Seleccione una de sus colaboraciones";
 	private JTextField txtNickname;
@@ -369,29 +369,32 @@ public class VerProponentesEliminados extends JInternalFrame {
 	private void setearDatosPropuesta(){
 		DtDatosPropuesta dtPropuesta;
 		try {
-			dtPropuesta = iPropuestaController.consultarPropuesta(cmbPropuestas.getSelectedItem().toString());
-			if(dtPropuesta.getImagen() != null) {
-				ImageIcon imageIcon = new ImageIcon(dtPropuesta.getImagen());
-				lblImagenPropuesta.setIcon(imageIcon);
-			}
-			entTitulo.setText(dtPropuesta.getTitulo());
-			entDescripcion.setText(dtPropuesta.getDescripcion());
-			entMontoNecesario.setText(Double.toString(dtPropuesta.getMontoNecesario()));
-			if (dtPropuesta.getFechaEspecatulo().getTime() != null)
-				entFechaEspectaculo.setText(dtPropuesta.getFechaEspecatulo().toZonedDateTime()
-					       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-			if (dtPropuesta.getFechaPublicacion() != null)
-				entFechaPublicacion.setText(dtPropuesta.getFechaPublicacion().toZonedDateTime()
-					       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-			entLugar.setText(dtPropuesta.getLugar());
-			entPrecioEntrada.setText(Double.toString(dtPropuesta.getPrecioEntrada()));
-			entTipoRetorno.setText(dtPropuesta.getTipo().toString());
-			entMontoRecaudado.setText(Double.toString(dtPropuesta.getRecaudado()));
-			DtColaboracion[] dtColaboraciones = iPropuestaController.listarColaboraciones(dtPropuesta.getTitulo());
-			if (dtColaboraciones != null) {
-				listarColaboraciones(dtColaboraciones);
-			} else {
-				lblMensaje.setVisible(true);
+			String titulo = cmbPropuestas.getSelectedItem().toString();
+			if (!titulo.equals(TEXTO_COMBO_DOS) && !titulo.equals(TEXTO_COMBO_DOS_INICIAL)) {
+				dtPropuesta = iPropuestaController.consultarDatosPropuesta(titulo);
+				if(dtPropuesta.getImagen() != null) {
+					ImageIcon imageIcon = new ImageIcon(dtPropuesta.getImagen());
+					lblImagenPropuesta.setIcon(imageIcon);
+				}
+				entTitulo.setText(dtPropuesta.getTitulo());
+				entDescripcion.setText(dtPropuesta.getDescripcion());
+				entMontoNecesario.setText(Double.toString(dtPropuesta.getMontoNecesario()));
+				if (dtPropuesta.getFechaEspecatulo().getTime() != null)
+					entFechaEspectaculo.setText(dtPropuesta.getFechaEspecatulo().toZonedDateTime()
+						       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				if (dtPropuesta.getFechaPublicacion() != null)
+					entFechaPublicacion.setText(dtPropuesta.getFechaPublicacion().toZonedDateTime()
+						       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				entLugar.setText(dtPropuesta.getLugar());
+				entPrecioEntrada.setText(Double.toString(dtPropuesta.getPrecioEntrada()));
+				entTipoRetorno.setText(dtPropuesta.getTipo().toString());
+				entMontoRecaudado.setText(Double.toString(dtPropuesta.getRecaudado()));
+				DtColaboracion[] dtColaboraciones = iPropuestaController.listarColaboraciones(dtPropuesta.getTitulo());
+				if (dtColaboraciones != null) {
+					listarColaboraciones(dtColaboraciones);
+				} else {
+					lblMensaje.setVisible(true);
+				}
 			}
 		} catch (ProponenteNoExisteException e) {
 			// TODO Auto-generated catch block

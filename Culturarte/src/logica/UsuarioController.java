@@ -776,14 +776,22 @@ public class UsuarioController implements IUsuarioController {
 			List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE proponenteACargo = :proponente")
 	            	.setParameter("proponente", usuario)
 	            	.getResultList();
-
+	        
 	        for (Propuesta propuesta : propuestas) {
-				// elimino las colaboraciones de la propuesta.
-	        	em.createQuery("DELETE FROM Colaboracion WHERE propuesta = :prop").setParameter("prop", propuesta).executeUpdate();
 	        	// elimino el historico de estados.
 	        	em.createQuery("DELETE FROM Estado WHERE propuesta = :prop").setParameter("prop", propuesta).executeUpdate();
 				// elimino la propuesta
 	        	propuesta.setFlagElm(true);
+	        	
+	        	// elimino las colaboraciones de la propuesta.
+		        @SuppressWarnings("unchecked")
+				List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE propuestaColaborada = :propuesta")
+		            	.setParameter("propuesta", propuesta)
+		            	.getResultList();
+		        for (Colaboracion colaboracion : colaboraciones) {
+		        	colaboracion.setFlagElm(true);
+		        	em.merge(colaboracion);
+		        }
 	        	em.merge(propuesta);
 			}
 			
