@@ -40,7 +40,7 @@ public interface IPropuestaController {
 	
 	public abstract DtPropuesta[] listarPropuestasExistentes();
 	
-	public abstract DtDatosPropuesta consultarPropuesta(String titulo);
+	public abstract DtDatosPropuesta consultarPropuesta(String titulo) throws ProponenteNoExisteException;
 	
 	public abstract DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException;
 	

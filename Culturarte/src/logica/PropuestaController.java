@@ -269,7 +269,6 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
 		DtPropuesta[] dtPropuesta = null;
         @SuppressWarnings("unchecked")
@@ -295,7 +294,6 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
 		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "' AND ESTAELIMINADA = :no")
@@ -316,37 +314,32 @@ public class PropuestaController implements IPropuestaController {
 	}
 
 	@Override
-	public DtDatosPropuesta consultarPropuesta(String titulo) {
+	public DtDatosPropuesta consultarPropuesta(String titulo) throws ProponenteNoExisteException {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
 		
 		Propuesta p = em.find(Propuesta.class, titulo); //1
 		
-        @SuppressWarnings("unchecked")
-		List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
-
-		em.close();
-		DtDatosPropuesta dtp = new DtDatosPropuesta();
 		if (p != null) {
-			DtDatosPropuesta datapro= p.getDtDatosPropuesta(); //2
-	        if(datapro!=null) {
-				double montoTotal=0;
-				for (Colaboracion col : colColab) { //3
-					if(col.tieneProp(titulo)) { //4 
-						montoTotal += col.getMonto(); //5.1 
-						datapro.addColaborador(col.getColaborador().getNickname()); //5.2				
-					}
-				}
-				
-				datapro.setRecaudado(montoTotal);
-				
-				return  datapro;
-				
-	        }else
-	        	return dtp;
-		}else 
+			@SuppressWarnings("unchecked")
+			List<Colaboracion> colColab = em.createQuery("FROM Colaboracion WHERE propuesta = :p")
+									.setParameter("p",p)
+									.getResultList();
+
+			em.close();
+			DtDatosPropuesta dtp = new DtDatosPropuesta();
+			double montoTotal=0;
+			for (Colaboracion colaboracion : colColab) {
+				montoTotal = colaboracion.getMonto();
+				dtp.addColaborador(colaboracion.getColaborador().getNickname());
+			}
+			dtp.setRecaudado(montoTotal);
 			return dtp;
+		}else {
+			em.close();
+			throw new ProponenteNoExisteException("No existe la propuesta");
+		}
 	}
 
 	@Override
@@ -387,7 +380,7 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada' ESTAELIMINADA = :no")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada' AND estaeliminada = :no")
 				.setParameter("no", false)
 				.getResultList();
         em.close();

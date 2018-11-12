@@ -53,7 +53,7 @@ public class Colaboracion {
 	private String comentario;
 	
 	@OneToOne
-	@JoinColumn(name="PAGO_ID")
+	@JoinColumn(name="PAGO_ID",nullable = true)
 	private Pago pago;
 	
 	public Colaboracion() {

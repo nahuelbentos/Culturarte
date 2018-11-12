@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.rpc.ServiceException;
 
+import datatypeJee.msjUI.DtMensajeUI;
+import datatypeJee.msjUI.TipoMensaje;
 import publicadores.ColaboracionNoExisteException;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
@@ -45,8 +47,10 @@ public class ExplorarMisColaboraciones extends HttpServlet {
 				request.setAttribute("colaboracionesHechas", colhechas);
 				request.getRequestDispatcher("/Usuario/colaboracionesRealizadas.jsp").forward(request, response);;
 			} catch (ServiceException | RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				DtMensajeUI msg = new DtMensajeUI(e.getMessage(), TipoMensaje.error);
+				request.setAttribute("mensaje", msg);
+				request.setAttribute("nickname", usuLog.getNickname());
+				request.getRequestDispatcher("VerPerfil").forward(request, response);
 			}
 		} else {
 			request.getRequestDispatcher("/").forward(request, response);;

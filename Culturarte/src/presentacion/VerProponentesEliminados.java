@@ -29,6 +29,7 @@ import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
 import datatype.TipoRetorno;
 import excepciones.NoExistenProponentesEliminadosException;
+import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
 import excepciones.UsuarioNoExisteElUsuarioException;
 import logica.IPropuestaController;
@@ -46,8 +47,8 @@ public class VerProponentesEliminados extends JInternalFrame {
 	private JLabel lblSeleecionarUsuario;
 	private JLabel lblSeleccionarPropuesta;
 	private static final String TEXTO_COMBO_UNO = "No hay proponentes eliminados en el sistema";
-	private static final String TEXTO_COMBO_DOS = "El proponente no había ingresado propuestas";
-	private static final String TEXTO_COMBO_TRES = "No se habían registrado colaboraciones";
+	private static final String TEXTO_COMBO_DOS = "El proponente no habï¿½a ingresado propuestas";
+	private static final String TEXTO_COMBO_TRES = "No se habï¿½an registrado colaboraciones";
 	private static final String TEXTO_COMBO_DOS_INICIAL = "Seleccione una de sus propuestas";
 	private static final String TEXTO_COMBO_TRES_INICIAL = "Seleccione una de sus colaboraciones";
 	private JTextField txtNickname;
@@ -188,7 +189,7 @@ public class VerProponentesEliminados extends JInternalFrame {
 		label_4.setBounds(28, 465, 63, 28);
 		getContentPane().add(label_4);
 		
-		JLabel label_5 = new JLabel("<html>Fecha de <br/>eliminación:</html>");
+		JLabel label_5 = new JLabel("<html>Fecha de <br/>eliminaciï¿½n:</html>");
 		label_5.setBounds(28, 507, 65, 28);
 		getContentPane().add(label_5);
 		
@@ -254,11 +255,11 @@ public class VerProponentesEliminados extends JInternalFrame {
 		entMontoRecaudado.setBounds(475, 554, 160, 19);
 		getContentPane().add(entMontoRecaudado);
 		
-		lblNewLabel = new JLabel("Título:");
+		lblNewLabel = new JLabel("Tï¿½tulo:");
 		lblNewLabel.setBounds(312, 340, 156, 15);
 		getContentPane().add(lblNewLabel);
 		
-		lblDescripcin = new JLabel("Descripción:");
+		lblDescripcin = new JLabel("Descripciï¿½n:");
 		lblDescripcin.setBounds(312, 365, 156, 15);
 		getContentPane().add(lblDescripcin);
 		
@@ -266,11 +267,11 @@ public class VerProponentesEliminados extends JInternalFrame {
 		lblMontoNecesario.setBounds(312, 388, 156, 15);
 		getContentPane().add(lblMontoNecesario);
 		
-		lblFechaEspectculo = new JLabel("Fecha espectáculo:");
+		lblFechaEspectculo = new JLabel("Fecha espectï¿½culo:");
 		lblFechaEspectculo.setBounds(312, 411, 156, 15);
 		getContentPane().add(lblFechaEspectculo);
 		
-		lblFechaDePublicacin = new JLabel("Fecha de publicación:");
+		lblFechaDePublicacin = new JLabel("Fecha de publicaciï¿½n:");
 		lblFechaDePublicacin.setBounds(312, 438, 156, 15);
 		getContentPane().add(lblFechaDePublicacin);
 		
@@ -335,7 +336,7 @@ public class VerProponentesEliminados extends JInternalFrame {
 			setearPerfilProponente();
 			setListaDePropuestas(txtNickname.getText());
         } catch (UsuarioNoExisteElUsuarioException e) {
-            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado", "Ver Proponentes Eliminados", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ocurriï¿½ un error inesperado", "Ver Proponentes Eliminados", JOptionPane.ERROR_MESSAGE);
         }
 	}
 	
@@ -366,30 +367,37 @@ public class VerProponentesEliminados extends JInternalFrame {
 	}
 	
 	private void setearDatosPropuesta(){
-		DtDatosPropuesta dtPropuesta = iPropuestaController.consultarPropuesta(cmbPropuestas.getSelectedItem().toString());
-		if(dtPropuesta.getImagen() != null) {
-			ImageIcon imageIcon = new ImageIcon(dtPropuesta.getImagen());
-			lblImagenPropuesta.setIcon(imageIcon);
+		DtDatosPropuesta dtPropuesta;
+		try {
+			dtPropuesta = iPropuestaController.consultarPropuesta(cmbPropuestas.getSelectedItem().toString());
+			if(dtPropuesta.getImagen() != null) {
+				ImageIcon imageIcon = new ImageIcon(dtPropuesta.getImagen());
+				lblImagenPropuesta.setIcon(imageIcon);
+			}
+			entTitulo.setText(dtPropuesta.getTitulo());
+			entDescripcion.setText(dtPropuesta.getDescripcion());
+			entMontoNecesario.setText(Double.toString(dtPropuesta.getMontoNecesario()));
+			if (dtPropuesta.getFechaEspecatulo().getTime() != null)
+				entFechaEspectaculo.setText(dtPropuesta.getFechaEspecatulo().toZonedDateTime()
+					       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+			if (dtPropuesta.getFechaPublicacion() != null)
+				entFechaPublicacion.setText(dtPropuesta.getFechaPublicacion().toZonedDateTime()
+					       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+			entLugar.setText(dtPropuesta.getLugar());
+			entPrecioEntrada.setText(Double.toString(dtPropuesta.getPrecioEntrada()));
+			entTipoRetorno.setText(dtPropuesta.getTipo().toString());
+			entMontoRecaudado.setText(Double.toString(dtPropuesta.getRecaudado()));
+			DtColaboracion[] dtColaboraciones = iPropuestaController.listarColaboraciones(dtPropuesta.getTitulo());
+			if (dtColaboraciones != null) {
+				listarColaboraciones(dtColaboraciones);
+			} else {
+				lblMensaje.setVisible(true);
+			}
+		} catch (ProponenteNoExisteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		entTitulo.setText(dtPropuesta.getTitulo());
-		entDescripcion.setText(dtPropuesta.getDescripcion());
-		entMontoNecesario.setText(Double.toString(dtPropuesta.getMontoNecesario()));
-		if (dtPropuesta.getFechaEspecatulo().getTime() != null)
-			entFechaEspectaculo.setText(dtPropuesta.getFechaEspecatulo().toZonedDateTime()
-				       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		if (dtPropuesta.getFechaPublicacion() != null)
-			entFechaPublicacion.setText(dtPropuesta.getFechaPublicacion().toZonedDateTime()
-				       .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		entLugar.setText(dtPropuesta.getLugar());
-		entPrecioEntrada.setText(Double.toString(dtPropuesta.getPrecioEntrada()));
-		entTipoRetorno.setText(dtPropuesta.getTipo().toString());
-		entMontoRecaudado.setText(Double.toString(dtPropuesta.getRecaudado()));
-		DtColaboracion[] dtColaboraciones = iPropuestaController.listarColaboraciones(dtPropuesta.getTitulo());
-		if (dtColaboraciones != null) {
-			listarColaboraciones(dtColaboraciones);
-		} else {
-			lblMensaje.setVisible(true);
-		}
+
 	}
 	
 	private void setearPerfilProponente() throws UsuarioNoExisteElUsuarioException {

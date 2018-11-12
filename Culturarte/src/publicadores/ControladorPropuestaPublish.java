@@ -104,7 +104,7 @@ public class ControladorPropuestaPublish {
 	
 	// Falta crear el DtDatosPropuesta
 	@WebMethod
-	public DtDatosPropuesta consultarPropuesta(String titulo){
+	public DtDatosPropuesta consultarPropuesta(String titulo) throws ProponenteNoExisteException{
 		return IPC.consultarPropuesta(titulo);
 		
 	}

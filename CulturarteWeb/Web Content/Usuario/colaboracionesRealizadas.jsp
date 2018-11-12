@@ -23,9 +23,10 @@ if (user != null) {
 					<h5><%=colaboracionesHechas[i].getTituloPropuesta() %></h5>
 					<p><%=sdf.format(colaboracionesHechas[i].getFechaAporte().getTime()) %></p>
 					<% if (!colaboracionesHechas[i].isPago()) { %>
-						<button class="btn btn-sm btn-primary" id="PagarColaboracion">Pagar</button>
+					
+ 						<a href="PagarColaboracion?p=<%=colaboracionesHechas[i].getTituloPropuesta() %>" class="btn btn-sm btn-primary">Pagar</a>
 					<% } else { %>
-						<span>Ya realizo el pago</span>
+						<span>Emitir comprobante de pago.</span>
 					<% } %>
 				</div>
 			<%
@@ -40,9 +41,3 @@ if (user != null) {
 	request.getRequestDispatcher("/").forward(request, response);
 }
  %>
- 
-<script type="text/javascript">
-	$("#PagarColaboracion").click(function(){
-		
-	});
-</script>
