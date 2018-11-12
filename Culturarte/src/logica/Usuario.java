@@ -49,7 +49,7 @@ public abstract class Usuario {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="USU_PROPUESTASFAV",
 				joinColumns=@JoinColumn(name="USU_ID"),
-				inverseJoinColumns=@JoinColumn(name="PROP_ID"))
+				inverseJoinColumns=@JoinColumn(name="PROP_ID"))	
 	private List<Propuesta> propuestasFavoritas = new ArrayList<>();
 
     public Usuario() {

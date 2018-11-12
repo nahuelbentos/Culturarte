@@ -54,4 +54,6 @@ public interface IUsuarioController {
 	public abstract DtPerfilProponente[] verProponentesEliminados() throws NoExistenProponentesEliminadosException;
 	
 	public abstract DtUsuario[] verRankingUsuarios();
+	
+	public abstract DtPropuesta[] listarFavoritasUsuario(String nickname);
 }

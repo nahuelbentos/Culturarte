@@ -153,6 +153,11 @@ public class ControladorUsuarioPublish {
 		return IUC.verRankingUsuarios();
 	}
 	
+	@WebMethod
+	public DtPropuesta[] listarFavoritasUsuario(String nickname) {
+		return IUC.listarFavoritasUsuario(nickname);
+	}
+	
 	
 
 }

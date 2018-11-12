@@ -67,12 +67,28 @@
 	  	</div>
 	  	<div class="col-lg-3">
 		  	<div>
-		  		<h4>Ranking de usuarios</h4>
-		  		<div class="list-group">
-		    	<% for (int i = 0; i < usuPopulares.length; i++) { %>
-		    		<a href="VerPerfil?nickname=<%=usuPopulares[i].getNickname() %>" class="list-group-item list-group-item-action"><%= usuPopulares[i].getNickname()%></a>
-				<% } %>
-				</div>
+			  	<h4>Ranking de usuarios</h4>
+		  		<div class="table-responsive">
+				  <table class="table"><thead>
+					    <tr>
+					      <th scope="col">Nickname</th>
+					      <th scope="col">Cant. Seguidores</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  <% for (int i = 0; i < usuPopulares.length; i++) { %>
+					    <tr>
+					      <td>
+					      	<a href="VerPerfil?nickname=<%=usuPopulares[i].getNickname() %>" ><%= usuPopulares[i].getNickname()%></a>
+					      </td>
+					      <td>
+					      	<%= usuPopulares[i].getCantSeguidores()%>
+						  </td>
+					    </tr>
+					  <% } %>
+					  </tbody>
+				  </table>
+				</div>		  		
 		  	</div>
 	  	</div>
 	  </div>

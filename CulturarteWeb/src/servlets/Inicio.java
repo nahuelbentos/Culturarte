@@ -71,11 +71,8 @@ public class Inicio extends HttpServlet {
 		System.out.println("004");
 		DtUsuario[] rankingUsuarios;
 		try {
-			System.out.println("004.1");
 			rankingUsuarios = this.verRankingUsuarios();
-			System.out.println("004.2");
 			session.setAttribute("rankUsuarios", rankingUsuarios);
-			System.out.println("004.3");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
