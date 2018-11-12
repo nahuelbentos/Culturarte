@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import publicadores.DtUsuario;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
 import publicadores.ControladorPropuestaPublishServiceLocator;
@@ -62,6 +63,14 @@ public class Inicio extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("004");
+		DtUsuario[] rankingUsuarios;
+		try {
+			rankingUsuarios = this.verRankingUsuarios();
+			session.setAttribute("rankUsuarios", rankingUsuarios);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
@@ -89,6 +98,12 @@ public class Inicio extends HttpServlet {
 		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
 		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
 		return port.getMasColaboradores();
+	}
+	
+	private DtUsuario[] verRankingUsuarios() throws Exception {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		return port.verRankingUsuarios();
 	}
 
 }

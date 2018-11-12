@@ -15,6 +15,7 @@ public class DtPerfilColaborador  extends publicadores.DtUsuario  implements jav
 
     public DtPerfilColaborador(
            java.lang.String apellido,
+           int cantSeguidores,
            java.lang.String email,
            java.util.Calendar fechaNacimiento,
            byte[] imagen,
@@ -27,6 +28,7 @@ public class DtPerfilColaborador  extends publicadores.DtUsuario  implements jav
            publicadores.DtPropuestaColaborada[] colaboracionesHechas) {
         super(
             apellido,
+            cantSeguidores,
             email,
             fechaNacimiento,
             imagen,

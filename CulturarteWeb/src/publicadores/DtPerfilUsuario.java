@@ -31,6 +31,7 @@ public class DtPerfilUsuario  extends publicadores.DtUsuario  implements java.io
 
     public DtPerfilUsuario(
            java.lang.String apellido,
+           int cantSeguidores,
            java.lang.String email,
            java.util.Calendar fechaNacimiento,
            byte[] imagen,
@@ -51,6 +52,7 @@ public class DtPerfilUsuario  extends publicadores.DtUsuario  implements java.io
            publicadores.DtProponente[] seguidosProponentes) {
         super(
             apellido,
+            cantSeguidores,
             email,
             fechaNacimiento,
             imagen,

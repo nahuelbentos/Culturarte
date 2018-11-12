@@ -25,6 +25,7 @@ public class DtPerfilProponente  extends publicadores.DtProponente  implements j
 
     public DtPerfilProponente(
            java.lang.String apellido,
+           int cantSeguidores,
            java.lang.String email,
            java.util.Calendar fechaNacimiento,
            byte[] imagen,
@@ -45,6 +46,7 @@ public class DtPerfilProponente  extends publicadores.DtProponente  implements j
            publicadores.DtPropuesta[] prPublicadas) {
         super(
             apellido,
+            cantSeguidores,
             email,
             fechaNacimiento,
             imagen,

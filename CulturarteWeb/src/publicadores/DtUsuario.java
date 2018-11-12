@@ -10,6 +10,8 @@ package publicadores;
 public class DtUsuario  implements java.io.Serializable {
     private java.lang.String apellido;
 
+    private int cantSeguidores;
+
     private java.lang.String email;
 
     private java.util.Calendar fechaNacimiento;
@@ -33,6 +35,7 @@ public class DtUsuario  implements java.io.Serializable {
 
     public DtUsuario(
            java.lang.String apellido,
+           int cantSeguidores,
            java.lang.String email,
            java.util.Calendar fechaNacimiento,
            byte[] imagen,
@@ -43,6 +46,7 @@ public class DtUsuario  implements java.io.Serializable {
            java.lang.String[] tituloFavoritas,
            java.lang.String[] usuarioSeguidos) {
            this.apellido = apellido;
+           this.cantSeguidores = cantSeguidores;
            this.email = email;
            this.fechaNacimiento = fechaNacimiento;
            this.imagen = imagen;
@@ -72,6 +76,26 @@ public class DtUsuario  implements java.io.Serializable {
      */
     public void setApellido(java.lang.String apellido) {
         this.apellido = apellido;
+    }
+
+
+    /**
+     * Gets the cantSeguidores value for this DtUsuario.
+     * 
+     * @return cantSeguidores
+     */
+    public int getCantSeguidores() {
+        return cantSeguidores;
+    }
+
+
+    /**
+     * Sets the cantSeguidores value for this DtUsuario.
+     * 
+     * @param cantSeguidores
+     */
+    public void setCantSeguidores(int cantSeguidores) {
+        this.cantSeguidores = cantSeguidores;
     }
 
 
@@ -293,6 +317,7 @@ public class DtUsuario  implements java.io.Serializable {
             ((this.apellido==null && other.getApellido()==null) || 
              (this.apellido!=null &&
               this.apellido.equals(other.getApellido()))) &&
+            this.cantSeguidores == other.getCantSeguidores() &&
             ((this.email==null && other.getEmail()==null) || 
              (this.email!=null &&
               this.email.equals(other.getEmail()))) &&
@@ -334,6 +359,7 @@ public class DtUsuario  implements java.io.Serializable {
         if (getApellido() != null) {
             _hashCode += getApellido().hashCode();
         }
+        _hashCode += getCantSeguidores();
         if (getEmail() != null) {
             _hashCode += getEmail().hashCode();
         }
@@ -408,6 +434,12 @@ public class DtUsuario  implements java.io.Serializable {
         elemField.setXmlName(new javax.xml.namespace.QName("", "apellido"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("cantSeguidores");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "cantSeguidores"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
