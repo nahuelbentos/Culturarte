@@ -42,6 +42,8 @@ public interface IPropuestaController {
 	
 	public abstract DtDatosPropuesta consultarPropuesta(String titulo) throws ProponenteNoExisteException;
 	
+	public abstract DtDatosPropuesta consultarDatosPropuesta(String titulo) throws ProponenteNoExisteException;
+	
 	public abstract DtPropuestaMinificado[] listarPropuestasPorEstado(EstadoPropuesta estadoPropuesta) throws PropuestaNoExisteException;
 	
 	public abstract void generarColaboracion(DtColaboracion colaboracion) throws ColaboradorNoExisteException, PropuestaNoExisteException, ColaboracionExistenteException;

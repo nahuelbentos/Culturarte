@@ -398,6 +398,12 @@ public class Principal {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try {
+					IUC.eliminarCuenta("kairoh");
+				} catch (UsuarioNoExisteElUsuarioException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				verProponentesEliminados.setListaDeProponentesEliminados();
 				verProponentesEliminados.setVisible(true);
 			}

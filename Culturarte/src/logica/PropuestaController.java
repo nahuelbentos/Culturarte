@@ -328,12 +328,14 @@ public class PropuestaController implements IPropuestaController {
 									.getResultList();
 
 			em.close();
-			DtDatosPropuesta dtp = new DtDatosPropuesta();
-			double montoTotal=0;
+			DtDatosPropuesta dtp = p.getDtDatosPropuesta();
+			double montoTotal = 0;
+			ArrayList<String> colaboradores = new ArrayList<String>();
 			for (Colaboracion colaboracion : colColab) {
-				montoTotal = colaboracion.getMonto();
+				montoTotal = montoTotal + colaboracion.getMonto();				
 				dtp.addColaborador(colaboracion.getColaborador().getNickname());
 			}
+			dtp.setColaboradores(colaboradores);
 			dtp.setRecaudado(montoTotal);
 			return dtp;
 		}else {
@@ -342,6 +344,41 @@ public class PropuestaController implements IPropuestaController {
 		}
 	}
 
+	@Override
+	public DtDatosPropuesta consultarDatosPropuesta(String titulo) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		Propuesta p = em.find(Propuesta.class, titulo); //1
+		
+        @SuppressWarnings("unchecked")
+		List<Colaboracion> colColab = em.createQuery("FROM Colaboracion").getResultList();
+
+		em.close();
+		DtDatosPropuesta dtp = new DtDatosPropuesta();
+		if (p != null) {
+			DtDatosPropuesta datapro = p.getDtDatosPropuesta(); //2
+	        if(datapro!=null) {
+				double montoTotal=0;
+				for (Colaboracion col : colColab) { //3
+					if(col.tieneProp(titulo)) { //4 
+						montoTotal += col.getMonto(); //5.1 
+						datapro.addColaborador(col.getColaborador().getNickname()); //5.2				
+					}
+				}
+				
+				datapro.setRecaudado(montoTotal);
+				
+				return  datapro;
+				
+	        }else
+	        	return dtp;
+		}else 
+			return dtp;
+	}
+
+	
 	@Override
 	public void evaluarPropuesta(String titulo, EstadoPropuesta estado) throws PropuestaNoExisteException {
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -782,4 +819,5 @@ public class PropuestaController implements IPropuestaController {
 			throw new ColaboracionNoExisteException("No se encontró la colaboración de " + nickColaborador + " para la propuesta " + tituloPropuesta + ".");
 		}
 	}
+
 }

@@ -52,6 +52,9 @@ public class Colaboracion {
 	@Column(name="COMENTARIO")
 	private String comentario;
 	
+	@Column(nullable=false, name="ESTAELIMINADA",columnDefinition = "boolean default false")
+	private boolean flagElm;
+	
 	@OneToOne
 	@JoinColumn(name="PAGO_ID",nullable = true)
 	private Pago pago;
@@ -67,6 +70,14 @@ public class Colaboracion {
 		this.tipo = tipo;
 	}
 
+	public boolean isFlagElm() {
+		return flagElm;
+	}
+
+	public void setFlagElm(boolean flagElm) {
+		this.flagElm = flagElm;
+	}
+	
 	public double getMonto() {
 		return monto;
 	}
