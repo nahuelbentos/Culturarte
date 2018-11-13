@@ -19,6 +19,7 @@ public class DtProponente  extends publicadores.DtUsuario  implements java.io.Se
 
     public DtProponente(
            java.lang.String apellido,
+           int cantSeguidores,
            java.lang.String email,
            java.util.Calendar fechaNacimiento,
            byte[] imagen,
@@ -33,6 +34,7 @@ public class DtProponente  extends publicadores.DtUsuario  implements java.io.Se
            java.lang.String sitioWeb) {
         super(
             apellido,
+            cantSeguidores,
             email,
             fechaNacimiento,
             imagen,

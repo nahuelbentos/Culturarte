@@ -8,9 +8,10 @@
 
  <% 
  
- DtPropuesta[] populares = (DtPropuesta[])session.getAttribute("masPopulares");
- DtColaborador[] masColaboradores = (DtColaborador[])session.getAttribute("mayColaboradores");
- DtProponente[] masProponentes = (DtProponente[])session.getAttribute("mayProponentes");
+  DtPropuesta[] populares = (DtPropuesta[])session.getAttribute("masPopulares");
+  DtColaborador[] masColaboradores = (DtColaborador[])session.getAttribute("mayColaboradores");
+  DtProponente[] masProponentes = (DtProponente[])session.getAttribute("mayProponentes");
+  DtUsuario[] usuPopulares = (DtUsuario[])session.getAttribute("rankUsuarios");
  
  DtUsuario user = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");  
  DtMensajeUI mensaje = (DtMensajeUI)request.getAttribute("mensaje");
@@ -37,10 +38,10 @@
 				  <div class="carousel-inner">
 					
 				    <%
-				    if (populares!=null) {
-					    for (int i = 0; i < populares.length; i++) { 
-							byte[] encodeBase64 = Base64.encodeBase64(populares[i].getImagen());
-					        String base64Encoded = new String(encodeBase64, "UTF-8");
+ 				    if (populares!=null) {
+ 					    for (int i = 0; i < populares.length; i++) { 
+ 							byte[] encodeBase64 = Base64.encodeBase64(populares[i].getImagen());
+ 					        String base64Encoded = new String(encodeBase64, "UTF-8");
 					%>
 					        <div class="<%= (i==0) ? "carousel-item active" : "carousel-item" %>">
 								<img class="d-block w-100" src="data:image/jpeg;base64,<%=base64Encoded%>" alt="<%=populares[i].getTitulo()%>">
@@ -56,10 +57,10 @@
 					<%
 						}
 				    } else {
-					%>
+ 					%> 
 				    	<p>No hay propuestas populares</p>
 				    <%
-					}
+ 					}
 					%>
 				    
 				  </div>
@@ -76,20 +77,28 @@
 	  	</div>
 	  	<div class="col-lg-3">
 		  	<div>
-		  		<h4>Top 3 colaboradores</h4>
-		  		<div class="list-group">
-		    	<% for (int i = 0; i < masColaboradores.length; i++) { %>
-					<a href="VerPerfil?nickname=<%=masColaboradores[i].getNickname() %>" class="list-group-item list-group-item-action"><%=masColaboradores[i].getNickname() %></a>
-				<% } %>
-				</div>
-		  	</div>
-		  	<div>
-		  		<h4>Top 3 proponentes</h4>
-		  		<div class="list-group">
-		    	<% for (int i = 0; i < masProponentes.length; i++) { %>
-					<a href="VerPerfil?nickname=<%=masProponentes[i].getNickname() %>" class="list-group-item list-group-item-action"><%=masProponentes[i].getNickname() %></a>
-				<% } %>
-				</div>
+			  	<h4>Ranking de usuarios</h4>
+		  		<div class="table-responsive">
+				  <table class="table"><thead>
+					    <tr>
+					      <th scope="col">Nickname</th>
+					      <th scope="col">Cant. Seguidores</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  <% for (int i = 0; i < usuPopulares.length; i++) { %>
+					    <tr>
+					      <td>
+					      	<a href="VerPerfil?nickname=<%=usuPopulares[i].getNickname() %>" ><%= usuPopulares[i].getNickname()%></a>
+					      </td>
+					      <td>
+					      	<%= usuPopulares[i].getCantSeguidores()%>
+						  </td>
+					    </tr>
+					  <% } %>
+					  </tbody>
+				  </table>
+				</div>		  		
 		  	</div>
 	  	</div>
 	  </div>

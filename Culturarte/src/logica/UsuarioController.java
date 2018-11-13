@@ -293,7 +293,6 @@ public class UsuarioController implements IUsuarioController {
         }
 	}
 
-
 	@Override
 	public DtPerfilProponente verPerfilProponente(String nickname) {
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -757,6 +756,75 @@ public class UsuarioController implements IUsuarioController {
         }
         return dtProponentesEliminados;
 	}
+
+	@Override
+	public DtUsuario[] verRankingUsuarios() {
+		
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		@SuppressWarnings("unchecked")
+		List<Usuario> usuarios = em.createQuery("SELECT u FROM UsuarioSigue us, Usuario u "
+				+ "WHERE us.usuarioDos = u "
+				+ "GROUP BY u "
+				+ "ORDER BY count(us) DESC").getResultList();
+        em.close();
+        DtUsuario[] dtcol = new DtUsuario[usuarios.size()];
+        for (int i = 0; i < dtcol.length; i++) {
+			dtcol[i] = usuarios.get(i).getDtUsuario();
+			dtcol[i].setCantSeguidores(this.getCantSeguidores(dtcol[i].getNickname()));
+		}
+
+        return dtcol;
+	}
+	
+	public int getCantSeguidores(String nickname) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+
+		Usuario u = em.find(Usuario.class, nickname);
+        @SuppressWarnings("unchecked")
+        List<Usuario> seguidores = em.createQuery("select u.usuarioUno FROM UsuarioSigue u WHERE u.usuarioDos = :nickname")
+        		.setParameter("nickname", u)
+        		.getResultList();
+        em.close();
+		return seguidores.size();
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public DtPropuesta[] listarFavoritasUsuario(String nickname) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		System.out.println("listarFavoritasUsuario \n");
+		Usuario u = em.find(Usuario.class, nickname);
+		System.out.println("1.1 nickname:"+nickname+ "\n");
+		System.out.println("1.2 nickname:"+u.getNickname()+ "\n");
+		
+
+        List<Propuesta> favoritas = em.createQuery("select u.propuestasFavoritas FROM Usuario u WHERE u.nickname = :nickname")
+        		.setParameter("nickname", nickname)
+        		.getResultList();
+        em.close();
+        
+//        List<Propuesta> propuestas = u.getPropuestasFavoritas();        
+		System.out.println("3 size: "+favoritas.size() + " \n");
+
+		DtPropuesta[] dtpop = new DtPropuesta[favoritas.size()];
+		System.out.println("4 \n"); 
+		
+		for (int i = 0; i < dtpop.length; i++) {
+			System.out.println("5." +i+ " \n");
+			dtpop[i] = favoritas.get(i).getDtPropuesta();		
+		}		
+		System.out.println("6 \n");
+		return dtpop;
+	}
 	
 	@Override
 	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException {
@@ -805,6 +873,5 @@ public class UsuarioController implements IUsuarioController {
 			em.close();
 			throw new UsuarioNoExisteElUsuarioException("El usuario no es proponente");
 		}
-		
 	}
 }

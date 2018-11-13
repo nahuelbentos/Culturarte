@@ -23,6 +23,7 @@ public class DtProponente extends DtUsuario {
 		this.biografia = biografia;
 		this.sitioWeb = sitioWeb;
 	}
+
 	public String getDireccion() {
 		return direccion;
 	}

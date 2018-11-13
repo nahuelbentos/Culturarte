@@ -74,7 +74,9 @@ public class PagarColaboracion extends HttpServlet {
 				String titular = request.getParameter("titularTarjeta");
 				pagoTar.setNombreTitular(titular);
 				
-				double nroTarjeta = (Double)request.getAttribute("nroTarjeta");
+				String nroTarjetaStr = request.getParameter("nroTarjeta");
+				double nroTarjeta = Double.valueOf(nroTarjetaStr);
+				
 				pagoTar.setNroTarjeta(nroTarjeta);
 				
 				String fechaStr = request.getParameter("fchVencTarjeta");
@@ -83,9 +85,9 @@ public class PagarColaboracion extends HttpServlet {
 				Calendar fechaVenc = new GregorianCalendar(anio, mes, 1);
 				pagoTar.setFechaVenc(fechaVenc);
 				
-				int cvc = (Integer)request.getAttribute("CVCTarjeta");
+				int cvc = Integer.valueOf(request.getParameter("CVCTarjeta"));
 				pagoTar.setCvc(cvc);
-				System.out.println("pago: "+pagoTar.getNroTarjeta());
+				
 				infoPago.setPago(pagoTar);
 				
 				break;
@@ -136,7 +138,6 @@ public class PagarColaboracion extends HttpServlet {
 	private void pagarColaboracion(DtInfoPago infoPago) throws ServiceException, TipoPagoInexistenteExpection, RemoteException {
 		ControladorPropuestaPublishService cpps = new ControladorPropuestaPublishServiceLocator();
 		ControladorPropuestaPublish cpp = cpps.getControladorPropuestaPublishPort();
-		System.out.println("forma pago: "+infoPago.getPago().getClass().getName());
 		cpp.pagarColaboracion(infoPago);
 	}
 

@@ -11,13 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.rpc.ServiceException;
 
-import datatypeJee.DtUsuarioWeb;
 import datatypeJee.msjUI.DtMensajeUI;
 import datatypeJee.msjUI.TipoMensaje;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
 import publicadores.ControladorPropuestaPublishServiceLocator;
+import publicadores.ControladorUsuarioPublish;
+import publicadores.ControladorUsuarioPublishService;
+import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtUsuario;
+import publicadores.DtPropuesta;
 import publicadores.UsuarioSinLoguearseException;
 
 //import datatype.DtUsuario;
@@ -55,12 +58,35 @@ public class AgregarFavorita extends HttpServlet {
 
 		ControladorPropuestaPublishService cpp = new ControladorPropuestaPublishServiceLocator();
 		ControladorPropuestaPublish port;
+		System.out.println("doGet \n");
+		System.out.println("1\n");
+		ControladorUsuarioPublishService cup = new ControladorUsuarioPublishServiceLocator();
+		System.out.println("2 \n");
+		ControladorUsuarioPublish port_u;
+
+		System.out.println("3\n");
 		try {
 			port = cpp.getControladorPropuestaPublishPort();
+			System.out.println("4\n");
+			port_u = cup.getControladorUsuarioPublishPort();
+			System.out.println("5\n");
 			try {
 				port.agregarFavorita(titulo, usuarioLogueado);
 				//actualizo las favoritas del usuario logueado.
-//				usuarioLogueado.addTituloFavoritas(titulo);
+				System.out.println("6\n");
+				DtPropuesta[] favoritas = port_u.listarFavoritasUsuario(usuarioLogueado.getNickname());
+				System.out.println("7\n");
+				
+				String[] titFav = new String[favoritas.length];
+				System.out.println("8\n");
+		        for (int i = 0; i < favoritas.length; i++) {
+		        	System.out.println("9"+i+"\n");
+		        	titFav[i] = favoritas[i].getTitulo();
+				}
+		        
+				System.out.println("10\n");
+				usuarioLogueado.setTituloFavoritas(titFav);
+				System.out.println("11\n");
 				session.setAttribute("usuarioLogueado", usuarioLogueado);
 			} catch (UsuarioSinLoguearseException e) {
 				// TODO Auto-generated catch block
@@ -87,19 +113,41 @@ public class AgregarFavorita extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String titulo = request.getParameter("propuesta");
-		
+
+		System.out.println("doPost\n");
 		HttpSession session = request.getSession();
 		DtUsuario usuarioLogueado = (DtUsuario)session.getAttribute("usuarioLogueado");
 
 		ControladorPropuestaPublishService cpp = new ControladorPropuestaPublishServiceLocator();
 		ControladorPropuestaPublish port;
+		ControladorUsuarioPublishService cup = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port_u;
+		System.out.println("1\n");
+		
+		System.out.println("2\n");
 		try {
 			port = cpp.getControladorPropuestaPublishPort();
+			System.out.println("3\n");
+			port_u = cup.getControladorUsuarioPublishPort();
+			System.out.println("4\n");
 			try {
+				System.out.println("5\n");
 				port.agregarFavorita(titulo, usuarioLogueado);
-				// le agrego la propuesta a las propuestas favoritas del usuario 
-				// en sesion para no leer de nuevo desde la base
-//				usuarioLogueado.addTituloFavoritas(titulo);
+				System.out.println("6\n");
+				DtPropuesta[] favoritas = port_u.listarFavoritasUsuario(usuarioLogueado.getNickname());
+				System.out.println("7\n");
+				
+				String[] titFav = new String[favoritas.length];
+				System.out.println("8\n");
+				for (int i = 0; i < favoritas.length; i++) {
+					System.out.println("9."+i+"\n");
+					titFav[i] = favoritas[i].getTitulo();
+				}
+
+				System.out.println("10\n");
+				usuarioLogueado.setTituloFavoritas(titFav);
+				System.out.println("11\n");
+				
 				session.setAttribute("usuarioLogueado", usuarioLogueado);
 			} catch (UsuarioSinLoguearseException e) {
 				e.printStackTrace();

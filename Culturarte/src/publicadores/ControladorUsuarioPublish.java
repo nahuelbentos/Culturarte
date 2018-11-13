@@ -149,6 +149,16 @@ public class ControladorUsuarioPublish {
 	}
 	
 	@WebMethod
+	public DtUsuario[] verRankingUsuarios() {
+		return IUC.verRankingUsuarios();
+	}
+	
+	@WebMethod
+	public DtPropuesta[] listarFavoritasUsuario(String nickname) {
+		return IUC.listarFavoritasUsuario(nickname);
+	}
+	
+	@WebMethod
 	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException{
 		IUC.eliminarCuenta(nickname);
 	}

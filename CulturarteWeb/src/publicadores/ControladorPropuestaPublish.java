@@ -8,6 +8,7 @@
 package publicadores;
 
 public interface ControladorPropuestaPublish extends java.rmi.Remote {
+    public publicadores.DtDatosPropuesta consultarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.ProponenteNoExisteException;
     public publicadores.DtPropuestaMinificado[] listarPropuestasPorEstado(publicadores.EstadoPropuesta arg0) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException;
     public publicadores.DtPropuestaMinificado[] listadoPropuestasIngresadas() throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException;
     public publicadores.DtPropuestaMinificado[] listarPropuestasProponentePorEstado(java.lang.String arg0, publicadores.EstadoPropuesta arg1) throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException;
@@ -31,7 +32,6 @@ public interface ControladorPropuestaPublish extends java.rmi.Remote {
     public void borrarEstadosPropuestas() throws java.rmi.RemoteException;
     public void setearEstadosPropuests(java.lang.String arg0, java.lang.String arg1, java.lang.String arg2) throws java.rmi.RemoteException, publicadores.ParseException;
     public publicadores.DtPropuestaMinificado[] listarPropuestas() throws java.rmi.RemoteException, publicadores.PropuestaNoExisteException;
-    public publicadores.DtDatosPropuesta consultarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException;
     public publicadores.DtColaboracion[] listarColaboraciones(java.lang.String arg0) throws java.rmi.RemoteException;
     public publicadores.DtPropuesta[] listarPropuestasExistentes() throws java.rmi.RemoteException;
     public publicadores.DtPropuesta seleccionarPropuesta(java.lang.String arg0) throws java.rmi.RemoteException;
