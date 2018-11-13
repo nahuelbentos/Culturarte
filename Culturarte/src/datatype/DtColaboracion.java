@@ -10,6 +10,7 @@ public class DtColaboracion {
 	private GregorianCalendar fechaAporte;
 	private TipoRetorno tipo;
 	private boolean pago;
+	private boolean compEmitido;
 	
 	public boolean isPago() {
 		return pago;
@@ -37,6 +38,17 @@ public class DtColaboracion {
 		this.fechaAporte = fechaAporte;
 		this.tipo = tipo;
 		this.pago = pago;
+	}
+	
+	public DtColaboracion(String tituloPropuesta, String colaborador, double monto, GregorianCalendar fechaAporte, TipoRetorno tipo, boolean pago, boolean compEmitido) {
+		super();
+		this.tituloPropuesta = tituloPropuesta;
+		this.colaborador = colaborador;
+		this.monto = monto;
+		this.fechaAporte = fechaAporte;
+		this.tipo = tipo;
+		this.pago = pago;
+		this.compEmitido = compEmitido;
 	}
 			
 	public String getTituloPropuesta() {
@@ -77,6 +89,14 @@ public class DtColaboracion {
 
 	public DtColaboracion() {
 		super();
+	}
+
+	public boolean isCompEmitido() {
+		return compEmitido;
+	}
+
+	public void setCompEmitido(boolean compEmitido) {
+		this.compEmitido = compEmitido;
 	}
 	
 	

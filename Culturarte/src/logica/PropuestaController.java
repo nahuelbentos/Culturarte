@@ -772,13 +772,14 @@ public class PropuestaController implements IPropuestaController {
             for (Colaboracion col : colaboraciones) {
             	// El comprobante de pago se puede emitir unicamente si 
             	// el pago está hecho y si aun no se ha emitido antes
-            	boolean puedoEmitir = false;
-            	if (col.getPago() != null)
-            		puedoEmitir = !col.getPago().isCompEmitido();
+            	boolean isPago = (col.getPago() != null);
+            	boolean isCompEmitido = false;
+            	if (isPago)
+            		isCompEmitido = col.getPago().isCompEmitido();
             	else
-            		puedoEmitir = false;
+            		isCompEmitido = false;
             	
-                colabs[i] = new DtColaboracion(col.getPropuestaColaborada().getTitulo(), col.getColaborador().getNickname(), col.getMonto(), col.getFechaAporte(), col.getTipo(), puedoEmitir);
+                colabs[i] = new DtColaboracion(col.getPropuestaColaborada().getTitulo(), col.getColaborador().getNickname(), col.getMonto(), col.getFechaAporte(), col.getTipo(), isPago, isCompEmitido);
                 i++;
             }
             

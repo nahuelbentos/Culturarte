@@ -36,10 +36,11 @@ public class EmitirConstanciaPagoColaboracion extends HttpServlet {
 			try {
 				DtInfoPago infoPago = this.obtenerInfoPago(usuLog.getNickname(), propuesta);
 				request.setAttribute("infoPago", infoPago);
-				request.getRequestDispatcher("/Usuario/constanciaDePagoColaboracion.jsp").forward(request, response);
+				request.setAttribute("propuesta", propuesta);
+				request.getRequestDispatcher("/Usuario/verConstanciaPagoColaboracion.jsp").forward(request, response);
 			} catch (RemoteException | ServiceException e) {
 				e.printStackTrace();
-				request.setAttribute("errorMessage", "Ocurrió un problema al intentar pagar la colaboración: \n" + e.getMessage());
+				request.setAttribute("mensaje", "Ocurrió un problema al intentar pagar la colaboración: \n" + e.getMessage());
 				request.getRequestDispatcher("/Usuario/colaboracionesRealizadas.jsp").forward(request, response);
 			}
 		} else {

@@ -19,15 +19,26 @@ if (user != null) {
 			// recorro las colaboraciones
 			for(int i=0;i<colaboracionesHechas.length;i++){
 			%>
-				<div class="col-md-6">
+				<div class="col-md-6" style="margin-top: 15px;margin-bottom: 15px;">
 					<h5><%=colaboracionesHechas[i].getTituloPropuesta() %></h5>
 					<p><%=sdf.format(colaboracionesHechas[i].getFechaAporte().getTime()) %></p>
-					<% if (!colaboracionesHechas[i].isPago()) { %>
-					
- 						<a href="PagarColaboracion?p=<%=colaboracionesHechas[i].getTituloPropuesta() %>" class="btn btn-sm btn-primary">Pagar</a>
-					<% } else { %>
-						<span>Emitir comprobante de pago.</span>
-					<% } %>
+					<%
+					if (!colaboracionesHechas[i].isPago()) { 
+					%>
+						<a href="PagarColaboracion?p=<%=colaboracionesHechas[i].getTituloPropuesta() %>" class="btn btn-sm btn-primary">Pagar</a>
+					<%
+					} else { 
+						if (!colaboracionesHechas[i].isCompEmitido()) {
+					%>
+							<a href="${pageContext.request.contextPath}/EmitirConstanciaPagoColaboracion?propuesta=<%=colaboracionesHechas[i].getTituloPropuesta() %>" class="btn btn-sm btn-primary">Emitir constancia</a>
+					<%
+						} else {
+					%>
+							<span>Constancia de pago ya emitida.</span>
+					<%
+						}
+					}
+					%>
 				</div>
 			<%
 			}
