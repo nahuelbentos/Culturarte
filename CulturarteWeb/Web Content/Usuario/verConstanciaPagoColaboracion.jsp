@@ -116,7 +116,7 @@ if (user != null) {
 							} else if (pago instanceof DtPagoTrfBancaria) { 
 							%>
 							
-								<div id="formTrfBria" class="border"  style="display: <%=tipoPago.equals("trfBancaria") ? "block" : "none"%>">
+								<div id="formTrfBria" class="border">
 									<div class="container-fluid">
 										<h4>Pago con transferencia bancaria</h4>
 										<div class="form-row">
@@ -139,10 +139,10 @@ if (user != null) {
 								</div>
 							
 							<%
-							} else if (pago instanceof DtPagoTrfBancaria) { 
+							} else if (pago instanceof DtPagoPayPal) { 
 							%>
 							
-								<div id="formPayPal" class="border" style="display: <%=tipoPago.equals("payPal") ? "block" : "none"%>">
+								<div id="formPayPal" class="border">
 									<div class="container-fluid">
 										<h4>Pago con paypal</h4>
 										<div class="form-row">
@@ -160,7 +160,7 @@ if (user != null) {
 									</div>
 								</div>
 							<%
-							} 
+							}
 							%>
 						</div>
 					</div>
@@ -169,47 +169,9 @@ if (user != null) {
 		</div>	
 	</section>
 	<jsp:include page="../partials/footer.jsp"></jsp:include>	
- <% 
+<% 
 // si no esta logueado redirigo al index
 } else { 
 	request.getRequestDispatcher("/").forward(request, response);
 }
- %>
- 
-<script type="text/javascript">
-// 	function displayForm(tipoPago){
-// 		/* Elemento seleccionado */
-// 		var elemento = $("#"+tipoPago);
-// 		/* Elementos de formas de pago no seleccionadas */
-// 		var hermanos = elemento.siblings('li');
-// 		/* Formulario seleccionado */
-// 		var formId	 = "form"+tipoPago;
-// 		/* Formularios no seleccionados */
-// 		var formularios = $("#wrapper-form").children("div");
-		
-// 		hermanos.removeClass("active");
-// 		elemento.addClass("active");
-// 		formularios.css("display","none");
-		
-// 		document.getElementById("wrapper-form").style.display = "block";
-// 		document.getElementById("actionPay").style.display = "inline";
-// 		$("#tipoPago").val(tipoPago);
-// 		//document.getElementById("tipoTapo").value = tipoPago;
-// 		switch(tipoPago){
-// 		    case "Tarjeta":
-// 		    	document.getElementById(formId).style.display = "block";
-// 		        break;
-// 		    case "TrfBria":
-// 		    	document.getElementById(formId).style.display = "block";
-// 		        break;
-// 		    case "PayPal":
-// 		    	document.getElementById(formId).style.display = "block";
-// 		        break;
-// 		}
-// 	}
-	/* oculto los formularios al inicio */ 
-// 	$(document).ready(function(){
-// 		document.getElementById("wrapper-form").style.display = "none";
-// 		//$("#wrapper-form").css("display","none");
-// 	});
-</script>
+%>
