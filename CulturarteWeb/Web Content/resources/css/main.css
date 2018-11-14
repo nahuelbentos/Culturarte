@@ -176,3 +176,12 @@ button.seleccionarImg{
 .list-formaPago > li:hover{
 	background-color: rgb(212,212,212);
 }
+
+
+/* estilos responsives: */
+@media (max-width: 991px) {
+  div.img-grid {
+    width: 30px;
+    height: 30px;
+  }
+}

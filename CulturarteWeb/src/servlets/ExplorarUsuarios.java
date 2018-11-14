@@ -40,13 +40,11 @@ public class ExplorarUsuarios extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String accion = request.getParameter("accion");
+    	
     	String msg = request.getParameter("msg");
 		HttpSession session = request.getSession();
-		DtUsuario user = (DtUsuario) session.getAttribute("usuarioLogueado");
-		String nickname = user.getNickname();
-    	
-    	DtUsuario[] auxUsuarios = null;
+		
+		DtUsuario[] auxUsuarios = null;
 		try {
 			auxUsuarios = listarUsuarios();
 		} catch (Exception e) {
@@ -71,22 +69,29 @@ public class ExplorarUsuarios extends HttpServlet {
 	    	request.setAttribute("listaColaboradores", listaColaboradores);
 	    	request.setAttribute("listaProponentes", listaProponentes);
 	    	request.setAttribute("msg", msg);
-	    	request.setAttribute("accion", accion);
+	    	
 			
     	}else {
 	    	request.setAttribute("listaColaboradores", listaColaboradores);
 	    	request.setAttribute("listaProponentes", listaProponentes);
 	    	System.out.println(listaColaboradores.size());
-    		request.setAttribute("msg", "No hay usuarios registrados en la aplicaciÃ³n.");
+    		request.setAttribute("msg", "No hay usuarios registrados en la aplicación.");
     	}
 		
-		DtUsuario[] seguidos = null;
-		try {
-			seguidos = listarSeguidos(nickname);
-		} catch (Exception e) {
-			e.printStackTrace();
+    	DtUsuario user = (DtUsuario) session.getAttribute("usuarioLogueado");
+		if (user != null) {
+			String accion = request.getParameter("accion");
+			String nickname = user.getNickname();
+			request.setAttribute("accion", accion);
+			DtUsuario[] seguidos = null;
+			try {
+				seguidos = listarSeguidos(nickname);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			request.setAttribute("seguidos", seguidos);
 		}
-		request.setAttribute("seguidos", seguidos);
+
     	request.getRequestDispatcher("/Usuario/navegarUsuarios.jsp").forward(request, response);
 	}
 
