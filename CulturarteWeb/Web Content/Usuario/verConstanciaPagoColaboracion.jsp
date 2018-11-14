@@ -80,9 +80,15 @@ if (user != null) {
 													
 													if (!(tpoTarj == null)) { 
 														for (TipoTarjeta tt : tpoTarj){
+															if (tt.equals(DtPagoTarjeta.class.cast(pago).getTipoTarjeta())){
 													%>
-														<option value="<%=tt.getValue()%>" selected="<%=(tt == DtPagoTarjeta.class.cast(pago).getTipoTarjeta()) ? "selected" : ""%>"><%=tt.getValue()%></option>
+																<option value="<%=tt.getValue()%>" selected="selected"><%=tt.getValue()%></option>
 													<% 
+															} else {
+													%>
+																<option value="<%=tt.getValue()%>"><%=tt.getValue()%></option>
+													<%
+															}
 														}
 													}
 													%>
@@ -107,6 +113,11 @@ if (user != null) {
 											<div class="form-group col-lg-6 col-md-12">
 												<label for="CVCTarjeta">CVC</label>
 												<input type="text" class="form-control" id="CVCTarjeta" name="CVCTarjeta" value="<%=DtPagoTarjeta.class.cast(pago).getCvc()%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<a style="position: absolute;right: 5px;" target="_blank" href="${pageContext.request.contextPath}/ObtenerPdfConstanciaPagoColaboracion?propuesta=<%=propuesta%>">Obtener comprobante en PDF</a>
 											</div>
 										</div>
 									</div>
@@ -135,6 +146,11 @@ if (user != null) {
 												<input type="text" class="form-control" id="titularTrfBria" name="titularTrfBria" value="<%=DtPagoTrfBancaria.class.cast(pago).getNombreTitular()%>" disabled>
 											</div>
 										</div>
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<a style="position: absolute;right: 5px;" target="_blank" href="${pageContext.request.contextPath}/ObtenerPdfConstanciaPagoColaboracion?propuesta=<%=propuesta%>">Obtener comprobante en PDF</a>
+											</div>
+										</div>
 									</div>
 								</div>
 							
@@ -153,8 +169,13 @@ if (user != null) {
 										</div>
 										<div class="form-row">
 											<div class="form-group col-lg-12">
-												<label for="cuentaPaypal">Nombre titular</label>
+												<label for="cuentaPaypal">Cuenta</label>
 												<input type="text" class="form-control" id="cuentaPaypal" name="cuentaPaypal" value="<%=DtPagoPayPal.class.cast(pago).getNumeroCuenta()%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<a style="position: absolute;right: 5px;" target="_blank" href="${pageContext.request.contextPath}/ObtenerPdfConstanciaPagoColaboracion?propuesta=<%=propuesta%>">Obtener comprobante en PDF</a>
 											</div>
 										</div>
 									</div>

@@ -1,30 +1,38 @@
 package servlets;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.rpc.ServiceException;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.codec.Base64.OutputStream;
+
+import publicadores.ColaboracionNoExisteException;
+import publicadores.ControladorPropuestaPublish;
+import publicadores.ControladorPropuestaPublishService;
+import publicadores.ControladorPropuestaPublishServiceLocator;
+import publicadores.DtColaborador;
+import publicadores.DtInfoPago;
+import publicadores.DtPago;
+import publicadores.DtPagoPayPal;
+import publicadores.DtPagoTarjeta;
+import publicadores.DtPagoTrfBancaria;
+import publicadores.DtUsuario;
+import publicadores.TipoPagoInexistenteExpection;
+import publicadores.TipoTarjeta;
 
 @WebServlet("/ObtenerPdfConstanciaPagoColaboracion")
 public class ObtenerPdfConstanciaPagoColaboracion extends HttpServlet {
@@ -36,24 +44,85 @@ public class ObtenerPdfConstanciaPagoColaboracion extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-            // Cargar el texto a añadir al pdf
-            String text = request.getParameter("text");
-            if (text == null || text.trim().length() == 0) {
-                 text = "You didn't enter any text.";
-            }
-            // Crear el documento
             Document document = new Document();
-            // Crear la instancia en memoria donde se guardará
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
             
             document.open();
             
             // Agregar contenido
-            document.add(new Paragraph(text));
             
+			Image img = Image.getInstance("http://localhost:8080/CulturarteWeb/resources/images/logo_culturarte_header.png");
+			img.scalePercent(33);
+			document.add(img);
+            
+            // Cargar el texto a añadir al pdf
+			DtUsuario usuLog = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
+    		String propuesta = request.getParameter("propuesta");
+    		
+    		if (usuLog instanceof DtColaborador) {
+            	try {
+					DtInfoPago infoPago = obtenerInfoPago(usuLog.getNickname(), propuesta);
+					if (infoPago != null) {
+						DtPago pago = infoPago.getPago();
+						if (pago != null) {
+							PdfPTable table = new PdfPTable(2);
+							table.getDefaultCell().setUseVariableBorders(true);
+							table.getDefaultCell().setBorderColor(BaseColor.WHITE);
+							table.getDefaultCell().setUseBorderPadding(true);
+							table.getDefaultCell().setPadding(3);
+							table.addCell(" ");
+							table.addCell(" ");
+							
+							if (pago instanceof DtPagoTarjeta) {
+								SimpleDateFormat sdfFchVenc = new SimpleDateFormat("MMM/yyyy");
+								table.addCell("Forma de pago utilizada:");
+								table.addCell("Tarjeta");
+								table.addCell(" ");
+								table.addCell(" ");
+								table.addCell("Tipo de tarjeta:");
+								table.addCell(DtPagoTarjeta.class.cast(pago).getTipoTarjeta().toString());
+								table.addCell("Número:");
+								table.addCell(String.format("%.0f", DtPagoTarjeta.class.cast(pago).getNroTarjeta()));
+								table.addCell("Nombre del titular:");
+								table.addCell(DtPagoTarjeta.class.cast(pago).getNombreTitular());
+								table.addCell("Fecha de vencimiento:");
+								table.addCell(sdfFchVenc.format(DtPagoTarjeta.class.cast(pago).getFechaVenc().getTime()));
+								table.addCell("CVC:");
+								table.addCell(Integer.toString(DtPagoTarjeta.class.cast(pago).getCvc()));
+								
+							}else if (pago instanceof DtPagoTrfBancaria) {
+								table.addCell("Forma de pago utilizada:");
+								table.addCell("Transferencia bancaria");
+								table.addCell(" ");
+								table.addCell(" ");
+								table.addCell("Banco:");
+								table.addCell(DtPagoTrfBancaria.class.cast(pago).getNombreBanco());
+								table.addCell("Nombre titular:");
+								table.addCell(DtPagoTrfBancaria.class.cast(pago).getNumCuenta());
+								
+							}else if (pago instanceof DtPagoPayPal) {
+								table.addCell("Forma de pago utilizada:");
+								table.addCell("PayPal");
+								table.addCell(" ");
+								table.addCell(" ");
+								
+								table.addCell("Nombre titular:");
+								table.addCell(DtPagoPayPal.class.cast(pago).getNombreTitular());
+								table.addCell("Número de cuenta:");
+								table.addCell(DtPagoPayPal.class.cast(pago).getNumeroCuenta());
+							}
+							document.add(table);
+						}
+					}
+				} catch (ServiceException e) {
+					e.printStackTrace();
+				}
+    		}
+    		
             document.close();
- 
+            
+            
             // Setear headers
             response.setHeader("Expires", "0");
             response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
@@ -76,6 +145,12 @@ public class ObtenerPdfConstanciaPagoColaboracion extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	private DtInfoPago obtenerInfoPago(String nickname, String tituloP) throws ColaboracionNoExisteException, TipoPagoInexistenteExpection, RemoteException, ServiceException {
+		ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish cpp = cppsl.getControladorPropuestaPublishPort();
+		return cpp.obtenerComprobanteDePagoDeColaboracion(nickname, tituloP);
 	}
 
 }

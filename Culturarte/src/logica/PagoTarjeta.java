@@ -5,6 +5,8 @@ import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import datatype.DtPagoTarjeta;
 import datatype.TipoTarjeta;
@@ -13,6 +15,7 @@ import datatype.TipoTarjeta;
 @DiscriminatorValue("T")
 public class PagoTarjeta extends Pago {
 	@Column(name="PT_TIPOTARJETA")
+	@Enumerated(EnumType.STRING)
 	private TipoTarjeta tipoTarjeta;
 	@Column(name="PT_NROTARJETA")
 	private double nroTarjeta;

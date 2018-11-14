@@ -68,7 +68,7 @@ public class PagarColaboracion extends HttpServlet {
 			case "Tarjeta":
 				DtPagoTarjeta pagoTar = new DtPagoTarjeta();
 				
-				TipoTarjeta tipoTarjeta = (TipoTarjeta) request.getAttribute("tipoTarjeta");
+				TipoTarjeta tipoTarjeta = TipoTarjeta.fromValue(request.getParameter("tipoTarjeta"));
 				pagoTar.setTipoTarjeta(tipoTarjeta);
 				
 				String titular = request.getParameter("titularTarjeta");
