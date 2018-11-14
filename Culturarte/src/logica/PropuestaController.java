@@ -801,22 +801,41 @@ public class PropuestaController implements IPropuestaController {
 												.setParameter("colab", nickColaborador)
 												.setParameter("prop", tituloPropuesta)
 												.getResultList();
+		em.close();
+		
+		if (!colaboraciones.isEmpty()) {
+			for (Colaboracion col : colaboraciones) {
+				infoPago = col.getDtInfoPago();
+			}
+			return infoPago;
+		} else {
+			throw new ColaboracionNoExisteException("No se encontró la colaboración de " + nickColaborador + " para la propuesta " + tituloPropuesta + ".");
+		}
+	}
+	
+	public void marcarPagoComoEmitido(String nickColaborador, String tituloPropuesta) throws ColaboracionNoExisteException {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		@SuppressWarnings("unchecked")
+		List<Colaboracion> colaboraciones = em.createQuery("FROM Colaboracion WHERE COLABORADOR = :colab and PROPUESTA = :prop")
+												.setParameter("colab", nickColaborador)
+												.setParameter("prop", tituloPropuesta)
+												.getResultList();
 		
 		if (!colaboraciones.isEmpty()) {
 			em.getTransaction().begin();
 			for (Colaboracion col : colaboraciones) {
-				infoPago = col.getDtInfoPago();
 				col.marcarPagoComoEmitido();
 				em.persist(col);
 			}
 			em.getTransaction().commit();
 			em.close();
-			return infoPago;
 		} else {
 			em.getTransaction().rollback();
 			em.close();
 			throw new ColaboracionNoExisteException("No se encontró la colaboración de " + nickColaborador + " para la propuesta " + tituloPropuesta + ".");
 		}
 	}
-
 }

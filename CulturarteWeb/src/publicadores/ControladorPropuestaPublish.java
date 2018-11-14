@@ -20,6 +20,7 @@ public interface ControladorPropuestaPublish extends java.rmi.Remote {
     public publicadores.DtPropuestaMinificado[] propuestasDesdeBuscador(java.lang.String arg0) throws java.rmi.RemoteException;
     public void pagarColaboracion(publicadores.DtInfoPago arg0) throws java.rmi.RemoteException, publicadores.TipoPagoInexistenteExpection;
     public publicadores.DtInfoPago obtenerComprobanteDePagoDeColaboracion(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException, publicadores.TipoPagoInexistenteExpection;
+    public void marcarPagoComoEmitido(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException;
     public publicadores.DtColaboracion[] listarColaboracionAPagar(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException;
     public publicadores.TipoRetorno[] obtenerTiposRetorno() throws java.rmi.RemoteException;
     public publicadores.EstadoPropuesta[] obtenerEstadosPropuesta() throws java.rmi.RemoteException;

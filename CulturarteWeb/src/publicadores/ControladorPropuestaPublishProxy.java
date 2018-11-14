@@ -116,6 +116,12 @@ public class ControladorPropuestaPublishProxy implements publicadores.Controlado
     return controladorPropuestaPublish.obtenerComprobanteDePagoDeColaboracion(arg0, arg1);
   }
   
+  public void marcarPagoComoEmitido(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException{
+    if (controladorPropuestaPublish == null)
+      _initControladorPropuestaPublishProxy();
+    controladorPropuestaPublish.marcarPagoComoEmitido(arg0, arg1);
+  }
+  
   public publicadores.DtColaboracion[] listarColaboracionAPagar(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException{
     if (controladorPropuestaPublish == null)
       _initControladorPropuestaPublishProxy();

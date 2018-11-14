@@ -35,12 +35,13 @@ public class EmitirConstanciaPagoColaboracion extends HttpServlet {
 		if (usuLog instanceof DtColaborador) {
 			try {
 				DtInfoPago infoPago = this.obtenerInfoPago(usuLog.getNickname(), propuesta);
+				marcarPagoComoEmitido(usuLog.getNickname(), propuesta);
 				request.setAttribute("infoPago", infoPago);
 				request.setAttribute("propuesta", propuesta);
 				request.getRequestDispatcher("/Usuario/verConstanciaPagoColaboracion.jsp").forward(request, response);
 			} catch (RemoteException | ServiceException e) {
 				e.printStackTrace();
-				request.setAttribute("mensaje", "Ocurrió un problema al intentar pagar la colaboración: \n" + e.getMessage());
+				request.setAttribute("mensaje", "Ocurrió un problema al intentar obtener el comprobante de pago de la colaboración: \n" + e.getMessage());
 				request.getRequestDispatcher("/Usuario/colaboracionesRealizadas.jsp").forward(request, response);
 			}
 		} else {
@@ -57,6 +58,12 @@ public class EmitirConstanciaPagoColaboracion extends HttpServlet {
 		ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
 		ControladorPropuestaPublish cpp = cppsl.getControladorPropuestaPublishPort();
 		return cpp.obtenerComprobanteDePagoDeColaboracion(nickname, tituloP);
+	}
+	
+	private void marcarPagoComoEmitido(String nickname, String tituloP) throws ColaboracionNoExisteException, RemoteException, ServiceException {
+		ControladorPropuestaPublishService cppsl = new ControladorPropuestaPublishServiceLocator();
+		ControladorPropuestaPublish cpp = cppsl.getControladorPropuestaPublishPort();
+		cpp.marcarPagoComoEmitido(nickname, tituloP);
 	}
 
 }

@@ -228,6 +228,11 @@ public class ControladorPropuestaPublish {
 	}
 	
 	@WebMethod
+	public void marcarPagoComoEmitido(String nickColaborador, String tituloPropuesta) throws ColaboracionNoExisteException {
+		IPC.marcarPagoComoEmitido(nickColaborador, tituloPropuesta);
+	}
+	
+	@WebMethod
 	public void losTiposExtendidos(DtPagoTarjeta dtPT, DtPagoTrfBancaria dtTB, DtPagoPayPal dtPP) {
 		// método para publicar data types con herencia, ya que si no van expresamente por parámetros no los importa en el cliente
 	}
