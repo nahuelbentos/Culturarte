@@ -292,6 +292,9 @@ public class Propuesta {
 				categoria.getDtCategoriaSimple(), null);
 	}
 	
+	public DtPropuesta getDtPropuestaLazy() {
+		return new DtPropuesta(this.titulo);
+	}
 
 	public DtDatosPropuesta getDtDatosPropuesta() {
 		/*

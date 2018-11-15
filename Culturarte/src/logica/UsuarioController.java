@@ -763,11 +763,13 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
+		
 		@SuppressWarnings("unchecked")
 		List<Usuario> usuarios = em.createQuery("SELECT u FROM UsuarioSigue us, Usuario u "
-				+ "WHERE us.usuarioDos = u "
+				+ "WHERE us.usuarioDos = u AND u.flagElm = :estaEliminado "
 				+ "GROUP BY u "
-				+ "ORDER BY count(us) DESC").getResultList();
+				+ "HAVING COUNT(u) > 0 "
+				+ "ORDER BY count(us) DESC ").setParameter("estaEliminado",false).getResultList();
         em.close();
         DtUsuario[] dtcol = new DtUsuario[usuarios.size()];
         for (int i = 0; i < dtcol.length; i++) {
@@ -794,7 +796,6 @@ public class UsuarioController implements IUsuarioController {
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public DtPropuesta[] listarFavoritasUsuario(String nickname) {
 		cph = ConexionPostgresHibernate.getInstancia();
@@ -807,7 +808,8 @@ public class UsuarioController implements IUsuarioController {
 		System.out.println("1.2 nickname:"+u.getNickname()+ "\n");
 		
 
-        List<Propuesta> favoritas = em.createQuery("select u.propuestasFavoritas FROM Usuario u WHERE u.nickname = :nickname")
+        @SuppressWarnings("unchecked")
+		List<Propuesta> favoritas = em.createQuery("select u.propuestasFavoritas FROM Usuario u WHERE u.nickname = :nickname")
         		.setParameter("nickname", nickname)
         		.getResultList();
         em.close();
@@ -820,7 +822,7 @@ public class UsuarioController implements IUsuarioController {
 		
 		for (int i = 0; i < dtpop.length; i++) {
 			System.out.println("5." +i+ " \n");
-			dtpop[i] = favoritas.get(i).getDtPropuesta();		
+			dtpop[i] = favoritas.get(i).getDtPropuestaLazy();	
 		}		
 		System.out.println("6 \n");
 		return dtpop;

@@ -89,7 +89,7 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :no").setParameter("no", false).getResultList();
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE flagElm = :no").setParameter("no", false).getResultList();
         em.close();
         if (!propuestas.isEmpty()) {
 			DtPropuestaMinificado[] propsMin = new DtPropuestaMinificado[propuestas.size()];
@@ -296,7 +296,7 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "' AND ESTAELIMINADA = :no")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE ESTADO_ACTUAL ='" + estadoPropuesta + "' AND flagElm = :no")
 				.setParameter("no", false)
 				.getResultList();
         em.close();
@@ -415,7 +415,7 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada' AND estaeliminada = :no")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estado_actual = 'ingresada' AND flagElm = :no")
 				.setParameter("no", false)
 				.getResultList();
         em.close();
@@ -441,7 +441,7 @@ public class PropuestaController implements IPropuestaController {
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar.getInstance();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :no and estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE flagElm = :no and estado_actual = :estado and NICK_PROPONENTE = :nicknameProponente and fechaFinalizacion >= :now")
 											.setParameter("no", false)
 											.setParameter("estado", estado.toString())
 											.setParameter("nicknameProponente", nicknameProponente)
@@ -471,7 +471,7 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE ESTAELIMINADA = :si "
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE flagElm = :si "
 				+ "AND NICK_PROPONENTE = :nicknameProponente")
 				.setParameter("si", true)
 				.setParameter("nicknameProponente", nicknameProponente)
@@ -557,7 +557,7 @@ public class PropuestaController implements IPropuestaController {
 		em.getTransaction().begin();
 		
         @SuppressWarnings("unchecked")
-		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual <> 'ingresada' and estaeliminada = :no")
+		List<Propuesta> ps = em.createQuery("FROM Propuesta WHERE estado_actual <> 'ingresada' and flagElm = :no")
 					.setParameter("no", false)
 					.getResultList();
         em.close();
@@ -656,7 +656,7 @@ public class PropuestaController implements IPropuestaController {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
         @SuppressWarnings("unchecked")
-		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE estaeliminada = : no")
+		List<Propuesta> propuestas = em.createQuery("FROM Propuesta WHERE flagElm = : no")
 					.setParameter("no", false)
 					.getResultList();
         
@@ -690,7 +690,7 @@ public class PropuestaController implements IPropuestaController {
 		@SuppressWarnings("unchecked")
 		List<Propuesta> populares = em.createQuery("SELECT p FROM Usuario u "
 				+ "JOIN u.propuestasFavoritas p "
-				+ "WHERE u.estaeliminado = :no "
+				+ "WHERE u.flagElm = :no "
 				+ "GROUP BY p "
 				+ "ORDER BY count(p) DESC")
 				.setParameter("no", false)
@@ -721,7 +721,7 @@ public class PropuestaController implements IPropuestaController {
 													"(lower(titulo) like '" + buscar + "') " + 
 													"or (lower(descripcion) like '" + buscar + "') " + 
 													"or (lower(lugar) like '" + buscar + "')" +
-													"and estaeliminada = :no")
+													"and flagElm = :no")
 									.setParameter("no", false)
 									.getResultList();
 		
