@@ -19,6 +19,7 @@ public class DtPagoTrfBancaria  extends publicadores.DtPago  implements java.io.
 
     public DtPagoTrfBancaria(
            boolean compEmitido,
+           java.util.Calendar fechaEmitido,
            java.lang.Long id,
            double montoAPagar,
            java.lang.String nombreBanco,
@@ -26,6 +27,7 @@ public class DtPagoTrfBancaria  extends publicadores.DtPago  implements java.io.
            java.lang.String numCuenta) {
         super(
             compEmitido,
+            fechaEmitido,
             id,
             montoAPagar);
         this.nombreBanco = nombreBanco;

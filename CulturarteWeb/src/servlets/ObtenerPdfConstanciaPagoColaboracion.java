@@ -66,11 +66,23 @@ public class ObtenerPdfConstanciaPagoColaboracion extends HttpServlet {
 					if (infoPago != null) {
 						DtPago pago = infoPago.getPago();
 						if (pago != null) {
+							SimpleDateFormat sdfFull = new SimpleDateFormat("dd MMM yyyy");
+							
 							PdfPTable table = new PdfPTable(2);
 							table.getDefaultCell().setUseVariableBorders(true);
 							table.getDefaultCell().setBorderColor(BaseColor.WHITE);
 							table.getDefaultCell().setUseBorderPadding(true);
 							table.getDefaultCell().setPadding(3);
+							table.addCell(" ");
+							table.addCell(" ");
+							table.addCell("Fecha de emisión de la constancia:");
+							table.addCell(sdfFull.format(pago.getFechaEmitido().getTime()));
+							table.addCell("Colaborador:");
+							table.addCell(usuLog.getNickname());
+							table.addCell("Propuesta:");
+							table.addCell(propuesta);
+							table.addCell(" ");
+							table.addCell(" ");
 							table.addCell(" ");
 							table.addCell(" ");
 							

@@ -1,12 +1,14 @@
 package datatype;
 
+import java.util.Calendar;
+
 public class DtPagoTrfBancaria extends DtPago {
 	private String nombreBanco;
 	private String numCuenta;
 	private String nombreTitular;
 	
-	public DtPagoTrfBancaria(Long id, double montoAPagar, boolean compEmitido, String nombreBanco, String numCuenta, String nombreTitular) {
-		super(id, montoAPagar, compEmitido);
+	public DtPagoTrfBancaria(Long id, double montoAPagar, Calendar fechaEmitido, boolean compEmitido, String nombreBanco, String numCuenta, String nombreTitular) {
+		super(id, montoAPagar, fechaEmitido, compEmitido);
 		this.nombreBanco = nombreBanco;
 		this.numCuenta = numCuenta;
 		this.nombreTitular = nombreTitular;

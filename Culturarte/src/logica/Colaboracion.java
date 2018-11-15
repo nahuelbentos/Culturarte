@@ -192,5 +192,6 @@ public class Colaboracion {
 	
 	public void marcarPagoComoEmitido() {
 		pago.setCompEmitido(true);
+		pago.setFechaEmitido(GregorianCalendar.getInstance());
 	}
 }

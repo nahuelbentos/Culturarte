@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -16,15 +18,15 @@ public class PagoTrfBancaria extends Pago {
 	@Column(name="PB_NOMBRETITULAR")
 	private String nombreTitular;
 	
-	public PagoTrfBancaria(boolean compEmitido, double montoAPagar, String nombreBanco, String numCuenta, String nombreTitular) {
-		super(compEmitido, montoAPagar);
+	public PagoTrfBancaria(boolean compEmitido, Calendar fechaEmitido, double montoAPagar, String nombreBanco, String numCuenta, String nombreTitular) {
+		super(compEmitido, fechaEmitido, montoAPagar);
 		this.nombreBanco = nombreBanco;
 		this.numCuenta = numCuenta;
 		this.nombreTitular = nombreTitular;
 	}
 	
 	public PagoTrfBancaria(DtPagoTrfBancaria pb) {
-		super(pb.isCompEmitido(), pb.getMontoAPagar());
+		super(pb.isCompEmitido(), pb.getFechaEmitido(), pb.getMontoAPagar());
 		this.nombreBanco = pb.getNombreBanco();
 		this.numCuenta = pb.getNumCuenta();
 		this.nombreTitular = pb.getNombreTitular();
@@ -62,6 +64,7 @@ public class PagoTrfBancaria extends Pago {
 	public DtPagoTrfBancaria getDtPago() {
 		return new DtPagoTrfBancaria(this.getId(), 
 									this.getMontoAPagar(), 
+									this.getFechaEmitido(), 
 									this.isCompEmitido(), 
 									nombreBanco, 
 									numCuenta, 

@@ -23,6 +23,7 @@ public class DtPagoTarjeta  extends publicadores.DtPago  implements java.io.Seri
 
     public DtPagoTarjeta(
            boolean compEmitido,
+           java.util.Calendar fechaEmitido,
            java.lang.Long id,
            double montoAPagar,
            int cvc,
@@ -32,6 +33,7 @@ public class DtPagoTarjeta  extends publicadores.DtPago  implements java.io.Seri
            publicadores.TipoTarjeta tipoTarjeta) {
         super(
             compEmitido,
+            fechaEmitido,
             id,
             montoAPagar);
         this.cvc = cvc;

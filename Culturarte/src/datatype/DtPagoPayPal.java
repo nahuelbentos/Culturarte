@@ -1,11 +1,13 @@
 package datatype;
 
+import java.util.Calendar;
+
 public class DtPagoPayPal extends DtPago {
 	private String numeroCuenta;
 	private String nombreTitular;
 	
-	public DtPagoPayPal(Long id, double montoAPagar, boolean compEmitido, String numeroCuenta, String nombreTitular) {
-		super(id, montoAPagar, compEmitido);
+	public DtPagoPayPal(Long id, double montoAPagar, Calendar fechaEmitido, boolean compEmitido, String numeroCuenta, String nombreTitular) {
+		super(id, montoAPagar, fechaEmitido, compEmitido);
 		this.numeroCuenta = numeroCuenta;
 		this.nombreTitular = nombreTitular;
 	}

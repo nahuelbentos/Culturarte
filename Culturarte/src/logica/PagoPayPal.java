@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -18,14 +20,14 @@ public class PagoPayPal extends Pago {
 		super();
 	}
 
-	public PagoPayPal(double montoAPagar, boolean compEmitido, String numeroCuenta, String nombreTitular) {
-		super(compEmitido, montoAPagar);
+	public PagoPayPal(double montoAPagar, Calendar fechaEmitido, boolean compEmitido, String numeroCuenta, String nombreTitular) {
+		super(compEmitido, fechaEmitido, montoAPagar);
 		this.numeroCuenta = numeroCuenta;
 		this.nombreTitular = nombreTitular;
 	}
 	
 	public PagoPayPal(DtPagoPayPal pp) {
-		super(pp.isCompEmitido(), pp.getMontoAPagar());
+		super(pp.isCompEmitido(), pp.getFechaEmitido(), pp.getMontoAPagar());
 		this.numeroCuenta = pp.getNumeroCuenta();
 		this.nombreTitular = pp.getNombreTitular();
 	}
@@ -50,6 +52,7 @@ public class PagoPayPal extends Pago {
 	public DtPagoPayPal getDtPago() {
 		return new DtPagoPayPal(this.getId(), 
 								this.getMontoAPagar(), 
+								this.getFechaEmitido(), 
 								this.isCompEmitido(), 
 								this.numeroCuenta, 
 								this.nombreTitular);

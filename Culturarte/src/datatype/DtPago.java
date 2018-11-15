@@ -1,17 +1,29 @@
 package datatype;
 
+import java.util.Calendar;
+
 public abstract class DtPago {
 	private Long id;
 	private boolean compEmitido;
+	private Calendar fechaEmitido;
 	private double montoAPagar;
 	
-	public DtPago(Long id, double montoAPagar, boolean compEmitido) {
+	public DtPago(Long id, double montoAPagar, Calendar fechaEmitido, boolean compEmitido) {
 		super();
 		this.id = id;
 		this.compEmitido = compEmitido;
+		this.fechaEmitido = fechaEmitido;
 		this.montoAPagar = montoAPagar;
 	}
 	
+	public Calendar getFechaEmitido() {
+		return fechaEmitido;
+	}
+
+	public void setFechaEmitido(Calendar fechaEmitido) {
+		this.fechaEmitido = fechaEmitido;
+	}
+
 	public boolean isCompEmitido() {
 		return compEmitido;
 	}

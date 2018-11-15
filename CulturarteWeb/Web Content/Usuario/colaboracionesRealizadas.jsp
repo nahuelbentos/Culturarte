@@ -34,7 +34,7 @@ if (user != null) {
 					<%
 						} else {
 					%>
-							<span>Constancia de pago ya emitida.</span>
+							<span>Constancia de pago ya emitida. </span><a target="_blank" href="${pageContext.request.contextPath}/ObtenerPdfConstanciaPagoColaboracion?propuesta=<%=colaboracionesHechas[i].getTituloPropuesta() %>">Ver PDF.</a>
 					<%
 						}
 					}

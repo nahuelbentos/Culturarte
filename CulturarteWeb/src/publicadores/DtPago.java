@@ -10,6 +10,8 @@ package publicadores;
 public abstract class DtPago  implements java.io.Serializable {
     private boolean compEmitido;
 
+    private java.util.Calendar fechaEmitido;
+
     private java.lang.Long id;
 
     private double montoAPagar;
@@ -19,9 +21,11 @@ public abstract class DtPago  implements java.io.Serializable {
 
     public DtPago(
            boolean compEmitido,
+           java.util.Calendar fechaEmitido,
            java.lang.Long id,
            double montoAPagar) {
            this.compEmitido = compEmitido;
+           this.fechaEmitido = fechaEmitido;
            this.id = id;
            this.montoAPagar = montoAPagar;
     }
@@ -44,6 +48,26 @@ public abstract class DtPago  implements java.io.Serializable {
      */
     public void setCompEmitido(boolean compEmitido) {
         this.compEmitido = compEmitido;
+    }
+
+
+    /**
+     * Gets the fechaEmitido value for this DtPago.
+     * 
+     * @return fechaEmitido
+     */
+    public java.util.Calendar getFechaEmitido() {
+        return fechaEmitido;
+    }
+
+
+    /**
+     * Sets the fechaEmitido value for this DtPago.
+     * 
+     * @param fechaEmitido
+     */
+    public void setFechaEmitido(java.util.Calendar fechaEmitido) {
+        this.fechaEmitido = fechaEmitido;
     }
 
 
@@ -99,6 +123,9 @@ public abstract class DtPago  implements java.io.Serializable {
         boolean _equals;
         _equals = true && 
             this.compEmitido == other.isCompEmitido() &&
+            ((this.fechaEmitido==null && other.getFechaEmitido()==null) || 
+             (this.fechaEmitido!=null &&
+              this.fechaEmitido.equals(other.getFechaEmitido()))) &&
             ((this.id==null && other.getId()==null) || 
              (this.id!=null &&
               this.id.equals(other.getId()))) &&
@@ -115,6 +142,9 @@ public abstract class DtPago  implements java.io.Serializable {
         __hashCodeCalc = true;
         int _hashCode = 1;
         _hashCode += (isCompEmitido() ? Boolean.TRUE : Boolean.FALSE).hashCode();
+        if (getFechaEmitido() != null) {
+            _hashCode += getFechaEmitido().hashCode();
+        }
         if (getId() != null) {
             _hashCode += getId().hashCode();
         }
@@ -133,6 +163,13 @@ public abstract class DtPago  implements java.io.Serializable {
         elemField.setFieldName("compEmitido");
         elemField.setXmlName(new javax.xml.namespace.QName("", "compEmitido"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("fechaEmitido");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "fechaEmitido"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
+        elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();

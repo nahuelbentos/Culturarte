@@ -17,12 +17,14 @@ public class DtPagoPayPal  extends publicadores.DtPago  implements java.io.Seria
 
     public DtPagoPayPal(
            boolean compEmitido,
+           java.util.Calendar fechaEmitido,
            java.lang.Long id,
            double montoAPagar,
            java.lang.String nombreTitular,
            java.lang.String numeroCuenta) {
         super(
             compEmitido,
+            fechaEmitido,
             id,
             montoAPagar);
         this.nombreTitular = nombreTitular;

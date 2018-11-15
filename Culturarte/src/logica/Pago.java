@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -25,6 +27,9 @@ public abstract class Pago {
 	@Column(name="COMP_EMITIDO")
 	private boolean compEmitido;
 	
+	@Column(name="FECHA_EMITIDO")
+	private Calendar fechaEmitido;
+	
 	
 	private double montoAPagar;
 
@@ -32,12 +37,21 @@ public abstract class Pago {
 		super();
 	}
 	
-	public Pago(boolean compEmitido, double montoAPagar) {
+	public Pago(boolean compEmitido, Calendar fechaEmitido, double montoAPagar) {
 		super();
 		this.compEmitido = compEmitido;
+		this.fechaEmitido = fechaEmitido;
 		this.montoAPagar = montoAPagar;
 	}
 	
+	public Calendar getFechaEmitido() {
+		return fechaEmitido;
+	}
+
+	public void setFechaEmitido(Calendar fechaEmitido) {
+		this.fechaEmitido = fechaEmitido;
+	}
+
 	public Long getId() {
 		return id;
 	}

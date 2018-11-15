@@ -13,6 +13,7 @@
 
 <% 
 SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy");
+SimpleDateFormat sdfFull = new SimpleDateFormat("dd MMM yyyy");
 
 DtUsuario user = (DtUsuario)session.getAttribute("usuarioLogueado");
 String propuesta = (String)request.getAttribute("propuesta");
@@ -69,6 +70,24 @@ if (user != null) {
 								<div id="formTarjeta" class="border">
 									<div class="container-fluid">
 										<h4>Pago con tarjeta</h4>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="fechaEmitido">Fecha de emisión de la constancia</label>
+												<input type="text" class="form-control" id="fechaEmitido" name="fechaEmitido" value="<%=sdfFull.format(pago.getFechaEmitido().getTime())%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="colaborador">Colaborador</label>
+												<input type="text" class="form-control" id="colaborador" name="colaborador" value="<%=user.getNickname()%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="propuesta">Propuesta</label>
+												<input type="text" class="form-control" id="propuesta" name="propuesta" value="<%=propuesta%>" disabled>
+											</div>
+										</div>
 										<div class="form-row">
 											<div class="form-group col-lg-6 col-md-12">
 												<label for="tipoTarjeta">Tarjeta</label>
@@ -131,6 +150,24 @@ if (user != null) {
 									<div class="container-fluid">
 										<h4>Pago con transferencia bancaria</h4>
 										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="fechaEmitido">Fecha de emisión de la constancia</label>
+												<input type="text" class="form-control" id="fechaEmitido" name="fechaEmitido" value="<%=sdfFull.format(pago.getFechaEmitido().getTime())%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="colaborador">Colaborador</label>
+												<input type="text" class="form-control" id="colaborador" name="colaborador" value="<%=user.getNickname()%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="propuesta">Propuesta</label>
+												<input type="text" class="form-control" id="propuesta" name="propuesta" value="<%=propuesta%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
 											<div class="form-group col-lg-6 col-md-12">
 												<label for="bancoTrfBria">Banco</label>
 												<input type="text" class="form-control" id="bancoTrfBria" name="bancoTrfBria" value="<%=DtPagoTrfBancaria.class.cast(pago).getNombreBanco()%>" disabled>
@@ -161,6 +198,24 @@ if (user != null) {
 								<div id="formPayPal" class="border">
 									<div class="container-fluid">
 										<h4>Pago con paypal</h4>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="fechaEmitido">Fecha de emisión de la constancia</label>
+												<input type="text" class="form-control" id="fechaEmitido" name="fechaEmitido" value="<%=sdfFull.format(pago.getFechaEmitido().getTime())%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="colaborador">Colaborador</label>
+												<input type="text" class="form-control" id="colaborador" name="colaborador" value="<%=user.getNickname()%>" disabled>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-lg-12">
+												<label for="propuesta">Propuesta</label>
+												<input type="text" class="form-control" id="propuesta" name="propuesta" value="<%=propuesta%>" disabled>
+											</div>
+										</div>
 										<div class="form-row">
 											<div class="form-group col-lg-12">
 												<label for="titularPaypal">Nombre titular</label>

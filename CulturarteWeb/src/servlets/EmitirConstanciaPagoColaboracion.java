@@ -14,8 +14,12 @@ import publicadores.ColaboracionNoExisteException;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
 import publicadores.ControladorPropuestaPublishServiceLocator;
+import publicadores.ControladorUsuarioPublish;
+import publicadores.ControladorUsuarioPublishService;
+import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtColaborador;
 import publicadores.DtInfoPago;
+import publicadores.DtPerfilUsuario;
 import publicadores.DtUsuario;
 import publicadores.TipoPagoInexistenteExpection;
 
@@ -28,14 +32,13 @@ public class EmitirConstanciaPagoColaboracion extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
 		DtUsuario usuLog = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
 		String propuesta = request.getParameter("propuesta");
 		
 		if (usuLog instanceof DtColaborador) {
 			try {
-				DtInfoPago infoPago = this.obtenerInfoPago(usuLog.getNickname(), propuesta);
 				marcarPagoComoEmitido(usuLog.getNickname(), propuesta);
+				DtInfoPago infoPago = this.obtenerInfoPago(usuLog.getNickname(), propuesta);
 				request.setAttribute("infoPago", infoPago);
 				request.setAttribute("propuesta", propuesta);
 				request.getRequestDispatcher("/Usuario/verConstanciaPagoColaboracion.jsp").forward(request, response);
