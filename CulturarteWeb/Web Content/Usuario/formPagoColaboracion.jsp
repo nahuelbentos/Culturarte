@@ -115,7 +115,7 @@ if (user != null) {
 									</div>
 									<div class="form-row">
 										<div class="form-group col-lg-12">
-											<label for="cuentaPaypal">Nombre titular</label>
+											<label for="cuentaPaypal">Número de cuenta</label>
 											<input type="text" class="form-control" id="cuentaPaypal" name="cuentaPaypal" placeholder="XXXXXXXXXXXX">
 										</div>
 									</div>
