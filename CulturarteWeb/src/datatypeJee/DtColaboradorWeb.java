@@ -7,6 +7,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import publicadores.DtColaborador;
 
+@SuppressWarnings("serial")
 public class DtColaboradorWeb extends DtColaborador {
 
 	public DtColaboradorWeb(String nickname, String nombre, String apellido, String email,

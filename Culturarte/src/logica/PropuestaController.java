@@ -189,7 +189,8 @@ public class PropuestaController implements IPropuestaController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		em.getTransaction().begin();
+		
+		System.out.println("buscando a: "+titulo);
 		
 		DtPropuesta dtp = null;
 		Propuesta p = em.find(Propuesta.class, titulo);
@@ -837,5 +838,23 @@ public class PropuestaController implements IPropuestaController {
 			em.close();
 			throw new ColaboracionNoExisteException("No se encontró la colaboración de " + nickColaborador + " para la propuesta " + tituloPropuesta + ".");
 		}
+	}
+
+	@Override
+	public DtColaboracion obtenerColaboracion(String colaborador, String propuesta) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		
+		ColaboracionID claveColaboracion = new ColaboracionID();
+		claveColaboracion.setIdColaborador(colaborador);
+		claveColaboracion.setIdPropuesta(propuesta);
+		
+		Colaboracion colaboracion = em.find(Colaboracion.class, claveColaboracion);
+		em.close();
+		
+		return colaboracion.getDataColaboracion();
+		
+		
 	}
 }

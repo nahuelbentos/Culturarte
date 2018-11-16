@@ -7,6 +7,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import publicadores.DtProponente;
 
+@SuppressWarnings("serial")
 public class DtProponenteWeb extends DtProponente {
 
 	public DtProponenteWeb(String nickname, String nombre, String apellido, String email,

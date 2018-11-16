@@ -128,7 +128,10 @@ public class PagarColaboracion extends HttpServlet {
 			DtMensajeUI msg = new DtMensajeUI("Pago realizado correctamente", TipoMensaje.informacion);
 			request.setAttribute("mensaje", msg);
 			request.setAttribute("nickname", colaborador);
-			request.getRequestDispatcher("VerPerfil").forward(request, response);
+			request.setAttribute("propuesta", propuesta);
+			request.getRequestDispatcher("EnviarCorreo").forward(request,response);
+			
+			
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

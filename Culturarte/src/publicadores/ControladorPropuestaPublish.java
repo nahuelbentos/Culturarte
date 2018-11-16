@@ -228,6 +228,11 @@ public class ControladorPropuestaPublish {
 	}
 	
 	@WebMethod
+	public DtColaboracion obtenerColaboracion(String nickColaborador, String tituloPropuesta){
+		return IPC.obtenerColaboracion(nickColaborador, tituloPropuesta);
+	}
+	
+	@WebMethod
 	public void marcarPagoComoEmitido(String nickColaborador, String tituloPropuesta) throws ColaboracionNoExisteException {
 		IPC.marcarPagoComoEmitido(nickColaborador, tituloPropuesta);
 	}
