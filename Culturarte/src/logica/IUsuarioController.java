@@ -1,5 +1,8 @@
 package logica;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import datatype.*;
 import excepciones.ColaboracionNoExisteException;
 import excepciones.ColaboradorNoExisteException;
@@ -58,4 +61,6 @@ public interface IUsuarioController {
 	public abstract DtPropuesta[] listarFavoritasUsuario(String nickname);
 
 	public abstract void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException;
+	
+	public abstract void registrarAccesoAlSitio(String ip, String url, String navegador, String so) throws IOException, URISyntaxException;
 }

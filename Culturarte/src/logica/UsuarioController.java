@@ -1,5 +1,11 @@
 package logica;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -875,5 +881,27 @@ public class UsuarioController implements IUsuarioController {
 			em.close();
 			throw new UsuarioNoExisteElUsuarioException("El usuario no es proponente");
 		}
+	}
+
+	@Override
+	public void registrarAccesoAlSitio(String ip, String url, String navegador, String so) {
+		try(FileWriter fw = new FileWriter("src/main/resources/accesos.csv", true);
+        	    BufferedWriter bw = new BufferedWriter(fw);
+        	    PrintWriter out = new PrintWriter(bw))
+        	{
+				GregorianCalendar fecha = (GregorianCalendar) GregorianCalendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        	    out.print(ip);
+        	    out.print(",");
+        	    out.print(url);
+        	    out.print(",");
+        	    out.print(navegador);
+        	    out.print(",");
+        	    out.print(so);
+        	    out.print(",");
+        	    out.println(sdf.format(fecha.getTime()));
+        	} catch (IOException e) {
+        	    System.out.println("Ocurrio un error, no se pudo registrar el acceso al sitio.");
+        	}
 	}
 }
