@@ -53,40 +53,27 @@ public class AgregarFavorita extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		DtUsuario usuarioLogueado = (DtUsuario)session.getAttribute("usuarioLogueado");
-//		DtUsuarioWeb usuarioLogueado = (DtUsuarioWeb)session.getAttribute("usuarioLogueado");
 		
 
 		ControladorPropuestaPublishService cpp = new ControladorPropuestaPublishServiceLocator();
 		ControladorPropuestaPublish port;
-		System.out.println("doGet \n");
-		System.out.println("1\n");
 		ControladorUsuarioPublishService cup = new ControladorUsuarioPublishServiceLocator();
-		System.out.println("2 \n");
 		ControladorUsuarioPublish port_u;
 
-		System.out.println("3\n");
 		try {
 			port = cpp.getControladorPropuestaPublishPort();
-			System.out.println("4\n");
 			port_u = cup.getControladorUsuarioPublishPort();
-			System.out.println("5\n");
 			try {
 				port.agregarFavorita(titulo, usuarioLogueado);
 				//actualizo las favoritas del usuario logueado.
-				System.out.println("6\n");
 				DtPropuesta[] favoritas = port_u.listarFavoritasUsuario(usuarioLogueado.getNickname());
-				System.out.println("7\n");
 				
 				String[] titFav = new String[favoritas.length];
-				System.out.println("8\n");
 		        for (int i = 0; i < favoritas.length; i++) {
-		        	System.out.println("9"+i+"\n");
 		        	titFav[i] = favoritas[i].getTitulo();
 				}
 		        
-				System.out.println("10\n");
 				usuarioLogueado.setTituloFavoritas(titFav);
-				System.out.println("11\n");
 				session.setAttribute("usuarioLogueado", usuarioLogueado);
 			} catch (UsuarioSinLoguearseException e) {
 				// TODO Auto-generated catch block
@@ -114,7 +101,6 @@ public class AgregarFavorita extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String titulo = request.getParameter("propuesta");
 
-		System.out.println("doPost\n");
 		HttpSession session = request.getSession();
 		DtUsuario usuarioLogueado = (DtUsuario)session.getAttribute("usuarioLogueado");
 
@@ -122,31 +108,18 @@ public class AgregarFavorita extends HttpServlet {
 		ControladorPropuestaPublish port;
 		ControladorUsuarioPublishService cup = new ControladorUsuarioPublishServiceLocator();
 		ControladorUsuarioPublish port_u;
-		System.out.println("1\n");
-		
-		System.out.println("2\n");
 		try {
 			port = cpp.getControladorPropuestaPublishPort();
-			System.out.println("3\n");
 			port_u = cup.getControladorUsuarioPublishPort();
-			System.out.println("4\n");
 			try {
-				System.out.println("5\n");
 				port.agregarFavorita(titulo, usuarioLogueado);
-				System.out.println("6\n");
 				DtPropuesta[] favoritas = port_u.listarFavoritasUsuario(usuarioLogueado.getNickname());
-				System.out.println("7\n");
 				
 				String[] titFav = new String[favoritas.length];
-				System.out.println("8\n");
 				for (int i = 0; i < favoritas.length; i++) {
-					System.out.println("9."+i+"\n");
 					titFav[i] = favoritas[i].getTitulo();
 				}
-
-				System.out.println("10\n");
 				usuarioLogueado.setTituloFavoritas(titFav);
-				System.out.println("11\n");
 				
 				session.setAttribute("usuarioLogueado", usuarioLogueado);
 			} catch (UsuarioSinLoguearseException e) {

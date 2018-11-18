@@ -16,17 +16,18 @@ public interface ControladorUsuarioPublish extends java.rmi.Remote {
     public publicadores.DtProponente[] getMasProponedores() throws java.rmi.RemoteException;
     public publicadores.DtUsuario[] verRankingUsuarios() throws java.rmi.RemoteException;
     public publicadores.DtPropuesta[] listarFavoritasUsuario(java.lang.String arg0) throws java.rmi.RemoteException;
+    public boolean verificarNicknameEmail(java.lang.String arg0, boolean arg1) throws java.rmi.RemoteException;
     public void seguirUsuario(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException, publicadores.UsuarioYaSigueAlUsuarioException;
     public void dejarDeSeguirUsuario(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException;
     public void agregarUsuario(publicadores.DtUsuario arg0) throws java.rmi.RemoteException, publicadores.UsuarioYaExisteElEmailException, publicadores.UsuarioYaExisteElUsuarioException;
     public void agregarComentarioAPropuesta(java.lang.String arg0, java.lang.String arg1, publicadores.DtUsuario arg2) throws java.rmi.RemoteException, publicadores.UsuarioSinLoguearseException;
+    public publicadores.DtPerfilProponente verPerfilProponente(java.lang.String arg0) throws java.rmi.RemoteException;
     public publicadores.DtPerfilColaborador verPerfilColaborador(java.lang.String arg0) throws java.rmi.RemoteException;
-    public publicadores.DtPropuesta[] listarPropuestasDeUnColaborador(java.lang.String arg0) throws java.rmi.RemoteException;
-    public publicadores.DtColaboracion listarColaboracion(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException;
     public publicadores.DtUsuario[] listarProponentes() throws java.rmi.RemoteException, publicadores.ProponenteNoExisteException;
     public publicadores.DtUsuario[] listarUsuarios() throws java.rmi.RemoteException;
     public publicadores.DtUsuario verPerfilUsuario(java.lang.String arg0) throws java.rmi.RemoteException, publicadores.UsuarioNoExisteElUsuarioException;
     public publicadores.DtUsuario[] listarUsuariosQueSigue(java.lang.String arg0) throws java.rmi.RemoteException;
+    public publicadores.DtPropuesta[] listarPropuestasDeUnColaborador(java.lang.String arg0) throws java.rmi.RemoteException;
+    public publicadores.DtColaboracion listarColaboracion(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException, publicadores.ColaboracionNoExisteException;
     public publicadores.DtUsuario[] listarColaboradores() throws java.rmi.RemoteException, publicadores.ColaboradorNoExisteException;
-    public publicadores.DtPerfilProponente verPerfilProponente(java.lang.String arg0) throws java.rmi.RemoteException;
 }

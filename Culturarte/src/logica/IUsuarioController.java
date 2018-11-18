@@ -58,4 +58,6 @@ public interface IUsuarioController {
 	public abstract DtPropuesta[] listarFavoritasUsuario(String nickname);
 
 	public abstract void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException;
+	
+	public abstract boolean verificarNicknameEmail(String nickEmail, boolean esNickname);
 }

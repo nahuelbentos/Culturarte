@@ -162,5 +162,11 @@ public class ControladorUsuarioPublish {
 	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException{
 		IUC.eliminarCuenta(nickname);
 	}
+	
+	@WebMethod
+	public boolean verificarNicknameEmail(String datoSesion, boolean esNickname) {
+		return IUC.verificarNicknameEmail(datoSesion,esNickname);
+	}
+
 
 }

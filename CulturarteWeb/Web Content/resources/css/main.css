@@ -177,6 +177,15 @@ button.seleccionarImg{
 	background-color: rgb(212,212,212);
 }
 
+.validNickEmail {
+    color: green;
+	display: inline !important;
+}
+
+.invalidNickEmail {
+    color: red;
+	display: inline !important;
+}
 
 /* estilos responsives: */
 @media (max-width: 991px) {
