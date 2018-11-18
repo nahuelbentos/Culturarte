@@ -620,4 +620,5 @@ public class Principal {
     	fileInputStream.close();
 		return picInBytes;
 	}
+
 }
