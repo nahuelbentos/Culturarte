@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.rmi.RemoteException;
 
 import javax.servlet.ServletException;
@@ -11,10 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.rpc.ServiceException;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
-
-import publicadores.DtUsuario;
-import publicadores.URISyntaxException;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
 import publicadores.ControladorPropuestaPublishServiceLocator;
@@ -24,6 +21,8 @@ import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtColaborador;
 import publicadores.DtProponente;
 import publicadores.DtPropuesta;
+import publicadores.DtUsuario;
+import publicadores.URISyntaxException;
 
 /**
  * Servlet implementation class Inicio
@@ -47,6 +46,12 @@ public class Inicio extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		String ip = request.getRemoteAddr();
+		if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+		    InetAddress inetAddress = InetAddress.getLocalHost();
+		    String ipAddress = inetAddress.getHostAddress();
+		    ip = ipAddress;
+		}
+		
 		String url = request.getRequestURI();
 		String userAgent = request.getHeader("User-Agent");
 		try {
