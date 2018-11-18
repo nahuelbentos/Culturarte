@@ -5,29 +5,22 @@ import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-
-import com.toedter.calendar.JDateChooser;
 
 import datatype.DtColaboracion;
 import datatype.DtDatosPropuesta;
 import datatype.DtProponente;
-import datatype.DtPropuesta;
 import datatype.DtPropuestaMinificado;
 import datatype.DtUsuario;
-import datatype.TipoRetorno;
 import excepciones.NoExistenProponentesEliminadosException;
 import excepciones.ProponenteNoExisteException;
 import excepciones.PropuestaNoExisteException;
@@ -48,9 +41,7 @@ public class VerProponentesEliminados extends JInternalFrame {
 	private JLabel lblSeleccionarPropuesta;
 	private static final String TEXTO_COMBO_UNO = "No hay proponentes eliminados en el sistema";
 	private static final String TEXTO_COMBO_DOS = "El proponente no habia ingresado propuestas";
-	private static final String TEXTO_COMBO_TRES = "No se habian registrado colaboraciones";
 	private static final String TEXTO_COMBO_DOS_INICIAL = "Seleccione una de sus propuestas";
-	private static final String TEXTO_COMBO_TRES_INICIAL = "Seleccione una de sus colaboraciones";
 	private JTextField txtNickname;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
@@ -336,7 +327,7 @@ public class VerProponentesEliminados extends JInternalFrame {
 			setearPerfilProponente();
 			setListaDePropuestas(txtNickname.getText());
         } catch (UsuarioNoExisteElUsuarioException e) {
-            JOptionPane.showMessageDialog(this, "Ocurri� un error inesperado", "Ver Proponentes Eliminados", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado", "Ver Proponentes Eliminados", JOptionPane.ERROR_MESSAGE);
         }
 	}
 	
