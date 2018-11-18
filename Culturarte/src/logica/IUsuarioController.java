@@ -62,5 +62,5 @@ public interface IUsuarioController {
 
 	public abstract void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException;
 	
-	public abstract void registrarAccesoAlSitio(String ip, String url, String navegador, String so) throws IOException, URISyntaxException;
+	public abstract void registrarAccesoAlSitio(String ip, String url, String userAgent) throws IOException, URISyntaxException;
 }
