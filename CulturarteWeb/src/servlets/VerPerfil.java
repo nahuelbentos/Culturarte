@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,9 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.rpc.ServiceException;
 
-import publicadores.ControladorPropuestaPublish;
-import publicadores.ControladorPropuestaPublishService;
-import publicadores.ControladorPropuestaPublishServiceLocator;
 import publicadores.ControladorUsuarioPublish;
 import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
@@ -21,6 +20,7 @@ import publicadores.DtColaborador;
 import publicadores.DtPerfilUsuario;
 import publicadores.DtProponente;
 import publicadores.DtUsuario;
+import publicadores.URISyntaxException;
 import datatypeJee.DtUsuarioWeb;
 import datatypeJee.TipoUsuario;
 import datatypeJee.msjUI.DtMensajeUI;
@@ -54,6 +54,22 @@ public class VerPerfil extends HttpServlet {
 		 */
 		
 		HttpSession session = request.getSession();
+		
+		String ip = request.getRemoteAddr();
+		if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+		    InetAddress inetAddress = InetAddress.getLocalHost();
+		    String ipAddress = inetAddress.getHostAddress();
+		    ip = ipAddress;
+		}
+		
+		String url = request.getRequestURI();
+		String userAgent = request.getHeader("User-Agent");
+		
+		try {
+			registrarAcceso(ip, url, userAgent);
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
 		
 		String nickname = request.getParameter("nickname");
 		if (nickname == null) {
@@ -111,4 +127,10 @@ public class VerPerfil extends HttpServlet {
 		doGet(request, response);
 	}
 
+	private void registrarAcceso(String ip, String url, String userAgent) throws ServiceException, publicadores.IOException, URISyntaxException, RemoteException {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		port.registrarAccesoAlSitio(ip, url, userAgent);
+	}
+	
 }

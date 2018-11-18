@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.rmi.RemoteException;
 
 import javax.servlet.ServletException;
@@ -19,9 +20,9 @@ import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtColaborador;
 import publicadores.DtInfoPago;
-import publicadores.DtPerfilUsuario;
 import publicadores.DtUsuario;
 import publicadores.TipoPagoInexistenteExpection;
+import publicadores.URISyntaxException;
 
 @WebServlet("/EmitirConstanciaPagoColaboracion")
 public class EmitirConstanciaPagoColaboracion extends HttpServlet {
@@ -32,6 +33,23 @@ public class EmitirConstanciaPagoColaboracion extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String ip = request.getRemoteAddr();
+		if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+		    InetAddress inetAddress = InetAddress.getLocalHost();
+		    String ipAddress = inetAddress.getHostAddress();
+		    ip = ipAddress;
+		}
+		
+		String url = request.getRequestURI();
+		String userAgent = request.getHeader("User-Agent");
+		
+		try {
+			registrarAcceso(ip, url, userAgent);
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
+		
 		DtUsuario usuLog = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
 		String propuesta = request.getParameter("propuesta");
 		
@@ -69,4 +87,9 @@ public class EmitirConstanciaPagoColaboracion extends HttpServlet {
 		cpp.marcarPagoComoEmitido(nickname, tituloP);
 	}
 
+	private void registrarAcceso(String ip, String url, String userAgent) throws ServiceException, publicadores.IOException, URISyntaxException, RemoteException {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		port.registrarAccesoAlSitio(ip, url, userAgent);
+	}
 }

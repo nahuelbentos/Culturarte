@@ -54,6 +54,7 @@ public class Inicio extends HttpServlet {
 		
 		String url = request.getRequestURI();
 		String userAgent = request.getHeader("User-Agent");
+		
 		try {
 			registrarAcceso(ip, url, userAgent);
 		} catch (ServiceException e1) {
@@ -71,7 +72,6 @@ public class Inicio extends HttpServlet {
 		try {
 			mayoresProponentes = this.getMasProponedores();
 			session.setAttribute("mayProponentes", mayoresProponentes);
-			System.out.println("002.1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,7 +82,6 @@ public class Inicio extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("004");
 		DtUsuario[] rankingUsuarios;
 		try {
 			rankingUsuarios = this.verRankingUsuarios();

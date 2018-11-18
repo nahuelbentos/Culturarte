@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,10 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.rpc.ServiceException;
 
 import publicadores.DtPerfilUsuario;
 import publicadores.DtPropuesta;
 import publicadores.DtUsuario;
+import publicadores.URISyntaxException;
 import publicadores.UsuarioSinLoguearseException;
 import publicadores.ControladorUsuarioPublish;
 import publicadores.ControladorUsuarioPublishService;
@@ -33,7 +37,7 @@ public class ComentarPropuesta extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		ControladorUsuarioPublishService cupsl = new ControladorUsuarioPublishServiceLocator();
 		ControladorUsuarioPublish cup;
 		try {
@@ -77,6 +81,23 @@ public class ComentarPropuesta extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String ip = request.getRemoteAddr();
+		if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+		    InetAddress inetAddress = InetAddress.getLocalHost();
+		    String ipAddress = inetAddress.getHostAddress();
+		    ip = ipAddress;
+		}
+		
+		String url = request.getRequestURI();
+		String userAgent = request.getHeader("User-Agent");
+		
+		try {
+			registrarAcceso(ip, url, userAgent);
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
+		
 		String boton = request.getParameter("submit");
 		if (boton.equals("confirmar")) {
 			DtUsuario usuario = (DtUsuario)request.getSession().getAttribute("usuarioLogueado");
@@ -95,21 +116,15 @@ public class ComentarPropuesta extends HttpServlet {
 		}
 	}
 	
-//	private DtPropuesta[] explorarPropuestasPorComentar(DtUsuario usuarioLogueado) throws Exception{
-//		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
-//		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
-//		return port.listarPropuestasColaborador(usuarioLogueado);
-//	}
-//	
-//	private DtPerfilUsuario getPerfilCompleto(String nickname, DtUsuario usuarioLogueado) throws Exception{
-//		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
-//		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
-//		return port.obtenerPerfilUsuario(nickname, usuarioLogueado);
-//	}
-	
 	private void agregarComentario(String comentario, String propuesta, DtUsuario usuarioLogueado) throws Exception, UsuarioSinLoguearseException{
 		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
 		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
 		port.agregarComentarioAPropuesta(comentario, propuesta, usuarioLogueado);
+	}
+	
+	private void registrarAcceso(String ip, String url, String userAgent) throws ServiceException, publicadores.IOException, URISyntaxException, RemoteException {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		port.registrarAccesoAlSitio(ip, url, userAgent);
 	}
 }
