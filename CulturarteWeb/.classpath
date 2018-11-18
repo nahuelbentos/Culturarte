@@ -34,5 +34,6 @@
 	<classpathentry kind="lib" path="Web Content/WEB-INF/lib/postgresql-42.2.4.jar"/>
 	<classpathentry kind="lib" path="Web Content/WEB-INF/lib/saaj.jar"/>
 	<classpathentry kind="lib" path="Web Content/WEB-INF/lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="Web Content/WEB-INF/lib/itextpdf-5.5.9.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
