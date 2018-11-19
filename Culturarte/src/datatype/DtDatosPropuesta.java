@@ -21,6 +21,7 @@ public class DtDatosPropuesta {
 	
 	//Pseudoatributos
 	private ArrayList<String> colaboradores;
+	private ArrayList<DtColaboracion> colaboraciones;
 	
 	public DtDatosPropuesta(String titulo, String descripcion, byte[] imagen, double montoNecesario,
 			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
@@ -42,6 +43,29 @@ public class DtDatosPropuesta {
 		this.categoria = categoria;
 		this.fechaFinalizacion = fechaFinalizacion;
 		this.estadoActual = estadoActual;
+	}
+	
+	public DtDatosPropuesta(String titulo, String descripcion, byte[] imagen, double montoNecesario,
+			GregorianCalendar fechaPublicacion, GregorianCalendar fechaEspecatulo, String lugar, double precioEntrada,
+			TipoRetorno tipo, double recaudado, ArrayList<String> colaboradores, DtProponente proponenteACargo,
+			String categoria, GregorianCalendar fechaFinalizacion, EstadoPropuesta estadoActual, ArrayList<DtColaboracion> colaboraciones) {
+		super();
+		this.titulo = titulo;
+		this.descripcion = descripcion;
+		this.imagen = imagen;
+		this.montoNecesario = montoNecesario;
+		this.fechaPublicacion = fechaPublicacion;
+		this.fechaEspecatulo = fechaEspecatulo;
+		this.lugar = lugar;
+		this.precioEntrada = precioEntrada;
+		this.tipo = tipo;
+		this.recaudado = recaudado;
+		this.colaboradores = colaboradores;
+		this.proponenteACargo = proponenteACargo;
+		this.categoria = categoria;
+		this.fechaFinalizacion = fechaFinalizacion;
+		this.estadoActual = estadoActual;
+		this.colaboraciones = colaboraciones;
 	}
 
 	public String getTitulo() {
@@ -170,5 +194,17 @@ public class DtDatosPropuesta {
 	
 	public DtDatosPropuesta() {
 		super();
+	}
+	
+	public ArrayList<DtColaboracion> getColaboraciones() {
+		return colaboraciones;
+	}
+	
+	public void setColaboraciones(ArrayList<DtColaboracion> colaboraciones) {
+		this.colaboraciones = colaboraciones;
+	}
+	
+	public void addColaboracion(DtColaboracion colaboracion) {
+		colaboraciones.add(colaboracion);
 	}
 }

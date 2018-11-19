@@ -259,7 +259,7 @@ public class PropuestaController implements IPropuestaController {
 
 	        for (int i = 0; i < cols.size(); i++) {
 	            colab = cols.get(i).getDataColaboracion();
-	            dtC[i] = new DtColaboracion(colab.getTituloPropuesta(), colab.getColaborador(), colab.getMonto(), colab.getFechaAporte(), colab.getTipo());
+	            dtC[i] = new DtColaboracion(colab.getTituloPropuesta(), colab.getColaborador(), colab.getMonto(), colab.getFechaAporte(), colab.getTipo(), colab.getComentario());
 	        }
         }        
         return dtC;
@@ -334,6 +334,7 @@ public class PropuestaController implements IPropuestaController {
 			for (Colaboracion colaboracion : colColab) {
 				montoTotal = montoTotal + colaboracion.getMonto();				
 				dtp.addColaborador(colaboracion.getColaborador().getNickname());
+				dtp.addColaboracion(colaboracion.getDataColaboracion());
 			}
 			dtp.setRecaudado(montoTotal);
 			return dtp;

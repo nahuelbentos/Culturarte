@@ -10,6 +10,8 @@ package publicadores;
 public class DtDatosPropuesta  implements java.io.Serializable {
     private java.lang.String categoria;
 
+    private publicadores.DtColaboracion[] colaboraciones;
+
     private java.lang.String[] colaboradores;
 
     private java.lang.String descripcion;
@@ -43,6 +45,7 @@ public class DtDatosPropuesta  implements java.io.Serializable {
 
     public DtDatosPropuesta(
            java.lang.String categoria,
+           publicadores.DtColaboracion[] colaboraciones,
            java.lang.String[] colaboradores,
            java.lang.String descripcion,
            publicadores.EstadoPropuesta estadoActual,
@@ -58,6 +61,7 @@ public class DtDatosPropuesta  implements java.io.Serializable {
            publicadores.TipoRetorno tipo,
            java.lang.String titulo) {
            this.categoria = categoria;
+           this.colaboraciones = colaboraciones;
            this.colaboradores = colaboradores;
            this.descripcion = descripcion;
            this.estadoActual = estadoActual;
@@ -92,6 +96,34 @@ public class DtDatosPropuesta  implements java.io.Serializable {
      */
     public void setCategoria(java.lang.String categoria) {
         this.categoria = categoria;
+    }
+
+
+    /**
+     * Gets the colaboraciones value for this DtDatosPropuesta.
+     * 
+     * @return colaboraciones
+     */
+    public publicadores.DtColaboracion[] getColaboraciones() {
+        return colaboraciones;
+    }
+
+
+    /**
+     * Sets the colaboraciones value for this DtDatosPropuesta.
+     * 
+     * @param colaboraciones
+     */
+    public void setColaboraciones(publicadores.DtColaboracion[] colaboraciones) {
+        this.colaboraciones = colaboraciones;
+    }
+
+    public publicadores.DtColaboracion getColaboraciones(int i) {
+        return this.colaboraciones[i];
+    }
+
+    public void setColaboraciones(int i, publicadores.DtColaboracion _value) {
+        this.colaboraciones[i] = _value;
     }
 
 
@@ -397,6 +429,9 @@ public class DtDatosPropuesta  implements java.io.Serializable {
             ((this.categoria==null && other.getCategoria()==null) || 
              (this.categoria!=null &&
               this.categoria.equals(other.getCategoria()))) &&
+            ((this.colaboraciones==null && other.getColaboraciones()==null) || 
+             (this.colaboraciones!=null &&
+              java.util.Arrays.equals(this.colaboraciones, other.getColaboraciones()))) &&
             ((this.colaboradores==null && other.getColaboradores()==null) || 
              (this.colaboradores!=null &&
               java.util.Arrays.equals(this.colaboradores, other.getColaboradores()))) &&
@@ -446,6 +481,17 @@ public class DtDatosPropuesta  implements java.io.Serializable {
         int _hashCode = 1;
         if (getCategoria() != null) {
             _hashCode += getCategoria().hashCode();
+        }
+        if (getColaboraciones() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getColaboraciones());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getColaboraciones(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
         }
         if (getColaboradores() != null) {
             for (int i=0;
@@ -515,6 +561,14 @@ public class DtDatosPropuesta  implements java.io.Serializable {
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("colaboraciones");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "colaboraciones"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://publicadores/", "dtColaboracion"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(true);
+        elemField.setMaxOccursUnbounded(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("colaboradores");

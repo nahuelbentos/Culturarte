@@ -136,7 +136,7 @@ public class Colaboracion {
 
 	public DtColaboracion getDataColaboracion() {
 		return new DtColaboracion(propuestaColaborada.getTitulo(), colaborador.getNickname(),
-				monto, fechaAporte, tipo);
+				monto, fechaAporte, tipo, comentario);
 	}
 	
 		
