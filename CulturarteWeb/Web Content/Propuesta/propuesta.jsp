@@ -8,6 +8,7 @@
 <%@page import="datatypeJee.DtPropuestaWeb"%>
 <%@page import="publicadores.DtUsuario"%>
 <%@page import="publicadores.DtColaborador"%>
+<%@page import="publicadores.DtColaboracion"%>
 <%@page import="publicadores.TipoRetorno"%>
 <jsp:include page="../partials/header.jsp"></jsp:include>
 
@@ -60,12 +61,12 @@
   		}
   		
   		/*
-  		* Migración a WS
-		* El datatype generado solamente trae operaciones básicas, no crea la 
-		* funcion isMember para los pseudoatributos colección.
-		* Para no agregar esta lógica al controlador de usuarios en el backend 
-		* solo por una prueba, lo agregué acá.
-  		* Evaluar si se deja acá o se cambia al backend.
+  		* Migracin a WS
+		* El datatype generado solamente trae operaciones bsicas, no crea la 
+		* funcion isMember para los pseudoatributos coleccin.
+		* Para no agregar esta lgica al controlador de usuarios en el backend 
+		* solo por una prueba, lo agregu ac.
+  		* Evaluar si se deja ac o se cambia al backend.
   		*/
   		boolean esFavorita = false;
   		if (user.getTituloFavoritas()!=null) {
@@ -90,7 +91,7 @@
 		if (user.getNickname().equals(propWeb.getProponente())){
 			if (((propWeb.getEstadoPropuesta() == EstadoPropuesta.publicada) || (propWeb.getEstadoPropuesta() == EstadoPropuesta.enFinanciacion)) && (propWeb.getFechaFinalizacion().compareTo(now) > 0)) { 
 		%>
-				<li class="list-group-item"><a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-plus" aria-hidden="true"></i> Extender financiación</a></li>
+				<li class="list-group-item"><a href="ExtenderFinanciacion?titulo=<%=propWeb.getTitulo()%>" class="nav-link"><i class="fa fa-plus" aria-hidden="true"></i> Extender financiacin</a></li>
 		<%
 			}
 		}
@@ -177,19 +178,27 @@
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">Colaborador</th>
-					<th scope="col"></th>
+					<th scope="col">Monto</th>
+					<th scope="col">Fecha de Aporte</th>
+					<th scope="col">Comentario</th>
 				</tr>
 			</thead>
 			<tbody>
 				<%
 				int i = 1;
-				if (propuestaCompleta.getColaboradores() != null){
-					for (String colaborador : propuestaCompleta.getColaboradores()) {
+				if (propuestaCompleta.getColaboraciones() != null){
+					for (DtColaboracion colaboracion: propuestaCompleta.getColaboraciones()) {
 				%>
 					<tr>
 						<th scope="row"><%=i%></th>
-						<td><%=colaborador%></td>
-						<td><a href="#"> Ver Colaboración</a></td>
+						<td><%=colaboracion.getColaborador()%></td>
+						<td><%=colaboracion.getMonto()%></td>
+						<td><%=colaboracion.getFechaAporte().getTime().getDate()%>/<%=colaboracion.getFechaAporte().getTime().getMonth()%>/<%=colaboracion.getFechaAporte().getTime().getYear() + 1900%></td>
+						<% if (colaboracion.getComentario() != null) {	%>
+						<td><%=colaboracion.getComentario()%></td>
+						<% } else { %>
+						<td>No se ingreso un comentario</td>
+						<% } %>
 					</tr>
 				<%
 						i += 1; 
@@ -202,6 +211,7 @@
 	</div>
   	
 	</section>
+		
 	<%
 	if (user instanceof DtColaborador) {
 	%>
@@ -270,7 +280,7 @@
 				var formColaboracion = document.getElementById("formularioColaboracion");
 				formColaboracion.submit();
 			}
-		</script>
+		</script>	
 	<%
 	}
 	%>

@@ -86,7 +86,7 @@ public class VerProponentesEliminados extends JInternalFrame {
         setClosable(true);
         getContentPane().setLayout(null);
         setTitle("Ver Proponentes Eliminados");
-        setBounds(10, 10, 1110, 648);
+        setBounds(10, 10, 1226, 648);
 		
         getContentPane().setLayout(null);
 		
@@ -292,7 +292,7 @@ public class VerProponentesEliminados extends JInternalFrame {
 		getContentPane().add(entTipoRetorno);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(658, 108, 392, 427);
+		scrollPane.setBounds(658, 108, 519, 427);
 		getContentPane().add(scrollPane);
 		scrollPane.setEnabled(false);
 		
@@ -305,7 +305,7 @@ public class VerProponentesEliminados extends JInternalFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Colaborador", "Monto", "Tipo de retorno", "Fecha"
+				"Colaborador", "Monto", "Tipo de retorno", "Fecha", "Comentario"
 			}
 		));
 		scrollPane.setViewportView(tablaPropuestas);
@@ -419,31 +419,15 @@ public class VerProponentesEliminados extends JInternalFrame {
 		tableModel.addColumn("Monto");
 		tableModel.addColumn("Tipo de retorno");
 		tableModel.addColumn("Fecha");
+		tableModel.addColumn("Comentario");
 		monto = (double) 0;
 		for(DtColaboracion colab : dtC) {
-			tableModel.addRow(new String[] {colab.getColaborador(), String.valueOf(colab.getMonto()), colab.getTipo().toString(), sdf.format(colab.getFechaAporte().getTime())});
+			tableModel.addRow(new String[] {colab.getColaborador(), String.valueOf(colab.getMonto()), 
+					colab.getTipo().toString(), sdf.format(colab.getFechaAporte().getTime()), 
+							colab.getComentario()});
 			monto += colab.getMonto();
 		}
 		tablaPropuestas.setModel(tableModel);
 	}
 	
-    private void limpiarFormulario() {
-        txtNickname.setText("");
-        txtNombre.setText("");
-        txtApellido.setText("");
-        txtEmail.setText("");
-        txtFechaDeNacimiento.setText("");
-        txtFechaDeEliminacion.setText("");
-        lblImagen.setIcon(null);
-        lblImagenPropuesta.setIcon(null);
-        entTitulo.setText("");
-        entDescripcion.setText("");
-        entFechaEspectaculo.setText("");
-        entFechaPublicacion.setText("");
-        entLugar.setText("");
-        entMontoNecesario.setText("");
-        entMontoRecaudado.setText("");
-        entTipoRetorno.setText("");
-        lblMensaje.setVisible(false);
-    }
 }

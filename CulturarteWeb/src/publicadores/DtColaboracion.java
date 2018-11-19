@@ -10,6 +10,8 @@ package publicadores;
 public class DtColaboracion  implements java.io.Serializable {
     private java.lang.String colaborador;
 
+    private java.lang.String comentario;
+
     private boolean compEmitido;
 
     private java.util.Calendar fechaAporte;
@@ -27,6 +29,7 @@ public class DtColaboracion  implements java.io.Serializable {
 
     public DtColaboracion(
            java.lang.String colaborador,
+           java.lang.String comentario,
            boolean compEmitido,
            java.util.Calendar fechaAporte,
            double monto,
@@ -34,6 +37,7 @@ public class DtColaboracion  implements java.io.Serializable {
            publicadores.TipoRetorno tipo,
            java.lang.String tituloPropuesta) {
            this.colaborador = colaborador;
+           this.comentario = comentario;
            this.compEmitido = compEmitido;
            this.fechaAporte = fechaAporte;
            this.monto = monto;
@@ -60,6 +64,26 @@ public class DtColaboracion  implements java.io.Serializable {
      */
     public void setColaborador(java.lang.String colaborador) {
         this.colaborador = colaborador;
+    }
+
+
+    /**
+     * Gets the comentario value for this DtColaboracion.
+     * 
+     * @return comentario
+     */
+    public java.lang.String getComentario() {
+        return comentario;
+    }
+
+
+    /**
+     * Sets the comentario value for this DtColaboracion.
+     * 
+     * @param comentario
+     */
+    public void setComentario(java.lang.String comentario) {
+        this.comentario = comentario;
     }
 
 
@@ -197,6 +221,9 @@ public class DtColaboracion  implements java.io.Serializable {
             ((this.colaborador==null && other.getColaborador()==null) || 
              (this.colaborador!=null &&
               this.colaborador.equals(other.getColaborador()))) &&
+            ((this.comentario==null && other.getComentario()==null) || 
+             (this.comentario!=null &&
+              this.comentario.equals(other.getComentario()))) &&
             this.compEmitido == other.isCompEmitido() &&
             ((this.fechaAporte==null && other.getFechaAporte()==null) || 
              (this.fechaAporte!=null &&
@@ -223,6 +250,9 @@ public class DtColaboracion  implements java.io.Serializable {
         if (getColaborador() != null) {
             _hashCode += getColaborador().hashCode();
         }
+        if (getComentario() != null) {
+            _hashCode += getComentario().hashCode();
+        }
         _hashCode += (isCompEmitido() ? Boolean.TRUE : Boolean.FALSE).hashCode();
         if (getFechaAporte() != null) {
             _hashCode += getFechaAporte().hashCode();
@@ -248,6 +278,13 @@ public class DtColaboracion  implements java.io.Serializable {
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("colaborador");
         elemField.setXmlName(new javax.xml.namespace.QName("", "colaborador"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("comentario");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "comentario"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);

@@ -1,5 +1,6 @@
 package datatype;
 
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 public class DtColaboracion {
@@ -11,6 +12,7 @@ public class DtColaboracion {
 	private TipoRetorno tipo;
 	private boolean pago;
 	private boolean compEmitido;
+	private String comentario;
 	
 	public boolean isPago() {
 		return pago;
@@ -50,6 +52,18 @@ public class DtColaboracion {
 		this.pago = pago;
 		this.compEmitido = compEmitido;
 	}
+	
+	public DtColaboracion(String tituloPropuesta, String colaborador, double monto, 
+			GregorianCalendar fechaAporte, TipoRetorno tipo, 
+			String comentario) {
+		super();
+		this.tituloPropuesta = tituloPropuesta;
+		this.colaborador = colaborador;
+		this.monto = monto;
+		this.fechaAporte = fechaAporte;
+		this.tipo = tipo;
+		this.comentario = comentario;
+	}
 			
 	public String getTituloPropuesta() {
 		return tituloPropuesta;
@@ -65,6 +79,10 @@ public class DtColaboracion {
 	}
 	public TipoRetorno getTipo() {
 		return tipo;
+	}
+	
+	public String getComentario() {
+		return comentario;
 	}
 
 	public void setTituloPropuesta(String tituloPropuesta) {
@@ -87,6 +105,10 @@ public class DtColaboracion {
 		this.tipo = tipo;
 	}
 
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+	
 	public DtColaboracion() {
 		super();
 	}
@@ -99,7 +121,9 @@ public class DtColaboracion {
 		this.compEmitido = compEmitido;
 	}
 	
-	
-	
-	
+	public String getFechaAporteAsString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+		return sdf.format(this.fechaAporte.getTime());
+	}
+
 }
