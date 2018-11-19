@@ -29,7 +29,8 @@
 				  <div class="form-row">
 				  	 <div class="col-md-4 mb-3">
 			            <label for="nickname">Nickname</label>
-			            <input type="text" class="form-control" id="nickname" name="nickanme" placeholder="" required>
+			            <input type="text" onblur="validarNicknameEmail('Nickname',this.value,true)" class="form-control" id="nickname" name="nickanme" placeholder="" required>
+			            <i id="iconNickname" style="display: none;" class="fa fa-check-circle fa-2x" aria-hidden="true"></i> <span id="spanNickname" style="display: none;" ></span>	
 			         </div>
 				  </div>
 			      <div class="form-row">
@@ -45,7 +46,8 @@
 			      <div class="form-row">
 			         <div class="col-md-4 mb-3">
 			            <label for="email">Email</label>
-			            <input type="email" class="form-control" id="email" placeholder="" name="email" required>
+			            <input type="email" onblur="validarNicknameEmail('Email',this.value,false)" class="form-control" id="email" placeholder="" name="email" required>
+			            <i id="iconEmail" style="display: none;" class="fa fa-check-circle fa-2x" aria-hidden="true"></i><span id="spanEmail" style="display: none;" ></span>	
 			         </div>
 			      	<div class="col-md-4 mb-3">
 			         	<label for="nickname">Fecha de nacimiento</label>
@@ -94,6 +96,7 @@
 			            </div>
 			         </div>
 			      </div>
+			      
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary" name="submit" value="registrarse">Aceptar</button>

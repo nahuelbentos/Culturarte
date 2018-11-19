@@ -170,5 +170,9 @@ public class ControladorUsuarioPublish {
 	public void registrarAccesoAlSitio(String ip, String url, String userAgent) throws IOException, URISyntaxException {
 		IUC.registrarAccesoAlSitio(ip, url, userAgent);
 	}
+	@WebMethod
+	public boolean verificarNicknameEmail(String datoSesion, boolean esNickname) {
+		return IUC.verificarNicknameEmail(datoSesion,esNickname);
+	}
 
 }

@@ -25,7 +25,6 @@ import publicadores.DtUsuario;
 import publicadores.URISyntaxException;
 import publicadores.DtPropuesta;
 import publicadores.UsuarioSinLoguearseException;
-
 /**
  * Servlet implementation class AgregarFavorita
  */

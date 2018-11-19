@@ -63,4 +63,7 @@ public interface IUsuarioController {
 	public abstract void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException;
 	
 	public abstract void registrarAccesoAlSitio(String ip, String url, String userAgent) throws IOException, URISyntaxException;
+
+	public abstract boolean verificarNicknameEmail(String nickEmail, boolean esNickname);
+
 }

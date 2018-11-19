@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -807,30 +806,18 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		
-		System.out.println("listarFavoritasUsuario \n");
-		Usuario u = em.find(Usuario.class, nickname);
-		System.out.println("1.1 nickname:"+nickname+ "\n");
-		System.out.println("1.2 nickname:"+u.getNickname()+ "\n");
-		
-
+				
         @SuppressWarnings("unchecked")
 		List<Propuesta> favoritas = em.createQuery("select u.propuestasFavoritas FROM Usuario u WHERE u.nickname = :nickname")
         		.setParameter("nickname", nickname)
         		.getResultList();
         em.close();
-        
-//        List<Propuesta> propuestas = u.getPropuestasFavoritas();        
-		System.out.println("3 size: "+favoritas.size() + " \n");
-
+    
 		DtPropuesta[] dtpop = new DtPropuesta[favoritas.size()];
-		System.out.println("4 \n"); 
 		
 		for (int i = 0; i < dtpop.length; i++) {
-			System.out.println("5." +i+ " \n");
 			dtpop[i] = favoritas.get(i).getDtPropuestaLazy();	
 		}		
-		System.out.println("6 \n");
 		return dtpop;
 	}
 	
@@ -942,5 +929,39 @@ public class UsuarioController implements IUsuarioController {
         	} catch (IOException e) {
         	    System.out.println("Ocurrio un error, no se pudo registrar el acceso al sitio.");
         	}
+	}
+	public boolean verificarNicknameEmail(String datoSesion, boolean esNickname) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		Usuario u = null;
+		if(esNickname) {
+			try {
+				u = (Usuario)em.createQuery("FROM Usuario WHERE nickname= :nickname "
+						+ "and flagElm = :no")
+						.setParameter("no", false)
+						.setParameter("nickname", datoSesion)
+						.getSingleResult();
+			} catch (NoResultException nre){
+			}
+		}else {
+			try {				
+			u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo "
+					+ "and flagElm = :no")
+					.setParameter("no", false)
+					.setParameter("correo", datoSesion)
+					.getSingleResult();
+					
+			} catch (NoResultException nre){
+			}
+		}
+		em.close();
+		//Si es null, el dato en que recibo es valido porque no existe.
+		if (u==null) {		
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 }
