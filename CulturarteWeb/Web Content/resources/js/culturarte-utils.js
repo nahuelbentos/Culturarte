@@ -71,29 +71,34 @@ function cambiarEstilo(idElemento){
 function validarNicknameEmail(idElemento,datoSesion,esNickname){
 	//Si el dato es vacio, no evaluo ya que sale mensaje de requerido.
 	if(datoSesion!=""){
+		var validEmail = true;
+		if(!esNickname)
+			validEmail = validateEmail(datoSesion);
 		// instanciar ajax
-		peticionHTTP = inicializarXHR();
-		var bloqueMsj = document.getElementById("span"+idElemento);
-	    if (peticionHTTP) {
-	        peticionHTTP.open("GET",'ValidarNicknameEmail?datoSesion='+datoSesion+'&esNickname='+esNickname,true);
-	        peticionHTTP.send(null);
-	        // controlar estados
-	        peticionHTTP.onreadystatechange = function() {
-	            if (peticionHTTP.readyState==READY_STATE_COMPLETE) {
-	                if (peticionHTTP.status==STATUS_OK) {
-	                	cambiarEstiloValidado(idElemento,esNickname);
-	                	if(peticionHTTP.responseText == "El email está disponible" || peticionHTTP.responseText == "El nickname está disponible"){
-	                		$('#span'+idElemento).removeClass().addClass('validNickEmail');
-	                		$('#icon'+idElemento).removeClass().addClass('validNickEmail fa fa-check-circle fa-2x');
-	                	}else{
-	                		$('#span'+idElemento).removeClass().addClass('invalidNickEmail');
-	                		$('#icon'+idElemento).removeClass().addClass('invalidNickEmail fa fa-exclamation-circle fa-2x');                    	
-	                	}
-	                	bloqueMsj.innerHTML = peticionHTTP.responseText;
-	                }
-	            }
-	        }
-	    }
+		if(validEmail){
+			peticionHTTP = inicializarXHR();
+			var bloqueMsj = document.getElementById("span"+idElemento);
+		    if (peticionHTTP) {
+		        peticionHTTP.open("GET",'ValidarNicknameEmail?datoSesion='+datoSesion+'&esNickname='+esNickname,true);
+		        peticionHTTP.send(null);
+		        // controlar estados
+		        peticionHTTP.onreadystatechange = function() {
+		            if (peticionHTTP.readyState==READY_STATE_COMPLETE) {
+		                if (peticionHTTP.status==STATUS_OK) {
+		                	cambiarEstiloValidado(idElemento,esNickname);
+		                	if(peticionHTTP.responseText == "El email está disponible" || peticionHTTP.responseText == "El nickname está disponible"){
+		                		$('#span'+idElemento).removeClass().addClass('validNickEmail');
+		                		$('#icon'+idElemento).removeClass().addClass('validNickEmail fa fa-check-circle fa-2x');
+		                	}else{
+		                		$('#span'+idElemento).removeClass().addClass('invalidNickEmail');
+		                		$('#icon'+idElemento).removeClass().addClass('invalidNickEmail fa fa-exclamation-circle fa-2x');                    	
+		                	}
+		                	bloqueMsj.innerHTML = peticionHTTP.responseText;
+		                }
+		            }
+		        }
+		    }
+		}
 	}else{
 		$('#span'+idElemento).removeClass();
 		$('#icon'+idElemento).removeClass();
@@ -109,6 +114,11 @@ function cambiarEstiloValidado(idElemento,esNickname){
 		icono.removeClass('fa-exclamation-circle').addClass('fa-check-circle');		
 	}
 	
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
 }
 
 function seguirUsuario(nickname){
