@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 
 import javax.servlet.RequestDispatcher;
@@ -19,6 +21,7 @@ import publicadores.ControladorUsuarioPublishService;
 import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtProponente;
 import publicadores.DtUsuario;
+import publicadores.URISyntaxException;
 import datatypeJee.TipoUsuario;
 import publicadores.UsuarioNoExisteElUsuarioException;
 //import logica.Factory;
@@ -43,7 +46,21 @@ public class ManejoSesion extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ip = request.getRemoteAddr();
+		if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+		    InetAddress inetAddress = InetAddress.getLocalHost();
+		    String ipAddress = inetAddress.getHostAddress();
+		    ip = ipAddress;
+		}
 		
+		String url = request.getRequestURI();
+		String userAgent = request.getHeader("User-Agent");
+		
+		try {
+			registrarAcceso(ip, url, userAgent);
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -52,7 +69,6 @@ public class ManejoSesion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String manejo = request.getParameter("manejoSesion");
 		if (manejo.equals("iniciar")) {
-			System.out.println("Iniciar sesion");
 			String usuario = request.getParameter("usuario");
 			String password = request.getParameter("password");
 			
@@ -108,4 +124,9 @@ public class ManejoSesion extends HttpServlet {
 
 	}
 	
+	private void registrarAcceso(String ip, String url, String userAgent) throws ServiceException, publicadores.IOException, URISyntaxException, RemoteException {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		port.registrarAccesoAlSitio(ip, url, userAgent);
+	}
 }

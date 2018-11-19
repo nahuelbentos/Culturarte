@@ -71,6 +71,7 @@ public class Principal {
 	private ConsultaPerfilColaborador consultaPerfilColaborador;
 	private ConsultaPropuesta consultaPropuesta;
 	private ConsultaPropuestaPorEstado consultaPropuestaPorEstado;
+	private VerRegistroDeAccesosAlSitio verRegistroDeAccesosAlSitio;
 	
 	private IUsuarioController IUC;
 	private ICategoriaController ICC;
@@ -158,6 +159,9 @@ public class Principal {
 		
         verProponentesEliminados = new VerProponentesEliminados(IUC, IPC);
         verProponentesEliminados.setVisible(false);
+        
+        verRegistroDeAccesosAlSitio = new VerRegistroDeAccesosAlSitio();
+        verRegistroDeAccesosAlSitio.setVisible(false);
 		
 		frmPaginaPrincipal.getContentPane().setLayout(null);
 		frmPaginaPrincipal.getContentPane().add(altaPerfil);
@@ -174,6 +178,7 @@ public class Principal {
 		frmPaginaPrincipal.getContentPane().add(consultaPropuesta);
 		frmPaginaPrincipal.getContentPane().add(consultaPropuestaPorEstado);
 		frmPaginaPrincipal.getContentPane().add(verProponentesEliminados);
+		frmPaginaPrincipal.getContentPane().add(verRegistroDeAccesosAlSitio);
 	}
 
 	public void initialize() {
@@ -330,6 +335,22 @@ public class Principal {
 		});
 		mnNewMenu_1.add(mntmBorrarDatos);
 
+		JMenuItem mntmVerAccesos = new JMenuItem("Ver Registro de Accesos al Sitio");
+		mntmVerAccesos.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					verRegistroDeAccesosAlSitio.setListaDeAccesosAlSitio();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null, "Ocurrio un error.", 
+							"Ver Registro de Accesos al Sitio", JOptionPane.ERROR_MESSAGE);
+				}
+				verRegistroDeAccesosAlSitio.setVisible(true);
+			}
+		});
+		mnNewMenu_1.add(mntmVerAccesos);
+		
 		JMenu mnUsuarios = new JMenu("Usuarios");
 		menuBar.add(mnUsuarios);
 
@@ -541,7 +562,6 @@ public class Principal {
             			Double.parseDouble(monto), fecha, tipoRetorno);            			
             	
             	IPC.generarColaboracion(dtColaboracion);
-            	
             }
         }
 	}
@@ -620,4 +640,5 @@ public class Principal {
     	fileInputStream.close();
 		return picInBytes;
 	}
+
 }

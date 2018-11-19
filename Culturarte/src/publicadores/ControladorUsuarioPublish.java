@@ -1,5 +1,8 @@
 package publicadores;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -161,6 +164,15 @@ public class ControladorUsuarioPublish {
 	@WebMethod
 	public void eliminarCuenta(String nickname) throws UsuarioNoExisteElUsuarioException{
 		IUC.eliminarCuenta(nickname);
+	}
+	
+	@WebMethod
+	public void registrarAccesoAlSitio(String ip, String url, String userAgent) throws IOException, URISyntaxException {
+		IUC.registrarAccesoAlSitio(ip, url, userAgent);
+	}
+	@WebMethod
+	public boolean verificarNicknameEmail(String datoSesion, boolean esNickname) {
+		return IUC.verificarNicknameEmail(datoSesion,esNickname);
 	}
 
 }

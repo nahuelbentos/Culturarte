@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 
@@ -24,6 +25,9 @@ import publicadores.ColaboracionNoExisteException;
 import publicadores.ControladorPropuestaPublish;
 import publicadores.ControladorPropuestaPublishService;
 import publicadores.ControladorPropuestaPublishServiceLocator;
+import publicadores.ControladorUsuarioPublish;
+import publicadores.ControladorUsuarioPublishService;
+import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtColaborador;
 import publicadores.DtInfoPago;
 import publicadores.DtPago;
@@ -32,7 +36,7 @@ import publicadores.DtPagoTarjeta;
 import publicadores.DtPagoTrfBancaria;
 import publicadores.DtUsuario;
 import publicadores.TipoPagoInexistenteExpection;
-import publicadores.TipoTarjeta;
+import publicadores.URISyntaxException;
 
 @WebServlet("/ObtenerPdfConstanciaPagoColaboracion")
 public class ObtenerPdfConstanciaPagoColaboracion extends HttpServlet {
@@ -43,6 +47,21 @@ public class ObtenerPdfConstanciaPagoColaboracion extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ip = request.getRemoteAddr();
+		if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+		    InetAddress inetAddress = InetAddress.getLocalHost();
+		    String ipAddress = inetAddress.getHostAddress();
+		    ip = ipAddress;
+		}
+		
+		String url = request.getRequestURI();
+		String userAgent = request.getHeader("User-Agent");
+		
+		try {
+			registrarAcceso(ip, url, userAgent);
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
 		try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -165,4 +184,9 @@ public class ObtenerPdfConstanciaPagoColaboracion extends HttpServlet {
 		return cpp.obtenerComprobanteDePagoDeColaboracion(nickname, tituloP);
 	}
 
+	private void registrarAcceso(String ip, String url, String userAgent) throws ServiceException, publicadores.IOException, URISyntaxException, RemoteException {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		port.registrarAccesoAlSitio(ip, url, userAgent);
+	}
 }

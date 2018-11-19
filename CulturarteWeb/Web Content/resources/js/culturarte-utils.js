@@ -56,8 +56,72 @@ function gestionarFavoritas(idElemento, tituloPropuesta){
     }
 }
 
+function cambiarEstilo(idElemento){
+	var icono = $('#'+idElemento);
+	var button = icono.parent('button');
+	var esFavorita = icono.hasClass('fa-heart');
+	if (!esFavorita){
+		icono.removeClass('fa-heart-o').addClass('fa-heart');
+		button.attr('data-original-title','Quitar de favoritas');
+	} else{
+		icono.removeClass('fa-heart').addClass('fa-heart-o');
+		button.attr('data-original-title','Agregar como favorita');
+	}
+}
+function validarNicknameEmail(idElemento,datoSesion,esNickname){
+	//Si el dato es vacio, no evaluo ya que sale mensaje de requerido.
+	if(datoSesion!=""){
+		var validEmail = true;
+		if(!esNickname)
+			validEmail = validateEmail(datoSesion);
+		// instanciar ajax
+		if(validEmail){
+			peticionHTTP = inicializarXHR();
+			var bloqueMsj = document.getElementById("span"+idElemento);
+		    if (peticionHTTP) {
+		        peticionHTTP.open("GET",'ValidarNicknameEmail?datoSesion='+datoSesion+'&esNickname='+esNickname,true);
+		        peticionHTTP.send(null);
+		        // controlar estados
+		        peticionHTTP.onreadystatechange = function() {
+		            if (peticionHTTP.readyState==READY_STATE_COMPLETE) {
+		                if (peticionHTTP.status==STATUS_OK) {
+		                	cambiarEstiloValidado(idElemento,esNickname);
+		                	if(peticionHTTP.responseText == "El email está disponible" || peticionHTTP.responseText == "El nickname está disponible"){
+		                		$('#span'+idElemento).removeClass().addClass('validNickEmail');
+		                		$('#icon'+idElemento).removeClass().addClass('validNickEmail fa fa-check-circle fa-2x');
+		                	}else{
+		                		$('#span'+idElemento).removeClass().addClass('invalidNickEmail');
+		                		$('#icon'+idElemento).removeClass().addClass('invalidNickEmail fa fa-exclamation-circle fa-2x');                    	
+		                	}
+		                	bloqueMsj.innerHTML = peticionHTTP.responseText;
+		                }
+		            }
+		        }
+		    }
+		}
+	}else{
+		$('#span'+idElemento).removeClass();
+		$('#icon'+idElemento).removeClass();
+	}
+}
+
+function cambiarEstiloValidado(idElemento,esNickname){
+	var icono = $('#icon'+idElemento);
+	var esValido = icono.hasClass('fa-check-circle');
+	if (!esValido){
+		icono.removeClass('fa-check-circle').addClass('fa-exclamation-circle');
+	} else{
+		icono.removeClass('fa-exclamation-circle').addClass('fa-check-circle');		
+	}
+	
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 function seguirUsuario(nickname){
-	console.log("arranca peticion");
 	
 	// instanciar ajax
 	peticionHTTP = inicializarXHR();
@@ -70,9 +134,7 @@ function seguirUsuario(nickname){
             if (peticionHTTP.readyState==READY_STATE_COMPLETE) {
                 if (peticionHTTP.status==STATUS_OK) {
                 	cambiarEstiloStar(nickname);
-//                	console.log("Termio peticion");
                 	bloqueMsj.innerHTML = peticionHTTP.responseText;
-//                	alert(peticionHTTP.responseText);
                 	bloqueMsj.style.display = "inline";
                 }
             }
@@ -92,7 +154,6 @@ function dejarSeguirUsuario(nickname){
             if (peticionHTTP.readyState==READY_STATE_COMPLETE) {
                 if (peticionHTTP.status==STATUS_OK) {
                 	cambiarEstiloStar(nickname);
-//                	console.log("Termio peticion");
                 	bloqueMsj.innerHTML = peticionHTTP.responseText;
                 }
             }
@@ -100,19 +161,6 @@ function dejarSeguirUsuario(nickname){
     }
 }
 
-function cambiarEstilo(idElemento){
-	var icono = $('#'+idElemento);
-	var button = icono.parent('button');
-	var esFavorita = icono.hasClass('fa-heart');
-	if (!esFavorita){
-		icono.removeClass('fa-heart-o').addClass('fa-heart');
-		console.log(button.attr('data-original-title'));
-		button.attr('data-original-title','Quitar de favoritas');
-	} else{
-		icono.removeClass('fa-heart').addClass('fa-heart-o');
-		button.attr('data-original-title','Agregar como favorita');
-	}
-}
 
 function cambiarEstiloStar(nickname){
 	var icono = $('#'+nickname);
@@ -120,7 +168,6 @@ function cambiarEstiloStar(nickname){
 	var esFavorita = icono.hasClass('fa-star');
 	if (!esFavorita){
 		icono.removeClass('fa-star-o').addClass('fa-star');
-		console.log(button.attr('data-original-title'));
 		button.attr('data-original-title','Dejar de seguir');
 	} else{
 		icono.removeClass('fa-star').addClass('fa-star-o');

@@ -50,6 +50,18 @@ public class ControladorUsuarioPublishProxy implements publicadores.ControladorU
     controladorUsuarioPublish.eliminarCuenta(arg0);
   }
   
+  public void registrarAccesoAlSitio(java.lang.String arg0, java.lang.String arg1, java.lang.String arg2) throws java.rmi.RemoteException, publicadores.IOException, publicadores.URISyntaxException{
+    if (controladorUsuarioPublish == null)
+      _initControladorUsuarioPublishProxy();
+    controladorUsuarioPublish.registrarAccesoAlSitio(arg0, arg1, arg2);
+  }
+  
+  public boolean verificarNicknameEmail(java.lang.String arg0, boolean arg1) throws java.rmi.RemoteException{
+    if (controladorUsuarioPublish == null)
+      _initControladorUsuarioPublishProxy();
+    return controladorUsuarioPublish.verificarNicknameEmail(arg0, arg1);
+  }
+  
   public publicadores.DtUsuario iniciarSesion(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException, publicadores.UsuarioNoExisteElUsuarioException{
     if (controladorUsuarioPublish == null)
       _initControladorUsuarioPublishProxy();
@@ -116,10 +128,22 @@ public class ControladorUsuarioPublishProxy implements publicadores.ControladorU
     controladorUsuarioPublish.agregarComentarioAPropuesta(arg0, arg1, arg2);
   }
   
-  public publicadores.DtPerfilColaborador verPerfilColaborador(java.lang.String arg0) throws java.rmi.RemoteException{
+  public publicadores.DtUsuario[] listarProponentes() throws java.rmi.RemoteException, publicadores.ProponenteNoExisteException{
     if (controladorUsuarioPublish == null)
       _initControladorUsuarioPublishProxy();
-    return controladorUsuarioPublish.verPerfilColaborador(arg0);
+    return controladorUsuarioPublish.listarProponentes();
+  }
+  
+  public publicadores.DtUsuario[] listarColaboradores() throws java.rmi.RemoteException, publicadores.ColaboradorNoExisteException{
+    if (controladorUsuarioPublish == null)
+      _initControladorUsuarioPublishProxy();
+    return controladorUsuarioPublish.listarColaboradores();
+  }
+  
+  public publicadores.DtPerfilProponente verPerfilProponente(java.lang.String arg0) throws java.rmi.RemoteException{
+    if (controladorUsuarioPublish == null)
+      _initControladorUsuarioPublishProxy();
+    return controladorUsuarioPublish.verPerfilProponente(arg0);
   }
   
   public publicadores.DtPropuesta[] listarPropuestasDeUnColaborador(java.lang.String arg0) throws java.rmi.RemoteException{
@@ -132,12 +156,6 @@ public class ControladorUsuarioPublishProxy implements publicadores.ControladorU
     if (controladorUsuarioPublish == null)
       _initControladorUsuarioPublishProxy();
     return controladorUsuarioPublish.listarColaboracion(arg0, arg1);
-  }
-  
-  public publicadores.DtUsuario[] listarProponentes() throws java.rmi.RemoteException, publicadores.ProponenteNoExisteException{
-    if (controladorUsuarioPublish == null)
-      _initControladorUsuarioPublishProxy();
-    return controladorUsuarioPublish.listarProponentes();
   }
   
   public publicadores.DtUsuario[] listarUsuarios() throws java.rmi.RemoteException{
@@ -158,16 +176,10 @@ public class ControladorUsuarioPublishProxy implements publicadores.ControladorU
     return controladorUsuarioPublish.listarUsuariosQueSigue(arg0);
   }
   
-  public publicadores.DtUsuario[] listarColaboradores() throws java.rmi.RemoteException, publicadores.ColaboradorNoExisteException{
+  public publicadores.DtPerfilColaborador verPerfilColaborador(java.lang.String arg0) throws java.rmi.RemoteException{
     if (controladorUsuarioPublish == null)
       _initControladorUsuarioPublishProxy();
-    return controladorUsuarioPublish.listarColaboradores();
-  }
-  
-  public publicadores.DtPerfilProponente verPerfilProponente(java.lang.String arg0) throws java.rmi.RemoteException{
-    if (controladorUsuarioPublish == null)
-      _initControladorUsuarioPublishProxy();
-    return controladorUsuarioPublish.verPerfilProponente(arg0);
+    return controladorUsuarioPublish.verPerfilColaborador(arg0);
   }
   
   

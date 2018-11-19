@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import javax.xml.rpc.ServiceException;
 
 import publicadores.ControladorUsuarioPublish;
 import publicadores.ControladorUsuarioPublishService;
@@ -22,6 +25,7 @@ import publicadores.ControladorUsuarioPublishServiceLocator;
 import publicadores.DtColaborador;
 import publicadores.DtProponente;
 import publicadores.DtUsuario;
+import publicadores.URISyntaxException;
 import datatypeJee.TipoUsuario;
 import publicadores.UsuarioYaExisteElEmailException;
 import publicadores.UsuarioYaExisteElUsuarioException;
@@ -44,6 +48,23 @@ public class AltaPerfil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String ip = request.getRemoteAddr();
+		if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+		    InetAddress inetAddress = InetAddress.getLocalHost();
+		    String ipAddress = inetAddress.getHostAddress();
+		    ip = ipAddress;
+		}
+		
+		String url = request.getRequestURI();
+		String userAgent = request.getHeader("User-Agent");
+		
+		try {
+			registrarAcceso(ip, url, userAgent);
+		} catch (ServiceException e1) {
+			e1.printStackTrace();
+		}
+		
 		String boton = request.getParameter("submit");
 		if (boton.equals("registrarse")) {
 			String nombre = request.getParameter("nombre");
@@ -74,9 +95,6 @@ public class AltaPerfil extends HttpServlet {
 			Part file = request.getPart("imagenUsuarioArchivo");
 			byte[] imagen = new byte[(int) file.getSize()];
 	    	file.getInputStream().read(imagen);
-	    	
-//			Factory factory = Factory.getInstance();
-//			IUsuarioController IUC = factory.getIUsuarioController();
 
 			DtUsuario dtUsuario = null;
 			
@@ -147,5 +165,11 @@ public class AltaPerfil extends HttpServlet {
 		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
 		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
 		port.agregarUsuario(dtUsuario);
+	}
+	
+	private void registrarAcceso(String ip, String url, String userAgent) throws ServiceException, publicadores.IOException, URISyntaxException, RemoteException {
+		ControladorUsuarioPublishService cups = new ControladorUsuarioPublishServiceLocator();
+		ControladorUsuarioPublish port = cups.getControladorUsuarioPublishPort();
+		port.registrarAccesoAlSitio(ip, url, userAgent);
 	}
 }

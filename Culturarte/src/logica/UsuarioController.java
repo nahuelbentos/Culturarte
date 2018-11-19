@@ -1,5 +1,10 @@
 package logica;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -801,30 +806,18 @@ public class UsuarioController implements IUsuarioController {
 		cph = ConexionPostgresHibernate.getInstancia();
 		emf = cph.getEntityManager();
 		em = emf.createEntityManager();
-		
-		System.out.println("listarFavoritasUsuario \n");
-		Usuario u = em.find(Usuario.class, nickname);
-		System.out.println("1.1 nickname:"+nickname+ "\n");
-		System.out.println("1.2 nickname:"+u.getNickname()+ "\n");
-		
-
+				
         @SuppressWarnings("unchecked")
 		List<Propuesta> favoritas = em.createQuery("select u.propuestasFavoritas FROM Usuario u WHERE u.nickname = :nickname")
         		.setParameter("nickname", nickname)
         		.getResultList();
         em.close();
-        
-//        List<Propuesta> propuestas = u.getPropuestasFavoritas();        
-		System.out.println("3 size: "+favoritas.size() + " \n");
-
+    
 		DtPropuesta[] dtpop = new DtPropuesta[favoritas.size()];
-		System.out.println("4 \n"); 
 		
 		for (int i = 0; i < dtpop.length; i++) {
-			System.out.println("5." +i+ " \n");
 			dtpop[i] = favoritas.get(i).getDtPropuestaLazy();	
 		}		
-		System.out.println("6 \n");
 		return dtpop;
 	}
 	
@@ -875,5 +868,100 @@ public class UsuarioController implements IUsuarioController {
 			em.close();
 			throw new UsuarioNoExisteElUsuarioException("El usuario no es proponente");
 		}
+	}
+
+	@Override
+	public void registrarAccesoAlSitio(String ip, String url, String userAgent) {
+        String os = "";
+        if (userAgent.toLowerCase().indexOf("windows") >= 0) {
+            os = "Windows";
+        } else if(userAgent.toLowerCase().indexOf("mac") >= 0) {
+            os = "Mac";
+        } else if(userAgent.toLowerCase().indexOf("x11") >= 0) {
+            os = "Unix";
+        } else if(userAgent.toLowerCase().indexOf("android") >= 0) {
+            os = "Android";
+        } else if(userAgent.toLowerCase().indexOf("iphone") >= 0) {
+            os = "IPhone";
+        } else {
+            os = "UnKnown, More-Info: "+userAgent;
+        }
+	
+        String user = userAgent.toLowerCase();
+        String browser = "";
+        if (user.contains("msie")) {
+            String substring = userAgent.substring(userAgent.indexOf("MSIE")).split(";")[0];
+            browser = substring.split(" ")[0].replace("MSIE", "IE")+"-"+substring.split(" ")[1];
+        } else if (user.contains("safari") && user.contains("version")) {
+            browser = (userAgent.substring(userAgent.indexOf("Safari")).split(" ")[0]).split("/")[0]+"-"+(userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
+        } else if ( user.contains("opr") || user.contains("opera")) {
+            if(user.contains("opera"))
+                browser=(userAgent.substring(userAgent.indexOf("Opera")).split(" ")[0]).split("/")[0]+"-"+(userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
+            else if(user.contains("opr"))
+                browser=((userAgent.substring(userAgent.indexOf("OPR")).split(" ")[0]).replace("/", "-")).replace("OPR", "Opera");
+        } else if (user.contains("chrome")) {
+            browser=(userAgent.substring(userAgent.indexOf("Chrome")).split(" ")[0]).replace("/", "-");
+        } else if ((user.indexOf("mozilla/7.0") > -1) || (user.indexOf("netscape6") != -1)  || (user.indexOf("mozilla/4.7") != -1) || (user.indexOf("mozilla/4.78") != -1) || (user.indexOf("mozilla/4.08") != -1) || (user.indexOf("mozilla/3") != -1)) {
+            browser = "Netscape-?";
+        } else if (user.contains("firefox")) {
+            browser=(userAgent.substring(userAgent.indexOf("Firefox")).split(" ")[0]).replace("/", "-");
+        } else if(user.contains("rv")) {
+            browser="IE-" + user.substring(user.indexOf("rv") + 3, user.indexOf(")"));
+        } else {
+            browser = "UnKnown, More-Info: " + userAgent;
+        }
+		
+		try(FileWriter fw = new FileWriter("src/main/resources/accesos.csv", true);
+        	    BufferedWriter bw = new BufferedWriter(fw);
+        	    PrintWriter out = new PrintWriter(bw))
+        	{
+				GregorianCalendar fecha = (GregorianCalendar) GregorianCalendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        	    out.print(ip);
+        	    out.print(",");
+        	    out.print(url);
+        	    out.print(",");
+        	    out.print(browser);
+        	    out.print(",");
+        	    out.print(os);
+        	    out.print(",");
+        	    out.println(sdf.format(fecha.getTime()));
+        	} catch (IOException e) {
+        	    System.out.println("Ocurrio un error, no se pudo registrar el acceso al sitio.");
+        	}
+	}
+	public boolean verificarNicknameEmail(String datoSesion, boolean esNickname) {
+		cph = ConexionPostgresHibernate.getInstancia();
+		emf = cph.getEntityManager();
+		em = emf.createEntityManager();
+		Usuario u = null;
+		if(esNickname) {
+			try {
+				u = (Usuario)em.createQuery("FROM Usuario WHERE nickname= :nickname "
+						+ "and flagElm = :no")
+						.setParameter("no", false)
+						.setParameter("nickname", datoSesion)
+						.getSingleResult();
+			} catch (NoResultException nre){
+			}
+		}else {
+			try {				
+			u = (Usuario)em.createQuery("FROM Usuario WHERE email= :correo "
+					+ "and flagElm = :no")
+					.setParameter("no", false)
+					.setParameter("correo", datoSesion)
+					.getSingleResult();
+					
+			} catch (NoResultException nre){
+			}
+		}
+		em.close();
+		//Si es null, el dato en que recibo es valido porque no existe.
+		if (u==null) {		
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 }
