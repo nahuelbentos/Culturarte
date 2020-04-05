@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -68,6 +69,8 @@ public class AltaPerfil extends JInternalFrame {
 	private JLabel lblApellido;
 	private JLabel lblEmail;
 	private JButton btnAceptar;
+	private JButton btnTestNbentos;
+	private JLabel lblTestNbentos;
 	private JButton btnCancelar;
 	private JButton btnSeleecionarImagen;
 	private JLabel lblFechaDeNacimiento;
@@ -182,7 +185,18 @@ public class AltaPerfil extends JInternalFrame {
 		});
 		btnSeleecionarImagen.setBounds(389, 226, 133, 20);
 		getContentPane().add(btnSeleecionarImagen);
-		
+
+		btnTestNbentos = new JButton("Test nbentos");
+		btnTestNbentos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test nbentos funca");
+
+				//registrarUsuarioActionPerformed(arg0);
+			}
+		});
+		btnTestNbentos.setBounds(155, 555, 99, 23);
+		getContentPane().add(btnTestNbentos);
+
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -340,7 +354,7 @@ public class AltaPerfil extends JInternalFrame {
     		}
     		try{
     			iUsuarioController.agregarUsuario(dtUsuario);
-            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con éxito", "Registrar Usuario",
+            	JOptionPane.showMessageDialog(this, "El Usuario se ha creado con ï¿½xito", "Registrar Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (UsuarioYaExisteElUsuarioException | UsuarioYaExisteElEmailException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
@@ -361,7 +375,7 @@ public class AltaPerfil extends JInternalFrame {
         	fechaNacimiento.setTime(dateChooser.getDate());
         }
         if (!Arrays.equals(txtPassword.getPassword(), txtPasswordConfirmar.getPassword())) {
-	        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Registrar Usuario Proponente",
+	        JOptionPane.showMessageDialog(this, "Las contraseï¿½as no coinciden", "Registrar Usuario Proponente",
 	                JOptionPane.ERROR_MESSAGE);
 	        return false;
         } else if (rdbtnColaborador.isSelected()) {

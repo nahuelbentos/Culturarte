@@ -1,17 +1,17 @@
 package publicadores;
 
+import datatype.DtCategoria;
+import excepciones.CategoriaNoExisteException;
+import excepciones.CategoriaYaExisteException;
+import logica.Factory;
+import logica.ICategoriaController;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.xml.ws.Endpoint;
-
-import datatype.DtCategoria;
-import excepciones.CategoriaNoExisteException;
-import excepciones.CategoriaYaExisteException;
-import logica.Factory;
-import logica.ICategoriaController;
 
 @WebService
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)

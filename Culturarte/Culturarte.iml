@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/src/libs/antlr-2.7.7.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/byte-buddy-1.8.17.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/classmate-1.3.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/dom4j-1.6.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/hibernate-commons-annotations-5.0.4.Final.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/hibernate-core-5.3.5.Final.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/jandex-2.0.5.Final.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/javassist-3.23.1-GA.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/javax.activation-api-1.2.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/javax.persistence-api-2.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/jboss-logging-3.3.2.Final.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/jboss-transaction-api_1.2_spec-1.1.1.Final.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/postgresql-42.2.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/jcalendar-1.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/src/libs/jgoodies-looks-2.4.1.jar!/" />
+    <src_description expected_position="1">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="1" />
+      <src_folder value="file://$MODULE_DIR$/src/main/resources" expected_position="2" />
+    </src_description>
+  </component>
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <datasource-mapping>
+          <factory-entry name="Conexion" />
+        </datasource-mapping>
+        <naming-strategy-map />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/META-INF/persistence.xml" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_9">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="11" jdkType="JavaSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library name="antlr-2.7.7.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/antlr-2.7.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="byte-buddy-1.8.17.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/byte-buddy-1.8.17.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="classmate-1.3.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/classmate-1.3.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="dom4j-1.6.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/dom4j-1.6.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="hibernate-commons-annotations-5.0.4.Final.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/hibernate-commons-annotations-5.0.4.Final.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="hibernate-core-5.3.5.Final.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/hibernate-core-5.3.5.Final.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="jandex-2.0.5.Final.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/jandex-2.0.5.Final.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="javassist-3.23.1-GA.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/javassist-3.23.1-GA.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="javax.activation-api-1.2.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/javax.activation-api-1.2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="javax.persistence-api-2.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/javax.persistence-api-2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="jboss-logging-3.3.2.Final.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/jboss-logging-3.3.2.Final.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="jboss-transaction-api_1.2_spec-1.1.1.Final.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/jboss-transaction-api_1.2_spec-1.1.1.Final.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="postgresql-42.2.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/postgresql-42.2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="jcalendar-1.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/jcalendar-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="jgoodies-looks-2.4.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/jgoodies-looks-2.4.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="junit5">
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="libs" level="project" />
+    <orderEntry type="module-library">
+      <library name="JUnit4">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="antlr-2.7.7" level="application" />
+  </component>
+</module>

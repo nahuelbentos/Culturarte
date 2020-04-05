@@ -1,0 +1,26 @@
+@import "colores";
+
+.imagen-propuesta{
+
+  width: 300px;
+  height: 350px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  .fav-propuesta{
+    a.icon-fav{
+      color: $brand-rosado!important;
+    }
+  }
+  h3.titulo{
+    color: $brand-violeta;
+    background-color: $brand-blanco;
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    a{
+      color: $brand-violeta;
+    }
+  }
+
+}

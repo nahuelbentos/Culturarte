@@ -1,0 +1,42 @@
+@import 'generales/colores';
+@import 'generales/fuente';
+
+body{
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  background-color: $brand-blanco;
+  color: $brand-violeta;
+}
+
+nav{
+  input{
+    font-size: 13px!important;
+  }
+}
+
+section{
+  margin-top: 15px;
+}
+
+.bg-color-brand-violeta{
+  background-color: $brand-violeta;
+
+  h1,h2,h3,h4,h5,p,a{
+    color: $brand-blanco;
+  }
+}
+
+@import 'generales/botones';
+@import 'generales/propuestas';
+@import 'generales/formularios';
+
+.dropdown-menu-culturarte{
+  background: $brand-violeta;
+  border: 1px solid rgba(255,255,255,0.2);
+  font-size: 12px;
+  .dropdown-item:hover, .dropdown-item:focus{
+    color: $brand-naranja;
+    text-decoration: none;
+    background: $brand-violeta;
+  }
+}

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="CulturarteWeb:Web">
+    <output-path>$PROJECT_DIR$/out/artifacts/CulturarteWeb_Web</output-path>
+    <root id="archive" name="CulturarteWeb_Web.war">
+      <element id="artifact" artifact-name="CulturarteWeb:Web exploded" />
+    </root>
+  </artifact>
+</component>
